@@ -1,0 +1,9 @@
+{
+  "_nota": "Grupos de perks que no tiene sentido tener juntas. Si una build sortea 2 perks del mismo grupo, se vuelve a tirar. No es exhaustivo, se puede ampliar.",
+  "survivor": [
+    ["30_noMither", "09_botanyKnowledge", "42_selfCare", "70_innerStrength", "110_reactiveHealing", "95_circleOfHealing", "150_dutyOfCare", "46_solidarity", "107_betterThanNew"],
+    ["24_ironWill", "11_calmSpirit"],
+    ["48_sprintBurst", "29_lithe", "100_overcome"]
+  ],
+  "killer": []
+}
