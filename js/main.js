@@ -1,40 +1,36 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // Splash (solo existe en index.html)
-  var splash = document.getElementById('splash');
+  const splash = document.getElementById('splash');
   if (splash) {
-    var dismissed = false;
-    function hideSplash() {
+    let dismissed = false;
+    document.body.classList.add('no-scroll');
+    const hideSplash = () => {
       if (dismissed) return;
       dismissed = true;
       splash.classList.add('splash-hidden');
       document.body.classList.remove('no-scroll');
-      setTimeout(function () { splash.style.display = 'none'; }, 600);
-    }
+      window.setTimeout(() => splash.remove(), 700);
+    };
     splash.addEventListener('click', hideSplash);
-    setTimeout(hideSplash, 5000);
-    document.body.classList.add('no-scroll');
+    window.setTimeout(hideSplash, 4200);
   }
 
-  // Menú hamburguesa (mobile)
-  var menuToggle = document.getElementById('menuToggle');
-  var mainNav = document.getElementById('mainNav');
+  const menuToggle = document.getElementById('menuToggle');
+  const mainNav = document.getElementById('mainNav');
   if (menuToggle && mainNav) {
     menuToggle.addEventListener('click', function () {
-      mainNav.classList.toggle('nav-open');
+      const open = mainNav.classList.toggle('nav-open');
+      menuToggle.classList.toggle('is-open', open);
+      menuToggle.setAttribute('aria-expanded', String(open));
     });
   }
 
-  // Dropdowns del menú (desktop y mobile)
   document.querySelectorAll('.has-dropdown > .nav-link').forEach(function (link) {
-    link.addEventListener('click', function (e) {
-      e.stopPropagation();
-      var parent = link.parentElement;
-      var wasOpen = parent.classList.contains('dropdown-open');
-      document.querySelectorAll('.has-dropdown').forEach(function (li) { li.classList.remove('dropdown-open'); });
-      if (!wasOpen) parent.classList.add('dropdown-open');
+    link.addEventListener('click', function (event) {
+      if (window.matchMedia('(max-width: 900px)').matches) {
+        event.preventDefault();
+        event.stopPropagation();
+        link.parentElement.classList.toggle('dropdown-open');
+      }
     });
-  });
-  document.addEventListener('click', function () {
-    document.querySelectorAll('.has-dropdown').forEach(function (li) { li.classList.remove('dropdown-open'); });
   });
 });
