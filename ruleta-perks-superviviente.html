@@ -1,84 +1,533 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ruleta de Perks de Superviviente — SanLean</title>
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/roulette.css">
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Ruleta de Perks de Superviviente — SanLean
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="css/style.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="css/roulette.css"
+  >
+
 </head>
+
 <body class="page-bg">
 
-<header class="site-header">
-  <div class="header-inner">
-    <a href="index.html" class="logo">
-      <img src="logo.png" alt="SanLean logo">
-      <span class="logo-text"><span class="accent">SAN</span>LEAN</span>
-    </a>
-    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú"><span></span><span></span><span></span></button>
-    <nav class="main-nav" id="mainNav">
-      <ul>
-        <li class="has-dropdown">
-          <span class="nav-link">DEAD BY DAYLIGHT</span>
-          <ul class="dropdown">
-            <li><a href="ruleta-killer.html">RULETA KILLER</a></li>
-            <li><a href="ruleta-perks.html">RULETA PERKS</a></li>
-          </ul>
-        </li>
-        <li><a href="halloween.html" class="nav-link">HALLOWEEN</a></li>
-        <li class="has-dropdown">
-          <span class="nav-link">TIERLIST</span>
-          <ul class="dropdown">
-            <li><a href="tierlist-dbd.html">DEAD BY DAYLIGHT</a></li>
-            <li><a href="tierlist-halloween.html">HALLOWEEN</a></li>
-          </ul>
-        </li>
-        <li><a href="creditos.html" class="nav-link">CREDITOS</a></li>
-      </ul>
-    </nav>
-  </div>
-</header>
+  <!-- =====================================================
+       HEADER
+       ===================================================== -->
 
-<main class="container roulette-page">
-  <h1>RULETA DE <span class="accent">PERKS</span> DE <span class="accent">SUPERVIVIENTE</span></h1>
+  <header class="site-header">
 
-  <div class="build-grid" id="buildGrid">
-    <div class="build-slot"><div class="reel-track" id="track0"></div></div>
-    <div class="build-slot"><div class="reel-track" id="track1"></div></div>
-    <div class="build-slot"><div class="reel-track" id="track2"></div></div>
-    <div class="build-slot"><div class="reel-track" id="track3"></div></div>
-  </div>
-  <button class="btn" id="spinBtn">GIRAR</button>
+    <div class="header-inner">
 
-  <div class="config-section">
-    <h3 class="config-toggle" id="cfgToggle">CONFIGURAR PERKS <span class="arrow">⌄</span></h3>
-    <p class="config-hint">Si te faltan algunas perks, hacé click en "Configurar" para deshabilitar las que no tenés o no quieras.</p>
-    <div class="config-grid" id="cfgGrid"></div>
-  </div>
-</main>
+      <a
+        href="index.html"
+        class="logo"
+      >
 
-<footer class="site-footer">
-  <div class="container">© 2026 SanLean — Proyecto de fans, sin fines de lucro.</div>
-</footer>
+        <img
+          src="logo.png"
+          alt="SanLean logo"
+        >
 
-<script src="js/main.js"></script>
-<script src="js/roulette.js"></script>
-<script>
-(async function () {
-  const perks = await loadJSON('data/perks-survivor.json');
-  const conflicts = await loadJSON('data/perk-conflicts.json');
-  const imgBase = 'survivor';
-  const disabled = new Set();
+        <span class="logo-text">
+          <span class="accent">SAN</span>LEAN
+        </span>
 
-  initConfigGrid(document.getElementById('cfgGrid'), perks, imgBase, disabled);
-  initConfigToggle(document.getElementById('cfgToggle'), document.getElementById('cfgGrid'));
+      </a>
 
-  document.getElementById('spinBtn').addEventListener('click', async () => {
-    const chosen = pickBuildOf4(perks, disabled, conflicts.survivor || []);
-    const tracks = [0, 1, 2, 3].map(i => document.getElementById('track' + i));
-    await Promise.all(tracks.map((t, i) => spinTrack(t, perks, imgBase, chosen[i], true, 110)));
-  });
-})();
-</script>
+
+      <button
+        class="menu-toggle"
+        id="menuToggle"
+        aria-label="Abrir menú"
+      >
+
+        <span></span>
+        <span></span>
+        <span></span>
+
+      </button>
+
+
+      <nav
+        class="main-nav"
+        id="mainNav"
+      >
+
+        <ul>
+
+          <li class="has-dropdown">
+
+            <span class="nav-link">
+              DEAD BY DAYLIGHT
+            </span>
+
+            <ul class="dropdown">
+
+              <li>
+                <a href="ruleta-killer.html">
+                  RULETA KILLER
+                </a>
+              </li>
+
+              <li>
+                <a href="ruleta-perks.html">
+                  RULETA PERKS
+                </a>
+              </li>
+
+            </ul>
+
+          </li>
+
+
+          <li>
+            <a
+              href="halloween.html"
+              class="nav-link"
+            >
+              HALLOWEEN
+            </a>
+          </li>
+
+
+          <li class="has-dropdown">
+
+            <span class="nav-link">
+              TIERLIST
+            </span>
+
+            <ul class="dropdown">
+
+              <li>
+                <a href="tierlist-dbd.html">
+                  DEAD BY DAYLIGHT
+                </a>
+              </li>
+
+              <li>
+                <a href="tierlist-halloween.html">
+                  HALLOWEEN
+                </a>
+              </li>
+
+            </ul>
+
+          </li>
+
+
+          <li>
+
+            <a
+              href="creditos.html"
+              class="nav-link"
+            >
+              CREDITOS
+            </a>
+
+          </li>
+
+        </ul>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       CONTENIDO
+       ===================================================== -->
+
+  <main
+    class="container roulette-page"
+  >
+
+    <h1>
+      RULETA DE
+      <span class="accent">
+        PERKS
+      </span>
+      DE
+      <span class="accent">
+        SUPERVIVIENTE
+      </span>
+    </h1>
+
+
+    <!-- ===================================================
+         4 REELS
+         =================================================== -->
+
+    <div
+      class="build-grid"
+      id="buildGrid"
+    >
+
+      <div class="build-slot">
+
+        <canvas
+          class="reel-canvas"
+          id="track0"
+          width="180"
+          height="180"
+        ></canvas>
+
+      </div>
+
+
+      <div class="build-slot">
+
+        <canvas
+          class="reel-canvas"
+          id="track1"
+          width="180"
+          height="180"
+        ></canvas>
+
+      </div>
+
+
+      <div class="build-slot">
+
+        <canvas
+          class="reel-canvas"
+          id="track2"
+          width="180"
+          height="180"
+        ></canvas>
+
+      </div>
+
+
+      <div class="build-slot">
+
+        <canvas
+          class="reel-canvas"
+          id="track3"
+          width="180"
+          height="180"
+        ></canvas>
+
+      </div>
+
+    </div>
+
+
+    <!-- ===================================================
+         BOTÓN
+         =================================================== -->
+
+    <button
+      class="btn"
+      id="spinBtn"
+    >
+      GIRAR
+    </button>
+
+
+    <!-- ===================================================
+         CONFIGURACIÓN
+         =================================================== -->
+
+    <div class="config-section">
+
+      <h3
+        class="config-toggle"
+        id="cfgToggle"
+      >
+
+        CONFIGURAR PERKS
+
+        <span class="arrow">
+          ⌄
+        </span>
+
+      </h3>
+
+
+      <p class="config-hint">
+
+        Si te faltan algunas perks,
+        hacé click en "Configurar"
+        para deshabilitar las que no
+        tenés o no quieras.
+
+      </p>
+
+
+      <div
+        class="config-grid"
+        id="cfgGrid"
+      ></div>
+
+    </div>
+
+  </main>
+
+
+  <!-- =====================================================
+       FOOTER
+       ===================================================== -->
+
+  <footer class="site-footer">
+
+    <div class="container">
+
+      © 2026 SanLean —
+      Proyecto de fans, sin fines de lucro.
+
+    </div>
+
+  </footer>
+
+
+  <!-- =====================================================
+       JAVASCRIPT GENERAL
+       ===================================================== -->
+
+  <script src="js/main.js"></script>
+
+  <script src="js/roulette.js"></script>
+
+
+  <!-- =====================================================
+       CONFIGURACIÓN DE ESTA RULETA
+       ===================================================== -->
+
+  <script>
+
+    (async function () {
+
+      try {
+
+        /*
+          Cargar perks.
+        */
+
+        const perks =
+          await loadJSON(
+            "data/perks-survivor.json"
+          );
+
+
+        /*
+          Cargar conflictos.
+        */
+
+        const conflicts =
+          await loadJSON(
+            "data/perk-conflicts.json"
+          );
+
+
+        /*
+          Carpeta donde están
+          las imágenes.
+        */
+
+        const imgBase =
+          "survivor";
+
+
+        /*
+          Perks deshabilitadas.
+        */
+
+        const disabled =
+          new Set();
+
+
+        /*
+          Mostrar configuración.
+        */
+
+        initConfigGrid(
+          document.getElementById(
+            "cfgGrid"
+          ),
+          perks,
+          imgBase,
+          disabled
+        );
+
+
+        initConfigToggle(
+          document.getElementById(
+            "cfgToggle"
+          ),
+          document.getElementById(
+            "cfgGrid"
+          )
+        );
+
+
+        /*
+          Precargar imágenes.
+
+          Esto es importante para que durante
+          el movimiento no aparezcan espacios
+          vacíos.
+        */
+
+        await preloadImages(
+          perks,
+          imgBase
+        );
+
+
+        /*
+          Canvas de los cuatro perks.
+        */
+
+        const tracks = [
+          document.getElementById("track0"),
+          document.getElementById("track1"),
+          document.getElementById("track2"),
+          document.getElementById("track3")
+        ];
+
+
+        /*
+          Estado.
+        */
+
+        let spinning = false;
+
+
+        /*
+          Función principal.
+        */
+
+        async function spinBuild() {
+
+          if (spinning) {
+            return;
+          }
+
+          spinning = true;
+
+
+          const button =
+            document.getElementById(
+              "spinBtn"
+            );
+
+
+          button.classList.add(
+            "is-spinning"
+          );
+
+
+          /*
+            Elegir las cuatro perks.
+          */
+
+          const chosen =
+            pickBuildOf4(
+              perks,
+              disabled,
+              conflicts.survivor || []
+            );
+
+
+          /*
+            Girar las cuatro columnas.
+
+            Los delays producen el efecto
+            escalonado de las máquinas de slots.
+          */
+
+          await Promise.all(
+
+            tracks.map(
+              (canvas, index) => {
+
+                return spinTrack(
+                  canvas,
+                  perks,
+                  imgBase,
+                  chosen[index],
+                  true,
+                  180,
+                  index * 140
+                );
+
+              }
+            )
+
+          );
+
+
+          spinning = false;
+
+
+          button.classList.remove(
+            "is-spinning"
+          );
+
+        }
+
+
+        /*
+          Botón GIRAR.
+        */
+
+        document
+          .getElementById("spinBtn")
+          .addEventListener(
+            "click",
+            spinBuild
+          );
+
+
+        /*
+          También podés hacer click
+          directamente sobre cualquiera
+          de los cuatro perks para girar.
+        */
+
+        tracks.forEach(canvas => {
+
+          canvas.addEventListener(
+            "click",
+            spinBuild
+          );
+
+        });
+
+
+      } catch (error) {
+
+        console.error(
+          "Error iniciando la ruleta:",
+          error
+        );
+
+      }
+
+    })();
+
+  </script>
+
 </body>
+
 </html>
