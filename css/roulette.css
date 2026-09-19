@@ -1,0 +1,62 @@
+.roulette-page h1{font-size:40px;margin:40px 0 24px;}
+@media (max-width:600px){.roulette-page h1{font-size:28px;}}
+
+.reel-wrap{
+  position:relative;background:#000;border:1px solid rgba(255,255,255,.1);
+  padding:16px;overflow:hidden;margin-bottom:32px;
+}
+.reel-track{display:flex;gap:12px;will-change:transform;}
+.reel-item{
+  flex:0 0 140px;height:160px;position:relative;
+  background:#111;border:1px solid rgba(255,255,255,.15);
+  display:flex;flex-direction:column;justify-content:flex-end;
+  overflow:hidden;
+}
+.reel-item img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+.reel-item span{
+  position:relative;z-index:2;background:rgba(0,0,0,.7);
+  font-size:10px;font-weight:700;text-align:center;padding:6px 2px;
+  text-transform:uppercase;
+}
+.reel-marker{
+  position:absolute;top:0;bottom:0;left:50%;width:2px;
+  background:var(--red);transform:translateX(-50%);z-index:5;
+}
+
+.build-grid{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:32px;}
+.build-slot{width:110px;height:110px;background:#111;border:1px solid rgba(255,255,255,.15);position:relative;overflow:hidden;}
+.build-slot img{width:100%;height:100%;object-fit:cover;}
+.build-slot .reel-track{position:absolute;top:0;left:0;height:100%;flex-direction:column;}
+.build-slot .reel-item{flex:0 0 110px;width:110px;height:110px;}
+
+.result-name{margin-top:10px;font-family:var(--font-head);font-size:20px;}
+
+.roll-perks-btn{margin-top:20px;}
+
+.config-section{margin-top:8px;margin-bottom:32px;}
+.config-toggle{
+  display:flex;align-items:center;gap:8px;cursor:pointer;font-size:20px;
+}
+.config-toggle .arrow{transition:transform .25s;}
+.config-toggle.open .arrow{transform:rotate(180deg);}
+.config-hint{color:var(--red);font-size:13px;margin:8px 0 16px;max-width:500px;}
+.config-grid{
+  display:none;flex-wrap:wrap;gap:10px;background:#000;padding:16px;
+}
+.config-grid.open{display:flex;}
+.config-item{
+  width:80px;height:80px;background:#111;border:1px solid rgba(255,255,255,.15);
+  cursor:pointer;position:relative;overflow:hidden;
+}
+.config-item img{width:100%;height:100%;object-fit:cover;}
+.config-item.disabled{opacity:.25;}
+.config-item.disabled::after{
+  content:'✕';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:28px;color:var(--red);background:rgba(0,0,0,.5);
+}
+.config-item .cfg-name{
+  position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.75);
+  font-size:9px;text-align:center;padding:2px;
+}
+
+.reel-hub{display:flex;flex-direction:column;gap:0;margin-top:20px;}
