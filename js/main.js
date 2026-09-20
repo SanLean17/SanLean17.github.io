@@ -30,31 +30,29 @@ document.addEventListener('DOMContentLoaded', function () {
         event.preventDefault();
         event.stopPropagation();
         link.parentElement.classList.toggle('dropdown-open');
+        return;
+      }
+      if (link.textContent.trim().toUpperCase() === 'DEAD BY DAYLIGHT') {
+        window.location.href = 'index.html';
       }
     });
   });
 
-  const configSection = document.querySelector('.config-section');
-  if (configSection) {
+  const configSections = document.querySelectorAll('.config-section');
+  if (configSections.length) {
     const topButton = document.createElement('button');
     topButton.type = 'button';
     topButton.className = 'back-to-top';
     topButton.setAttribute('aria-label', 'Volver arriba');
     topButton.innerHTML = '&#8593;';
     document.body.appendChild(topButton);
-
     const updateTopButton = function () {
-      const configOpen = configSection.classList.contains('open') || !!document.querySelector('.config-grid.open');
+      const configOpen = !!document.querySelector('.config-grid.open');
       topButton.classList.toggle('visible', configOpen && window.scrollY > 360);
     };
-
     window.addEventListener('scroll', updateTopButton, { passive: true });
-    document.addEventListener('click', function () {
-      window.setTimeout(updateTopButton, 0);
-    });
-    topButton.addEventListener('click', function () {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+    document.addEventListener('click', function () { window.setTimeout(updateTopButton, 0); });
+    topButton.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
     updateTopButton();
   }
 });
