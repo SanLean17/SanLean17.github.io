@@ -40,7 +40,7 @@
 {"key":"animatronic","name":"El Animatrónico","image":"assets/killers/K40_TheAnimatronic_Portrait.png"},
 {"key":"lich","name":"El Liche","image":"assets/killers/T_UI_K42_TheFirst_Portrait.png"},
 {"key":"ghoul","name":"El Ghoul","image":"assets/killers/K39_TheGhoul_Portrait.png"},
-{"key":"jason","name":"Jason (El Destripador)","image":"assets/killers/T_UI_K43_TheSlasher_Portrait.png"},
+{"key":"jason","name":"Jason","image":"assets/killers/T_UI_K43_TheSlasher_Portrait.png"},
 {"key":"judgment","name":"La Sentencia","image":"assets/killers/T_UI_K44_TheJudgment_Portrait.png"},
 {"key":"krasue","name":"La Krasue","image":"assets/killers/T_UI_K41_TheKrasue_Portrait.png"}
 ]
