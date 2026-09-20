@@ -33,4 +33,28 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   });
+
+  const configSection = document.querySelector('.config-section');
+  if (configSection) {
+    const topButton = document.createElement('button');
+    topButton.type = 'button';
+    topButton.className = 'back-to-top';
+    topButton.setAttribute('aria-label', 'Volver arriba');
+    topButton.innerHTML = '&#8593;';
+    document.body.appendChild(topButton);
+
+    const updateTopButton = function () {
+      const configOpen = configSection.classList.contains('open') || !!document.querySelector('.config-grid.open');
+      topButton.classList.toggle('visible', configOpen && window.scrollY > 360);
+    };
+
+    window.addEventListener('scroll', updateTopButton, { passive: true });
+    document.addEventListener('click', function () {
+      window.setTimeout(updateTopButton, 0);
+    });
+    topButton.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    updateTopButton();
+  }
 });
