@@ -1,17 +1,24 @@
 document.addEventListener('DOMContentLoaded', function () {
   const splash = document.getElementById('splash');
   if (splash) {
-    let dismissed = false;
-    document.body.classList.add('no-scroll');
-    const hideSplash = () => {
-      if (dismissed) return;
-      dismissed = true;
-      splash.classList.add('splash-hidden');
+    const skipSplash = new URLSearchParams(window.location.search).get('skipSplash') === '1';
+    if (skipSplash) {
+      splash.remove();
       document.body.classList.remove('no-scroll');
-      window.setTimeout(() => splash.remove(), 700);
-    };
-    splash.addEventListener('click', hideSplash);
-    window.setTimeout(hideSplash, 4200);
+      if (window.history && window.history.replaceState) window.history.replaceState({}, '', 'index.html');
+    } else {
+      let dismissed = false;
+      document.body.classList.add('no-scroll');
+      const hideSplash = () => {
+        if (dismissed) return;
+        dismissed = true;
+        splash.classList.add('splash-hidden');
+        document.body.classList.remove('no-scroll');
+        window.setTimeout(() => splash.remove(), 700);
+      };
+      splash.addEventListener('click', hideSplash);
+      window.setTimeout(hideSplash, 4200);
+    }
   }
 
   const menuToggle = document.getElementById('menuToggle');
@@ -33,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
       if (link.textContent.trim().toUpperCase() === 'DEAD BY DAYLIGHT') {
-        window.location.href = 'index.html';
+        window.location.href = 'index.html?skipSplash=1';
       }
     });
   });
