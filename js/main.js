@@ -62,4 +62,154 @@ document.addEventListener('DOMContentLoaded', function () {
     topButton.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
     updateTopButton();
   }
+
+  /* Motor independiente para RULETA DE KILLERS DE DBD.
+     Usa elementos HTML en vez del canvas para que el desplazamiento horizontal
+     sea visible, estable y no dependa del redibujado de imágenes en cada frame. */
+  const killerReel = document.getElementById('killerReel');
+  const killerButton = document.getElementById('spinKillerBtn');
+  if (killerReel && killerButton) {
+    const oldCanvas = document.getElementById('killerTrack');
+    if (oldCanvas) oldCanvas.classList.add('legacy-killer-canvas');
+
+    const track = document.createElement('div');
+    track.className = 'killer-track';
+    track.id = 'killerDomTrack';
+    killerReel.insertBefore(track, killerReel.querySelector('.reel-edge-left'));
+
+    let killers = [];
+    let currentOrder = [];
+    let spinning = false;
+    let lastWinnerKey = null;
+    const desktopStep = 210;
+    const mobileStep = 164;
+    const stepSize = () => window.matchMedia('(max-width:700px)').matches ? mobileStep : desktopStep;
+
+    function shuffle(list) {
+      const copy = list.slice();
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function makeCard(killer) {
+      const card = document.createElement('div');
+      card.className = 'killer-card';
+      card.dataset.key = killer.key;
+      const portrait = document.createElement('img');
+      portrait.className = 'killer-card-portrait';
+      portrait.src = killer.image;
+      portrait.alt = killer.name;
+      portrait.draggable = false;
+      const frame = document.createElement('img');
+      frame.className = 'killer-card-frame';
+      frame.src = 'Rectangulo.png';
+      frame.alt = '';
+      frame.draggable = false;
+      const name = document.createElement('div');
+      name.className = 'killer-card-name';
+      name.textContent = killer.name === 'Jason (El Destripador)' ? 'Jason' : killer.name;
+      card.appendChild(portrait);
+      card.appendChild(frame);
+      card.appendChild(name);
+      return card;
+    }
+
+    function render(order) {
+      track.replaceChildren(...order.map(makeCard));
+      currentOrder = order.slice();
+    }
+
+    function centerIndex(index, animate) {
+      const step = stepSize();
+      const x = -(index * step + (step - 14) / 2);
+      if (!animate) {
+        track.getAnimations().forEach(a => a.cancel());
+        track.style.transform = `translate3d(${x}px,-50%,0)`;
+      }
+      return x;
+    }
+
+    function enabledKillers() {
+      const disabledNames = new Set();
+      document.querySelectorAll('#cfgKillersGrid .config-item.disabled .cfg-name').forEach(el => disabledNames.add(el.textContent.trim().toLowerCase()));
+      return killers.filter(k => !disabledNames.has(k.name.trim().toLowerCase()));
+    }
+
+    async function spinKiller() {
+      if (spinning || killers.length < 2) return;
+      const available = enabledKillers();
+      if (available.length < 2) return;
+      spinning = true;
+      killerButton.disabled = true;
+      track.querySelectorAll('.killer-card.selected').forEach(c => c.classList.remove('selected'));
+
+      let choices = available.filter(k => k.key !== lastWinnerKey);
+      if (!choices.length) choices = available;
+      const winner = choices[Math.floor(Math.random() * choices.length)];
+
+      /* Una sola copia de cada killer. El ganador queda cerca del inicio del carril.
+         Empezamos viendo el extremo derecho y trasladamos TODO el carril hacia la
+         derecha hasta que el ganador llega al centro. */
+      const others = shuffle(available.filter(k => k.key !== winner.key));
+      const winnerIndex = Math.min(3, others.length);
+      const order = others.slice();
+      order.splice(winnerIndex, 0, winner);
+      render(order);
+
+      const step = stepSize();
+      const startIndex = Math.max(winnerIndex + 1, order.length - 4);
+      const startX = -(startIndex * step + (step - 14) / 2);
+      const endX = -(winnerIndex * step + (step - 14) / 2);
+      track.style.transform = `translate3d(${startX}px,-50%,0)`;
+      track.getBoundingClientRect();
+
+      const animation = track.animate([
+        { transform: `translate3d(${startX}px,-50%,0)`, offset: 0 },
+        { transform: `translate3d(${startX + (endX-startX)*0.80}px,-50%,0)`, offset: 0.62 },
+        { transform: `translate3d(${startX + (endX-startX)*0.94}px,-50%,0)`, offset: 0.82 },
+        { transform: `translate3d(${endX}px,-50%,0)`, offset: 1 }
+      ], {
+        duration: 8000,
+        easing: 'cubic-bezier(.12,.72,.16,1)',
+        fill: 'forwards'
+      });
+
+      try { await animation.finished; } catch (_) {}
+      track.style.transform = `translate3d(${endX}px,-50%,0)`;
+      animation.cancel();
+      const selected = track.querySelector(`.killer-card[data-key="${winner.key}"]`);
+      if (selected) selected.classList.add('selected');
+      lastWinnerKey = winner.key;
+      spinning = false;
+      killerButton.disabled = false;
+    }
+
+    /* Captura el click antes del motor canvas antiguo para evitar dos ruletas a la vez. */
+    killerButton.addEventListener('click', function (event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      spinKiller();
+    }, true);
+
+    fetch('data/killers.json', { cache: 'no-store' })
+      .then(r => r.json())
+      .then(data => {
+        killers = data.filter(k => k && k.key && k.image);
+        currentOrder = shuffle(killers);
+        render(currentOrder);
+        const initialIndex = Math.min(Math.floor(currentOrder.length / 2), currentOrder.length - 1);
+        centerIndex(initialIndex, false);
+      })
+      .catch(err => console.error('No se pudo cargar la ruleta de killers:', err));
+
+    window.addEventListener('resize', function () {
+      if (spinning || !currentOrder.length) return;
+      const selected = track.querySelector('.killer-card.selected');
+      const index = selected ? currentOrder.findIndex(k => k.key === selected.dataset.key) : Math.min(Math.floor(currentOrder.length / 2), currentOrder.length - 1);
+      centerIndex(Math.max(0, index), false);
+    });
+  }
 });
