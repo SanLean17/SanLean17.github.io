@@ -8,16 +8,16 @@
 <link rel="stylesheet" href="../css/usuario.css">
 </head>
 <body class="user-page">
-<header class="user-header"><a href="../index.html" class="user-logo"><img src="../logo.png" alt="SanLean"><span><b>SAN</b>LEAN</span></a><a class="back-site" href="../index.html">VOLVER A LA WEB</a></header>
+<header class="site-header user-site-header"><div class="header-inner"><a href="../index.html" class="logo"><img src="../logo.png" alt="SanLean logo"><span class="logo-text"><span class="accent">SAN</span>LEAN</span></a><nav class="user-nav"><a class="nav-link" href="../index.html">VOLVER A LA WEB</a></nav></div></header>
 <main class="user-shell">
 <section id="loginView" class="login-card">
 <p class="eyebrow">ACCESO PRIVADO</p><h1>PANEL DE <span>USUARIO</span></h1><p class="login-copy">Ingresá con la cuenta proporcionada por SanLean para configurar tus ruletas.</p>
 <form id="demoLogin"><label>CORREO ELECTRÓNICO<input type="email" placeholder="tu@email.com" required></label><label>CONTRASEÑA<input type="password" placeholder="••••••••" required></label><button type="submit">INICIAR SESIÓN</button></form><p class="prototype-note">Vista de prueba: el acceso real se conectará después.</p>
 </section>
 <section id="panelView" class="panel-view" hidden>
-<div class="panel-heading"><div><p class="eyebrow">CONFIGURACIÓN PERSONAL</p><h1>MI <span>PANEL</span></h1><p>Modificá el peso de cada opción. <b>1×</b> mantiene la probabilidad normal; un valor mayor aumenta sus posibilidades sin duplicar tarjetas visualmente.</p></div><button id="demoLogout" class="ghost-btn">CERRAR SESIÓN</button></div>
+<div class="panel-heading"><div><p class="eyebrow">CONFIGURACIÓN PERSONAL</p><h1>MI <span>PANEL</span></h1><p>Agregá participaciones extra a tus ruletas. Cada entrada adicional puede llevar el nombre de la persona que la agregó y se distinguirá cuando resulte elegida.</p></div><button id="demoLogout" class="ghost-btn">CERRAR SESIÓN</button></div>
 <nav class="panel-tabs"><button class="active" data-tab="killers">KILLERS</button><button data-tab="survivor">PERKS SUPERVIVIENTE</button><button data-tab="killerPerks">PERKS KILLER</button></nav>
-<div class="panel-tools"><input id="panelSearch" type="search" placeholder="BUSCAR..."><button id="resetWeights" class="ghost-btn">RESTABLECER 1×</button></div>
+<div class="panel-tools"><input id="panelSearch" type="search" placeholder="BUSCAR KILLER O PERK..."><button id="resetWeights" class="ghost-btn">RESTABLECER</button></div>
 <div id="weightGrid" class="weight-grid"></div>
 </section>
 </main>
