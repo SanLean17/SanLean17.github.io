@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Panel de Usuario — SanLean</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/usuario.css">
+</head>
+<body class="user-page">
+<header class="user-header"><a href="../index.html" class="user-logo"><img src="../logo.png" alt="SanLean"><span><b>SAN</b>LEAN</span></a><a class="back-site" href="../index.html">VOLVER A LA WEB</a></header>
+<main class="user-shell">
+<section id="loginView" class="login-card">
+<p class="eyebrow">ACCESO PRIVADO</p><h1>PANEL DE <span>USUARIO</span></h1><p class="login-copy">Ingresá con la cuenta proporcionada por SanLean para configurar tus ruletas.</p>
+<form id="demoLogin"><label>CORREO ELECTRÓNICO<input type="email" placeholder="tu@email.com" required></label><label>CONTRASEÑA<input type="password" placeholder="••••••••" required></label><button type="submit">INICIAR SESIÓN</button></form><p class="prototype-note">Vista de prueba: el acceso real se conectará después.</p>
+</section>
+<section id="panelView" class="panel-view" hidden>
+<div class="panel-heading"><div><p class="eyebrow">CONFIGURACIÓN PERSONAL</p><h1>MI <span>PANEL</span></h1><p>Modificá el peso de cada opción. <b>1×</b> mantiene la probabilidad normal; un valor mayor aumenta sus posibilidades sin duplicar tarjetas visualmente.</p></div><button id="demoLogout" class="ghost-btn">CERRAR SESIÓN</button></div>
+<nav class="panel-tabs"><button class="active" data-tab="killers">KILLERS</button><button data-tab="survivor">PERKS SUPERVIVIENTE</button><button data-tab="killerPerks">PERKS KILLER</button></nav>
+<div class="panel-tools"><input id="panelSearch" type="search" placeholder="BUSCAR..."><button id="resetWeights" class="ghost-btn">RESTABLECER 1×</button></div>
+<div id="weightGrid" class="weight-grid"></div>
+</section>
+</main>
+<script src="../js/usuario.js"></script>
+</body></html>
