@@ -1,5 +1,6 @@
 /* Unified public-section titles — based on RULETA DE KILLERS DE DBD.
-   This file is intentionally isolated so the change can be reverted cleanly. */
+   This file is intentionally isolated so the change can be reverted cleanly.
+   The splash is intentionally excluded. */
 @media (min-width:701px){
   .roulette-page{padding-top:46px!important}
   .tierlist-page{padding-top:46px!important}
@@ -7,6 +8,7 @@
   .perk-choice-page{padding-top:46px!important}
   .credits-wrap{padding-top:46px!important}
   .placeholder{min-height:0!important;justify-content:flex-start!important;padding-top:46px!important}
+  .home-content{padding-top:46px!important}
   .tournament-hero{margin-top:0!important}
 
   .roulette-page>h1,
@@ -15,7 +17,8 @@
   .perk-choice-page .perk-choice-title,
   .credits-wrap h1,
   .placeholder h1,
-  .killer-perks-title{
+  .killer-perks-title,
+  .home-title{
     font-size:clamp(72px,6.4vw,108px)!important;
   }
 }
@@ -24,6 +27,7 @@
   .roulette-page,.tierlist-page,.one-vs-one-main,.perk-choice-page{padding-top:44px!important}
   .credits-wrap{padding-top:44px!important}
   .placeholder{min-height:0!important;justify-content:flex-start!important;padding-top:44px!important}
+  .home-content{padding-top:44px!important}
   .tournament-hero{margin-top:0!important}
-  .roulette-page>h1,.tierlist-title,.tournament-hero h1,.perk-choice-page .perk-choice-title,.credits-wrap h1,.placeholder h1,.killer-perks-title{font-size:48px!important}
+  .roulette-page>h1,.tierlist-title,.tournament-hero h1,.perk-choice-page .perk-choice-title,.credits-wrap h1,.placeholder h1,.killer-perks-title,.home-title{font-size:48px!important}
 }
