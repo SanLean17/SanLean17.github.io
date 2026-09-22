@@ -20,7 +20,7 @@
 <main class="one-vs-one-main"><section class="one-vs-one-wrap">
 <div class="tournament-hero"><h1 id="publicTournamentName"><span>NOMBRE</span> DEL TORNEO</h1><div id="tournamentLogo" class="tournament-logo"><img src="logo.png" alt="Logo del torneo"></div></div>
 <section id="bestTimesSection" class="best-times-section" hidden><div class="best-times-label"><span>MEJORES</span><br>TIEMPOS</div><div id="publicTopFive" class="best-times-grid"></div></section>
-<div class="table-tools"><select id="tournamentPeriod" aria-label="Periodo del torneo"><option>09/2026</option></select></div>
+<div class="table-tools"><div class="period-dropdown" id="periodDropdown"><button class="period-trigger" id="periodTrigger" type="button" aria-haspopup="listbox" aria-expanded="false"><span id="periodValue">09/2026</span><span class="period-arrow" aria-hidden="true"></span></button><div class="period-menu" id="periodMenu" role="listbox"></div></div><select id="tournamentPeriod" aria-label="Periodo del torneo" hidden><option>09/2026</option></select></div>
 <section class="standings-card"><table><thead><tr><th>POS</th><th>NOMBRE DE USUARIO</th><th>TIEMPO</th></tr></thead><tbody id="publicStandings"><tr class="pending"><td>1</td><td>—</td><td>—</td></tr></tbody></table></section>
 </section></main>
 <script src="js/main.js"></script><script src="js/one-vs-one.js"></script>
