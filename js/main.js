@@ -1,3 +1,4 @@
+(()=>{if(!window.gtag){const s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-0VBRTF7W0R';document.head.appendChild(s);window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-0VBRTF7W0R')}})();
 (()=>{if(!document.querySelector('link[data-unified-section-titles]')){const l=document.createElement('link');l.rel='stylesheet';l.href='css/unified-section-titles.css?v=1';l.dataset.unifiedSectionTitles='1';document.head.appendChild(l)}})();
 document.addEventListener('DOMContentLoaded',function(){
  const header=document.querySelector('.site-header .header-inner');
