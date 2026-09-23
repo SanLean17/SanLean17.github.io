@@ -2,88 +2,36 @@
   const cfg = window.SANLEAN_SUPABASE;
   if (!cfg || !window.supabase) return;
   const SIM_KEY='sanlean-roulette-simulation-v1';
-  const client = window.supabase.createClient(cfg.url, cfg.publishableKey, {
-    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
-  });
-  window.sanleanSupabase = client;
-  let syncing=false, saveTimer=null;
+  const client = window.supabase.createClient(cfg.url, cfg.publishableKey, {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+  window.sanleanSupabase=client;
+  let syncing=false,saveTimer=null,currentProfile=null;
   const api=window.SanLeanAccount={
-    async session(){ return (await client.auth.getSession()).data.session; },
-    async signIn(email,password){ return client.auth.signInWithPassword({email,password}); },
-    async signOut(){ return client.auth.signOut(); },
-    async resetPassword(email){ return client.auth.resetPasswordForEmail(email,{redirectTo:location.origin+'/Usuario/'}); },
-    async updatePassword(password){ return client.auth.updateUser({password}); },
-    async loadSettings(){
-      const session=(await client.auth.getSession()).data.session;
-      if(!session) return null;
-      const {data,error}=await client.from('user_roulette_settings').select('settings').eq('user_id',session.user.id).maybeSingle();
-      if(error) throw error;
-      return data?.settings || {weights:{},bonusEntries:{}};
-    },
-    async saveSettings(settings){
-      const session=(await client.auth.getSession()).data.session;
-      if(!session) return;
-      const clean={weights:settings?.weights||{},bonusEntries:settings?.bonusEntries||{}};
-      const {error}=await client.from('user_roulette_settings').upsert({user_id:session.user.id,settings:clean},{onConflict:'user_id'});
-      if(error) throw error;
-    },
-    async syncToBrowser(){
-      const settings=await api.loadSettings();
-      if(!settings)return false;
-      syncing=true; localStorage.setItem(SIM_KEY,JSON.stringify({...settings,updatedAt:Date.now(),source:'supabase'})); syncing=false;
-      return true;
-    },
-    onAuthChange(callback){ return client.auth.onAuthStateChange(callback); }
+    async session(){return (await client.auth.getSession()).data.session},
+    async signIn(email,password){return client.auth.signInWithPassword({email,password})},
+    async signOut(){return client.auth.signOut()},
+    async resetPassword(email){return client.auth.resetPasswordForEmail(email,{redirectTo:location.origin+'/Usuario/'})},
+    async updatePassword(password){return client.auth.updateUser({password})},
+    async loadProfile(){const s=await api.session();if(!s)return null;const {data,error}=await client.from('user_profiles').select('first_name,last_name,role,onboarding_completed').eq('user_id',s.user.id).maybeSingle();if(error)throw error;if(data)return data;const {data:created,error:createError}=await client.from('user_profiles').insert({user_id:s.user.id,role:'owner'}).select('first_name,last_name,role,onboarding_completed').single();if(createError)throw createError;return created},
+    async saveProfile(firstName,lastName,onboardingCompleted){const s=await api.session();if(!s)throw new Error('Sin sesión');const payload={user_id:s.user.id,first_name:firstName.trim(),last_name:lastName.trim()};if(typeof onboardingCompleted==='boolean')payload.onboarding_completed=onboardingCompleted;const {data,error}=await client.from('user_profiles').upsert(payload,{onConflict:'user_id'}).select('first_name,last_name,role,onboarding_completed').single();if(error)throw error;currentProfile=data;return data},
+    async loadSettings(){const s=await api.session();if(!s)return null;const {data,error}=await client.from('user_roulette_settings').select('settings').eq('user_id',s.user.id).maybeSingle();if(error)throw error;return data?.settings||{weights:{},bonusEntries:{}}},
+    async saveSettings(settings){const s=await api.session();if(!s)return;const clean={weights:settings?.weights||{},bonusEntries:settings?.bonusEntries||{}};const {error}=await client.from('user_roulette_settings').upsert({user_id:s.user.id,settings:clean},{onConflict:'user_id'});if(error)throw error},
+    async syncToBrowser(){const settings=await api.loadSettings();if(!settings)return false;syncing=true;localStorage.setItem(SIM_KEY,JSON.stringify({...settings,updatedAt:Date.now(),source:'supabase'}));syncing=false;return true},
+    onAuthChange(callback){return client.auth.onAuthStateChange(callback)}
   };
-
-  // Keep the existing, already-tested roulette data format as a local cache,
-  // while Supabase is the persistent source for authenticated accounts.
-  const nativeSet=Storage.prototype.setItem;
-  Storage.prototype.setItem=function(key,value){
-    nativeSet.call(this,key,value);
-    if(this===localStorage && key===SIM_KEY && !syncing){
-      clearTimeout(saveTimer);
-      saveTimer=setTimeout(async()=>{try{const parsed=JSON.parse(value);await api.saveSettings(parsed)}catch(err){console.error('SanLean Supabase save:',err)}},180);
-    }
-  };
-
+  const nativeSet=Storage.prototype.setItem;Storage.prototype.setItem=function(key,value){nativeSet.call(this,key,value);if(this===localStorage&&key===SIM_KEY&&!syncing){clearTimeout(saveTimer);saveTimer=setTimeout(async()=>{try{await api.saveSettings(JSON.parse(value))}catch(err){console.error('SanLean Supabase save:',err)}},180)}};
   function msg(text,isError=false){const el=document.getElementById('loginMessage');if(el){el.textContent=text||'';el.classList.toggle('error',!!isError)}}
-  function showPanel(session){
-    const login=document.getElementById('loginView'),panel=document.getElementById('panelView');
-    if(login)login.hidden=true;if(panel)panel.hidden=false;
-    const email=session?.user?.email||'';
-    const pe=document.getElementById('profileEmail');if(pe)pe.value=email;
-    setTimeout(()=>{const active=document.querySelector('.panel-tabs button.active');if(active)active.click()},0);
-  }
-  function showLogin(){const login=document.getElementById('loginView'),panel=document.getElementById('panelView');if(panel)panel.hidden=true;if(login)login.hidden=false}
-
-  // Capture auth actions before the old demo handlers. This lets us migrate safely
-  // without changing the stable roulette rendering code.
-  document.addEventListener('submit',async e=>{
-    if(e.target?.id!=='demoLogin')return;
-    e.preventDefault();e.stopImmediatePropagation();
-    const email=document.getElementById('loginEmail')?.value.trim();
-    const password=document.getElementById('loginPassword')?.value||'';
-    msg('INGRESANDO...');
-    const {data,error}=await api.signIn(email,password);
-    if(error){msg('No se pudo iniciar sesión. Revisá el correo y la contraseña.',true);return}
-    try{await api.syncToBrowser()}catch(err){console.error(err);msg('La cuenta ingresó, pero no se pudo cargar MI PANEL.',true);return}
-    msg('');showPanel(data.session);
-  },true);
-
+  function fillProfile(session,profile){const email=session?.user?.email||'';['profileEmail','onboardingEmail'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=email});const n=document.getElementById('profileName'),s=document.getElementById('profileSurname');if(n)n.value=profile?.first_name||'';if(s)s.value=profile?.last_name||''}
+  function openOnboarding(session,profile){fillProfile(session,profile);const modal=document.getElementById('onboardingModal');if(modal){modal.hidden=false;document.body.classList.add('onboarding-required')}}
+  function closeOnboarding(){const modal=document.getElementById('onboardingModal');if(modal)modal.hidden=true;document.body.classList.remove('onboarding-required')}
+  async function showPanel(session){const login=document.getElementById('loginView'),panel=document.getElementById('panelView');if(login)login.hidden=true;if(panel)panel.hidden=false;try{currentProfile=await api.loadProfile();fillProfile(session,currentProfile);if(!currentProfile?.onboarding_completed){openOnboarding(session,currentProfile);return}}catch(err){console.error('Profile load:',err)}closeOnboarding();setTimeout(()=>{const active=document.querySelector('.panel-tabs button.active');if(active)active.click()},0)}
+  function showLogin(){const login=document.getElementById('loginView'),panel=document.getElementById('panelView');if(panel)panel.hidden=true;if(login)login.hidden=false;closeOnboarding()}
+  document.addEventListener('submit',async e=>{if(e.target?.id!=='demoLogin')return;e.preventDefault();e.stopImmediatePropagation();const email=document.getElementById('loginEmail')?.value.trim(),password=document.getElementById('loginPassword')?.value||'';msg('INGRESANDO...');const {data,error}=await api.signIn(email,password);if(error){msg('No se pudo iniciar sesión. Revisá el correo y la contraseña.',true);return}try{await api.syncToBrowser()}catch(err){console.error(err);msg('La cuenta ingresó, pero no se pudo cargar MI PANEL.',true);return}msg('');await showPanel(data.session)},true);
   document.addEventListener('click',async e=>{
-    const logout=e.target.closest?.('#demoLogout');
-    if(logout){e.preventDefault();e.stopImmediatePropagation();await api.signOut();localStorage.removeItem(SIM_KEY);showLogin();return}
-    const forgot=e.target.closest?.('#forgotPassword');
-    if(forgot){e.preventDefault();e.stopImmediatePropagation();const email=document.getElementById('loginEmail')?.value.trim();if(!email){msg('Escribí primero tu correo electrónico.',true);return}const {error}=await api.resetPassword(email);msg(error?'No se pudo enviar el correo de recuperación.':'Te enviamos un correo para recuperar tu contraseña.',!!error);return}
-    const change=e.target.closest?.('#changePassword');
-    if(change){e.preventDefault();e.stopImmediatePropagation();const a=document.getElementById('newPassword')?.value||'',b=document.getElementById('repeatPassword')?.value||'',out=document.getElementById('passwordMessage');if(a.length<8){if(out)out.textContent='La contraseña debe tener al menos 8 caracteres.';return}if(a!==b){if(out)out.textContent='Las contraseñas no coinciden.';return}const {error}=await api.updatePassword(a);if(out)out.textContent=error?'No se pudo cambiar la contraseña.':'Contraseña actualizada correctamente.';if(!error){document.getElementById('newPassword').value='';document.getElementById('repeatPassword').value=''}return}
+    const logout=e.target.closest?.('#demoLogout');if(logout){e.preventDefault();e.stopImmediatePropagation();await api.signOut();localStorage.removeItem(SIM_KEY);showLogin();return}
+    const forgot=e.target.closest?.('#forgotPassword');if(forgot){e.preventDefault();e.stopImmediatePropagation();const email=document.getElementById('loginEmail')?.value.trim();if(!email){msg('Escribí primero tu correo electrónico.',true);return}const {error}=await api.resetPassword(email);msg(error?'No se pudo enviar el correo de recuperación.':'Te enviamos un correo para recuperar tu contraseña.',!!error);return}
+    const complete=e.target.closest?.('#completeOnboarding');if(complete){e.preventDefault();e.stopImmediatePropagation();const name=document.getElementById('onboardingName')?.value.trim()||'',surname=document.getElementById('onboardingSurname')?.value.trim()||'',a=document.getElementById('onboardingPassword')?.value||'',b=document.getElementById('onboardingRepeatPassword')?.value||'',out=document.getElementById('onboardingMessage');if(!name||!surname){out.textContent='Completá nombre y apellido.';return}if(a.length<8){out.textContent='La nueva contraseña debe tener al menos 8 caracteres.';return}if(a!==b){out.textContent='Las contraseñas no coinciden.';return}complete.disabled=true;out.textContent='GUARDANDO...';const {error}=await api.updatePassword(a);if(error){out.textContent='No se pudo cambiar la contraseña.';complete.disabled=false;return}try{currentProfile=await api.saveProfile(name,surname,true);const session=await api.session();fillProfile(session,currentProfile);document.getElementById('onboardingPassword').value='';document.getElementById('onboardingRepeatPassword').value='';closeOnboarding();out.textContent='';setTimeout(()=>{const active=document.querySelector('.panel-tabs button.active');if(active)active.click()},0)}catch(err){console.error(err);out.textContent='La contraseña cambió, pero no se pudo guardar el perfil. Volvé a intentarlo.'}complete.disabled=false;return}
+    const saveProfile=e.target.closest?.('#saveProfile');if(saveProfile){e.preventDefault();e.stopImmediatePropagation();const name=document.getElementById('profileName')?.value.trim()||'',surname=document.getElementById('profileSurname')?.value.trim()||'',out=document.getElementById('profileSaveMessage');if(!name||!surname){out.textContent='Completá nombre y apellido.';return}try{currentProfile=await api.saveProfile(name,surname,currentProfile?.onboarding_completed??true);out.textContent='Perfil actualizado correctamente.'}catch(err){console.error(err);out.textContent='No se pudo actualizar el perfil.'}return}
+    const change=e.target.closest?.('#changePassword');if(change){e.preventDefault();e.stopImmediatePropagation();const a=document.getElementById('newPassword')?.value||'',b=document.getElementById('repeatPassword')?.value||'',out=document.getElementById('passwordMessage');if(a.length<8){if(out)out.textContent='La contraseña debe tener al menos 8 caracteres.';return}if(a!==b){if(out)out.textContent='Las contraseñas no coinciden.';return}const {error}=await api.updatePassword(a);if(out)out.textContent=error?'No se pudo cambiar la contraseña.':'Contraseña actualizada correctamente.';if(!error){document.getElementById('newPassword').value='';document.getElementById('repeatPassword').value=''}return}
   },true);
-
-  window.addEventListener('DOMContentLoaded',async()=>{
-    const session=await api.session();
-    if(!session){showLogin();return}
-    try{await api.syncToBrowser()}catch(err){console.error('SanLean Supabase load:',err)}
-    showPanel(session);
-  });
+  window.addEventListener('DOMContentLoaded',async()=>{const session=await api.session();if(!session){showLogin();return}try{await api.syncToBrowser()}catch(err){console.error('SanLean Supabase load:',err)}await showPanel(session)});
 })();
