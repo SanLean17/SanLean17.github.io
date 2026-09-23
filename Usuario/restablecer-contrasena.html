@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Restablecer contraseña — SanLean</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/usuario.css">
+  <style>
+    .recovery-shell{min-height:100vh;display:grid;place-items:center;padding:120px 20px 60px}
+    .recovery-card{width:min(520px,100%);background:rgba(7,7,10,.96);border:1px solid rgba(255,0,60,.55);padding:42px;box-shadow:0 0 45px rgba(255,0,60,.16)}
+    .recovery-card h1{font-size:44px;line-height:1;margin:10px 0 18px}.recovery-card h1 span{color:#FF003C}
+    .recovery-copy{color:#aaa;line-height:1.55;margin-bottom:28px}
+    .recovery-card label{display:block;font-weight:800;font-size:13px;margin:18px 0 8px}
+    .recovery-card input{width:100%;box-sizing:border-box;background:#0b0b0e;color:#fff;border:1px solid #444;padding:16px}
+    .recovery-card button{width:100%;margin-top:26px;border:0;border-radius:999px;background:#FF003C;color:#fff;font-weight:900;padding:16px;cursor:pointer}
+    .recovery-message{margin-top:18px;color:#fff;line-height:1.45}.recovery-message.error{color:#FF003C}
+    .recovery-back{display:block;text-align:center;margin-top:20px;color:#aaa;font-weight:800;text-decoration:none}
+  </style>
+</head>
+<body class="user-page">
+<header class="site-header user-site-header"><div class="header-inner"><a href="../index.html" class="logo"><img src="../logo.png" alt="SanLean logo"><span class="logo-text"><span class="accent">SAN</span>LEAN</span></a></div></header>
+<main class="recovery-shell"><section class="recovery-card"><p class="eyebrow">SEGURIDAD DE LA CUENTA</p><h1>NUEVA <span>CONTRASEÑA</span></h1><p id="recoveryCopy" class="recovery-copy">Abrí esta página desde el enlace seguro que recibiste por correo electrónico.</p><div id="recoveryForm" hidden><label>NUEVA CONTRASEÑA</label><input id="recoveryPassword" type="password" autocomplete="new-password"><label>REPETIR CONTRASEÑA</label><input id="recoveryPasswordRepeat" type="password" autocomplete="new-password"><button id="saveRecoveryPassword" type="button">GUARDAR NUEVA CONTRASEÑA</button></div><p id="recoveryMessage" class="recovery-message"></p><a class="recovery-back" href="./">VOLVER A INICIAR SESIÓN</a></section></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../js/supabase-config.js"></script>
+<script>
+(async()=>{const cfg=window.SANLEAN_SUPABASE;if(!cfg||!window.supabase)return;const client=window.supabase.createClient(cfg.url,cfg.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});const form=document.getElementById('recoveryForm'),copy=document.getElementById('recoveryCopy'),msg=document.getElementById('recoveryMessage');let recovery=false;function ready(){recovery=true;form.hidden=false;copy.textContent='Elegí una contraseña nueva para tu cuenta de SanLean.'}client.auth.onAuthStateChange((event)=>{if(event==='PASSWORD_RECOVERY')ready()});const {data}=await client.auth.getSession();if(data.session)ready();setTimeout(()=>{if(!recovery){msg.textContent='El enlace de recuperación no es válido, ya fue utilizado o venció.';msg.classList.add('error')}},1800);document.getElementById('saveRecoveryPassword').addEventListener('click',async()=>{const a=document.getElementById('recoveryPassword').value,b=document.getElementById('recoveryPasswordRepeat').value;if(a.length<8){msg.textContent='La contraseña debe tener al menos 8 caracteres.';msg.classList.add('error');return}if(a!==b){msg.textContent='Las contraseñas no coinciden.';msg.classList.add('error');return}const {error}=await client.auth.updateUser({password:a});if(error){msg.textContent='No se pudo actualizar la contraseña. Solicitá un nuevo enlace.';msg.classList.add('error');return}msg.classList.remove('error');msg.textContent='Contraseña actualizada correctamente. Ya podés iniciar sesión con tu nueva contraseña.';form.hidden=true;await client.auth.signOut()})})();
+</script></body></html>
