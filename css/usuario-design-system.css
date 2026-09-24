@@ -19,13 +19,17 @@
   --sl-font-body:Montserrat,Arial,sans-serif;
   --sl-font-display:Impact,'Arial Black','Arial Narrow',sans-serif;
 
-  --sl-title-size:65px;
-  --sl-section-title-size:40px;
+  /* BLOQUE B: referencia visual = BIENVENIDO A MI PANEL */
+  --sl-title-size:48px;
+  --sl-section-title-size:48px;
+  --sl-section-kicker-size:13px;
   --sl-card-title-size:18px;
-  --sl-body-size:14px;
+  --sl-body-size:16px;
   --sl-small-size:11px;
-  --sl-body-line:1.6;
-  --sl-copy-width:66ch;
+  --sl-body-line:1.5;
+  --sl-copy-width:760px;
+  --sl-kicker-title-gap:10px;
+  --sl-title-copy-gap:11px;
 
   --sl-shell-width:1500px;
   --sl-shell-gutter:72px;
@@ -52,11 +56,52 @@
 /* Jerarquía */
 .user-page,.account-page{font-family:var(--sl-font-body);color:var(--sl-text)}
 .user-page .panel-title,.account-page .account-welcome h2{font-family:var(--sl-font-display)}
-.user-page .panel-title{font-size:var(--sl-title-size);line-height:.88;letter-spacing:.005em}
+.user-page .panel-title{font-size:var(--sl-title-size);line-height:.98;letter-spacing:.005em}
 .user-page .panel-title span,.account-page h2 span{color:var(--sl-accent)}
-.user-page .ui-section-title,.user-page .stream-module-head h2{margin:0;font:400 var(--sl-section-title-size)/.95 var(--sl-font-display);text-transform:uppercase}
-.user-page .ui-copy,.user-page .stream-module-head p:last-child,.account-page .section-head p,.account-page .account-welcome p{max-width:var(--sl-copy-width);color:var(--sl-text-secondary);font-size:var(--sl-body-size);line-height:var(--sl-body-line)}
-.user-page .eyebrow,.account-page .section-kicker{color:var(--sl-accent);font-size:12px;font-weight:800;letter-spacing:.16em}
+
+/*
+ Encabezado canónico de sección.
+ La referencia aprobada es el bloque de INICIO: PANEL DE USUARIO / BIENVENIDO A MI PANEL / párrafo.
+*/
+.user-page .dashboard-welcome .eyebrow,
+.user-page .section-context .eyebrow,
+.user-page .stream-module-head .eyebrow,
+.account-page .section-kicker{
+  margin:0 0 var(--sl-kicker-title-gap)!important;
+  color:var(--sl-accent)!important;
+  font-size:var(--sl-section-kicker-size)!important;
+  font-weight:800!important;
+  line-height:1.2!important;
+  letter-spacing:.16em!important;
+  text-transform:uppercase;
+}
+.user-page .dashboard-welcome h2,
+.user-page .section-context h2,
+.user-page .stream-module-head h2,
+.account-page .account-welcome h2,
+.account-page .section-head h2{
+  margin:0!important;
+  color:#fff!important;
+  font:400 var(--sl-section-title-size)/.98 var(--sl-font-display)!important;
+  letter-spacing:0!important;
+  text-transform:uppercase;
+}
+.user-page .dashboard-welcome>p:last-child,
+.user-page .section-context>p:last-child,
+.user-page .stream-module-head>p:last-child,
+.account-page .account-welcome>p:last-child,
+.account-page .section-head p:last-child{
+  box-sizing:border-box;
+  width:min(100%,var(--sl-copy-width));
+  max-width:var(--sl-copy-width)!important;
+  margin:var(--sl-title-copy-gap) 0 0!important;
+  color:var(--sl-text-secondary)!important;
+  font-size:var(--sl-body-size)!important;
+  line-height:var(--sl-body-line)!important;
+}
+
+/* Títulos de card: se conserva el aspecto actual aprobado. */
+.user-page .dashboard-card h3,.account-page .account-home-cards h3{font-size:var(--sl-card-title-size)}
 
 /* Superficies */
 .user-page .ui-surface,.user-page .module-box,.user-page .overlay-card,.user-page .connection-card-stream{box-sizing:border-box;background:rgba(8,8,10,.84);border:1px solid var(--sl-border);border-radius:var(--sl-card-radius)}
@@ -97,7 +142,7 @@
 
 /* Stream Tools forma parte de USUARIO: mismas medidas, no un sistema paralelo. */
 .user-page .stream-module{margin-top:0}
-.user-page .stream-module-head{margin-bottom:var(--sl-space-5)}
+.user-page .stream-module-head,.user-page .section-context{margin-bottom:var(--sl-space-5)}
 .user-page .stream-module .module-box,
 .user-page .stream-module .overlay-grid,
 .user-page .stream-module .connection-grid,
@@ -125,7 +170,7 @@
 }
 
 @media(max-width:760px){
-  :root{--sl-title-size:52px;--sl-section-title-size:34px}
+  :root{--sl-title-size:40px;--sl-section-title-size:40px;--sl-body-size:15px;--sl-copy-width:100%}
   .user-page .ui-fields-two-contained,
   .user-page .stream-module .module-fields.two{grid-template-columns:minmax(0,1fr)}
 }
