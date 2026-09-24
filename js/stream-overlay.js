@@ -12,14 +12,6 @@
   const escapeHtml=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
   const isRoulette=kind=>['roulette_killers','roulette_killer_perks','roulette_survivor_perks'].includes(kind);
 
-  function secureIndex(max){
-    if(max<=1)return 0;
-    const limit=Math.floor(0x100000000/max)*max;
-    const arr=new Uint32Array(1);
-    do crypto.getRandomValues(arr);while(arr[0]>=limit);
-    return arr[0]%max;
-  }
-
   function weightedUnique(pool,count){
     const remaining=(pool||[]).filter(x=>Number(x.weight)>0).map(x=>({...x,weight:Number(x.weight)||1}));
     const out=[];
@@ -73,7 +65,7 @@
     if(s.visible===false){stage.innerHTML='';root.classList.add('obs-hidden');return}
     root.classList.remove('obs-hidden');
     const cards=Array.isArray(s.cards)?s.cards:[];
-    stage.innerHTML=`<div class="obs-vote-box"><div class="obs-vote-head"><h2>${escapeHtml(s.deckName||'VOTACIÓN')}</h2><div class="obs-timer">${Math.max(0,Number(s.secondsLeft)||0)}s</div></div>${cards.map(c=>`<div class="obs-vote-row"><b>${escapeHtml(c.slot||'')}</b><div><div>${escapeHtml(c.label||'')}</div><div class="obs-vote-meter"><i style="width:${Math.max(0,Math.min(100,Number(c.percentage)||0))}%"></i></div></div><span>${Number(c.count)||0} · ${Math.round(Number(c.percentage)||0)}%</span></div>`).join('')}</div>`;
+    stage.innerHTML=`<div class="obs-vote-box"><div class="obs-vote-head"><h2>${escapeHtml(s.deckName||'VOTACIÓN')}</h2><div class="obs-timer">${s.status==='finished'?(s.winnerSlot?`GANÓ ${escapeHtml(s.winnerSlot)}`:'FINAL'):`${Math.max(0,Number(s.secondsLeft)||0)}s`}</div></div>${cards.map(c=>`<div class="obs-vote-row${s.winnerSlot===c.slot?' winner':''}"><b>${escapeHtml(c.slot||'')}${s.winnerSlot===c.slot?' ★':''}</b><div><div>${escapeHtml(c.label||'')}</div><div class="obs-vote-meter"><i style="width:${Math.max(0,Math.min(100,Number(c.percentage)||0))}%"></i></div></div><span>${Number(c.count)||0} · ${Math.round(Number(c.percentage)||0)}%</span></div>`).join('')}</div>`;
   }
 
   function renderGiveaway(data){
