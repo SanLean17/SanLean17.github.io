@@ -112,6 +112,20 @@ Los campos NO deben crecer hasta extremos simplemente para completar una fila o 
 - Botones de acción: `999px`.
 - Padding debe seguir la escala existente: 18 / 24 / 30 / 42 px según jerarquía.
 
+### BLOQUE A — FORMA GENERAL (APROBADO)
+
+Estas reglas quedan aprobadas como referencia oficial de USUARIO y se mantienen tal como funcionan actualmente:
+
+- **Panel principal:** radio `16px`. Referencia visual: caja `BIENVENIDO A MI PANEL`.
+- **Card:** radio `14px`. Referencia visual: cards `CONFIGURACIÓN`, `TWITCH + KICK` y `COLABORADORES` de INICIO.
+- **Input / Select:** radio `10px`. Referencia visual: buscador `BUSCAR KILLER O PERK...` y campos equivalentes.
+- **Botón:** radio `999px`, forma píldora. Referencia visual: `VER RULETAS`, `ADMINISTRAR`, `INICIAR SORTEO`, etc.
+- **Borde de caja/card:** se mantiene el borde tenue actual basado en blanco con baja opacidad (`rgba(255,255,255,.10-.12)`).
+- **Borde de campo:** se mantiene el borde actual (`rgba(255,255,255,.24)`) y focus en `#FF003C`.
+- **Sombras / iluminaciones:** estado normal limpio, sin glow permanente; se permite un glow rojo suave únicamente en hover/interacción cuando el componente ya lo use. Modales pueden usar sombra oscura para separarse del fondo.
+
+Si en el futuro se modifica cualquiera de estas reglas, el cambio se hace primero a nivel sistema y se aplica globalmente a todos los componentes equivalentes.
+
 ## 8. Navegación de MI PANEL
 
 MI PANEL es el centro funcional. Las herramientas no son aplicaciones separadas y existe un único controlador de navegación.
