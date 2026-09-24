@@ -37,19 +37,60 @@ Separar archivos o módulos técnicos no significa crear interfaces visuales dis
 
 No agregar nuevos colores de fondo/acento por módulo salvo que se cambie este documento y el archivo de tokens.
 
-### Tipografía
-- Texto/UI: `Montserrat, Arial, sans-serif`.
-- Títulos display: `Impact, Arial Black, Arial Narrow, sans-serif`.
-- Título principal MI PANEL: 65 px desktop, line-height `.88`.
-- Título de sección: 40 px desktop, line-height `.95`.
-- Título de tarjeta: 18 px.
-- Párrafo normal: 14 px, line-height `1.6`.
-- Labels/metadatos: 11–12 px, peso 800 según jerarquía.
+### BLOQUE B — TIPOGRAFÍA Y JERARQUÍA (APROBADO PARCIALMENTE)
 
-### Párrafos
+La referencia visual obligatoria para los encabezados de sección es el bloque de INICIO:
+
+`PANEL DE USUARIO` → `BIENVENIDO A MI PANEL` → párrafo descriptivo.
+
+Esta estructura se replica en KILLERS, PERKS DE KILLERS, PERKS DE SUPERVIVIENTES, TORNEO 1VS1, OVERLAYS OBS, VOTACIONES, SORTEOS, TWITCH / KICK y secciones equivalentes de USUARIO.
+
+#### Categoría pequeña / kicker
+- Referencia: `PANEL DE USUARIO`.
+- Tamaño: `13px` desktop.
+- Peso: `800`.
+- Mayúsculas.
+- Letter-spacing: `.16em`.
+- Color: `#FF003C`.
+- Distancia al título: `10px`.
+
+#### Título principal / título de sección
+- Referencia: `BIENVENIDO A MI PANEL`.
+- Tamaño: `48px` desktop.
+- Tamaño mobile: `40px`.
+- Tipografía display del sistema.
+- Line-height: `.98`.
+- Mayúsculas cuando corresponda a la sección.
+- Todas las secciones funcionales usan este mismo tamaño y ritmo visual.
+
+#### Título de card
+- Se conserva exactamente el aspecto actual aprobado.
+- Tamaño base del sistema: `18px`.
+- Referencia: cards de INICIO (`CONFIGURACIÓN`, `TWITCH + KICK`, `COLABORADORES`).
+
+#### Párrafo descriptivo de encabezado
+- Referencia: párrafo debajo de `BIENVENIDO A MI PANEL`.
+- Tamaño: `16px` desktop.
+- Line-height: `1.5`, levemente más cerrado que antes.
+- Distancia título → párrafo: `11px`, algo más cerca del título que antes pero más separado que categoría → título.
+- Color: `rgba(255,255,255,.72)`.
+- Ancho canónico: `760px` máximo.
+- Todos los encabezados equivalentes usan la misma medida de bloque.
+- El contenido descriptivo debe ocupar al menos dos líneas. Cuando sea necesario se introduce un salto de línea intencional para mantener una longitud visual consistente entre secciones.
+
+#### Label de campo
+- Se conserva exactamente el aspecto actual aprobado.
+
+#### Texto secundario / ayuda
+- Se conserva exactamente el aspecto actual aprobado.
+
+#### Estados y contadores
+- Todavía NO se considera cerrado este subcomponente.
+- Se revisará por separado antes de fijar tamaños/jerarquías globales, especialmente al rediseñar SORTEOS.
+
+### Párrafos generales
 - Un párrafo informativo normal no debe ocupar todo el ancho disponible.
-- Ancho máximo recomendado/canónico: `66ch`.
-- Cuando hay varios párrafos equivalentes deben usar el mismo ancho y ritmo visual.
+- Los párrafos de encabezado equivalentes deben compartir el mismo ancho máximo y ritmo visual.
 - No hacer líneas extremadamente largas sólo porque exista espacio horizontal.
 
 ## 4. Layout
@@ -171,8 +212,8 @@ La votación debe reiniciarse completa utilizando las mismas cinco cartas y una 
 - Usa los tokens de `usuario-design-system.css`.
 - Reutiliza primero un componente existente.
 - No introduce un color general nuevo.
-- Títulos respetan tipografía/tamaño/jerarquía.
-- Párrafos mantienen ancho y line-height del sistema.
+- Encabezados replican la jerarquía aprobada de `BIENVENIDO A MI PANEL`.
+- Párrafos de encabezado usan el ancho y la interlínea aprobados y ocupan dos líneas o más.
 - Botones reutilizan componente principal/secundario.
 - Campos respetan altura y ancho máximo; no llenan espacios vacíos sin necesidad.
 - Cajas respetan fondo, borde, radio y padding del sistema.
