@@ -1,4 +1,6 @@
-(() => {
+(()=>{if(!window.gtag){const s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-0VBRTF7W0R';document.head.appendChild(s);window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-0VBRTF7W0R')}})();
+
+(()=>{
   const cfg = window.SANLEAN_SUPABASE;
   if (!cfg || !window.supabase) return;
   const SIM_KEY='sanlean-roulette-simulation-v1';
