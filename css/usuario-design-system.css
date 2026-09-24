@@ -27,10 +27,16 @@
   --sl-body-line:1.6;
   --sl-copy-width:66ch;
 
-  --sl-shell-width:1080px;
-  --sl-shell-gutter:48px;
+  --sl-shell-width:1500px;
+  --sl-shell-gutter:72px;
+  --sl-sidebar-width:236px;
+  --sl-sidebar-gap:30px;
+  --sl-content-offset:266px;
   --sl-form-width:460px;
-  --sl-card-radius:0px;
+  --sl-module-width:940px;
+  --sl-panel-radius:16px;
+  --sl-card-radius:14px;
+  --sl-field-radius:10px;
   --sl-control-radius:999px;
   --sl-control-height:48px;
   --sl-control-height-small:44px;
@@ -55,6 +61,7 @@
 /* Superficies */
 .user-page .ui-surface,.user-page .module-box,.user-page .overlay-card,.user-page .connection-card-stream{box-sizing:border-box;background:rgba(8,8,10,.84);border:1px solid var(--sl-border);border-radius:var(--sl-card-radius)}
 .user-page .ui-inner-surface{background:var(--sl-bg-card);border:1px solid var(--sl-border);border-radius:var(--sl-card-radius)}
+.user-page .dashboard-welcome,.user-page .dashboard-card,.user-page .platform-panel,.account-page .account-section,.account-page .account-welcome{border-radius:var(--sl-panel-radius)}
 
 /* Botones canónicos */
 .user-page .ui-btn,.user-page .module-actions button,.user-page .overlay-actions button,.user-page .copy-row button,.user-page .connection-card-stream button,.account-page .system-btn{box-sizing:border-box;min-height:var(--sl-control-height-small);padding:0 22px;border-radius:var(--sl-control-radius);font:800 12px var(--sl-font-body);cursor:pointer}
@@ -63,7 +70,7 @@
 .user-page button:disabled,.account-page button:disabled{opacity:.42;cursor:not-allowed}
 
 /* Campos canónicos */
-.user-page .ui-field,.user-page .stream-module input,.user-page .stream-module select,.account-page input,.account-page select{box-sizing:border-box;width:100%;height:var(--sl-control-height);border:1px solid var(--sl-border-field);background:var(--sl-bg-surface);color:#fff;padding:0 15px;outline:none;font:500 14px var(--sl-font-body)}
+.user-page .ui-field,.user-page .stream-module input,.user-page .stream-module select,.account-page input,.account-page select{box-sizing:border-box;width:100%;height:var(--sl-control-height);border:1px solid var(--sl-border-field);border-radius:var(--sl-field-radius);background:var(--sl-bg-surface);color:#fff;padding:0 15px;outline:none;font:500 14px var(--sl-font-body)}
 .user-page .ui-field:focus,.user-page .stream-module input:focus,.user-page .stream-module select:focus,.account-page input:focus,.account-page select:focus{border-color:var(--sl-accent)}
 .user-page .ui-field-wrap,.user-page .stream-module label,.account-page label{font-size:var(--sl-small-size);font-weight:800;letter-spacing:.06em}
 
@@ -73,13 +80,52 @@
 .user-page .ui-fields-two-contained{display:grid;grid-template-columns:repeat(2,minmax(0,var(--sl-form-width)));justify-content:start;gap:var(--sl-space-3)}
 
 /* Navegación de MI PANEL */
-.user-page .panel-tabs button{min-height:54px;border-radius:var(--sl-control-radius);font:800 12px var(--sl-font-body)}
-.user-page .panel-tabs button.active{background:var(--sl-accent);color:#fff}
+.user-page .panel-tabs button{min-height:54px;border-radius:10px;font:800 12px var(--sl-font-body)}
+.user-page .panel-tabs button.active{background:var(--sl-bg-card-strong);border-left-color:var(--sl-accent);color:#fff}
+.user-page .panel-tabs:after{display:none!important}
+.user-page .panel-tabs .menu-group-start{margin-top:10px}
+
+/*
+ Layout canónico de contenido dentro del shell con menú lateral.
+ Todas las áreas funcionales de USUARIO comparten exactamente el mismo offset.
+*/
+.user-page #roulettePanel,
+.user-page #tournamentPanel,
+.user-page #dashboardHome,
+.user-page #platformPanel,
+.user-page .stream-module{margin-left:var(--sl-content-offset)}
+
+/* Stream Tools forma parte de USUARIO: mismas medidas, no un sistema paralelo. */
+.user-page .stream-module{margin-top:0}
+.user-page .stream-module-head{margin-bottom:var(--sl-space-5)}
+.user-page .stream-module .module-box,
+.user-page .stream-module .overlay-grid,
+.user-page .stream-module .connection-grid,
+.user-page .stream-module .giveaway-live,
+.user-page .stream-module .participant-list{width:100%;max-width:var(--sl-module-width)}
+.user-page .stream-module .module-fields.two{grid-template-columns:repeat(2,minmax(0,var(--sl-form-width)));justify-content:start}
+.user-page .stream-module .module-fields:not(.two){grid-template-columns:minmax(0,var(--sl-form-width));justify-content:start}
+.user-page .stream-module .workspace-inline{width:100%;max-width:var(--sl-form-width)}
 
 /* Visibilidad: una sola sección funcional a la vez. */
-.user-page [data-panel-section][hidden],.user-page .stream-module[hidden],.user-page #roulettePanel[hidden],.user-page #tournamentPanel[hidden]{display:none!important}
+.user-page [data-panel-section][hidden],
+.user-page .stream-module[hidden],
+.user-page #roulettePanel[hidden],
+.user-page #tournamentPanel[hidden],
+.user-page #dashboardHome[hidden],
+.user-page #platformPanel[hidden]{display:none!important}
+
+@media(max-width:900px){
+  :root{--sl-shell-gutter:16px;--sl-content-offset:0px}
+  .user-page #roulettePanel,
+  .user-page #tournamentPanel,
+  .user-page #dashboardHome,
+  .user-page #platformPanel,
+  .user-page .stream-module{margin-left:0}
+}
 
 @media(max-width:760px){
-  :root{--sl-shell-gutter:28px;--sl-title-size:52px;--sl-section-title-size:34px}
-  .user-page .ui-fields-two-contained{grid-template-columns:minmax(0,1fr)}
+  :root{--sl-title-size:52px;--sl-section-title-size:34px}
+  .user-page .ui-fields-two-contained,
+  .user-page .stream-module .module-fields.two{grid-template-columns:minmax(0,1fr)}
 }
