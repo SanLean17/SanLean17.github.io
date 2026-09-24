@@ -1,0 +1,85 @@
+/*
+ SANLEAN — USUARIO DESIGN SYSTEM
+ Fuente de verdad visual para todo sanlean.com.ar/usuario/.
+ Todo módulo nuevo debe usar estos tokens/componentes antes de crear estilos propios.
+*/
+:root{
+  --sl-accent:#ff003c;
+  --sl-bg-page:#080809;
+  --sl-bg-surface:#09090b;
+  --sl-bg-card:#111114;
+  --sl-bg-card-strong:#151518;
+  --sl-text:#ffffff;
+  --sl-text-secondary:rgba(255,255,255,.72);
+  --sl-text-muted:rgba(255,255,255,.55);
+  --sl-border:rgba(255,255,255,.12);
+  --sl-border-field:rgba(255,255,255,.24);
+  --sl-border-accent:rgba(255,0,60,.48);
+
+  --sl-font-body:Montserrat,Arial,sans-serif;
+  --sl-font-display:Impact,'Arial Black','Arial Narrow',sans-serif;
+
+  --sl-title-size:65px;
+  --sl-section-title-size:40px;
+  --sl-card-title-size:18px;
+  --sl-body-size:14px;
+  --sl-small-size:11px;
+  --sl-body-line:1.6;
+  --sl-copy-width:66ch;
+
+  --sl-shell-width:1080px;
+  --sl-shell-gutter:48px;
+  --sl-form-width:460px;
+  --sl-card-radius:0px;
+  --sl-control-radius:999px;
+  --sl-control-height:48px;
+  --sl-control-height-small:44px;
+
+  --sl-space-1:8px;
+  --sl-space-2:12px;
+  --sl-space-3:18px;
+  --sl-space-4:24px;
+  --sl-space-5:30px;
+  --sl-space-6:42px;
+}
+
+/* Jerarquía */
+.user-page,.account-page{font-family:var(--sl-font-body);color:var(--sl-text)}
+.user-page .panel-title,.account-page .account-welcome h2{font-family:var(--sl-font-display)}
+.user-page .panel-title{font-size:var(--sl-title-size);line-height:.88;letter-spacing:.005em}
+.user-page .panel-title span,.account-page h2 span{color:var(--sl-accent)}
+.user-page .ui-section-title,.user-page .stream-module-head h2{margin:0;font:400 var(--sl-section-title-size)/.95 var(--sl-font-display);text-transform:uppercase}
+.user-page .ui-copy,.user-page .stream-module-head p:last-child,.account-page .section-head p,.account-page .account-welcome p{max-width:var(--sl-copy-width);color:var(--sl-text-secondary);font-size:var(--sl-body-size);line-height:var(--sl-body-line)}
+.user-page .eyebrow,.account-page .section-kicker{color:var(--sl-accent);font-size:12px;font-weight:800;letter-spacing:.16em}
+
+/* Superficies */
+.user-page .ui-surface,.user-page .module-box,.user-page .overlay-card,.user-page .connection-card-stream{box-sizing:border-box;background:rgba(8,8,10,.84);border:1px solid var(--sl-border);border-radius:var(--sl-card-radius)}
+.user-page .ui-inner-surface{background:var(--sl-bg-card);border:1px solid var(--sl-border);border-radius:var(--sl-card-radius)}
+
+/* Botones canónicos */
+.user-page .ui-btn,.user-page .module-actions button,.user-page .overlay-actions button,.user-page .copy-row button,.user-page .connection-card-stream button,.account-page .system-btn{box-sizing:border-box;min-height:var(--sl-control-height-small);padding:0 22px;border-radius:var(--sl-control-radius);font:800 12px var(--sl-font-body);cursor:pointer}
+.user-page .ui-btn-primary,.user-page .module-primary,.account-page .primary-btn{border:1px solid var(--sl-accent);background:var(--sl-accent);color:#fff}
+.user-page .ui-btn-secondary,.user-page .module-secondary,.user-page .overlay-actions button:not(.spin-overlay),.user-page .copy-row button,.user-page .connection-card-stream button,.account-page .outline-btn{border:1px solid var(--sl-accent);background:transparent;color:#fff}
+.user-page button:disabled,.account-page button:disabled{opacity:.42;cursor:not-allowed}
+
+/* Campos canónicos */
+.user-page .ui-field,.user-page .stream-module input,.user-page .stream-module select,.account-page input,.account-page select{box-sizing:border-box;width:100%;height:var(--sl-control-height);border:1px solid var(--sl-border-field);background:var(--sl-bg-surface);color:#fff;padding:0 15px;outline:none;font:500 14px var(--sl-font-body)}
+.user-page .ui-field:focus,.user-page .stream-module input:focus,.user-page .stream-module select:focus,.account-page input:focus,.account-page select:focus{border-color:var(--sl-accent)}
+.user-page .ui-field-wrap,.user-page .stream-module label,.account-page label{font-size:var(--sl-small-size);font-weight:800;letter-spacing:.06em}
+
+/* Regla crítica de formularios: no estirar campos porque haya espacio libre. */
+.user-page .ui-form-width,.user-page .stream-form-width,.account-page .ui-form-width{width:100%;max-width:var(--sl-form-width)}
+.user-page .ui-fields-contained,.user-page .module-fields-contained{display:grid;grid-template-columns:minmax(0,var(--sl-form-width));justify-content:start;gap:var(--sl-space-3)}
+.user-page .ui-fields-two-contained{display:grid;grid-template-columns:repeat(2,minmax(0,var(--sl-form-width)));justify-content:start;gap:var(--sl-space-3)}
+
+/* Navegación de MI PANEL */
+.user-page .panel-tabs button{min-height:54px;border-radius:var(--sl-control-radius);font:800 12px var(--sl-font-body)}
+.user-page .panel-tabs button.active{background:var(--sl-accent);color:#fff}
+
+/* Visibilidad: una sola sección funcional a la vez. */
+.user-page [data-panel-section][hidden],.user-page .stream-module[hidden],.user-page #roulettePanel[hidden],.user-page #tournamentPanel[hidden]{display:none!important}
+
+@media(max-width:760px){
+  :root{--sl-shell-gutter:28px;--sl-title-size:52px;--sl-section-title-size:34px}
+  .user-page .ui-fields-two-contained{grid-template-columns:minmax(0,1fr)}
+}
