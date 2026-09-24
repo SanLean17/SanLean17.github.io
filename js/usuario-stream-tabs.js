@@ -15,19 +15,18 @@
     survivor:'PERKS DE SUPERVIVIENTES',
     tournament:'TORNEO 1VS1'
   };
+  const HEADERS={
+    overlays:{kicker:'STREAM',title:'OVERLAYS OBS',copy:'Generá y controlá las vistas transparentes que vas a utilizar durante el stream.<br>Administrá desde acá cada overlay y sus acciones antes de llevarlo a OBS.'},
+    votes:{kicker:'CHAT',title:'VOTACIONES',copy:'Creá votaciones para que el chat elija entre las opciones que prepares para cada ronda.<br>Controlá el resultado y decidí manualmente cuándo continuar con la acción ganadora.'},
+    giveaways:{kicker:'COMUNIDAD',title:'SORTEOS',copy:'Configurá la participación por palabra clave y definí quién puede ingresar a cada sorteo.<br>Abrí, cerrá y controlá la sesión desde un único lugar durante el stream.'},
+    platforms:{kicker:'INTEGRACIONES',title:'TWITCH / KICK',copy:'Vinculá las plataformas de cada streamer para habilitar herramientas y automatizaciones.<br>Administrá las conexiones de Twitch y Kick desde la misma cuenta de SanLean.'},
+    killers:{kicker:'RULETAS',title:'KILLERS',copy:'Administrá los killers disponibles en tu ruleta y configurá la presencia de cada opción.<br>Revisá los valores y registrá quién agregó cada killer antes de utilizar la ruleta.'},
+    killerPerks:{kicker:'RULETAS',title:'PERKS DE KILLERS',copy:'Administrá las perks de Killer disponibles y configurá la presencia de cada opción.<br>Revisá los valores y registrá quién agregó cada perk antes de utilizar la ruleta.'},
+    survivor:{kicker:'RULETAS',title:'PERKS DE SUPERVIVIENTES',copy:'Administrá las perks de Superviviente disponibles y configurá la presencia de cada opción.<br>Revisá los valores y registrá quién agregó cada perk antes de utilizar la ruleta.'},
+    tournament:{kicker:'COMPETENCIA',title:'TORNEO 1VS1',copy:'Creá y administrá tus torneos 1VS1 desde el mismo espacio de trabajo de SanLean.<br>Gestioná participantes, tiempos, resultados e historial sin salir de esta sección.'}
+  };
 
   const $=id=>document.getElementById(id);
-  const panelFor={
-    home:()=>$('dashboardHome'),
-    killers:()=>$('roulettePanel'),
-    killerPerks:()=>$('roulettePanel'),
-    survivor:()=>$('roulettePanel'),
-    tournament:()=>$('tournamentPanel'),
-    overlays:()=>$('streamOverlaysPanel'),
-    votes:()=>$('streamVotesPanel'),
-    giveaways:()=>$('streamGiveawaysPanel'),
-    platforms:()=>$('streamPlatformsPanel')
-  };
 
   function ensureHome(){
     const panel=$('panelView');
@@ -92,6 +91,30 @@
     tabs.querySelectorAll('button').forEach(btn=>btn.classList.toggle('active',btn.dataset.sectionKey===key));
   }
 
+  function sectionElement(key){
+    if(['killers','killerPerks','survivor'].includes(key))return $('roulettePanel');
+    if(key==='tournament')return $('tournamentPanel');
+    if(key==='overlays')return $('streamOverlaysPanel');
+    if(key==='votes')return $('streamVotesPanel');
+    if(key==='giveaways')return $('streamGiveawaysPanel');
+    if(key==='platforms')return $('streamPlatformsPanel');
+    return null;
+  }
+
+  function ensureSectionHeader(key){
+    const meta=HEADERS[key],section=sectionElement(key);
+    if(!meta||!section)return;
+    let head;
+    if(section.classList.contains('stream-module')){
+      head=section.querySelector('.stream-module-head');
+      if(!head){head=document.createElement('div');head.className='stream-module-head';section.prepend(head)}
+    }else{
+      head=section.querySelector('.section-context');
+      if(!head){head=document.createElement('div');head.className='section-context';section.prepend(head)}
+    }
+    head.innerHTML=`<p class="eyebrow">${meta.kicker}</p><h2>${meta.title}</h2><p>${meta.copy}</p>`;
+  }
+
   function show(key,{updateHash=true}={}){
     const tabs=document.querySelector('.panel-tabs');
     if(!tabs)return;
@@ -102,6 +125,7 @@
     if(key==='home'){
       ensureHome().hidden=false;
     }else if(CORE_KEYS.has(key)){
+      ensureSectionHeader(key);
       // The canonical controller owns roulette loading and stream/tournament visibility.
       window.SanLeanPanel?.selectSection?.(key,{updateHash:false});
       // SanLeanPanel intentionally knows nothing about the home/dashboard, so enforce again.
@@ -138,6 +162,9 @@
     ensureHome();
     const tabs=normalizeMenu();
     if(!tabs)return;
+
+    // Build every canonical heading once so all sections share the same component from first render.
+    Object.keys(HEADERS).forEach(ensureSectionHeader);
 
     tabs.addEventListener('click',e=>{
       const btn=e.target.closest('button[data-section-key]');
