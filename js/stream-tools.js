@@ -10,7 +10,8 @@
     vote:{label:'VOTACIÓN DE CARTAS',desc:'Conteos, porcentajes y tiempo restante.',resultCount:0},
     giveaway:{label:'SORTEO / PARTICIPANTES',desc:'Palabra clave, estado y cantidad de participantes.',resultCount:0}
   };
-  const permissionMap={overlays:'overlays',votes:'votes',giveaways:'giveaways',connections:'connections'};
+  const voteRouletteTargets={killerPerks:'roulette_killer_perks',survivor:'roulette_survivor_perks'};
+  const voteRouletteLabels={killerPerks:'PERKS DE KILLER',survivor:'PERKS DE SUPERVIVIENTE'};
   let session=null,workspace=null,workspaces=[],overlays=[],voteDecks=[],activeVote=null,voteTicker=null,activeGiveaway=null,giveawayTicker=null;
 
   function setStatus(id,text,type=''){
@@ -25,9 +26,6 @@
   document.querySelectorAll('.stream-nav button').forEach(b=>b.addEventListener('click',()=>openSection(b.dataset.streamSection)));
   document.querySelectorAll('[data-go-stream]').forEach(b=>b.addEventListener('click',()=>openSection(b.dataset.goStream)));
 
-  function secureRandom(max){
-    if(max<=1)return 0;const arr=new Uint32Array(1),limit=Math.floor(0x100000000/max)*max;do crypto.getRandomValues(arr);while(arr[0]>=limit);return arr[0]%max;
-  }
   function weightedUnique(pool,count){
     const remaining=(pool||[]).filter(x=>Number(x.weight)>0).map(x=>({...x,weight:Number(x.weight)||1})),out=[];
     while(remaining.length&&out.length<count){
@@ -111,18 +109,20 @@
     if(error)throw error;return data;
   }
 
-  async function spinOverlay(id){
-    let overlay=overlays.find(o=>o.id===id);if(!overlay)return;
+  async function spinOverlay(id,overrideCount=null){
+    let overlay=overlays.find(o=>o.id===id);if(!overlay)return false;
     try{
       overlay=await syncRouletteOverlay(overlay);const pool=overlay.settings?.pool||[];
-      if(!pool.length){setStatus('streamHomeStatus','La ruleta no tiene opciones activas para girar.','error');return}
+      if(!pool.length){setStatus('streamHomeStatus','La ruleta no tiene opciones activas para girar.','error');return false}
       await client.from('stream_overlays').update({state:{visible:true,status:'spinning',items:[],startedAt:new Date().toISOString()},updated_at:new Date().toISOString()}).eq('id',overlay.id);
+      const baseCount=Number(overlayKinds[overlay.kind].resultCount)||1;
+      const count=Math.max(1,Math.min(4,Number(overrideCount??baseCount)||1));
       setTimeout(async()=>{
-        const count=Math.max(1,Math.min(4,Number(overlayKinds[overlay.kind].resultCount)||1));
         const items=weightedUnique(pool,count).map(x=>({key:x.key,name:x.name,image:x.image}));
         await client.from('stream_overlays').update({state:{visible:true,status:'result',items,finishedAt:new Date().toISOString()},updated_at:new Date().toISOString()}).eq('id',overlay.id);
       },1150);
-    }catch(err){console.error(err);setStatus('streamHomeStatus','No se pudo girar el overlay. Revisá permisos o configuración.','error')}
+      return true;
+    }catch(err){console.error(err);setStatus('streamHomeStatus','No se pudo girar el overlay. Revisá permisos o configuración.','error');return false}
   }
 
   async function hideOverlay(id){
@@ -156,17 +156,19 @@
   }
 
   function renderVoteEditor(){
-    const letters=['A','B','C','D','E'];$('voteCardEditor').innerHTML=letters.map((letter,i)=>`<article class="vote-card-form" data-slot="${i+1}"><b>${letter}</b><label>TEXTO<input class="vote-card-label" maxlength="60" placeholder="CARTA ${letter}"></label><label>CANTIDAD<select class="vote-card-count"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></label></article>`).join('');
+    const letters=['A','B','C','D','E'];
+    $('voteCardEditor').innerHTML=letters.map((letter,i)=>`<article class="vote-card-form" data-slot="${i+1}"><b>${letter}</b><label>TEXTO<input class="vote-card-label" maxlength="60" placeholder="CARTA ${letter}"></label><label>RULETA<select class="vote-card-target"><option value="">NINGUNA</option><option value="killerPerks">PERKS KILLER</option><option value="survivor">PERKS SUPERVIVIENTE</option></select></label><label>CANTIDAD<select class="vote-card-count"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></label></article>`).join('');
   }
 
   async function saveVoteDeck(){
     const name=$('voteDeckName').value.trim(),forms=[...document.querySelectorAll('.vote-card-form')];
-    const cards=forms.map((f,i)=>({slot:i+1,label:f.querySelector('.vote-card-label').value.trim(),roulette_count:Number(f.querySelector('.vote-card-count').value)||0}));
+    const cards=forms.map((f,i)=>({slot:i+1,label:f.querySelector('.vote-card-label').value.trim(),roulette_target:f.querySelector('.vote-card-target').value||null,roulette_count:Number(f.querySelector('.vote-card-count').value)||0}));
     if(!name||cards.some(c=>!c.label)){setStatus('voteBuilderStatus','Completá el nombre del mazo y las cinco cartas A–E.','error');return}
+    if(cards.some(c=>c.roulette_count>0&&!c.roulette_target)){setStatus('voteBuilderStatus','Si una carta gira perks, elegí también la ruleta correspondiente.','error');return}
     try{
       const {data:deck,error}=await client.from('stream_vote_decks').insert({workspace_id:workspace.id,name,duration_seconds:30}).select('id').single();if(error)throw error;
       const {error:cardsError}=await client.from('stream_vote_cards').insert(cards.map(c=>({...c,deck_id:deck.id})));if(cardsError){await client.from('stream_vote_decks').delete().eq('id',deck.id);throw cardsError}
-      $('voteDeckName').value='';forms.forEach(f=>{f.querySelector('.vote-card-label').value='';f.querySelector('.vote-card-count').value='0'});
+      $('voteDeckName').value='';forms.forEach(f=>{f.querySelector('.vote-card-label').value='';f.querySelector('.vote-card-target').value='';f.querySelector('.vote-card-count').value='0'});
       setStatus('voteBuilderStatus','Mazo guardado correctamente.','success');await loadVoteDecks();
     }catch(err){console.error(err);setStatus('voteBuilderStatus','No se pudo guardar el mazo. Revisá tus permisos.','error')}
   }
@@ -179,19 +181,19 @@
     }catch(err){console.error(err);setStatus('voteBuilderStatus','No tenés permiso para administrar votaciones.','error')}
   }
 
-  async function updateVoteOverlay(deck,sessionId,secondsLeft,status='active'){
-    const overlay=overlays.find(o=>o.kind==='vote');if(!overlay)return;
-    const {data:entries,error}=await client.from('stream_vote_entries').select('card_id').eq('session_id',sessionId);if(error)return;
+  async function updateVoteOverlay(deck,sessionId,secondsLeft,status='active',winnerSlot=null){
+    const overlay=overlays.find(o=>o.kind==='vote');if(!overlay)return [];
+    const {data:entries,error}=await client.from('stream_vote_entries').select('card_id').eq('session_id',sessionId);if(error)return [];
     const counts=new Map();(entries||[]).forEach(e=>counts.set(e.card_id,(counts.get(e.card_id)||0)+1));
     const total=(entries||[]).length;
-    const cards=deck.stream_vote_cards.map((c,i)=>({id:c.id,slot:String.fromCharCode(65+i),label:c.label,count:counts.get(c.id)||0,percentage:total?((counts.get(c.id)||0)/total)*100:0,rouletteCount:c.roulette_count}));
-    await client.from('stream_overlays').update({state:{visible:true,status,deckName:deck.name,secondsLeft,cards,totalVotes:total},updated_at:new Date().toISOString()}).eq('id',overlay.id);
-    renderVoteLive(deck,secondsLeft,cards,total,status);
+    const cards=deck.stream_vote_cards.map((c,i)=>({id:c.id,slot:String.fromCharCode(65+i),label:c.label,count:counts.get(c.id)||0,percentage:total?((counts.get(c.id)||0)/total)*100:0,rouletteCount:c.roulette_count,rouletteTarget:c.roulette_target}));
+    await client.from('stream_overlays').update({state:{visible:true,status,deckName:deck.name,secondsLeft,cards,totalVotes:total,winnerSlot},updated_at:new Date().toISOString()}).eq('id',overlay.id);
+    renderVoteLive(deck,secondsLeft,cards,total,status,winnerSlot);
     return cards;
   }
 
-  function renderVoteLive(deck,secondsLeft,cards,total,status){
-    const box=$('voteLive');box.hidden=false;box.innerHTML=`<div class="vote-live-head"><div><strong>${escapeHtml(deck.name)}</strong><div>${total} VOTOS</div></div><strong>${Math.max(0,secondsLeft)}s</strong></div><div class="vote-result-list">${cards.map(c=>`<div class="vote-result"><b>${c.slot}</b><div><span>${escapeHtml(c.label)}</span><div class="vote-result-bar"><i style="width:${Math.max(0,Math.min(100,c.percentage))}%"></i></div></div><strong>${c.count}</strong></div>`).join('')}</div>${status==='finished'?'<p>RONDA FINALIZADA</p>':''}`;
+  function renderVoteLive(deck,secondsLeft,cards,total,status,winnerSlot=null){
+    const box=$('voteLive');box.hidden=false;box.innerHTML=`<div class="vote-live-head"><div><strong>${escapeHtml(deck.name)}</strong><div>${total} VOTOS</div></div><strong>${Math.max(0,secondsLeft)}s</strong></div><div class="vote-result-list">${cards.map(c=>`<div class="vote-result"><b>${c.slot}${winnerSlot===c.slot?' ★':''}</b><div><span>${escapeHtml(c.label)}</span><div class="vote-result-bar"><i style="width:${Math.max(0,Math.min(100,c.percentage))}%"></i></div></div><strong>${c.count}</strong></div>`).join('')}</div>${status==='finished'?'<p>RONDA FINALIZADA</p>':''}`;
   }
 
   async function finalizeVote(){
@@ -201,7 +203,19 @@
     const max=Math.max(0,...cards.map(c=>c.count)),leaders=cards.filter(c=>c.count===max&&max>0);
     const winner=leaders.length===1?leaders[0]:null;
     await client.from('stream_vote_sessions').update({status:'finished',winning_card_id:winner?.id||null,updated_at:new Date().toISOString()}).eq('id',activeVote.id);
-    setStatus('voteRoundStatus',winner?`Ganó la carta ${winner.slot}: ${winner.label}.`:(max===0?'La ronda terminó sin votos.':'La ronda terminó empatada.'),winner?'success':'');
+    if(winner){
+      await updateVoteOverlay(deck,activeVote.id,0,'finished',winner.slot);
+      const targetKind=voteRouletteTargets[winner.rouletteTarget],targetOverlay=overlays.find(o=>o.kind===targetKind);
+      if(winner.rouletteCount>0&&targetOverlay){
+        const label=voteRouletteLabels[winner.rouletteTarget]||'PERKS';
+        setStatus('voteRoundStatus',`Ganó la carta ${winner.slot}: ${winner.label}. Se girarán ${winner.rouletteCount} en ${label}.`,'success');
+        setTimeout(()=>spinOverlay(targetOverlay.id,winner.rouletteCount),1800);
+      }else{
+        setStatus('voteRoundStatus',`Ganó la carta ${winner.slot}: ${winner.label}.`,'success');
+      }
+    }else{
+      setStatus('voteRoundStatus',max===0?'La ronda terminó sin votos.':'La ronda terminó empatada.');
+    }
     $('startVoteRound').disabled=false;$('stopVoteRound').disabled=true;activeVote=null;
   }
 
