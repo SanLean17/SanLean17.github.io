@@ -1,6 +1,10 @@
 /* Unified public-section titles — based on RULETA DE KILLERS DE DBD.
    This file is intentionally isolated so the change can be reverted cleanly.
    The splash is intentionally excluded. */
+
+/* La WEB pública ya no refleja la configuración privada de USUARIO. */
+.simulation-note{display:none!important}
+
 @media (min-width:701px){
   .roulette-page{padding-top:46px!important}
   .tierlist-page{padding-top:46px!important}
