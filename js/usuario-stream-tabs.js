@@ -44,14 +44,9 @@
   function normalizeMenu(){
     const old=document.querySelector('.panel-tabs');
     if(!old)return null;
-
-    // Clone once to remove every legacy click handler registered by older modules.
     const tabs=old.cloneNode(true);
     old.replaceWith(tabs);
-
-    // Legacy separate TWITCH/KICK buttons duplicated the integrated platform section.
     tabs.querySelectorAll('[data-platform]').forEach(btn=>btn.remove());
-
     let homeBtn=tabs.querySelector('[data-dashboard="home"]');
     if(!homeBtn){
       homeBtn=document.createElement('button');
@@ -59,10 +54,8 @@
       homeBtn.dataset.dashboard='home';
       tabs.prepend(homeBtn);
     }
-
     const byKey={home:homeBtn};
     tabs.querySelectorAll('button[data-tab]').forEach(btn=>{byKey[btn.dataset.tab]=btn});
-
     MENU_ORDER.forEach(key=>{
       const btn=byKey[key];
       if(!btn)return;
@@ -71,8 +64,6 @@
       btn.dataset.sectionKey=key;
       tabs.appendChild(btn);
     });
-
-    // Visual group boundaries without creating a second navigation system.
     byKey.platforms?.classList.add('menu-group-start');
     byKey.killers?.classList.add('menu-group-start');
     byKey.tournament?.classList.add('menu-group-start');
@@ -119,20 +110,15 @@
     const tabs=document.querySelector('.panel-tabs');
     if(!tabs)return;
     if(!MENU_ORDER.includes(key))key='home';
-
     hideEverySection();
-
     if(key==='home'){
       ensureHome().hidden=false;
     }else if(CORE_KEYS.has(key)){
       ensureSectionHeader(key);
-      // The canonical controller owns roulette loading and stream/tournament visibility.
       window.SanLeanPanel?.selectSection?.(key,{updateHash:false});
-      // SanLeanPanel intentionally knows nothing about the home/dashboard, so enforce again.
       if($('dashboardHome'))$('dashboardHome').hidden=true;
       if($('platformPanel'))$('platformPanel').hidden=true;
     }
-
     setActive(tabs,key);
     if(updateHash){
       const next=key==='home'?location.pathname:`#${key}`;
@@ -156,42 +142,121 @@
     check();
   }
 
+  function installCanonicalStreamSelects(){
+    const closeAll=except=>document.querySelectorAll('.stream-module .ui-select-enhanced').forEach(root=>{
+      if(root===except)return;
+      const trigger=root.querySelector(':scope>button');
+      const menu=root.querySelector(':scope>.ui-select-options');
+      if(menu)menu.hidden=true;
+      trigger?.setAttribute('aria-expanded','false');
+    });
+
+    function enhance(select){
+      if(!(select instanceof HTMLSelectElement)||select.hidden||select.dataset.uiEnhanced==='true')return;
+      select.dataset.uiEnhanced='true';
+      select.classList.add('ui-native-select-source');
+
+      const root=document.createElement('div');
+      root.className='custom-select ui-select-enhanced';
+      const trigger=document.createElement('button');
+      trigger.type='button';
+      trigger.setAttribute('aria-haspopup','listbox');
+      trigger.setAttribute('aria-expanded','false');
+      trigger.innerHTML='<span></span><b></b>';
+      const menu=document.createElement('div');
+      menu.className='ui-select-options';
+      menu.setAttribute('role','listbox');
+      menu.hidden=true;
+      root.append(trigger,menu);
+      select.insertAdjacentElement('afterend',root);
+
+      let rendering=false;
+      const render=()=>{
+        if(rendering)return;
+        rendering=true;
+        const selected=select.options[select.selectedIndex];
+        trigger.querySelector('span').textContent=selected?.textContent||'SELECCIONAR...';
+        trigger.disabled=select.disabled;
+        trigger.setAttribute('aria-disabled',select.disabled?'true':'false');
+        menu.innerHTML='';
+        [...select.options].forEach(option=>{
+          const button=document.createElement('button');
+          button.type='button';
+          button.textContent=option.textContent;
+          button.dataset.value=option.value;
+          button.disabled=option.disabled;
+          button.setAttribute('role','option');
+          button.setAttribute('aria-selected',option.selected?'true':'false');
+          button.addEventListener('click',()=>{
+            if(option.disabled||select.disabled)return;
+            select.value=option.value;
+            select.dispatchEvent(new Event('input',{bubbles:true}));
+            select.dispatchEvent(new Event('change',{bubbles:true}));
+            menu.hidden=true;
+            trigger.setAttribute('aria-expanded','false');
+            render();
+          });
+          menu.appendChild(button);
+        });
+        rendering=false;
+      };
+
+      trigger.addEventListener('click',event=>{
+        event.preventDefault();
+        if(trigger.disabled||select.disabled)return;
+        const opening=menu.hidden;
+        closeAll(root);
+        menu.hidden=!opening;
+        trigger.setAttribute('aria-expanded',opening?'true':'false');
+      });
+      select.addEventListener('change',render);
+      new MutationObserver(render).observe(select,{childList:true,subtree:true,attributes:true,attributeFilter:['disabled','selected','label']});
+      render();
+    }
+
+    const scan=root=>root.querySelectorAll?.('.stream-module select:not([hidden])').forEach(enhance);
+    scan(document);
+    new MutationObserver(mutations=>mutations.forEach(m=>m.addedNodes.forEach(node=>{
+      if(node.nodeType!==1)return;
+      if(node.matches?.('.stream-module select:not([hidden])'))enhance(node);
+      scan(node);
+    }))).observe(document.body,{childList:true,subtree:true});
+
+    document.addEventListener('click',event=>{
+      if(!event.target.closest('.stream-module .ui-select-enhanced'))closeAll();
+    });
+    document.addEventListener('keydown',event=>{if(event.key==='Escape')closeAll()});
+  }
+
   function install(){
     const panel=$('panelView');
     if(!panel)return;
     ensureHome();
     const tabs=normalizeMenu();
     if(!tabs)return;
-
-    // Build every canonical heading once so all sections share the same component from first render.
     Object.keys(HEADERS).forEach(ensureSectionHeader);
-
     tabs.addEventListener('click',e=>{
       const btn=e.target.closest('button[data-section-key]');
       if(!btn)return;
       e.preventDefault();
       show(btn.dataset.sectionKey);
     });
-
     $('dashboardHome')?.addEventListener('click',e=>{
       const go=e.target.closest('[data-go]');
       if(go){e.preventDefault();show(go.dataset.go);return}
       const account=e.target.closest('[data-account]');
       if(account)location.href=`./cuenta.html#${account.dataset.account}`;
     });
-
     const openLocation=()=>{
       const key=location.hash.replace('#','');
       show(MENU_ORDER.includes(key)?key:'home',{updateHash:false});
     };
     window.addEventListener('hashchange',openLocation);
-
-    // Auth reveals panelView asynchronously. Always route once it becomes visible.
     const observer=new MutationObserver(()=>{if(!panel.hidden)openLocation()});
     observer.observe(panel,{attributes:true,attributeFilter:['hidden']});
     if(!panel.hidden)openLocation();
-
     installTieRepeat();
+    installCanonicalStreamSelects();
     window.SanLeanUsuarioNavigation={show,order:[...MENU_ORDER]};
   }
 
