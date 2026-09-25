@@ -23,13 +23,31 @@
 
   function injectCss(){
     if(document.querySelector('link[data-sanlean-cards]'))return;
-    const link=document.createElement('link');link.rel='stylesheet';link.href='../css/usuario-cartas.css?v=20260925-1';link.dataset.sanleanCards='true';document.head.appendChild(link);
+    const link=document.createElement('link');link.rel='stylesheet';link.href='../css/usuario-cartas.css?v=20260925-2';link.dataset.sanleanCards='true';document.head.appendChild(link);
   }
 
   function renameSurface(){
     document.querySelectorAll('[data-section-key="votes"],[data-tab="votes"]').forEach(btn=>btn.textContent='CARTAS');
+    const head=$('streamVotesPanel')?.querySelector('.stream-module-head');
+    if(head){
+      const kicker=head.querySelector('.eyebrow');if(kicker)kicker.textContent='JUEGO EN STREAM';
+      const title=head.querySelector('h2');if(title)title.textContent='CARTAS';
+      const copy=head.querySelector('p:last-child');if(copy)copy.innerHTML='Generá una ronda de cinco cartas ocultas para que el chat vote o para elegir manualmente.<br>Revelá el resultado ganador y continuá a la ruleta de perks cuando corresponda.';
+    }
+    const output=$('streamVotesPanel')?.querySelector('[data-stream-output="votes"]');
+    if(output){
+      const title=output.querySelector('.stream-output-head h3');if(title)title.textContent='CARTAS EN STREAM';
+      const copy=output.querySelector('.stream-output-head p');if(copy)copy.textContent='El overlay mostrará las cinco cartas, el tiempo y los resultados de la votación debajo de ellas, además de la revelación que controle el streamer.';
+    }
     document.querySelectorAll('.account-page .permission-grid label').forEach(label=>{const span=label.querySelector('span');if(span?.textContent.trim()==='VOTACIONES')span.textContent='CARTAS'});
     document.querySelectorAll('.account-page .permission-tags span').forEach(span=>{if(span.textContent.trim()==='VOTACIONES')span.textContent='CARTAS'});
+  }
+
+  function simulationMarkup(){
+    const normal=[['C',33,41],['B',26,32],['D',12,15],['E',10,12],['A',0,0]];
+    const special=[['B',12,36],['D',8,24],['C',8,24],['A',5,15],['E',0,0]];
+    const board=(rows,specialRound=false,winner='C')=>`<div class="cards-review-label"><span>${specialRound?'EVENTO ESPECIAL':'RONDA NORMAL'}</span><strong>${specialRound?'VOTOS ACUMULABLES':'1 VOTO ACTIVO POR USUARIO'}</strong></div><div class="cards-review-stage">${rows.map(([letter])=>`<div class="cards-review-card${specialRound?' is-special':''}${letter===winner?' is-winner':''}"><b>${letter}</b></div>`).join('')}</div><div class="cards-review-results">${rows.map(([letter,count,percent])=>`<div><b>${letter}</b><span><i style="width:${percent}%"></i></span><strong>${count} VOTOS · ${percent}%</strong></div>`).join('')}</div>`;
+    return `<details class="ui-simulation cards-review" open><summary>SIMULACIÓN · CARTAS</summary><p>Vista ficticia para revisar la lógica visual. Las cartas quedan limpias y los votos/porcentajes aparecen debajo.</p><div class="cards-review-toolbar"><span class="ui-badge">MODO CHAT</span><span class="ui-badge">SUPERVIVIENTE</span><strong>00:00 · VOTACIÓN CERRADA</strong></div>${board(normal,false,'C')}<div class="cards-review-separator"></div>${board(special,true,'B')}</details>`;
   }
 
   function buildPanel(){
@@ -97,7 +115,8 @@
         <h3 class="cards-section-title">RESULTADO DE LA RONDA</h3>
         <div class="cards-result-summary"><strong id="cardsOfficialResult">—</strong><span id="cardsOfficialRole">—</span></div>
         <div class="cards-actions"><button id="cardsContinue" class="cards-primary" type="button">IR A LA RULETA</button></div>
-      </div>`;
+      </div>
+      ${simulationMarkup()}`;
     return true;
   }
 
@@ -238,8 +257,8 @@
   function install(){
     injectCss();renameSurface();
     const built=buildPanel();if(!built)return;
-    installEvents();resetRoundUi();
-    const observer=new MutationObserver(renameSurface);observer.observe(document.body,{childList:true,subtree:true});
+    installEvents();resetRoundUi();renameSurface();
+    const observer=new MutationObserver(renameSurface);observer.observe(document.body,{childList:true,subtree:true,characterData:true});
   }
 
   window.addEventListener('load',()=>setTimeout(install,0),{once:true});
