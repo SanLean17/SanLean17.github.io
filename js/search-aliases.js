@@ -6,4 +6,26 @@ function n(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'
 function enrich(grid,items,type){if(!grid)return;grid.querySelectorAll('.config-item[data-key]').forEach(el=>{const item=items&&items.find(x=>x.key===el.dataset.key);const key=el.dataset.key;let extra='';if(type==='killer')extra=item?perkExtra(item):'';if(type==='killers')extra=killerNames[key]||key;el.dataset.search=n(`${el.dataset.search||''} ${extra}`)})}
 const base=window.initConfigGrid;if(typeof base==='function')window.initConfigGrid=function(grid,items,type,disabled){base(grid,items,type,disabled);enrich(grid,items,type)};
 Promise.all([fetch('data/killers.json').then(r=>r.json()).catch(()=>[]),fetch('data/perks-killer.json').then(r=>r.json()).catch(()=>[])]).then(([killers,perks])=>{enrich(document.getElementById('cfgKillersGrid'),killers,'killers');enrich(document.getElementById('cfgPerksGrid'),perks,'killer');enrich(document.getElementById('cfgGrid'),perks,'killer')});
+
+// Ruleta de Killers: el engranaje debe funcionar aunque falle o tarde cualquier otra inicialización.
+if(location.pathname.toLowerCase().includes('ruleta-killer')){
+ document.addEventListener('click',e=>{
+  const trigger=e.target.closest&&e.target.closest('#killerGearBtn,#cfgKillersToggle');
+  if(!trigger)return;
+  const gear=document.getElementById('killerGearBtn'),section=document.getElementById('killerConfigSection'),grid=document.getElementById('cfgKillersGrid'),toggle=document.getElementById('cfgKillersToggle');
+  if(!gear||!section||!grid||!toggle)return;
+  e.preventDefault();
+  e.stopImmediatePropagation();
+  const open=!section.classList.contains('gear-visible');
+  section.classList.toggle('gear-visible',open);
+  section.classList.toggle('open',open);
+  grid.classList.toggle('open',open);
+  gear.classList.toggle('active',open);
+  gear.setAttribute('aria-expanded',String(open));
+  toggle.classList.toggle('open',open);
+  section.style.display=open?'block':'none';
+  document.body.classList.toggle('config-open',open||!!document.querySelector('#perkConfigSection.gear-visible'));
+  if(open)setTimeout(()=>section.scrollIntoView({behavior:'smooth',block:'start'}),60);
+ },true);
+}
 })();
