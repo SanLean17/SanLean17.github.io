@@ -7,7 +7,7 @@
   const LABELS={home:'INICIO',overlays:'OVERLAYS OBS',votes:'VOTACIONES',giveaways:'SORTEOS',platforms:'TWITCH / KICK',killers:'KILLERS',killerPerks:'PERKS DE KILLERS',survivor:'PERKS DE SUPERVIVIENTES',tournament:'TORNEO 1VS1'};
   const HEADERS={
     overlays:{kicker:'STREAM',title:'OVERLAYS OBS',copy:'Generá y controlá las vistas transparentes que vas a utilizar durante el stream.<br>Administrá desde acá cada overlay y sus acciones antes de llevarlo a OBS.'},
-    votes:{kicker:'CHAT',title:'VOTACIONES',copy:'Creá votaciones para que el chat elija entre las opciones que prepares para cada ronda.<br>Controlá el resultado y decidí manualmente cuándo continuar con la acción ganadora.'},
+    votes:{kicker:'CHAT',title:'VOTACIONES',copy:'Iniciá rondas de cinco cartas A–E para que el chat vote durante 30 segundos o elegí una carta manualmente.<br>Revelá el resultado cuando quieras y continuá con la ruleta de perks correspondiente.'},
     giveaways:{kicker:'COMUNIDAD',title:'SORTEOS',copy:'Configurá la participación por palabra clave y definí quién puede ingresar a cada sorteo.<br>Abrí, cerrá y controlá la sesión desde un único lugar durante el stream.'},
     platforms:{kicker:'INTEGRACIONES',title:'TWITCH / KICK',copy:'Vinculá las plataformas de cada streamer para habilitar herramientas y automatizaciones.<br>Administrá las conexiones de Twitch y Kick desde la misma cuenta de SanLean.'},
     killers:{kicker:'RULETAS',title:'KILLERS',copy:'Administrá los killers disponibles en tu ruleta y configurá la presencia de cada opción.<br>Revisá los valores y registrá quién agregó cada killer antes de utilizar la ruleta.'},
@@ -27,7 +27,7 @@
     killers:{title:'RULETA DE KILLERS',copy:'La vista previa representará la misma ruleta horizontal que se verá sobre el stream, con fondo transparente para OBS.'},
     killerPerks:{title:'RULETA DE PERKS DE KILLER',copy:'La vista previa usará la misma composición de perks del proyecto y su animación se reproducirá también en OBS.'},
     survivor:{title:'RULETA DE PERKS DE SUPERVIVIENTE',copy:'La vista previa usará la misma composición de perks del proyecto y su animación se reproducirá también en OBS.'},
-    votes:{title:'VOTACIÓN EN STREAM',copy:'El overlay mostrará la votación activa, sus opciones, el avance de votos y el resultado que controle el streamer.'},
+    votes:{title:'CARTAS DE VOTACIÓN',copy:'El overlay mostrará las cinco cartas A–E, votos, porcentajes, temporizador, ganador y revelaciones controladas por el streamer.'},
     giveaways:{title:'SORTEO EN STREAM',copy:'El overlay mostrará la palabra clave, los participantes aceptados, el contador y la animación final para elegir ganador.'},
     tournament:{title:'TORNEO 1VS1',copy:'El torneo tendrá salida para OBS y, además, una vista pública web que podrá compartirse cuando el torneo esté publicado.'}
   };
