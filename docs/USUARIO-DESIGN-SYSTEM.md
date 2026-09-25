@@ -205,6 +205,14 @@ Menú desplegado:
 - La sombra corresponde a capas temporales flotantes; no convierte las cajas normales en superficies con sombra permanente.
 - Estas medidas y estilos son globales: todos los selectores personalizados equivalentes de USUARIO deben reutilizar este componente y no definir variantes locales.
 
+Scrollbar del menú:
+- Ancho visual: `6px`.
+- Pista: transparente.
+- Thumb/barra: `rgba(255,255,255,.20)`.
+- Radio del thumb: `999px`.
+- Hover del thumb: `#FF003C`.
+- Esta regla se aplica automáticamente a cualquier selector canónico cuyo contenido supere los `245px` de altura.
+
 ### Texto de ayuda
 - Referencia: `El correo de acceso no se modifica desde el perfil.`.
 - Tamaño: `11px`.
@@ -308,7 +316,7 @@ La votación debe reiniciarse completa utilizando las mismas cinco cartas y una 
 - Párrafos de encabezado usan el ancho y la interlínea aprobados.
 - Botones de acción usan Montserrat 800 / 13px / 44px salvo las excepciones aprobadas de KILLERS/PERKS.
 - Campos respetan altura `48px`, label-gap `9px`, ayuda `10px`, separación vertical `19px` y gap horizontal `35px` cuando comparten fila.
-- Selectores desplegables reutilizan el componente canónico y usan fondo de menú `#141414`; no se crean flechas, menús, hover o medidas diferentes por módulo.
+- Selectores desplegables reutilizan el componente canónico y usan fondo de menú `#141414`; scroll `6px`, thumb `rgba(255,255,255,.20)` y hover rojo cuando corresponde.
 - Textos de ayuda respetan la escala de `11px / 1.5` y ancho controlado.
 - Todo bloque funcional principal debajo del encabezado usa una superficie canónica o equivalente.
 - SORTEOS/VOTACIONES no pueden tener campos o cajas solapados por límites de ancho heredados.
