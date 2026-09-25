@@ -67,21 +67,20 @@ Esta estructura se replica en KILLERS, PERKS DE KILLERS, PERKS DE SUPERVIVIENTES
 - Todas las secciones funcionales usan este mismo tamaño y ritmo visual.
 
 #### Título de card
-- Se conserva exactamente el aspecto que tenían originalmente las cards de INICIO antes de iniciar el Bloque B.
-- Tamaño canónico de esas cards: `29px`.
+- Tamaño canónico: `29px`.
 - Line-height: `1`.
-- Referencia: `CONFIGURACIÓN`, `TWITCH + KICK` y `COLABORADORES` de INICIO.
+- Referencia: cards `CONFIGURACIÓN`, `TWITCH + KICK` y `COLABORADORES` de INICIO.
 - No reducir estos títulos al tamaño de un título funcional interno.
 
 #### Párrafo descriptivo de encabezado
 - Referencia: párrafo debajo de `BIENVENIDO A MI PANEL`.
 - Tamaño: `16px` desktop.
-- Line-height: `1.5`, levemente más cerrado que antes.
-- Distancia título → párrafo: `11px`, algo más cerca del título que antes pero más separado que categoría → título.
+- Line-height: `1.5`.
+- Distancia título → párrafo: `11px`.
 - Color: `rgba(255,255,255,.72)`.
 - Ancho canónico: `760px` máximo.
 - Todos los encabezados equivalentes usan la misma medida de bloque.
-- El contenido descriptivo debe ocupar al menos dos líneas. Cuando sea necesario se introduce un salto de línea intencional para mantener una longitud visual consistente entre secciones.
+- El contenido descriptivo debe ocupar al menos dos líneas cuando sea razonable.
 
 #### Label de campo
 - Se conserva exactamente el aspecto actual aprobado.
@@ -92,11 +91,6 @@ Esta estructura se replica en KILLERS, PERKS DE KILLERS, PERKS DE SUPERVIVIENTES
 #### Estados y contadores
 - Todavía NO se considera cerrado este subcomponente.
 - Se revisará por separado antes de fijar tamaños/jerarquías globales, especialmente al rediseñar SORTEOS.
-
-### Párrafos generales
-- Un párrafo informativo normal no debe ocupar todo el ancho disponible.
-- Los párrafos de encabezado equivalentes deben compartir el mismo ancho máximo y ritmo visual.
-- No hacer líneas extremadamente largas sólo porque exista espacio horizontal.
 
 ## 4. Layout
 
@@ -114,27 +108,10 @@ Esta estructura se replica en KILLERS, PERKS DE KILLERS, PERKS DE SUPERVIVIENTES
 
 Toda vista principal de USUARIO comienza con la misma caja visual que las referencias aprobadas `BIENVENIDO A MI PANEL` y `MI CUENTA`.
 
-Se aplica a:
-- INICIO.
-- KILLERS.
-- PERKS DE KILLERS.
-- PERKS DE SUPERVIVIENTES.
-- TORNEO 1VS1.
-- OVERLAYS OBS.
-- VOTACIONES.
-- SORTEOS.
-- TWITCH / KICK.
-- MI CUENTA.
-- MI PERFIL.
-- SEGURIDAD.
-- COLABORADORES.
-- CONEXIONES.
-
 Reglas actuales:
 - ancho: `100%` de la columna funcional.
-- altura visual desktop canónica: `188px`, tomada de la caja `BIENVENIDO A MI PANEL`.
-- todas las cajas equivalentes deben mantener esa misma altura mínima para evitar saltos al cambiar de sección.
-- en mobile la altura vuelve a ser automática para permitir reflow sin romper contenido.
+- altura visual desktop canónica: `188px`.
+- en mobile la altura vuelve a ser automática.
 - padding: `30px 32px` desktop.
 - radio: `16px`.
 - borde: `1px solid rgba(255,255,255,.10)`.
@@ -142,7 +119,56 @@ Reglas actuales:
 - sin glow/sombra permanente.
 - separación con el contenido siguiente: `22px`.
 
-Los contenedores exteriores de MI PERFIL, SEGURIDAD, COLABORADORES y CONEXIONES no deben añadir otra caja diferente alrededor del encabezado. La caja visual principal es este encabezado canónico, igual que en INICIO.
+Los contenedores exteriores de MI PERFIL, SEGURIDAD, COLABORADORES y CONEXIONES no deben añadir otra caja diferente alrededor del encabezado.
+
+### BLOQUE C — ESPACIADOS Y ALTURAS (APROBADO EN PROGRESO)
+
+La referencia es INICIO y sus cards.
+
+#### 1. Encabezado → contenido siguiente
+- Se conserva la distancia actual aprobada: `22px`.
+- Esta medida se aplica como separación canónica entre el encabezado y el primer bloque de contenido.
+- También se usa provisionalmente entre bloques principales consecutivos dentro de una vista.
+- **Pendiente de revisión futura:** volver a evaluar esta misma distancia cuando se revisen módulos complejos como SORTEOS y TORNEO.
+
+#### 2. Grilla de cards
+- Desktop: siempre `3` columnas.
+- Separación horizontal y vertical: `20px`.
+- Si existe una cuarta card, comienza una nueva fila; se completan filas de hasta 3 cards.
+- Responsive: la grilla puede reducir columnas para mantener legibilidad.
+- La clase canónica para futuras grillas es `.ui-card-grid`.
+
+#### 3. Espacio interno de card
+- Padding canónico: `25px`.
+- Referencia: cards de INICIO.
+- Se conserva el mismo aire interior arriba, abajo y laterales.
+
+#### 4. Categoría roja de card → título
+- Categoría roja de card: `13px`.
+- Distancia categoría → título: `7px`.
+- Referencia: `RULETAS` → `CONFIGURACIÓN`.
+
+#### 5. Título de card → párrafo
+- Distancia: `10px`.
+- El párrafo queda más cerca del título que antes, pero mantiene una separación mayor que la relación categoría → título.
+
+#### 6. Interlínea del párrafo dentro de cards
+- Line-height canónico: `1.5`.
+
+#### 7. Párrafo → botón
+- Se conserva la lógica y distancia visual de las cards de INICIO.
+- Los botones permanecen alineados al borde inferior de la card mediante `margin-top:auto`.
+- Tipografía, tamaño y forma del botón quedan sin cambios.
+
+#### 8. Altura de cards
+- Altura mínima canónica desktop: `200px`.
+- Opción aprobada: **mínimo 200px**.
+- Si una card necesita más espacio por contenido excepcional, puede crecer.
+- Cards hermanas deben mantener altura uniforme cuando comparten fila.
+
+#### 9. Distancia entre grupos/bloques
+- Por ahora se usa la misma distancia del encabezado al contenido: `22px`.
+- Esta decisión es provisional y debe recordarse/revisarse más adelante al auditar módulos con varios bloques internos.
 
 ## 5. Botones
 
@@ -190,35 +216,28 @@ Los campos NO deben crecer hasta extremos simplemente para completar una fila o 
 - Radio de tarjeta estructural: `14px`.
 - Radio de campo: `10px`.
 - Botones de acción: `999px`.
-- Padding debe seguir la escala existente: 18 / 24 / 30 / 42 px según jerarquía.
 
 ### Altura canónica de card
 
 La referencia aprobada son las cards de INICIO: `CONFIGURACIÓN`, `TWITCH + KICK` y `COLABORADORES`.
 
 - Altura mínima canónica desktop: `200px`.
-- Todas las cards equivalentes de resumen/acceso deben partir de esa misma altura visual.
-- Si una card necesita más espacio por contenido excepcional, puede crecer; nunca debe comprimirse por debajo de `200px`.
-- La regla se aplica mediante el token `--sl-card-height` y el componente `.ui-card`, además de las cards equivalentes ya existentes.
-- La igualdad de altura busca evitar saltos y diferencias visuales entre cards hermanas.
+- Padding: `25px`.
+- Separación entre cards: `20px`.
+- Grilla desktop: `3` columnas.
+- Si una card necesita más espacio, puede crecer.
 
 ### BLOQUE A — FORMA GENERAL (APROBADO)
 
-Estas reglas quedan aprobadas como referencia oficial de USUARIO y se mantienen tal como funcionan actualmente:
-
 - **Panel principal:** radio `16px`. Referencia visual: caja `BIENVENIDO A MI PANEL`.
 - **Card:** radio `14px`. Referencia visual: cards `CONFIGURACIÓN`, `TWITCH + KICK` y `COLABORADORES` de INICIO.
-- **Input / Select:** radio `10px`. Referencia visual: buscador `BUSCAR KILLER O PERK...` y campos equivalentes.
-- **Botón:** radio `999px`, forma píldora. Referencia visual: `VER RULETAS`, `ADMINISTRAR`, `INICIAR SORTEO`, etc.
-- **Borde de caja/card:** se mantiene el borde tenue actual basado en blanco con baja opacidad (`rgba(255,255,255,.10-.12)`).
-- **Borde de campo:** se mantiene el borde actual (`rgba(255,255,255,.24)`) y focus en `#FF003C`.
-- **Sombras / iluminaciones:** estado normal limpio, sin glow permanente; se permite un glow rojo suave únicamente en hover/interacción cuando el componente ya lo use. Modales pueden usar sombra oscura para separarse del fondo.
-
-Si en el futuro se modifica cualquiera de estas reglas, el cambio se hace primero a nivel sistema y se aplica globalmente a todos los componentes equivalentes.
+- **Input / Select:** radio `10px`.
+- **Botón:** radio `999px`, forma píldora.
+- **Borde de caja/card:** `rgba(255,255,255,.10-.12)`.
+- **Borde de campo:** `rgba(255,255,255,.24)` y focus en `#FF003C`.
+- **Sombras / iluminaciones:** sin glow permanente; glow rojo suave sólo donde ya esté definido para interacción.
 
 ## 8. Navegación de MI PANEL
-
-MI PANEL es el centro funcional. Las herramientas no son aplicaciones separadas y existe un único controlador de navegación.
 
 Orden canónico actual:
 1. INICIO
@@ -231,16 +250,14 @@ Orden canónico actual:
 8. PERKS DE SUPERVIVIENTES
 9. TORNEO 1VS1
 
-No mostrar además botones separados de TWITCH y KICK si ya existe la sección integrada `TWITCH / KICK`.
-
 Al pulsar una opción:
 1. Se desactiva visualmente la anterior.
 2. Se ocultan todas las demás secciones.
 3. Se muestra únicamente el contenido seleccionado.
-4. No se repiten cabeceras, tarjetas de INICIO ni bloques de otras secciones arriba o debajo.
-5. La navegación no debe tener controladores duplicados en módulos particulares.
+4. No se repiten cabeceras, tarjetas de INICIO ni bloques de otras secciones.
+5. La navegación no debe tener controladores duplicados.
 
-La implementación final del router de MI PANEL vive en `js/usuario-stream-tabs.js`, cargado al final para consolidar el comportamiento del panel mientras se retiran progresivamente manejadores heredados de módulos antiguos.
+La implementación final del router de MI PANEL vive en `js/usuario-stream-tabs.js`.
 
 ## 9. Votaciones
 
@@ -262,11 +279,11 @@ La votación debe reiniciarse completa utilizando las mismas cinco cartas y una 
 - Reutiliza primero un componente existente.
 - No introduce un color general nuevo.
 - Encabezados replican la jerarquía aprobada de `BIENVENIDO A MI PANEL`.
-- Párrafos de encabezado usan el ancho y la interlínea aprobados y ocupan dos líneas o más.
+- Párrafos de encabezado usan el ancho y la interlínea aprobados.
 - Botones reutilizan componente principal/secundario.
-- Campos respetan altura y ancho máximo; no llenan espacios vacíos sin necesidad.
+- Campos respetan altura y ancho máximo.
 - Cajas respetan fondo, borde, radio y padding del sistema.
-- Cards equivalentes respetan la altura canónica de `200px`.
+- Cards equivalentes respetan altura mínima `200px`, padding `25px`, gap `20px` y grilla desktop de 3 columnas.
 - Usa el mismo offset/columna que el resto de MI PANEL.
 - Sólo una sección de MI PANEL está visible.
 - Responsive no rompe alineaciones ni jerarquía.
