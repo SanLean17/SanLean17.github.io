@@ -194,6 +194,7 @@ Selector cerrado:
 
 Menú desplegado:
 - Separación selector → menú: `6px`.
+- Fondo canónico: `#141414`.
 - Borde: `1px solid #FF003C`.
 - Radio: `14px`.
 - Padding interno: `7px`.
@@ -202,12 +203,7 @@ Menú desplegado:
 - Opción: padding `10px 12px`, radio `9px`, Montserrat `700 / 12px`, texto blanco.
 - Hover de opción: fondo `#FF003C`, texto blanco.
 - La sombra corresponde a capas temporales flotantes; no convierte las cajas normales en superficies con sombra permanente.
-
-**Prueba temporal de color de fondo del menú:**
-- `MES / AÑO`: `#141414`.
-- `MEJORES TIEMPOS`: `#1C1C1C`.
-- Todavía no hay un color global aprobado para el fondo abierto; se elegirá uno de estos dos después de compararlos visualmente.
-- Una vez elegido, todos los selectores equivalentes de USUARIO deberán usar el mismo fondo.
+- Estas medidas y estilos son globales: todos los selectores personalizados equivalentes de USUARIO deben reutilizar este componente y no definir variantes locales.
 
 ### Texto de ayuda
 - Referencia: `El correo de acceso no se modifica desde el perfil.`.
@@ -312,7 +308,7 @@ La votación debe reiniciarse completa utilizando las mismas cinco cartas y una 
 - Párrafos de encabezado usan el ancho y la interlínea aprobados.
 - Botones de acción usan Montserrat 800 / 13px / 44px salvo las excepciones aprobadas de KILLERS/PERKS.
 - Campos respetan altura `48px`, label-gap `9px`, ayuda `10px`, separación vertical `19px` y gap horizontal `35px` cuando comparten fila.
-- Selectores desplegables reutilizan el componente canónico; no se crean flechas, menús, hover o medidas diferentes por módulo.
+- Selectores desplegables reutilizan el componente canónico y usan fondo de menú `#141414`; no se crean flechas, menús, hover o medidas diferentes por módulo.
 - Textos de ayuda respetan la escala de `11px / 1.5` y ancho controlado.
 - Todo bloque funcional principal debajo del encabezado usa una superficie canónica o equivalente.
 - SORTEOS/VOTACIONES no pueden tener campos o cajas solapados por límites de ancho heredados.
