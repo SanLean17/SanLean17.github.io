@@ -19,7 +19,6 @@
   --sl-font-body:Montserrat,Arial,sans-serif;
   --sl-font-display:Impact,'Arial Black','Arial Narrow',sans-serif;
 
-  /* BLOQUE B: referencia visual = BIENVENIDO A MI PANEL */
   --sl-title-size:48px;
   --sl-section-title-size:48px;
   --sl-section-kicker-size:13px;
@@ -52,7 +51,7 @@
   --sl-field-label-gap:9px;
   --sl-field-help-gap:10px;
   --sl-field-group-gap:19px;
-  --sl-field-row-gap:25px;
+  --sl-field-row-gap:35px;
   --sl-panel-radius:16px;
   --sl-card-radius:14px;
   --sl-field-radius:10px;
@@ -70,17 +69,12 @@
   --sl-space-6:42px;
 }
 
-/* Jerarquía */
 .user-page,.account-page{font-family:var(--sl-font-body);color:var(--sl-text)}
 .user-page .panel-title,.account-page .account-welcome h2{font-family:var(--sl-font-display)}
 .user-page .panel-title{font-size:var(--sl-title-size);line-height:.98;letter-spacing:.005em}
 .user-page .panel-title span,.account-page h2 span{color:var(--sl-accent)}
 
-/*
- Encabezado canónico de sección.
- La referencia aprobada es el bloque de INICIO: PANEL DE USUARIO / BIENVENIDO A MI PANEL / párrafo.
- La categoría roja se desplaza visualmente hacia abajo para acercarse al título sin mover el título principal.
-*/
+/* Encabezado canónico */
 .user-page .dashboard-welcome .eyebrow,
 .user-page .section-context .eyebrow,
 .user-page .stream-module-head .eyebrow,
@@ -120,15 +114,13 @@
   line-height:var(--sl-body-line)!important;
 }
 
-/* Títulos de card: escala aprobada de las cards de INICIO. */
+/* Cards */
 .user-page .dashboard-card h3,
 .account-page .account-home-cards h3{
   margin:var(--sl-card-kicker-title-gap) 0 0!important;
   font-size:var(--sl-card-title-size)!important;
   line-height:1!important;
 }
-
-/* Ritmo interno canónico de las cards de acceso/resumen. */
 .user-page .dashboard-card .card-kicker,
 .account-page .account-home-cards article>span{font-size:var(--sl-card-kicker-size)!important}
 .user-page .dashboard-card p,
@@ -139,7 +131,7 @@
 .user-page .dashboard-card button,
 .account-page .account-home-cards button{margin-top:auto!important}
 
-/* Caja canónica de encabezado. */
+/* Caja canónica de encabezado */
 .user-page .dashboard-welcome,
 .user-page .section-context,
 .user-page .stream-module-head,
@@ -158,7 +150,7 @@
 .user-page .stream-module-head,
 .account-page .section-head{margin:0 0 var(--sl-section-gap)!important}
 
-/* MI CUENTA forma parte del mismo sistema. */
+/* MI CUENTA dentro del mismo sistema */
 .account-page .account-section{
   padding:0!important;
   border:0!important;
@@ -175,13 +167,11 @@
 .user-page .ui-inner-surface{background:var(--sl-bg-card);border:1px solid var(--sl-border);border-radius:var(--sl-card-radius)}
 .user-page .dashboard-card,.user-page .platform-panel,.account-page .account-home-cards article{border-radius:var(--sl-panel-radius)}
 
-/*
- CAJA FUNCIONAL CANÓNICA
- Todo bloque funcional principal debajo del encabezado debe quedar contenido en una superficie.
-*/
+/* Caja funcional canónica */
 .user-page .ui-content-box,
 .account-page .ui-content-box,
-.user-page .module-box{
+.user-page .module-box,
+.user-page .tournament-setup-vertical{
   box-sizing:border-box!important;
   width:100%;
   padding:var(--sl-content-box-padding)!important;
@@ -197,7 +187,7 @@
 .account-page .empty-state{margin:0}
 .account-page .connection-card:last-child{margin-bottom:0}
 
-/* Card canónica. */
+/* Card canónica */
 .user-page .ui-card,
 .user-page .dashboard-card,
 .user-page .overlay-card,
@@ -209,7 +199,7 @@
 .user-page .dashboard-card,
 .account-page .account-home-cards article{padding:var(--sl-card-padding)!important}
 
-/* Grilla canónica de cards. */
+/* Grilla de cards */
 .user-page .dashboard-cards,
 .account-page .account-home-cards,
 .user-page .ui-card-grid{
@@ -218,16 +208,16 @@
   gap:var(--sl-card-gap)!important;
   margin-top:var(--sl-section-gap)!important;
 }
-
-/* Distancia canónica entre bloques equivalentes. */
 .user-page .ui-block-stack,
 .account-page .ui-block-stack{display:grid;gap:var(--sl-section-gap)}
 
 /*
  BOTONES DE ACCIÓN CANÓNICOS
- Referencia: botones de las cards CONFIGURACIÓN / COLABORADORES de INICIO.
- Se excluyen controles especializados de KILLERS / PERKS y navegación.
+ Referencia exacta: VER RULETAS / ADMINISTRAR de las cards de INICIO.
+ Excepción: controles especializados de KILLERS / PERKS y navegación.
 */
+.user-page .dashboard-card button,
+.account-page .account-home-cards button,
 .user-page .ui-btn,
 .user-page .module-actions button,
 .user-page .overlay-actions button,
@@ -236,7 +226,6 @@
 .user-page #tournamentPanel .create-tournament-btn,
 .user-page #tournamentPanel .tournament-add,
 .user-page #tournamentPanel .tournament-actions button,
-.user-page #tournamentPanel .modify-tournament-wrap button,
 .user-page #tournamentPanel .finished-actions button,
 .user-page .confirm-actions button,
 .user-page .add-collaborator,
@@ -249,11 +238,30 @@
   font:800 var(--sl-action-font-size)/1 var(--sl-font-body)!important;
   cursor:pointer;
 }
-.user-page .ui-btn-primary,.user-page .module-primary,.account-page .primary-btn{border:1px solid var(--sl-accent);background:var(--sl-accent);color:#fff}
-.user-page .ui-btn-secondary,.user-page .module-secondary,.user-page .overlay-actions button:not(.spin-overlay),.user-page .copy-row button,.user-page .connection-card-stream button,.account-page .outline-btn{border:1px solid var(--sl-accent);background:transparent;color:#fff}
+.user-page .dashboard-card button,
+.account-page .account-home-cards button,
+.user-page .ui-btn-primary,
+.user-page .module-primary,
+.account-page .primary-btn,
+.user-page #tournamentPanel .create-tournament-btn,
+.user-page #tournamentPanel .tournament-add{
+  border:1px solid var(--sl-accent)!important;
+  background:var(--sl-accent)!important;
+  color:#fff!important;
+}
+.user-page .ui-btn-secondary,
+.user-page .module-secondary,
+.user-page .overlay-actions button:not(.spin-overlay),
+.user-page .copy-row button,
+.user-page .connection-card-stream button,
+.account-page .outline-btn{
+  border:1px solid var(--sl-accent)!important;
+  background:transparent!important;
+  color:#fff!important;
+}
 .user-page button:disabled,.account-page button:disabled{opacity:.42;cursor:not-allowed}
 
-/* Campos canónicos: altura fija de 48px. */
+/* Campos: 48px globales */
 .user-page .ui-field,
 .user-page .stream-module input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),
 .user-page .stream-module select,
@@ -281,7 +289,7 @@
 .account-page select:focus{border-color:var(--sl-accent)}
 .user-page .ui-field-wrap,.user-page .stream-module label,.account-page label{font-size:var(--sl-small-size);font-weight:800;letter-spacing:.06em}
 
-/* Label → campo: referencia aprobada CONTRASEÑA ACTUAL de SEGURIDAD. */
+/* Label -> campo: 9px */
 .user-page .stream-module label>input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),
 .user-page .stream-module label>select,
 .user-page #tournamentPanel label>input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),
@@ -289,50 +297,73 @@
 .account-page label>input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),
 .account-page label>select{margin-top:var(--sl-field-label-gap)!important}
 
-/* Separación entre grupos verticales. */
+/* Separación entre grupos verticales */
 .account-page .direct-password>label+label{margin-top:var(--sl-field-group-gap)!important}
 .user-page .module-fields{row-gap:var(--sl-field-group-gap)!important}
 .user-page .ui-fields-contained{row-gap:var(--sl-field-group-gap)!important}
 
-/* Dos campos en la misma fila: 25px de separación horizontal. */
+/* Dos campos en fila: 35px */
 .account-page .profile-fields{column-gap:var(--sl-field-row-gap)!important;row-gap:var(--sl-field-group-gap)!important}
 .user-page .stream-module .module-fields.two,
 .user-page .ui-fields-two-contained{column-gap:var(--sl-field-row-gap)!important;row-gap:var(--sl-field-group-gap)!important}
 
-/* Ayuda de campo: 10px debajo del control. */
+/*
+ Ayuda de campo: misma referencia que “El correo de acceso no se modifica desde el perfil.”
+ 10px desde el input, 11px de texto y ancho máximo controlado para que las líneas sean parejas.
+*/
 .account-page label>small,
-.user-page .ui-field-help{margin-top:var(--sl-field-help-gap)!important}
+.account-page .password-rule,
+.user-page .module-help,
+.user-page .logo-help,
+.user-page .ui-field-help{
+  display:block!important;
+  box-sizing:border-box!important;
+  width:min(100%,var(--sl-form-width))!important;
+  max-width:var(--sl-form-width)!important;
+  margin-top:var(--sl-field-help-gap)!important;
+  color:var(--sl-text-muted)!important;
+  font:500 11px/1.5 var(--sl-font-body)!important;
+}
 
-/* Regla crítica de formularios: no estirar campos porque haya espacio libre. */
+/* Formularios contenidos */
 .user-page .ui-form-width,.user-page .stream-form-width,.account-page .ui-form-width{width:100%;max-width:var(--sl-form-width)}
 .user-page .ui-fields-contained,.user-page .module-fields-contained{display:grid;grid-template-columns:minmax(0,var(--sl-form-width));justify-content:start;gap:var(--sl-field-group-gap)}
-.user-page .ui-fields-two-contained{display:grid;grid-template-columns:repeat(2,minmax(0,var(--sl-form-width)));justify-content:start}
+.user-page .ui-fields-two-contained,
+.user-page .stream-module .module-fields.two{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,var(--sl-form-width)))!important;
+  justify-content:start!important;
+  column-gap:var(--sl-field-row-gap)!important;
+  row-gap:var(--sl-field-group-gap)!important;
+}
 
-/* Navegación de MI PANEL */
+/* SORTEOS / VOTACIONES / STREAM: las cajas contienen los campos sin solaparse */
+.user-page .stream-module .module-box{
+  width:100%!important;
+  max-width:none!important;
+  margin-bottom:var(--sl-section-gap)!important;
+}
+.user-page .stream-module .overlay-grid,
+.user-page .stream-module .connection-grid,
+.user-page .stream-module .giveaway-live,
+.user-page .stream-module .participant-list{width:100%;max-width:none!important}
+.user-page .stream-module .workspace-inline{width:100%;max-width:var(--sl-form-width)}
+
+/* Navegación */
 .user-page .panel-tabs button{min-height:54px;border-radius:10px;font:800 12px var(--sl-font-body)}
 .user-page .panel-tabs button.active{background:var(--sl-bg-card-strong);border-left-color:var(--sl-accent);color:#fff}
 .user-page .panel-tabs:after{display:none!important}
 .user-page .panel-tabs .menu-group-start{margin-top:10px}
 
-/* Layout canónico de contenido dentro del shell con menú lateral. */
+/* Layout */
 .user-page #roulettePanel,
 .user-page #tournamentPanel,
 .user-page #dashboardHome,
 .user-page #platformPanel,
 .user-page .stream-module{margin-left:var(--sl-content-offset)}
-
-/* Stream Tools forma parte de USUARIO: mismas medidas, no un sistema paralelo. */
 .user-page .stream-module{margin-top:0}
-.user-page .stream-module .module-box,
-.user-page .stream-module .overlay-grid,
-.user-page .stream-module .connection-grid,
-.user-page .stream-module .giveaway-live,
-.user-page .stream-module .participant-list{width:100%;max-width:var(--sl-module-width)}
-.user-page .stream-module .module-fields.two{grid-template-columns:repeat(2,minmax(0,var(--sl-form-width)));justify-content:start}
-.user-page .stream-module .module-fields:not(.two){grid-template-columns:minmax(0,var(--sl-form-width));justify-content:start}
-.user-page .stream-module .workspace-inline{width:100%;max-width:var(--sl-form-width)}
 
-/* Visibilidad: una sola sección funcional a la vez. */
+/* Visibilidad */
 .user-page [data-panel-section][hidden],
 .user-page .stream-module[hidden],
 .user-page #roulettePanel[hidden],
@@ -355,15 +386,12 @@
 @media(max-width:760px){
   :root{--sl-title-size:40px;--sl-section-title-size:40px;--sl-body-size:15px;--sl-copy-width:100%}
   .user-page .ui-fields-two-contained,
-  .user-page .stream-module .module-fields.two{grid-template-columns:minmax(0,1fr)}
+  .user-page .stream-module .module-fields.two{grid-template-columns:minmax(0,1fr)!important}
   .user-page .dashboard-welcome,
   .user-page .section-context,
   .user-page .stream-module-head,
   .account-page .account-welcome,
   .account-page .section-head{min-height:0!important;padding:24px 20px!important}
-  .user-page .ui-content-box,
-  .account-page .ui-content-box,
-  .user-page .module-box{padding:24px 20px!important}
 }
 
 @media(max-width:600px){
