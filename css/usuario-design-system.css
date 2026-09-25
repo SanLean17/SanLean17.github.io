@@ -23,10 +23,11 @@
   --sl-title-size:48px;
   --sl-section-title-size:48px;
   --sl-section-kicker-size:13px;
-  /* Se restaura el tamaño aprobado que ya tenían las cards de INICIO. */
   --sl-card-title-size:29px;
   --sl-card-kicker-size:13px;
-  --sl-card-title-copy-gap:11px;
+  --sl-card-kicker-title-gap:7px;
+  --sl-card-title-copy-gap:10px;
+  --sl-card-copy-line:1.5;
   --sl-body-size:16px;
   --sl-small-size:11px;
   --sl-body-line:1.5;
@@ -44,6 +45,9 @@
   --sl-module-width:940px;
   --sl-header-box-height:188px;
   --sl-card-height:200px;
+  --sl-card-padding:25px;
+  --sl-card-gap:20px;
+  --sl-section-gap:22px;
   --sl-panel-radius:16px;
   --sl-card-radius:14px;
   --sl-field-radius:10px;
@@ -109,17 +113,17 @@
   line-height:var(--sl-body-line)!important;
 }
 
-/* Títulos de card: vuelven exactamente a la escala que tenían antes del Bloque B. */
+/* Títulos de card: escala aprobada de las cards de INICIO. */
 .user-page .dashboard-card h3,
 .account-page .account-home-cards h3{
+  margin:var(--sl-card-kicker-title-gap) 0 0!important;
   font-size:var(--sl-card-title-size)!important;
   line-height:1!important;
 }
 
 /*
  Ritmo interno canónico de las cards de acceso/resumen.
- Referencia: cards de INICIO. Se conservan botones, tipografía y padding existentes.
- Sólo se agranda 2px la categoría roja y se acerca suavemente el párrafo al título.
+ Referencia: cards de INICIO. Botones y tipografía de botón se conservan.
 */
 .user-page .dashboard-card .card-kicker,
 .account-page .account-home-cards article>span{
@@ -127,14 +131,18 @@
 }
 .user-page .dashboard-card p,
 .account-page .account-home-cards p{
-  margin-top:var(--sl-card-title-copy-gap)!important;
+  margin:var(--sl-card-title-copy-gap) 0 22px!important;
+  line-height:var(--sl-card-copy-line)!important;
+}
+.user-page .dashboard-card button,
+.account-page .account-home-cards button{
+  margin-top:auto!important;
 }
 
 /*
  CAJA CANÓNICA DE ENCABEZADO
  MI PANEL, herramientas y MI CUENTA comparten la misma superficie de presentación.
  Referencias visuales aprobadas: BIENVENIDO A MI PANEL y MI CUENTA.
- La altura desktop se fija a la altura visual de BIENVENIDO A MI PANEL para que al cambiar de sección nada salte.
 */
 .user-page .dashboard-welcome,
 .user-page .section-context,
@@ -153,14 +161,10 @@
 .user-page .section-context,
 .user-page .stream-module-head,
 .account-page .section-head{
-  margin:0 0 22px!important;
+  margin:0 0 var(--sl-section-gap)!important;
 }
 
-/*
- MI CUENTA forma parte del mismo sistema.
- El contenedor de sección deja de ser una caja distinta: la caja visual es el encabezado canónico,
- igual que en INICIO. Así todas las vistas arrancan en la misma posición y con la misma geometría.
-*/
+/* MI CUENTA forma parte del mismo sistema. */
 .account-page .account-section{
   padding:0!important;
   border:0!important;
@@ -180,8 +184,7 @@
 /*
  CARD CANÓNICA
  Referencia aprobada: CONFIGURACIÓN / TWITCH + KICK / COLABORADORES de INICIO.
- Todas las cards equivalentes de resumen o acceso parten de la misma altura visual.
- Si el contenido excepcional necesita más espacio, la card puede crecer; nunca se comprime por debajo de esta altura.
+ Altura mínima, padding y separación se reutilizan en todas las cards equivalentes.
 */
 .user-page .ui-card,
 .user-page .dashboard-card,
@@ -191,6 +194,28 @@
   box-sizing:border-box!important;
   min-height:var(--sl-card-height)!important;
 }
+.user-page .dashboard-card,
+.account-page .account-home-cards article{
+  padding:var(--sl-card-padding)!important;
+}
+
+/*
+ GRILLA CANÓNICA DE CARDS
+ Desktop mantiene siempre 3 columnas. La cuarta card inicia la fila siguiente y así sucesivamente.
+ En responsive se reduce el número de columnas para conservar legibilidad.
+*/
+.user-page .dashboard-cards,
+.account-page .account-home-cards,
+.user-page .ui-card-grid{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:var(--sl-card-gap)!important;
+  margin-top:var(--sl-section-gap)!important;
+}
+
+/* Distancia canónica entre bloques equivalentes: misma separación que encabezado → cards. */
+.user-page .ui-block-stack,
+.account-page .ui-block-stack{display:grid;gap:var(--sl-section-gap)}
 
 /* Botones canónicos */
 .user-page .ui-btn,.user-page .module-actions button,.user-page .overlay-actions button,.user-page .copy-row button,.user-page .connection-card-stream button,.account-page .system-btn{box-sizing:border-box;min-height:var(--sl-control-height-small);padding:0 22px;border-radius:var(--sl-control-radius);font:800 12px var(--sl-font-body);cursor:pointer}
@@ -214,10 +239,7 @@
 .user-page .panel-tabs:after{display:none!important}
 .user-page .panel-tabs .menu-group-start{margin-top:10px}
 
-/*
- Layout canónico de contenido dentro del shell con menú lateral.
- Todas las áreas funcionales de USUARIO comparten exactamente el mismo offset.
-*/
+/* Layout canónico de contenido dentro del shell con menú lateral. */
 .user-page #roulettePanel,
 .user-page #tournamentPanel,
 .user-page #dashboardHome,
@@ -250,6 +272,9 @@
   .user-page #dashboardHome,
   .user-page #platformPanel,
   .user-page .stream-module{margin-left:0}
+  .user-page .dashboard-cards,
+  .account-page .account-home-cards,
+  .user-page .ui-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
 }
 
 @media(max-width:760px){
@@ -261,4 +286,10 @@
   .user-page .stream-module-head,
   .account-page .account-welcome,
   .account-page .section-head{min-height:0!important;padding:24px 20px!important}
+}
+
+@media(max-width:600px){
+  .user-page .dashboard-cards,
+  .account-page .account-home-cards,
+  .user-page .ui-card-grid{grid-template-columns:1fr!important}
 }
