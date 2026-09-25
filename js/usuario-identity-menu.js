@@ -4,7 +4,7 @@
   const timers = new WeakMap();
   const touchOpen = new WeakMap();
   function setOpen(root, open) {
-    if (!root) return;
+    if (!root || (document.body.classList.contains("mobile-navigation-ready") && matchMedia("(max-width:760px)").matches)) return;
     clearTimeout(timers.get(root));
     const trigger = root.querySelector('.user-account-trigger');
     const menu = root.querySelector('.user-account-dropdown');
@@ -49,7 +49,7 @@
   }, true);
   document.addEventListener('keydown', event => {
     const root = rootFor(event.target);
-    if (!root) return;
+    if (!root || (document.body.classList.contains("mobile-navigation-ready") && matchMedia("(max-width:760px)").matches)) return;
     if (event.key === 'Escape') {
       event.preventDefault();
       root.querySelector('.user-account-trigger').focus();

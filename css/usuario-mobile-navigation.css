@@ -1,0 +1,23 @@
+/* This navigation replaces side menus only below the mobile breakpoint. */
+.mobile-user-navigation{display:none}
+@media(max-width:760px){
+  :is(.user-page,.account-page).mobile-navigation-ready :is(.panel-tabs,.account-nav){display:none!important}
+  :is(.user-page,.account-page).mobile-navigation-ready .user-account-menu>.user-account-dropdown{display:none!important}
+  :is(.user-page,.account-page).mobile-navigation-open{overflow:hidden}
+  :is(.user-page,.account-page) .mobile-user-navigation[open]{display:flex;flex-direction:column;box-sizing:border-box;position:fixed;inset:88px 12px auto;margin:0;width:calc(100% - 24px);max-width:none;max-height:calc(100dvh - 104px - env(safe-area-inset-bottom));padding:0;border:1px solid #ff003c;border-radius:14px;background:#141414;color:#fff;box-shadow:0 20px 60px #0009;font:600 13px/1.45 Montserrat,Arial,sans-serif;overflow:hidden}
+  .mobile-user-navigation::backdrop{background:#0009;backdrop-filter:blur(3px)}
+  .mobile-user-navigation>header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 12px 8px 16px;border-bottom:1px solid #ffffff20;flex-shrink:0}
+  .mobile-user-navigation h2{margin:0;color:#fff;font:800 12px/1.4 Montserrat,Arial,sans-serif}
+  .mobile-user-navigation button{font:700 11px/1.45 Montserrat,Arial,sans-serif;color:#fff;cursor:pointer;border:0;background:transparent;box-sizing:border-box}
+  .mobile-user-navigation .mobile-nav-close{width:44px;height:44px;border-radius:9px;font-size:28px}
+  .mobile-nav-columns{display:grid;grid-template-columns:minmax(88px,32%) minmax(0,1fr);min-height:0;overflow:hidden}
+  .mobile-nav-groups,.mobile-nav-options{overflow-y:auto;overscroll-behavior:contain}
+  .mobile-nav-groups{background:#0b0b0e;border-right:1px solid #ffffff20}
+  .mobile-nav-groups button{display:block;width:100%;min-height:60px;padding:16px 10px;text-align:left;border-bottom:1px solid #ffffff20;border-left:3px solid transparent}
+  .mobile-nav-groups button[aria-selected="true"]{border-left-color:#ff003c;background:#262026;color:#ff7797}
+  .mobile-nav-options a{display:flex;align-items:center;box-sizing:border-box;min-height:56px;padding:14px 16px;border-bottom:1px solid #ffffff20;color:#fff;text-decoration:none;overflow-wrap:anywhere;font:600 12px/1.45 Montserrat,Arial,sans-serif}
+  .mobile-nav-options a[aria-current="page"]{background:#ff003c14;color:#ff7797}
+  .mobile-user-navigation :is(a,button):focus-visible{outline:2px solid #ff003c;outline-offset:-3px}
+  .mobile-user-navigation footer{flex-shrink:0;border-top:1px solid #ffffff20;padding:8px 12px;padding-bottom:max(8px,env(safe-area-inset-bottom))}
+  .mobile-user-navigation .mobile-nav-logout{width:100%;min-height:44px;text-align:left;color:#ff7797;padding:10px 4px}
+}
