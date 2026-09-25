@@ -18,6 +18,15 @@
   const options = dialog.querySelector('.mobile-nav-options');
   let activeGroup = account ? 'account' : 'panel';
   let sourceTrigger = null;
+  const panel = document.getElementById('panelView');
+  function positionMenu(){
+    const header=document.querySelector('.site-header');
+    dialog.style.setProperty('--mobile-nav-top',`${header.offsetTop+header.offsetHeight}px`);
+  }
+  window.addEventListener('resize',positionMenu);
+  if(panel)new MutationObserver(()=>{
+    if(panel.hidden&&dialog.hasAttribute('open'))close();
+  }).observe(panel,{attributes:true,attributeFilter:['hidden']});
   function currentKey(){return account ? document.querySelector('.account-nav .active')?.dataset.section || 'home' : document.querySelector('.panel-tabs .active')?.dataset.sectionKey || 'home'}
   function selectGroup(id){
     activeGroup = id;
@@ -82,7 +91,7 @@
     sourceTrigger=trigger;if(dialog.hasAttribute('open')){close();return;}
     const key=currentKey();
     selectGroup(account?'account':['killers','killerPerks','survivor'].includes(key)?'roulette':'panel');
-    dialog.setAttribute('open','');document.body.classList.add('mobile-navigation-open');
+    positionMenu();dialog.setAttribute('open','');document.body.classList.add('mobile-navigation-open');
     trigger.setAttribute('aria-expanded','true');trigger.setAttribute('aria-label','Cerrar menú de navegación');
     tabs.querySelector('[aria-selected="true"]').focus({preventScroll:true});
   },true);
