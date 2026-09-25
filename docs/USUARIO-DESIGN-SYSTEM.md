@@ -154,7 +154,7 @@ Los botones de acción del sistema toman como referencia exacta los botones de l
 - Altura: `44px`.
 - Padding horizontal: `20px`.
 - Radio: `999px`.
-- Tipografía: Montserrat `800`, `11px`.
+- Tipografía: Montserrat `800`, `13px`.
 - Principal: fondo `#FF003C`, texto blanco.
 - Secundario: fondo transparente, borde `#FF003C`, texto blanco.
 - Esta regla se aplica a los botones de acción de MI CUENTA, MI PERFIL, SEGURIDAD, COLABORADORES, TORNEO, OVERLAYS, VOTACIONES, SORTEOS, plataformas y componentes equivalentes.
@@ -280,7 +280,7 @@ La votación debe reiniciarse completa utilizando las mismas cinco cartas y una 
 - No introduce un color general nuevo.
 - Encabezados replican la jerarquía aprobada de `BIENVENIDO A MI PANEL`.
 - Párrafos de encabezado usan el ancho y la interlínea aprobados.
-- Botones de acción usan el componente canónico salvo las excepciones aprobadas de KILLERS/PERKS.
+- Botones de acción usan Montserrat 800 / 13px / 44px salvo las excepciones aprobadas de KILLERS/PERKS.
 - Campos respetan altura `48px`, label-gap `9px`, ayuda `10px`, separación vertical `19px` y gap horizontal `35px` cuando comparten fila.
 - Textos de ayuda respetan la escala de `11px / 1.5` y ancho controlado.
 - Todo bloque funcional principal debajo del encabezado usa una superficie canónica o equivalente.
