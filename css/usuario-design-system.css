@@ -48,12 +48,19 @@
   --sl-card-padding:25px;
   --sl-card-gap:20px;
   --sl-section-gap:22px;
+  --sl-content-box-padding:28px;
+  --sl-field-label-gap:9px;
+  --sl-field-help-gap:10px;
+  --sl-field-group-gap:19px;
+  --sl-field-row-gap:25px;
   --sl-panel-radius:16px;
   --sl-card-radius:14px;
   --sl-field-radius:10px;
   --sl-control-radius:999px;
   --sl-control-height:48px;
   --sl-control-height-small:44px;
+  --sl-action-font-size:11px;
+  --sl-action-padding-x:20px;
 
   --sl-space-1:8px;
   --sl-space-2:12px;
@@ -121,29 +128,18 @@
   line-height:1!important;
 }
 
-/*
- Ritmo interno canónico de las cards de acceso/resumen.
- Referencia: cards de INICIO. Botones y tipografía de botón se conservan.
-*/
+/* Ritmo interno canónico de las cards de acceso/resumen. */
 .user-page .dashboard-card .card-kicker,
-.account-page .account-home-cards article>span{
-  font-size:var(--sl-card-kicker-size)!important;
-}
+.account-page .account-home-cards article>span{font-size:var(--sl-card-kicker-size)!important}
 .user-page .dashboard-card p,
 .account-page .account-home-cards p{
   margin:var(--sl-card-title-copy-gap) 0 22px!important;
   line-height:var(--sl-card-copy-line)!important;
 }
 .user-page .dashboard-card button,
-.account-page .account-home-cards button{
-  margin-top:auto!important;
-}
+.account-page .account-home-cards button{margin-top:auto!important}
 
-/*
- CAJA CANÓNICA DE ENCABEZADO
- MI PANEL, herramientas y MI CUENTA comparten la misma superficie de presentación.
- Referencias visuales aprobadas: BIENVENIDO A MI PANEL y MI CUENTA.
-*/
+/* Caja canónica de encabezado. */
 .user-page .dashboard-welcome,
 .user-page .section-context,
 .user-page .stream-module-head,
@@ -160,9 +156,7 @@
 }
 .user-page .section-context,
 .user-page .stream-module-head,
-.account-page .section-head{
-  margin:0 0 var(--sl-section-gap)!important;
-}
+.account-page .section-head{margin:0 0 var(--sl-section-gap)!important}
 
 /* MI CUENTA forma parte del mismo sistema. */
 .account-page .account-section{
@@ -182,10 +176,28 @@
 .user-page .dashboard-card,.user-page .platform-panel,.account-page .account-home-cards article{border-radius:var(--sl-panel-radius)}
 
 /*
- CARD CANÓNICA
- Referencia aprobada: CONFIGURACIÓN / TWITCH + KICK / COLABORADORES de INICIO.
- Altura mínima, padding y separación se reutilizan en todas las cards equivalentes.
+ CAJA FUNCIONAL CANÓNICA
+ Todo bloque funcional principal debajo del encabezado debe quedar contenido en una superficie.
 */
+.user-page .ui-content-box,
+.account-page .ui-content-box,
+.user-page .module-box{
+  box-sizing:border-box!important;
+  width:100%;
+  padding:var(--sl-content-box-padding)!important;
+  border:1px solid var(--sl-border)!important;
+  border-radius:var(--sl-card-radius)!important;
+  background:rgba(8,8,10,.84)!important;
+  box-shadow:none!important;
+}
+.account-page .account-form-box,
+.account-page .account-functional-box{max-width:940px}
+.account-page .direct-password.ui-content-box{max-width:680px!important;margin:0!important}
+.account-page .collaborator-editor{max-width:none!important;margin:0 0 var(--sl-section-gap)!important;padding:0!important;border:0!important;background:transparent!important}
+.account-page .empty-state{margin:0}
+.account-page .connection-card:last-child{margin-bottom:0}
+
+/* Card canónica. */
 .user-page .ui-card,
 .user-page .dashboard-card,
 .user-page .overlay-card,
@@ -195,15 +207,9 @@
   min-height:var(--sl-card-height)!important;
 }
 .user-page .dashboard-card,
-.account-page .account-home-cards article{
-  padding:var(--sl-card-padding)!important;
-}
+.account-page .account-home-cards article{padding:var(--sl-card-padding)!important}
 
-/*
- GRILLA CANÓNICA DE CARDS
- Desktop mantiene siempre 3 columnas. La cuarta card inicia la fila siguiente y así sucesivamente.
- En responsive se reduce el número de columnas para conservar legibilidad.
-*/
+/* Grilla canónica de cards. */
 .user-page .dashboard-cards,
 .account-page .account-home-cards,
 .user-page .ui-card-grid{
@@ -213,25 +219,94 @@
   margin-top:var(--sl-section-gap)!important;
 }
 
-/* Distancia canónica entre bloques equivalentes: misma separación que encabezado → cards. */
+/* Distancia canónica entre bloques equivalentes. */
 .user-page .ui-block-stack,
 .account-page .ui-block-stack{display:grid;gap:var(--sl-section-gap)}
 
-/* Botones canónicos */
-.user-page .ui-btn,.user-page .module-actions button,.user-page .overlay-actions button,.user-page .copy-row button,.user-page .connection-card-stream button,.account-page .system-btn{box-sizing:border-box;min-height:var(--sl-control-height-small);padding:0 22px;border-radius:var(--sl-control-radius);font:800 12px var(--sl-font-body);cursor:pointer}
+/*
+ BOTONES DE ACCIÓN CANÓNICOS
+ Referencia: botones de las cards CONFIGURACIÓN / COLABORADORES de INICIO.
+ Se excluyen controles especializados de KILLERS / PERKS y navegación.
+*/
+.user-page .ui-btn,
+.user-page .module-actions button,
+.user-page .overlay-actions button,
+.user-page .copy-row button,
+.user-page .connection-card-stream button,
+.user-page #tournamentPanel .create-tournament-btn,
+.user-page #tournamentPanel .tournament-add,
+.user-page #tournamentPanel .tournament-actions button,
+.user-page #tournamentPanel .modify-tournament-wrap button,
+.user-page #tournamentPanel .finished-actions button,
+.user-page .confirm-actions button,
+.user-page .add-collaborator,
+.account-page .system-btn{
+  box-sizing:border-box!important;
+  min-height:var(--sl-control-height-small)!important;
+  height:var(--sl-control-height-small)!important;
+  padding:0 var(--sl-action-padding-x)!important;
+  border-radius:var(--sl-control-radius)!important;
+  font:800 var(--sl-action-font-size)/1 var(--sl-font-body)!important;
+  cursor:pointer;
+}
 .user-page .ui-btn-primary,.user-page .module-primary,.account-page .primary-btn{border:1px solid var(--sl-accent);background:var(--sl-accent);color:#fff}
 .user-page .ui-btn-secondary,.user-page .module-secondary,.user-page .overlay-actions button:not(.spin-overlay),.user-page .copy-row button,.user-page .connection-card-stream button,.account-page .outline-btn{border:1px solid var(--sl-accent);background:transparent;color:#fff}
 .user-page button:disabled,.account-page button:disabled{opacity:.42;cursor:not-allowed}
 
-/* Campos canónicos */
-.user-page .ui-field,.user-page .stream-module input,.user-page .stream-module select,.account-page input,.account-page select{box-sizing:border-box;width:100%;height:var(--sl-control-height);border:1px solid var(--sl-border-field);border-radius:var(--sl-field-radius);background:var(--sl-bg-surface);color:#fff;padding:0 15px;outline:none;font:500 14px var(--sl-font-body)}
-.user-page .ui-field:focus,.user-page .stream-module input:focus,.user-page .stream-module select:focus,.account-page input:focus,.account-page select:focus{border-color:var(--sl-accent)}
+/* Campos canónicos: altura fija de 48px. */
+.user-page .ui-field,
+.user-page .stream-module input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),
+.user-page .stream-module select,
+.user-page #tournamentPanel input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),
+.user-page #tournamentPanel select,
+.account-page input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),
+.account-page select{
+  box-sizing:border-box;
+  width:100%;
+  height:var(--sl-control-height)!important;
+  border:1px solid var(--sl-border-field);
+  border-radius:var(--sl-field-radius);
+  background:var(--sl-bg-surface);
+  color:#fff;
+  padding:0 15px;
+  outline:none;
+  font:500 14px var(--sl-font-body);
+}
+.user-page .ui-field:focus,
+.user-page .stream-module input:focus,
+.user-page .stream-module select:focus,
+.user-page #tournamentPanel input:focus,
+.user-page #tournamentPanel select:focus,
+.account-page input:focus,
+.account-page select:focus{border-color:var(--sl-accent)}
 .user-page .ui-field-wrap,.user-page .stream-module label,.account-page label{font-size:var(--sl-small-size);font-weight:800;letter-spacing:.06em}
+
+/* Label → campo: referencia aprobada CONTRASEÑA ACTUAL de SEGURIDAD. */
+.user-page .stream-module label>input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),
+.user-page .stream-module label>select,
+.user-page #tournamentPanel label>input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),
+.user-page #tournamentPanel label>select,
+.account-page label>input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),
+.account-page label>select{margin-top:var(--sl-field-label-gap)!important}
+
+/* Separación entre grupos verticales. */
+.account-page .direct-password>label+label{margin-top:var(--sl-field-group-gap)!important}
+.user-page .module-fields{row-gap:var(--sl-field-group-gap)!important}
+.user-page .ui-fields-contained{row-gap:var(--sl-field-group-gap)!important}
+
+/* Dos campos en la misma fila: 25px de separación horizontal. */
+.account-page .profile-fields{column-gap:var(--sl-field-row-gap)!important;row-gap:var(--sl-field-group-gap)!important}
+.user-page .stream-module .module-fields.two,
+.user-page .ui-fields-two-contained{column-gap:var(--sl-field-row-gap)!important;row-gap:var(--sl-field-group-gap)!important}
+
+/* Ayuda de campo: 10px debajo del control. */
+.account-page label>small,
+.user-page .ui-field-help{margin-top:var(--sl-field-help-gap)!important}
 
 /* Regla crítica de formularios: no estirar campos porque haya espacio libre. */
 .user-page .ui-form-width,.user-page .stream-form-width,.account-page .ui-form-width{width:100%;max-width:var(--sl-form-width)}
-.user-page .ui-fields-contained,.user-page .module-fields-contained{display:grid;grid-template-columns:minmax(0,var(--sl-form-width));justify-content:start;gap:var(--sl-space-3)}
-.user-page .ui-fields-two-contained{display:grid;grid-template-columns:repeat(2,minmax(0,var(--sl-form-width)));justify-content:start;gap:var(--sl-space-3)}
+.user-page .ui-fields-contained,.user-page .module-fields-contained{display:grid;grid-template-columns:minmax(0,var(--sl-form-width));justify-content:start;gap:var(--sl-field-group-gap)}
+.user-page .ui-fields-two-contained{display:grid;grid-template-columns:repeat(2,minmax(0,var(--sl-form-width)));justify-content:start}
 
 /* Navegación de MI PANEL */
 .user-page .panel-tabs button{min-height:54px;border-radius:10px;font:800 12px var(--sl-font-body)}
@@ -286,6 +361,9 @@
   .user-page .stream-module-head,
   .account-page .account-welcome,
   .account-page .section-head{min-height:0!important;padding:24px 20px!important}
+  .user-page .ui-content-box,
+  .account-page .ui-content-box,
+  .user-page .module-box{padding:24px 20px!important}
 }
 
 @media(max-width:600px){
