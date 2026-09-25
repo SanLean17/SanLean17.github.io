@@ -41,6 +41,7 @@
   --sl-form-width:460px;
   --sl-module-width:940px;
   --sl-header-box-height:188px;
+  --sl-card-height:200px;
   --sl-panel-radius:16px;
   --sl-card-radius:14px;
   --sl-field-radius:10px;
@@ -159,6 +160,21 @@
 .user-page .ui-surface,.user-page .module-box,.user-page .overlay-card,.user-page .connection-card-stream{box-sizing:border-box;background:rgba(8,8,10,.84);border:1px solid var(--sl-border);border-radius:var(--sl-card-radius)}
 .user-page .ui-inner-surface{background:var(--sl-bg-card);border:1px solid var(--sl-border);border-radius:var(--sl-card-radius)}
 .user-page .dashboard-card,.user-page .platform-panel,.account-page .account-home-cards article{border-radius:var(--sl-panel-radius)}
+
+/*
+ CARD CANÓNICA
+ Referencia aprobada: CONFIGURACIÓN / TWITCH + KICK / COLABORADORES de INICIO.
+ Todas las cards equivalentes de resumen o acceso parten de la misma altura visual.
+ Si el contenido excepcional necesita más espacio, la card puede crecer; nunca se comprime por debajo de esta altura.
+*/
+.user-page .ui-card,
+.user-page .dashboard-card,
+.user-page .overlay-card,
+.user-page .connection-card-stream,
+.account-page .account-home-cards article{
+  box-sizing:border-box!important;
+  min-height:var(--sl-card-height)!important;
+}
 
 /* Botones canónicos */
 .user-page .ui-btn,.user-page .module-actions button,.user-page .overlay-actions button,.user-page .copy-row button,.user-page .connection-card-stream button,.account-page .system-btn{box-sizing:border-box;min-height:var(--sl-control-height-small);padding:0 22px;border-radius:var(--sl-control-radius);font:800 12px var(--sl-font-body);cursor:pointer}
