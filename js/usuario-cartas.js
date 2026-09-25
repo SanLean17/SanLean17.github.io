@@ -27,17 +27,17 @@
   }
 
   function renameSurface(){
-    document.querySelectorAll('[data-section-key="votes"],[data-tab="votes"]').forEach(btn=>btn.textContent='CARTAS');
+    document.querySelectorAll('[data-section-key="votes"],[data-tab="votes"]').forEach(btn=>{if(btn.textContent!=='CARTAS')btn.textContent='CARTAS'});
     const head=$('streamVotesPanel')?.querySelector('.stream-module-head');
     if(head){
-      const kicker=head.querySelector('.eyebrow');if(kicker)kicker.textContent='JUEGO EN STREAM';
-      const title=head.querySelector('h2');if(title)title.textContent='CARTAS';
-      const copy=head.querySelector('p:last-child');if(copy)copy.innerHTML='Generá una ronda de cinco cartas ocultas para que el chat vote o para elegir manualmente.<br>Revelá el resultado ganador y continuá a la ruleta de perks cuando corresponda.';
+      const kicker=head.querySelector('.eyebrow');if(kicker&&kicker.textContent!=='JUEGO EN STREAM')kicker.textContent='JUEGO EN STREAM';
+      const title=head.querySelector('h2');if(title&&title.textContent!=='CARTAS')title.textContent='CARTAS';
+      const copy=head.querySelector('p:last-child'),html='Generá una ronda de cinco cartas ocultas para que el chat vote o para elegir manualmente.<br>Revelá el resultado ganador y continuá a la ruleta de perks cuando corresponda.';if(copy&&copy.innerHTML!==html)copy.innerHTML=html;
     }
     const output=$('streamVotesPanel')?.querySelector('[data-stream-output="votes"]');
     if(output){
-      const title=output.querySelector('.stream-output-head h3');if(title)title.textContent='CARTAS EN STREAM';
-      const copy=output.querySelector('.stream-output-head p');if(copy)copy.textContent='El overlay mostrará las cinco cartas, el tiempo y los resultados de la votación debajo de ellas, además de la revelación que controle el streamer.';
+      const title=output.querySelector('.stream-output-head h3');if(title&&title.textContent!=='CARTAS EN STREAM')title.textContent='CARTAS EN STREAM';
+      const copy=output.querySelector('.stream-output-head p'),text='El overlay mostrará las cinco cartas, el tiempo y los resultados de la votación debajo de ellas, además de la revelación que controle el streamer.';if(copy&&copy.textContent!==text)copy.textContent=text;
     }
     document.querySelectorAll('.account-page .permission-grid label').forEach(label=>{const span=label.querySelector('span');if(span?.textContent.trim()==='VOTACIONES')span.textContent='CARTAS'});
     document.querySelectorAll('.account-page .permission-tags span').forEach(span=>{if(span.textContent.trim()==='VOTACIONES')span.textContent='CARTAS'});
@@ -136,6 +136,7 @@
 
   function setState(text){if($('cardsState'))$('cardsState').textContent=text}
   function setTimer(value){if($('cardsTimer'))$('cardsTimer').textContent=`00:${String(Math.max(0,value)).padStart(2,'0')}`}
+  function setTimerText(text){if($('cardsTimer'))$('cardsTimer').textContent=text}
   function totalVotes(){return round?round.cards.reduce((s,c)=>s+c.votes,0):0}
 
   function renderVoteRows(){
@@ -172,7 +173,7 @@
 
   function resetRoundUi(){
     clearInterval(timer);timer=null;secondsLeft=30;round=makeRound();
-    setState('SIN INICIAR');setTimer(30);if($('cardsTotalVotes'))$('cardsTotalVotes').textContent='0';
+    setState('SIN INICIAR');setTimer($('cardsMode')?.value==='manual'?0:30);if($('cardsMode')?.value==='manual')setTimerText('—');if($('cardsTotalVotes'))$('cardsTotalVotes').textContent='0';
     if($('cardsRevealWinner'))$('cardsRevealWinner').disabled=true;
     if($('cardsNewRound'))$('cardsNewRound').disabled=true;
     if($('cardsResultBox'))$('cardsResultBox').hidden=true;
@@ -208,7 +209,7 @@
   }
 
   function startManualRound(){
-    round=makeRound();round.state='manual-choice';setState('ELECCIÓN MANUAL');setTimer(30);
+    round=makeRound();round.state='manual-choice';setState('ELECCIÓN MANUAL');setTimerText('—');
     $('cardsRevealWinner').disabled=true;$('cardsNewRound').disabled=false;$('cardsResultBox').hidden=true;
     $('cardsRoundStatus').textContent='Elegí una carta. Seleccionarla no revela el resultado automáticamente.';
     $('cardsBoardStatus').textContent='TOCÁ UNA CARTA PARA ELEGIRLA';
@@ -258,7 +259,7 @@
     injectCss();renameSurface();
     const built=buildPanel();if(!built)return;
     installEvents();resetRoundUi();renameSurface();
-    const observer=new MutationObserver(renameSurface);observer.observe(document.body,{childList:true,subtree:true,characterData:true});
+    const observer=new MutationObserver(renameSurface);observer.observe(document.body,{childList:true,subtree:true});
   }
 
   window.addEventListener('load',()=>setTimeout(install,0),{once:true});
