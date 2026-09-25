@@ -25,6 +25,8 @@
   --sl-section-kicker-size:13px;
   /* Se restaura el tamaño aprobado que ya tenían las cards de INICIO. */
   --sl-card-title-size:29px;
+  --sl-card-kicker-size:13px;
+  --sl-card-title-copy-gap:11px;
   --sl-body-size:16px;
   --sl-small-size:11px;
   --sl-body-line:1.5;
@@ -112,6 +114,20 @@
 .account-page .account-home-cards h3{
   font-size:var(--sl-card-title-size)!important;
   line-height:1!important;
+}
+
+/*
+ Ritmo interno canónico de las cards de acceso/resumen.
+ Referencia: cards de INICIO. Se conservan botones, tipografía y padding existentes.
+ Sólo se agranda 2px la categoría roja y se acerca suavemente el párrafo al título.
+*/
+.user-page .dashboard-card .card-kicker,
+.account-page .account-home-cards article>span{
+  font-size:var(--sl-card-kicker-size)!important;
+}
+.user-page .dashboard-card p,
+.account-page .account-home-cards p{
+  margin-top:var(--sl-card-title-copy-gap)!important;
 }
 
 /*
