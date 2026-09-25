@@ -1,6 +1,7 @@
 /* SANLEAN — identidad de cuenta compartida en MI PANEL y MI CUENTA */
 .user-account-menu{position:relative;display:inline-flex;align-items:center;justify-content:flex-end;min-width:0}
 .user-account-trigger{box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;gap:10px;max-width:300px;height:44px;padding:0 18px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(9,9,11,.86);color:#fff;font:700 13px/1 Montserrat,Arial,sans-serif;cursor:pointer;transition:border-color 180ms ease,background-color 180ms ease}
+.user-account-trigger:after{content:none!important;display:none!important}
 .user-account-trigger:hover,.user-account-trigger[aria-expanded="true"]{border-color:#ff003c;background:#111114}
 .user-account-trigger .account-identity-text{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .user-account-trigger .account-chevron{width:8px;height:8px;flex:0 0 8px;border-right:2px solid #ff003c;border-bottom:2px solid #ff003c;transform:rotate(45deg) translateY(-2px);transition:transform 180ms ease}
