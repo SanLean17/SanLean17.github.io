@@ -2,13 +2,13 @@
 .user-account-menu{position:relative;display:inline-flex;align-items:center;justify-content:flex-end;min-width:0}
 .user-page .user-site-header .user-account-trigger,.account-page .account-header .user-account-trigger,.user-account-trigger{box-sizing:border-box!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:10px!important;min-width:0!important;max-width:300px!important;height:44px!important;padding:0 18px!important;border:1px solid rgba(255,255,255,.18)!important;border-radius:999px!important;background:rgba(9,9,11,.86)!important;color:#fff!important;font:700 13px/1 Montserrat,Arial,sans-serif!important;letter-spacing:0!important;text-transform:none!important;cursor:pointer;transition:border-color 180ms ease,background-color 180ms ease}
 .user-account-trigger:after{content:none!important;display:none!important}
-.user-account-trigger:hover,.user-account-trigger[aria-expanded="true"],.user-account-menu:hover .user-account-trigger,.user-account-menu:focus-within .user-account-trigger{border-color:#ff003c!important;background:#111114!important}
+.user-account-trigger:hover,.user-account-trigger[aria-expanded="true"]{border-color:#ff003c!important;background:#111114!important}
 .user-account-trigger .account-identity-text{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .user-account-trigger .account-chevron{width:8px;height:8px;flex:0 0 8px;border-right:2px solid #ff003c;border-bottom:2px solid #ff003c;transform:rotate(45deg) translateY(-2px);transition:transform 180ms ease}
-.user-account-trigger[aria-expanded="true"] .account-chevron,.user-account-menu:hover .account-chevron,.user-account-menu:focus-within .account-chevron{transform:rotate(225deg) translate(-1px,-1px)}
+.user-account-trigger[aria-expanded="true"] .account-chevron{transform:rotate(225deg) translate(-1px,-1px)}
 .user-account-dropdown{position:absolute;z-index:220;top:44px;right:0;box-sizing:border-box;width:210px;padding:7px;border:1px solid #ff003c;border-radius:14px;background:#141414;box-shadow:0 18px 40px rgba(0,0,0,.55)}
 .user-account-dropdown[hidden]{display:none!important}
-.user-account-menu:hover .user-account-dropdown[hidden],.user-account-menu:focus-within .user-account-dropdown[hidden]{display:block!important}
+
 .user-account-dropdown a,.user-account-dropdown button{box-sizing:border-box;display:flex;width:100%;min-height:40px;align-items:center;padding:0 12px;border:0;border-radius:9px;background:transparent;color:#fff;text-decoration:none;text-align:left;font:700 12px/1.2 Montserrat,Arial,sans-serif;cursor:pointer}
 .user-account-dropdown a:hover,.user-account-dropdown button:hover,.user-account-dropdown a:focus-visible,.user-account-dropdown button:focus-visible{outline:0;background:#ff003c;color:#fff}
 .user-account-dropdown .account-menu-danger{margin-top:7px;padding-top:7px;border-top:1px solid rgba(255,255,255,.10);color:#ff6b8b}
@@ -37,3 +37,10 @@
 .user-page #voteLive:not([hidden]):empty:before{content:'TODAVÍA NO HAY VOTOS\A Los votos válidos aparecerán acá cuando comience la ronda.';white-space:pre-line;display:block;box-sizing:border-box;width:100%;padding:24px;border:1px solid rgba(255,255,255,.10);border-radius:14px;background:#111114;color:#fff;font:800 13px/1.7 Montserrat,Arial,sans-serif}
 
 @media(max-width:760px){.user-account-trigger{max-width:min(72vw,260px)!important}.user-account-dropdown{width:min(220px,calc(100vw - 32px))}.user-page .ui-state,.account-page .ui-state,.account-page .empty-state,.user-page .history-empty{padding:20px}}
+
+/* Geometry and visibility must win even when usuario-shell-v2 loads later. */
+:is(.user-page,.account-page) .user-account-menu{display:inline-flex;position:relative;height:44px;padding:0;border:0;gap:0;line-height:0}
+:is(.user-page,.account-page) .user-account-menu>.user-account-trigger{margin:0!important;flex-shrink:1}
+:is(.user-page,.account-page) .user-account-menu>.user-account-dropdown{top:100%!important;right:0!important;bottom:auto!important;left:auto!important;margin:0!important;transform:none!important;translate:none!important;opacity:1!important;visibility:visible!important;transition:none!important;min-width:100%;max-width:calc(100vw - 32px)}
+:is(.user-page,.account-page) .user-account-menu>.user-account-dropdown[hidden]{display:none!important}
+:is(.user-page,.account-page) .user-account-trigger:focus-visible{outline:2px solid #ff003c;outline-offset:2px}

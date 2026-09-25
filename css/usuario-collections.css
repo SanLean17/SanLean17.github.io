@@ -1,0 +1,44 @@
+/* Collections shared only by MI PANEL and MI CUENTA. */
+:is(.user-page,.account-page) .ui-table-wrap{width:100%;overflow-x:auto;border:1px solid #ffffff1a;border-radius:14px;background:#111114}
+:is(.user-page,.account-page) :is(.tournament-table,.finished-table){width:100%;margin:0;border:0;border-collapse:separate;border-spacing:0;table-layout:fixed;background:#111114}
+:is(.user-page,.account-page) :is(.tournament-table,.finished-table) :is(th,td){height:60px;padding:12px 18px;border:0;border-bottom:1px solid #ffffff12;text-align:left;color:#eee;font:500 14px/1.4 Montserrat,Arial,sans-serif;overflow-wrap:anywhere}
+:is(.user-page,.account-page) :is(.tournament-table,.finished-table) th{height:44px;background:#0c0c0f;color:#bdbdc6;font-size:11px;font-weight:800}
+:is(.user-page,.account-page) :is(.tournament-table,.finished-table) th:first-child{width:90px;white-space:nowrap}
+:is(.user-page,.account-page) :is(.tournament-table,.finished-table) :is(th,td):nth-child(3){width:130px;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+:is(.user-page,.account-page) .tournament-table :is(th,td):last-child{width:110px;text-align:right}
+:is(.user-page,.account-page) :is(.tournament-table,.finished-table) tr:last-child td{border-bottom:0}
+:is(.user-page,.account-page) :is(.tournament-table,.finished-table) tbody tr:hover{background:#ffffff04}
+:is(.user-page,.account-page) :is(.remove-player,.collab-actions button){min-width:36px;min-height:36px;width:auto;height:auto;padding:8px 12px;border:1px solid #ffffff24;border-radius:9px;background:transparent;color:#eee;font:700 11px/1.2 Montserrat,Arial,sans-serif;box-shadow:none;cursor:pointer}
+:is(.user-page,.account-page) :is(.remove-player,[data-delete]){color:#ff7797}
+:is(.user-page,.account-page) :is(.collaborator-cards,.participant-list,.vote-result-list){display:flex;flex-direction:column;gap:0;max-height:none;border:1px solid #ffffff1a;border-radius:14px;overflow:hidden;background:#111114}
+:is(.user-page,.account-page) :is(.collaborator-cards,.participant-list):empty{border:0}
+:is(.user-page,.account-page) :is(.collaborator-card-new,.participant-row,.vote-result){box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:60px;padding:12px 18px;margin:0;border:0;border-bottom:1px solid #ffffff12;border-radius:0;background:transparent;color:#eee;font:500 14px/1.4 Montserrat,Arial,sans-serif;box-shadow:none}
+:is(.user-page,.account-page) :is(.collaborator-card-new,.participant-row,.vote-result):last-child{border-bottom:0}
+:is(.user-page,.account-page) :is(.collaborator-card-new,.participant-row,.vote-result):hover{background:#ffffff04}
+:is(.user-page,.account-page) :is(.collaborator-card-new,.participant-row,.vote-result)>:first-child{min-width:0;max-width:100%;overflow-wrap:anywhere}
+:is(.user-page,.account-page) .collaborator-card-new strong{font-size:14px}
+:is(.user-page,.account-page) .permission-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+:is(.user-page,.account-page) .permission-tags span,.ui-badge{padding:3px 7px;border:1px solid #ffffff20;border-radius:6px;color:#bdbdc6;font:700 10px/1.4 Montserrat,Arial,sans-serif}
+:is(.user-page,.account-page) .collab-actions{display:flex;flex-wrap:wrap;gap:8px;flex-shrink:0}
+.user-page .participant-row>span:last-child{flex-shrink:0;color:#bdbdc6;font-size:11px;font-weight:700}
+.user-page .vote-result>b{flex:0 0 28px;color:#ff003c}
+.user-page .vote-result>div{flex:1;min-width:0;overflow-wrap:anywhere}
+.user-page .vote-result>strong{font-size:14px;font-variant-numeric:tabular-nums}
+.user-page .vote-result-bar{height:5px;margin-top:8px;border-radius:999px;background:#ffffff14;overflow:hidden}
+.user-page .vote-result-bar i{display:block;height:100%;background:#ff003c}
+.user-page .vote-live-head{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;font:700 12px/1.5 Montserrat,Arial,sans-serif}
+.user-page .tournament-table .remove-player{font:700 20px/1 Montserrat,Arial,sans-serif!important}
+:is(.user-page,.account-page) .ui-simulation{margin:24px 0;padding:20px;border:1px dashed #ff003c;border-radius:14px;background:#111114}
+:is(.user-page,.account-page) .ui-simulation summary{cursor:pointer;color:#ff7797;font:800 12px/1.5 Montserrat,Arial,sans-serif}
+:is(.user-page,.account-page) .ui-simulation p{margin:12px 0 16px;color:#bdbdc6;font:500 13px/1.5 Montserrat,Arial,sans-serif}
+:is(.user-page,.account-page) .ui-simulation button:disabled{opacity:.55;cursor:default}
+@media(max-width:600px){
+  .account-page .account-layout{grid-template-columns:minmax(0,1fr)!important}
+  .account-page .account-nav{min-width:0}
+  :is(.user-page,.account-page) .ui-simulation{padding:12px}
+  :is(.user-page,.account-page) .collaborator-card-new{align-items:flex-start;flex-direction:column;gap:10px}
+  :is(.user-page,.account-page) .collab-actions{align-self:flex-end}
+  :is(.user-page,.account-page) :is(.collaborator-card-new,.participant-row,.vote-result){padding:12px}
+  .user-page :is(.tournament-table,.finished-table){min-width:560px}
+  .user-page .ui-table-wrap:focus-visible{outline:2px solid #ff003c;outline-offset:2px}
+}
