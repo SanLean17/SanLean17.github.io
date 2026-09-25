@@ -30,6 +30,7 @@
   --sl-body-line:1.5;
   --sl-copy-width:760px;
   --sl-kicker-title-gap:4px;
+  --sl-kicker-shift:4px;
   --sl-title-copy-gap:11px;
 
   --sl-shell-width:1500px;
@@ -63,11 +64,13 @@
 /*
  Encabezado canónico de sección.
  La referencia aprobada es el bloque de INICIO: PANEL DE USUARIO / BIENVENIDO A MI PANEL / párrafo.
+ La categoría roja se desplaza visualmente hacia abajo para acercarse al título sin mover el título principal.
 */
 .user-page .dashboard-welcome .eyebrow,
 .user-page .section-context .eyebrow,
 .user-page .stream-module-head .eyebrow,
-.account-page .section-kicker{
+.account-page .account-welcome .section-kicker,
+.account-page .section-head .section-kicker{
   margin:0 0 var(--sl-kicker-title-gap)!important;
   color:var(--sl-accent)!important;
   font-size:var(--sl-section-kicker-size)!important;
@@ -75,6 +78,7 @@
   line-height:1.2!important;
   letter-spacing:.16em!important;
   text-transform:uppercase;
+  transform:translateY(var(--sl-kicker-shift));
 }
 .user-page .dashboard-welcome h2,
 .user-page .section-context h2,
