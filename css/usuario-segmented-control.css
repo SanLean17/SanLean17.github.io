@@ -1,0 +1,11 @@
+/* USUARIO — control segmentado canónico para opciones mutuamente excluyentes. */
+.user-page .cards-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,460px));gap:19px 35px;align-items:end}
+.user-page .cards-choice-field{display:flex;min-width:0;flex-direction:column;gap:9px}
+.user-page .cards-choice-label{color:#fff;font:800 12px/1.3 Montserrat,Arial,sans-serif}
+.user-page .cards-segmented{box-sizing:border-box;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;height:48px;padding:3px;border:1px solid rgba(255,255,255,.24);border-radius:10px;background:#09090b;overflow:hidden}
+.user-page .cards-segmented button{min-width:0;height:40px;padding:0 14px;border:0;border-radius:7px;background:transparent;color:rgba(255,255,255,.68);font:800 12px/1 Montserrat,Arial,sans-serif;cursor:pointer;transition:background-color 180ms ease,color 180ms ease,box-shadow 180ms ease}
+.user-page .cards-segmented button:hover{color:#fff;background:rgba(255,255,255,.05)}
+.user-page .cards-segmented button[aria-pressed="true"]{background:#ff003c;color:#fff;box-shadow:0 4px 14px rgba(255,0,60,.18)}
+.user-page .cards-segmented button:focus-visible{outline:2px solid #ff003c;outline-offset:2px}
+.user-page .cards-segmented button:disabled{opacity:.42;cursor:not-allowed}
+@media(max-width:760px){.user-page .cards-choice-grid{grid-template-columns:1fr}.user-page .cards-segmented button{padding:0 10px;font-size:11px}}
