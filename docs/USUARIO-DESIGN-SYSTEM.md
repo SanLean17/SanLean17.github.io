@@ -86,7 +86,8 @@ Esta estructura se replica en KILLERS, PERKS DE KILLERS, PERKS DE SUPERVIVIENTES
 - Se conserva exactamente el aspecto actual aprobado.
 
 #### Texto secundario / ayuda
-- Se conserva exactamente el aspecto actual aprobado.
+- Usa la misma escala visual aprobada que `El correo de acceso no se modifica desde el perfil.`.
+- Si ocupa dos líneas o más, debe limitar su ancho para que las líneas tengan longitudes visuales semejantes y no formen una línea muy larga seguida de otra demasiado corta.
 
 #### Estados y contadores
 - Todavía NO se considera cerrado este subcomponente.
@@ -147,7 +148,7 @@ La referencia es INICIO y sus cards.
 
 ## 5. Botones
 
-Los botones de acción del sistema toman como referencia los botones de las cards `CONFIGURACIÓN` y `COLABORADORES` de INICIO.
+Los botones de acción del sistema toman como referencia exacta los botones de las cards `CONFIGURACIÓN` y `COLABORADORES` de INICIO.
 
 ### Botón de acción canónico
 - Altura: `44px`.
@@ -157,6 +158,7 @@ Los botones de acción del sistema toman como referencia los botones de las card
 - Principal: fondo `#FF003C`, texto blanco.
 - Secundario: fondo transparente, borde `#FF003C`, texto blanco.
 - Esta regla se aplica a los botones de acción de MI CUENTA, MI PERFIL, SEGURIDAD, COLABORADORES, TORNEO, OVERLAYS, VOTACIONES, SORTEOS, plataformas y componentes equivalentes.
+- `ACTUALIZAR CONTRASEÑA`, `INICIAR SORTEO`, `CERRAR PARTICIPACIÓN`, `CREAR TORNEO` y acciones equivalentes deben compartir exactamente esta altura y tipografía base.
 - **Excepción aprobada:** los controles propios de KILLERS, PERKS DE KILLERS y PERKS DE SUPERVIVIENTES conservan su diseño especializado porque manejan más información y no se consideran botones de acción estándar.
 - Los botones de navegación, selects personalizados y controles especializados tampoco se convierten en botones de acción.
 
@@ -174,8 +176,18 @@ La referencia prioritaria aprobada es `SEGURIDAD → CONTRASEÑA ACTUAL`.
 - Texto: Montserrat `14px`.
 - Input → texto de ayuda: `10px`.
 - Entre grupos de campos verticales: `19px`.
-- Entre dos campos que comparten fila: `25px` horizontal.
+- Entre dos campos que comparten fila: `35px` horizontal.
 - En mobile los campos en dos columnas pasan a una sola columna cuando corresponde.
+
+### Texto de ayuda
+- Referencia: `El correo de acceso no se modifica desde el perfil.`.
+- Tamaño: `11px`.
+- Peso: `500`.
+- Line-height: `1.5`.
+- Distancia desde el input superior: `10px`.
+- Ancho máximo general: `460px`.
+- La regla se aplica también a avisos equivalentes como la ayuda de contraseña.
+- Cuando ocupa varias líneas, el ancho debe mantenerse controlado para que las líneas queden visualmente equilibradas.
 
 ### Caja funcional canónica
 Todo bloque funcional principal debajo del encabezado debe tener una superficie que lo contenga; no deben quedar formularios o controles principales sueltos sobre el fondo.
@@ -197,6 +209,7 @@ Los campos NO deben crecer hasta extremos simplemente para completar una fila o 
 - Dos campos relacionados pueden compartir una fila sin estirarse innecesariamente.
 - Si hay espacio sobrante, se conserva vacío intencionalmente.
 - La alineación responde a la jerarquía del formulario, no al espacio sobrante.
+- Las cajas de SORTEOS, VOTACIONES y Stream Tools deben dimensionarse para contener correctamente dos campos de hasta `460px` más el gap canónico, sin solapamientos ni contenido pisado.
 
 ## 7. Cajas y tarjetas
 
@@ -268,8 +281,10 @@ La votación debe reiniciarse completa utilizando las mismas cinco cartas y una 
 - Encabezados replican la jerarquía aprobada de `BIENVENIDO A MI PANEL`.
 - Párrafos de encabezado usan el ancho y la interlínea aprobados.
 - Botones de acción usan el componente canónico salvo las excepciones aprobadas de KILLERS/PERKS.
-- Campos respetan altura `48px`, label-gap `9px`, ayuda `10px`, separación vertical `19px` y gap horizontal `25px` cuando comparten fila.
+- Campos respetan altura `48px`, label-gap `9px`, ayuda `10px`, separación vertical `19px` y gap horizontal `35px` cuando comparten fila.
+- Textos de ayuda respetan la escala de `11px / 1.5` y ancho controlado.
 - Todo bloque funcional principal debajo del encabezado usa una superficie canónica o equivalente.
+- SORTEOS/VOTACIONES no pueden tener campos o cajas solapados por límites de ancho heredados.
 - Cajas respetan fondo, borde, radio y padding del sistema.
 - Cards equivalentes respetan altura mínima `200px`, padding `25px`, gap `20px` y grilla desktop de 3 columnas.
 - Usa el mismo offset/columna que el resto de MI PANEL.
