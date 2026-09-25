@@ -1,1 +1,149 @@
-PLACEHOLDER
+/*
+ SANLEAN — USUARIO DESIGN SYSTEM
+ Fuente de verdad visual para todo sanlean.com.ar/usuario/.
+ Todo módulo nuevo debe usar estos tokens/componentes antes de crear estilos propios.
+*/
+:root{
+  --sl-accent:#ff003c;
+  --sl-bg-page:#080809;
+  --sl-bg-surface:#09090b;
+  --sl-bg-card:#111114;
+  --sl-bg-card-strong:#151518;
+  --sl-text:#ffffff;
+  --sl-text-secondary:rgba(255,255,255,.72);
+  --sl-text-muted:rgba(255,255,255,.55);
+  --sl-border:rgba(255,255,255,.12);
+  --sl-border-field:rgba(255,255,255,.24);
+  --sl-border-accent:rgba(255,0,60,.48);
+
+  --sl-font-body:Montserrat,Arial,sans-serif;
+  --sl-font-display:Impact,'Arial Black','Arial Narrow',sans-serif;
+
+  --sl-title-size:48px;
+  --sl-section-title-size:48px;
+  --sl-section-kicker-size:13px;
+  --sl-card-title-size:29px;
+  --sl-card-kicker-size:13px;
+  --sl-card-kicker-title-gap:7px;
+  --sl-card-title-copy-gap:10px;
+  --sl-card-copy-line:1.5;
+  --sl-body-size:16px;
+  --sl-small-size:11px;
+  --sl-body-line:1.5;
+  --sl-copy-width:760px;
+  --sl-kicker-title-gap:4px;
+  --sl-kicker-shift:4px;
+  --sl-title-copy-gap:11px;
+
+  --sl-shell-width:1500px;
+  --sl-shell-gutter:72px;
+  --sl-sidebar-width:236px;
+  --sl-sidebar-gap:30px;
+  --sl-content-offset:266px;
+  --sl-form-width:460px;
+  --sl-module-width:940px;
+  --sl-header-box-height:188px;
+  --sl-card-height:200px;
+  --sl-card-padding:25px;
+  --sl-card-gap:20px;
+  --sl-section-gap:22px;
+  --sl-content-box-padding:28px;
+  --sl-field-label-gap:9px;
+  --sl-field-help-gap:10px;
+  --sl-field-group-gap:19px;
+  --sl-field-row-gap:35px;
+  --sl-panel-radius:16px;
+  --sl-card-radius:14px;
+  --sl-field-radius:10px;
+  --sl-control-radius:999px;
+  --sl-control-height:48px;
+  --sl-control-height-small:44px;
+  --sl-action-font-size:13px;
+  --sl-action-padding-x:20px;
+
+  --sl-select-padding-x:16px;
+  --sl-select-arrow-box:18px;
+  --sl-select-arrow-size:7px;
+  --sl-select-arrow-stroke:2px;
+  --sl-select-text-arrow-gap:12px;
+  --sl-select-menu-bg:#141414;
+  --sl-select-menu-gap:6px;
+  --sl-select-menu-radius:14px;
+  --sl-select-menu-padding:7px;
+  --sl-select-menu-max-height:245px;
+  --sl-select-menu-shadow:0 18px 40px rgba(0,0,0,.55);
+  --sl-select-option-radius:9px;
+  --sl-select-scrollbar-size:6px;
+  --sl-select-scrollbar-thumb:rgba(255,255,255,.20);
+
+  --sl-space-1:8px;
+  --sl-space-2:12px;
+  --sl-space-3:18px;
+  --sl-space-4:24px;
+  --sl-space-5:30px;
+  --sl-space-6:42px;
+}
+
+.user-page,.account-page{font-family:var(--sl-font-body);color:var(--sl-text)}
+.user-page .panel-title,.account-page .account-welcome h2{font-family:var(--sl-font-display)}
+.user-page .panel-title{font-size:var(--sl-title-size);line-height:.98;letter-spacing:.005em}
+.user-page .panel-title span,.account-page h2 span{color:var(--sl-accent)}
+
+.user-page .dashboard-welcome .eyebrow,.user-page .section-context .eyebrow,.user-page .stream-module-head .eyebrow,.account-page .account-welcome .section-kicker,.account-page .section-head .section-kicker{margin:0 0 var(--sl-kicker-title-gap)!important;color:var(--sl-accent)!important;font-size:var(--sl-section-kicker-size)!important;font-weight:800!important;line-height:1.2!important;letter-spacing:.16em!important;text-transform:uppercase;transform:translateY(var(--sl-kicker-shift))}
+.user-page .dashboard-welcome h2,.user-page .section-context h2,.user-page .stream-module-head h2,.account-page .account-welcome h2,.account-page .section-head h2{margin:0!important;color:#fff!important;font:400 var(--sl-section-title-size)/.98 var(--sl-font-display)!important;letter-spacing:0!important;text-transform:uppercase}
+.user-page .dashboard-welcome>p:last-child,.user-page .section-context>p:last-child,.user-page .stream-module-head>p:last-child,.account-page .account-welcome>p:last-child,.account-page .section-head p:last-child{box-sizing:border-box;width:min(100%,var(--sl-copy-width));max-width:var(--sl-copy-width)!important;margin:var(--sl-title-copy-gap) 0 0!important;color:var(--sl-text-secondary)!important;font-size:var(--sl-body-size)!important;line-height:var(--sl-body-line)!important}
+
+.user-page .dashboard-card h3,.account-page .account-home-cards h3{margin:var(--sl-card-kicker-title-gap) 0 0!important;font-size:var(--sl-card-title-size)!important;line-height:1!important}
+.user-page .dashboard-card .card-kicker,.account-page .account-home-cards article>span{font-size:var(--sl-card-kicker-size)!important}
+.user-page .dashboard-card p,.account-page .account-home-cards p{margin:var(--sl-card-title-copy-gap) 0 22px!important;line-height:var(--sl-card-copy-line)!important}
+.user-page .dashboard-card button,.account-page .account-home-cards button{margin-top:auto!important}
+
+.user-page .dashboard-welcome,.user-page .section-context,.user-page .stream-module-head,.account-page .account-welcome,.account-page .section-head{box-sizing:border-box!important;width:100%!important;min-height:var(--sl-header-box-height)!important;padding:30px 32px!important;border:1px solid rgba(255,255,255,.10)!important;border-radius:var(--sl-panel-radius)!important;background:rgba(8,8,10,.82)!important;box-shadow:none!important}
+.user-page .section-context,.user-page .stream-module-head,.account-page .section-head{margin:0 0 var(--sl-section-gap)!important}
+
+.account-page .account-section{padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+.account-page .account-home{padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
+.account-page .section-head{display:block!important}.account-page .section-head>div{width:100%}
+
+.user-page .ui-surface,.user-page .module-box,.user-page .overlay-card,.user-page .connection-card-stream{box-sizing:border-box;background:rgba(8,8,10,.84);border:1px solid var(--sl-border);border-radius:var(--sl-card-radius)}
+.user-page .ui-inner-surface{background:var(--sl-bg-card);border:1px solid var(--sl-border);border-radius:var(--sl-card-radius)}
+.user-page .dashboard-card,.user-page .platform-panel,.account-page .account-home-cards article{border-radius:var(--sl-panel-radius)}
+
+.user-page .ui-content-box,.account-page .ui-content-box,.user-page .module-box,.user-page .tournament-setup-vertical{box-sizing:border-box!important;width:100%;padding:var(--sl-content-box-padding)!important;border:1px solid var(--sl-border)!important;border-radius:var(--sl-card-radius)!important;background:rgba(8,8,10,.84)!important;box-shadow:none!important}
+.account-page .account-form-box,.account-page .account-functional-box{max-width:940px}.account-page .direct-password.ui-content-box{max-width:680px!important;margin:0!important}.account-page .collaborator-editor{max-width:none!important;margin:0 0 var(--sl-section-gap)!important;padding:0!important;border:0!important;background:transparent!important}.account-page .empty-state{margin:0}.account-page .connection-card:last-child{margin-bottom:0}
+
+.user-page .ui-card,.user-page .dashboard-card,.user-page .overlay-card,.user-page .connection-card-stream,.account-page .account-home-cards article{box-sizing:border-box!important;min-height:var(--sl-card-height)!important}.user-page .dashboard-card,.account-page .account-home-cards article{padding:var(--sl-card-padding)!important}
+.user-page .dashboard-cards,.account-page .account-home-cards,.user-page .ui-card-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:var(--sl-card-gap)!important;margin-top:var(--sl-section-gap)!important}.user-page .ui-block-stack,.account-page .ui-block-stack{display:grid;gap:var(--sl-section-gap)}
+
+.user-page .dashboard-card button,.account-page .account-home-cards button,.user-page .ui-btn,.user-page .module-actions button,.user-page .overlay-actions button,.user-page .copy-row button,.user-page .connection-card-stream button,.user-page #tournamentPanel .create-tournament-btn,.user-page #tournamentPanel .tournament-add,.user-page #tournamentPanel .tournament-actions button,.user-page #tournamentPanel .finished-actions button,.user-page .confirm-actions button,.user-page .add-collaborator,.account-page .system-btn,.user-page .stream-output-actions button{box-sizing:border-box!important;min-height:var(--sl-control-height-small)!important;height:var(--sl-control-height-small)!important;padding:0 var(--sl-action-padding-x)!important;border-radius:var(--sl-control-radius)!important;font:800 var(--sl-action-font-size)/1 var(--sl-font-body)!important;cursor:pointer}
+.user-page .dashboard-card button,.account-page .account-home-cards button,.user-page .ui-btn-primary,.user-page .module-primary,.account-page .primary-btn,.user-page #tournamentPanel .create-tournament-btn,.user-page #tournamentPanel .tournament-add{border:1px solid var(--sl-accent)!important;background:var(--sl-accent)!important;color:#fff!important}
+.user-page .ui-btn-secondary,.user-page .module-secondary,.user-page .overlay-actions button:not(.spin-overlay),.user-page .copy-row button,.user-page .connection-card-stream button,.account-page .outline-btn,.user-page .stream-output-actions button{border:1px solid var(--sl-accent)!important;background:transparent!important;color:#fff!important}
+.user-page button:disabled,.account-page button:disabled{opacity:.42;cursor:not-allowed}
+
+.user-page .ui-field,.user-page .stream-module input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),.user-page .stream-module select,.user-page #tournamentPanel input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),.user-page #tournamentPanel select,.account-page input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),.account-page select{box-sizing:border-box;width:100%;height:var(--sl-control-height)!important;border:1px solid var(--sl-border-field);border-radius:var(--sl-field-radius);background:var(--sl-bg-surface);color:#fff;padding:0 15px;outline:none;font:500 14px var(--sl-font-body)}
+.user-page .ui-field:focus,.user-page .stream-module input:focus,.user-page .stream-module select:focus,.user-page #tournamentPanel input:focus,.user-page #tournamentPanel select:focus,.account-page input:focus,.account-page select:focus{border-color:var(--sl-accent)}
+.user-page .ui-field-wrap,.user-page .stream-module label,.account-page label{font-size:var(--sl-small-size);font-weight:800;letter-spacing:.06em}
+.user-page .stream-module label>input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),.user-page .stream-module label>select,.account-page label>input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),.account-page label>select{margin-top:var(--sl-field-label-gap)!important}
+.user-page #tournamentPanel .tournament-setup-vertical>label,.user-page #tournamentPanel .period-field,.user-page #tournamentPanel .best-times-field,.user-page #tournamentPanel .logo-section{gap:var(--sl-field-label-gap)!important}
+.user-page #tournamentPanel .tournament-setup-vertical>label>input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),.user-page #tournamentPanel .tournament-setup-vertical>label>select{margin-top:0!important}
+.account-page .direct-password>label+label{margin-top:var(--sl-field-group-gap)!important}.user-page .module-fields{row-gap:var(--sl-field-group-gap)!important}.user-page .ui-fields-contained{row-gap:var(--sl-field-group-gap)!important}
+.account-page .profile-fields{column-gap:var(--sl-field-row-gap)!important;row-gap:var(--sl-field-group-gap)!important}.user-page .stream-module .module-fields.two,.user-page .ui-fields-two-contained{column-gap:var(--sl-field-row-gap)!important;row-gap:var(--sl-field-group-gap)!important}
+.account-page label>small,.account-page .password-rule,.user-page .module-help,.user-page .logo-help,.user-page .ui-field-help{display:block!important;box-sizing:border-box!important;width:min(100%,var(--sl-form-width))!important;max-width:var(--sl-form-width)!important;margin-top:var(--sl-field-help-gap)!important;color:var(--sl-text-muted)!important;font:500 11px/1.5 var(--sl-font-body)!important}
+.user-page .ui-form-width,.user-page .stream-form-width,.account-page .ui-form-width{width:100%;max-width:var(--sl-form-width)}.user-page .ui-fields-contained,.user-page .module-fields-contained{display:grid;grid-template-columns:minmax(0,var(--sl-form-width));justify-content:start;gap:var(--sl-field-group-gap)}.user-page .ui-fields-two-contained,.user-page .stream-module .module-fields.two{display:grid!important;grid-template-columns:repeat(2,minmax(0,var(--sl-form-width)))!important;justify-content:start!important;column-gap:var(--sl-field-row-gap)!important;row-gap:var(--sl-field-group-gap)!important}
+
+.user-page .ui-select,.user-page .custom-select{position:relative;min-width:0}.user-page .ui-select>button,.user-page .custom-select>button{box-sizing:border-box!important;width:100%!important;height:var(--sl-control-height)!important;padding:0 var(--sl-select-padding-x)!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:var(--sl-select-text-arrow-gap)!important;overflow:hidden;border:1px solid var(--sl-border-field)!important;border-radius:var(--sl-field-radius)!important;background:var(--sl-bg-surface)!important;color:#fff!important;font:700 13px/1 var(--sl-font-body)!important;cursor:pointer}.user-page .ui-select>button span,.user-page .custom-select>button span{display:block;min-width:0;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.user-page .ui-select>button b,.user-page .custom-select>button b{width:var(--sl-select-arrow-box)!important;height:var(--sl-select-arrow-box)!important;flex:0 0 var(--sl-select-arrow-box)!important;display:flex!important;align-items:center!important;justify-content:center!important;color:var(--sl-accent)!important;font-size:0!important;line-height:1!important}.user-page .ui-select>button b:before,.user-page .custom-select>button b:before{content:'';width:var(--sl-select-arrow-size)!important;height:var(--sl-select-arrow-size)!important;border-right:var(--sl-select-arrow-stroke) solid var(--sl-accent)!important;border-bottom:var(--sl-select-arrow-stroke) solid var(--sl-accent)!important;transform:rotate(45deg) translateY(-2px);display:block}.user-page .custom-options,.user-page .ui-select-options{position:absolute!important;z-index:40!important;left:0!important;right:0!important;top:calc(var(--sl-control-height) + var(--sl-select-menu-gap))!important;max-height:var(--sl-select-menu-max-height)!important;overflow:auto!important;padding:var(--sl-select-menu-padding)!important;background:var(--sl-select-menu-bg)!important;border:1px solid var(--sl-accent)!important;border-radius:var(--sl-select-menu-radius)!important;box-shadow:var(--sl-select-menu-shadow)!important;scrollbar-width:thin;scrollbar-color:var(--sl-select-scrollbar-thumb) transparent}.user-page .custom-options::-webkit-scrollbar,.user-page .ui-select-options::-webkit-scrollbar{width:var(--sl-select-scrollbar-size)}.user-page .custom-options::-webkit-scrollbar-track,.user-page .ui-select-options::-webkit-scrollbar-track{background:transparent}.user-page .custom-options::-webkit-scrollbar-thumb,.user-page .ui-select-options::-webkit-scrollbar-thumb{background:var(--sl-select-scrollbar-thumb);border-radius:999px}.user-page .custom-options::-webkit-scrollbar-thumb:hover,.user-page .ui-select-options::-webkit-scrollbar-thumb:hover{background:var(--sl-accent)}.user-page .custom-options button,.user-page .ui-select-options button{display:block!important;width:100%!important;padding:10px 12px!important;border:0!important;border-radius:var(--sl-select-option-radius)!important;background:transparent!important;color:#fff!important;text-align:left!important;font:700 12px/1.2 var(--sl-font-body)!important;cursor:pointer!important}.user-page .custom-options button:hover,.user-page .ui-select-options button:hover{background:var(--sl-accent)!important;color:#fff!important}
+
+.user-page .stream-module .module-box{width:100%!important;max-width:none!important;margin-bottom:var(--sl-section-gap)!important}.user-page .stream-module .overlay-grid,.user-page .stream-module .connection-grid,.user-page .stream-module .giveaway-live,.user-page .stream-module .participant-list{width:100%;max-width:none!important}.user-page .stream-module .workspace-inline{width:100%;max-width:var(--sl-form-width)}
+.user-page .panel-tabs button{min-height:54px;border-radius:10px;font:800 12px var(--sl-font-body)}.user-page .panel-tabs button.active{background:var(--sl-bg-card-strong);border-left-color:var(--sl-accent);color:#fff}.user-page .panel-tabs:after{display:none!important}.user-page .panel-tabs .menu-group-start{margin-top:10px}
+.user-page #roulettePanel,.user-page #tournamentPanel,.user-page #dashboardHome,.user-page #platformPanel,.user-page .stream-module{margin-left:var(--sl-content-offset)}.user-page .stream-module{margin-top:0}
+.user-page [data-panel-section][hidden],.user-page .stream-module[hidden],.user-page #roulettePanel[hidden],.user-page #tournamentPanel[hidden],.user-page #dashboardHome[hidden],.user-page #platformPanel[hidden]{display:none!important}
+
+/* Salida visual canónica para herramientas que se muestran en OBS */
+.user-page .stream-output-box{box-sizing:border-box;width:100%;margin-top:var(--sl-section-gap);padding:28px;border:1px solid var(--sl-border);border-radius:var(--sl-card-radius);background:rgba(8,8,10,.84)}
+.user-page .stream-output-head{display:flex;align-items:flex-start;justify-content:space-between;gap:22px;margin-bottom:19px}.user-page .stream-output-head span{display:block;color:var(--sl-accent);font:800 11px/1.2 var(--sl-font-body);letter-spacing:.12em}.user-page .stream-output-head h3{margin:6px 0 0;color:#fff;font:800 20px/1.1 var(--sl-font-body)}.user-page .stream-output-head p{max-width:620px;margin:8px 0 0;color:var(--sl-text-muted);font:500 12px/1.5 var(--sl-font-body)}
+.user-page .stream-output-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(320px,.65fr);gap:20px}.user-page .stream-preview-frame{position:relative;display:grid;place-items:center;min-height:260px;padding:24px;overflow:hidden;border:1px solid rgba(255,255,255,.12);border-radius:14px;background-color:#0f0f12;background-image:linear-gradient(45deg,rgba(255,255,255,.035) 25%,transparent 25%),linear-gradient(-45deg,rgba(255,255,255,.035) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,rgba(255,255,255,.035) 75%),linear-gradient(-45deg,transparent 75%,rgba(255,255,255,.035) 75%);background-size:24px 24px;background-position:0 0,0 12px,12px -12px,-12px 0}.user-page .stream-preview-placeholder{text-align:center}.user-page .stream-preview-placeholder strong{display:block;color:#fff;font:800 14px/1.35 var(--sl-font-body)}.user-page .stream-preview-placeholder span{display:block;max-width:420px;margin:9px auto 0;color:var(--sl-text-muted);font:500 11px/1.5 var(--sl-font-body)}
+.user-page .stream-output-side{display:grid;align-content:start;gap:19px}.user-page .stream-output-field label{display:block;margin:0 0 9px;color:#fff;font:800 11px/1.2 var(--sl-font-body);letter-spacing:.06em}.user-page .stream-output-url{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px}.user-page .stream-output-url input{height:48px!important;margin:0!important;color:rgba(255,255,255,.55)!important}.user-page .stream-output-actions{display:flex;flex-wrap:wrap;gap:10px}.user-page .stream-output-note{margin:0;color:var(--sl-text-muted);font:500 11px/1.5 var(--sl-font-body)}.user-page .stream-public-box{padding-top:19px;border-top:1px solid var(--sl-border)}
+
+@media(max-width:900px){:root{--sl-shell-gutter:16px;--sl-content-offset:0px}.user-page #roulettePanel,.user-page #tournamentPanel,.user-page #dashboardHome,.user-page #platformPanel,.user-page .stream-module{margin-left:0}.user-page .dashboard-cards,.account-page .account-home-cards,.user-page .ui-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.user-page .stream-output-grid{grid-template-columns:1fr}}
+@media(max-width:760px){:root{--sl-title-size:40px;--sl-section-title-size:40px;--sl-body-size:15px;--sl-copy-width:100%}.user-page .ui-fields-two-contained,.user-page .stream-module .module-fields.two{grid-template-columns:minmax(0,1fr)!important}.user-page .dashboard-welcome,.user-page .section-context,.user-page .stream-module-head,.account-page .account-welcome,.account-page .section-head{min-height:0!important;padding:24px 20px!important}.user-page .stream-output-box{padding:22px 18px}.user-page .stream-output-url{grid-template-columns:1fr}.user-page .stream-output-actions button,.user-page .stream-output-url button{width:100%}}
+@media(max-width:600px){.user-page .dashboard-cards,.account-page .account-home-cards,.user-page .ui-card-grid{grid-template-columns:1fr!important}}
