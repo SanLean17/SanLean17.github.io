@@ -22,6 +22,8 @@ USUARIO es un único producto e incluye MI PANEL, MI CUENTA, ruletas, Torneo 1VS
 
 Separar archivos o módulos técnicos no significa crear interfaces visuales distintas. Stream Tools forma parte de USUARIO y no posee un sistema visual propio.
 
+MI CUENTA, MI PERFIL, SEGURIDAD, COLABORADORES y CONEXIONES forman parte del mismo sistema visual que MI PANEL. No deben tener una jerarquía, caja de encabezado ni geometría distinta.
+
 ## 3. Tokens obligatorios
 
 ### Color
@@ -43,7 +45,7 @@ La referencia visual obligatoria para los encabezados de sección es el bloque d
 
 `PANEL DE USUARIO` → `BIENVENIDO A MI PANEL` → párrafo descriptivo.
 
-Esta estructura se replica en KILLERS, PERKS DE KILLERS, PERKS DE SUPERVIVIENTES, TORNEO 1VS1, OVERLAYS OBS, VOTACIONES, SORTEOS, TWITCH / KICK y secciones equivalentes de USUARIO.
+Esta estructura se replica en KILLERS, PERKS DE KILLERS, PERKS DE SUPERVIVIENTES, TORNEO 1VS1, OVERLAYS OBS, VOTACIONES, SORTEOS, TWITCH / KICK, MI CUENTA, MI PERFIL, SEGURIDAD, COLABORADORES y CONEXIONES.
 
 #### Categoría pequeña / kicker
 - Referencia: `PANEL DE USUARIO`.
@@ -64,9 +66,11 @@ Esta estructura se replica en KILLERS, PERKS DE KILLERS, PERKS DE SUPERVIVIENTES
 - Todas las secciones funcionales usan este mismo tamaño y ritmo visual.
 
 #### Título de card
-- Se conserva exactamente el aspecto actual aprobado.
-- Tamaño base del sistema: `18px`.
-- Referencia: cards de INICIO (`CONFIGURACIÓN`, `TWITCH + KICK`, `COLABORADORES`).
+- Se conserva exactamente el aspecto que tenían originalmente las cards de INICIO antes de iniciar el Bloque B.
+- Tamaño canónico de esas cards: `29px`.
+- Line-height: `1`.
+- Referencia: `CONFIGURACIÓN`, `TWITCH + KICK` y `COLABORADORES` de INICIO.
+- No reducir estos títulos al tamaño de un título funcional interno.
 
 #### Párrafo descriptivo de encabezado
 - Referencia: párrafo debajo de `BIENVENIDO A MI PANEL`.
@@ -104,6 +108,37 @@ Esta estructura se replica en KILLERS, PERKS DE KILLERS, PERKS DE SUPERVIVIENTES
 - Al seleccionar una sección, todas las demás se ocultan completamente.
 - Nunca deben quedar visibles simultáneamente INICIO, otra herramienta y la herramienta activa.
 - En viewport menor a 900 px el menú pasa al flujo normal y el offset vuelve a `0`.
+
+### Caja canónica de encabezado
+
+Toda vista principal de USUARIO comienza con la misma caja visual que las referencias aprobadas `BIENVENIDO A MI PANEL` y `MI CUENTA`.
+
+Se aplica a:
+- INICIO.
+- KILLERS.
+- PERKS DE KILLERS.
+- PERKS DE SUPERVIVIENTES.
+- TORNEO 1VS1.
+- OVERLAYS OBS.
+- VOTACIONES.
+- SORTEOS.
+- TWITCH / KICK.
+- MI CUENTA.
+- MI PERFIL.
+- SEGURIDAD.
+- COLABORADORES.
+- CONEXIONES.
+
+Reglas actuales:
+- ancho: `100%` de la columna funcional.
+- padding: `30px 32px` desktop.
+- radio: `16px`.
+- borde: `1px solid rgba(255,255,255,.10)`.
+- fondo: `rgba(8,8,10,.82)`.
+- sin glow/sombra permanente.
+- separación con el contenido siguiente: `22px`.
+
+Los contenedores exteriores de MI PERFIL, SEGURIDAD, COLABORADORES y CONEXIONES no deben añadir otra caja diferente alrededor del encabezado. La caja visual principal es este encabezado canónico, igual que en INICIO.
 
 ## 5. Botones
 
