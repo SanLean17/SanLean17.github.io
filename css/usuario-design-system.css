@@ -74,6 +74,8 @@
   --sl-select-menu-max-height:245px;
   --sl-select-menu-shadow:0 18px 40px rgba(0,0,0,.55);
   --sl-select-option-radius:9px;
+  --sl-select-scrollbar-size:6px;
+  --sl-select-scrollbar-thumb:rgba(255,255,255,.20);
 
   --sl-space-1:8px;
   --sl-space-2:12px;
@@ -412,7 +414,20 @@
   border:1px solid var(--sl-accent)!important;
   border-radius:var(--sl-select-menu-radius)!important;
   box-shadow:var(--sl-select-menu-shadow)!important;
+  scrollbar-width:thin;
+  scrollbar-color:var(--sl-select-scrollbar-thumb) transparent;
 }
+.user-page .custom-options::-webkit-scrollbar,
+.user-page .ui-select-options::-webkit-scrollbar{width:var(--sl-select-scrollbar-size)}
+.user-page .custom-options::-webkit-scrollbar-track,
+.user-page .ui-select-options::-webkit-scrollbar-track{background:transparent}
+.user-page .custom-options::-webkit-scrollbar-thumb,
+.user-page .ui-select-options::-webkit-scrollbar-thumb{
+  background:var(--sl-select-scrollbar-thumb);
+  border-radius:999px;
+}
+.user-page .custom-options::-webkit-scrollbar-thumb:hover,
+.user-page .ui-select-options::-webkit-scrollbar-thumb:hover{background:var(--sl-accent)}
 .user-page .custom-options button,
 .user-page .ui-select-options button{
   display:block!important;
