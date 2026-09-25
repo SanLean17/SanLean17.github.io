@@ -61,6 +61,13 @@
   --sl-action-font-size:13px;
   --sl-action-padding-x:20px;
 
+  /* Selector desplegable canónico */
+  --sl-select-padding-x:16px;
+  --sl-select-arrow-box:18px;
+  --sl-select-arrow-size:7px;
+  --sl-select-arrow-stroke:2px;
+  --sl-select-text-arrow-gap:12px;
+
   --sl-space-1:8px;
   --sl-space-2:12px;
   --sl-space-3:18px;
@@ -211,11 +218,7 @@
 .user-page .ui-block-stack,
 .account-page .ui-block-stack{display:grid;gap:var(--sl-section-gap)}
 
-/*
- BOTONES DE ACCIÓN CANÓNICOS
- Referencia exacta: VER RULETAS / ADMINISTRAR de las cards de INICIO.
- Excepción: controles especializados de KILLERS / PERKS y navegación.
-*/
+/* Botones de acción canónicos */
 .user-page .dashboard-card button,
 .account-page .account-home-cards button,
 .user-page .ui-btn,
@@ -289,13 +292,17 @@
 .account-page select:focus{border-color:var(--sl-accent)}
 .user-page .ui-field-wrap,.user-page .stream-module label,.account-page label{font-size:var(--sl-small-size);font-weight:800;letter-spacing:.06em}
 
-/* Label -> campo: 9px */
+/* Label -> campo = 9px. En TORNEO se usa gap del contenedor, sin margen duplicado. */
 .user-page .stream-module label>input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),
 .user-page .stream-module label>select,
-.user-page #tournamentPanel label>input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),
-.user-page #tournamentPanel label>select,
 .account-page label>input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),
 .account-page label>select{margin-top:var(--sl-field-label-gap)!important}
+.user-page #tournamentPanel .tournament-setup-vertical>label,
+.user-page #tournamentPanel .period-field,
+.user-page #tournamentPanel .best-times-field,
+.user-page #tournamentPanel .logo-section{gap:var(--sl-field-label-gap)!important}
+.user-page #tournamentPanel .tournament-setup-vertical>label>input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),
+.user-page #tournamentPanel .tournament-setup-vertical>label>select{margin-top:0!important}
 
 /* Separación entre grupos verticales */
 .account-page .direct-password>label+label{margin-top:var(--sl-field-group-gap)!important}
@@ -307,10 +314,7 @@
 .user-page .stream-module .module-fields.two,
 .user-page .ui-fields-two-contained{column-gap:var(--sl-field-row-gap)!important;row-gap:var(--sl-field-group-gap)!important}
 
-/*
- Ayuda de campo: misma referencia que “El correo de acceso no se modifica desde el perfil.”
- 10px desde el input, 11px de texto y ancho máximo controlado para que las líneas sean parejas.
-*/
+/* Ayuda de campo */
 .account-page label>small,
 .account-page .password-rule,
 .user-page .module-help,
@@ -337,7 +341,58 @@
   row-gap:var(--sl-field-group-gap)!important;
 }
 
-/* SORTEOS / VOTACIONES / STREAM: las cajas contienen los campos sin solaparse */
+/*
+ SELECTOR DESPLEGABLE CANÓNICO SANLEAN
+ Referencia: TORNEO 1VS1 → MES / AÑO / MEJORES TIEMPOS.
+*/
+.user-page .ui-select,
+.user-page .custom-select{position:relative;min-width:0}
+.user-page .ui-select>button,
+.user-page .custom-select>button{
+  box-sizing:border-box!important;
+  width:100%!important;
+  height:var(--sl-control-height)!important;
+  padding:0 var(--sl-select-padding-x)!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:var(--sl-select-text-arrow-gap)!important;
+  overflow:hidden;
+  border:1px solid var(--sl-border-field)!important;
+  border-radius:var(--sl-field-radius)!important;
+  background:var(--sl-bg-surface)!important;
+  color:#fff!important;
+  font:700 13px/1 var(--sl-font-body)!important;
+  cursor:pointer;
+}
+.user-page .ui-select>button span,
+.user-page .custom-select>button span{
+  display:block;min-width:0;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.user-page .ui-select>button b,
+.user-page .custom-select>button b{
+  width:var(--sl-select-arrow-box)!important;
+  height:var(--sl-select-arrow-box)!important;
+  flex:0 0 var(--sl-select-arrow-box)!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  color:var(--sl-accent)!important;
+  font-size:0!important;
+  line-height:1!important;
+}
+.user-page .ui-select>button b:before,
+.user-page .custom-select>button b:before{
+  content:'';
+  width:var(--sl-select-arrow-size)!important;
+  height:var(--sl-select-arrow-size)!important;
+  border-right:var(--sl-select-arrow-stroke) solid var(--sl-accent)!important;
+  border-bottom:var(--sl-select-arrow-stroke) solid var(--sl-accent)!important;
+  transform:rotate(45deg) translateY(-2px);
+  display:block;
+}
+
+/* SORTEOS / VOTACIONES / STREAM */
 .user-page .stream-module .module-box{
   width:100%!important;
   max-width:none!important;
