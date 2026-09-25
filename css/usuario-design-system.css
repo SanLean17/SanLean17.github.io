@@ -40,6 +40,7 @@
   --sl-content-offset:266px;
   --sl-form-width:460px;
   --sl-module-width:940px;
+  --sl-header-box-height:188px;
   --sl-panel-radius:16px;
   --sl-card-radius:14px;
   --sl-field-radius:10px;
@@ -116,6 +117,7 @@
  CAJA CANÓNICA DE ENCABEZADO
  MI PANEL, herramientas y MI CUENTA comparten la misma superficie de presentación.
  Referencias visuales aprobadas: BIENVENIDO A MI PANEL y MI CUENTA.
+ La altura desktop se fija a la altura visual de BIENVENIDO A MI PANEL para que al cambiar de sección nada salte.
 */
 .user-page .dashboard-welcome,
 .user-page .section-context,
@@ -124,6 +126,7 @@
 .account-page .section-head{
   box-sizing:border-box!important;
   width:100%!important;
+  min-height:var(--sl-header-box-height)!important;
   padding:30px 32px!important;
   border:1px solid rgba(255,255,255,.10)!important;
   border-radius:var(--sl-panel-radius)!important;
@@ -225,5 +228,5 @@
   .user-page .section-context,
   .user-page .stream-module-head,
   .account-page .account-welcome,
-  .account-page .section-head{padding:24px 20px!important}
+  .account-page .section-head{min-height:0!important;padding:24px 20px!important}
 }
