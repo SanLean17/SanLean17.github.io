@@ -7,20 +7,38 @@
 :is(.user-page,.account-page) :is(.tournament-table,.finished-table) :is(th,td):nth-child(3){width:130px;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 :is(.user-page,.account-page) .tournament-table :is(th,td):last-child{width:110px;text-align:right}
 :is(.user-page,.account-page) :is(.tournament-table,.finished-table) tr:last-child td{border-bottom:0}
-:is(.user-page,.account-page) :is(.tournament-table,.finished-table) tbody tr:hover{background:#ffffff04}
+:is(.user-page,.account-page) :is(.tournament-table,.finished-table) tbody tr{transition:background-color 180ms ease}
+:is(.user-page,.account-page) :is(.tournament-table,.finished-table) tbody tr:hover{background:#151518}
+:is(.user-page,.account-page) :is(.tournament-table,.finished-table) tbody tr.is-active,
+:is(.user-page,.account-page) :is(.tournament-table,.finished-table) tbody tr[aria-selected="true"]{background:rgba(255,0,60,.08)}
+:is(.user-page,.account-page) :is(.tournament-table,.finished-table) tbody tr.is-active td:first-child,
+:is(.user-page,.account-page) :is(.tournament-table,.finished-table) tbody tr[aria-selected="true"] td:first-child{box-shadow:inset 3px 0 0 #ff003c}
+
 :is(.user-page,.account-page) :is(.remove-player,.collab-actions button){min-width:36px;min-height:36px;width:auto;height:auto;padding:8px 12px;border:1px solid #ffffff24;border-radius:9px;background:transparent;color:#eee;font:700 11px/1.2 Montserrat,Arial,sans-serif;box-shadow:none;cursor:pointer}
 :is(.user-page,.account-page) :is(.remove-player,[data-delete]){color:#ff7797}
+
 :is(.user-page,.account-page) :is(.collaborator-cards,.participant-list,.vote-result-list){display:flex;flex-direction:column;gap:0;max-height:none;border:1px solid #ffffff1a;border-radius:14px;overflow:hidden;background:#111114}
 :is(.user-page,.account-page) :is(.collaborator-cards,.participant-list):empty{border:0}
-:is(.user-page,.account-page) :is(.collaborator-card-new,.participant-row,.vote-result){box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:60px;padding:12px 18px;margin:0;border:0;border-bottom:1px solid #ffffff12;border-radius:0;background:transparent;color:#eee;font:500 14px/1.4 Montserrat,Arial,sans-serif;box-shadow:none}
+:is(.user-page,.account-page) :is(.collaborator-card-new,.participant-row,.vote-result){box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:62px;padding:14px 16px;margin:0;border:0;border-bottom:1px solid rgba(255,255,255,.10);border-radius:0;background:#111114;color:#eee;font:500 14px/1.4 Montserrat,Arial,sans-serif;box-shadow:none;transition:background-color 180ms ease,border-color 180ms ease}
 :is(.user-page,.account-page) :is(.collaborator-card-new,.participant-row,.vote-result):last-child{border-bottom:0}
-:is(.user-page,.account-page) :is(.collaborator-card-new,.participant-row,.vote-result):hover{background:#ffffff04}
+:is(.user-page,.account-page) :is(.collaborator-card-new,.participant-row,.vote-result):hover{background:#151518;border-bottom-color:rgba(255,255,255,.16)}
+:is(.user-page,.account-page) :is(.collaborator-card-new,.participant-row,.vote-result).is-clickable{cursor:pointer}
+:is(.user-page,.account-page) :is(.collaborator-card-new,.participant-row,.vote-result).is-active,
+:is(.user-page,.account-page) :is(.collaborator-card-new,.participant-row,.vote-result)[aria-selected="true"]{position:relative;background:rgba(255,0,60,.08);border-bottom-color:rgba(255,0,60,.45)}
+:is(.user-page,.account-page) :is(.collaborator-card-new,.participant-row,.vote-result).is-active:before,
+:is(.user-page,.account-page) :is(.collaborator-card-new,.participant-row,.vote-result)[aria-selected="true"]:before{content:'';position:absolute;top:0;bottom:0;left:0;width:3px;background:#ff003c}
 :is(.user-page,.account-page) :is(.collaborator-card-new,.participant-row,.vote-result)>:first-child{min-width:0;max-width:100%;overflow-wrap:anywhere}
-:is(.user-page,.account-page) .collaborator-card-new strong{font-size:14px}
+:is(.user-page,.account-page) .collaborator-card-new strong{display:block;color:#fff;font:700 13px/1.35 Montserrat,Arial,sans-serif}
 :is(.user-page,.account-page) .permission-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
 :is(.user-page,.account-page) .permission-tags span,.ui-badge{padding:3px 7px;border:1px solid #ffffff20;border-radius:6px;color:#bdbdc6;font:700 10px/1.4 Montserrat,Arial,sans-serif}
 :is(.user-page,.account-page) .collab-actions{display:flex;flex-wrap:wrap;gap:8px;flex-shrink:0}
+
+/* Compact rows: useful for long participant lists such as SORTEOS. */
+:is(.user-page,.account-page) .ui-row-compact,
+.user-page .participant-row{min-height:44px;padding:10px 14px;font-size:12px}
+.user-page .participant-row:hover{background:#141417}
 .user-page .participant-row>span:last-child{flex-shrink:0;color:#bdbdc6;font-size:11px;font-weight:700}
+
 .user-page .vote-result>b{flex:0 0 28px;color:#ff003c}
 .user-page .vote-result>div{flex:1;min-width:0;overflow-wrap:anywhere}
 .user-page .vote-result>strong{font-size:14px;font-variant-numeric:tabular-nums}
@@ -28,10 +46,12 @@
 .user-page .vote-result-bar i{display:block;height:100%;background:#ff003c}
 .user-page .vote-live-head{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;font:700 12px/1.5 Montserrat,Arial,sans-serif}
 .user-page .tournament-table .remove-player{font:700 20px/1 Montserrat,Arial,sans-serif!important}
+
 :is(.user-page,.account-page) .ui-simulation{margin:24px 0;padding:20px;border:1px dashed #ff003c;border-radius:14px;background:#111114}
 :is(.user-page,.account-page) .ui-simulation summary{cursor:pointer;color:#ff7797;font:800 12px/1.5 Montserrat,Arial,sans-serif}
 :is(.user-page,.account-page) .ui-simulation p{margin:12px 0 16px;color:#bdbdc6;font:500 13px/1.5 Montserrat,Arial,sans-serif}
 :is(.user-page,.account-page) .ui-simulation button:disabled{opacity:.55;cursor:default}
+
 @media(max-width:600px){
   .account-page .account-layout{grid-template-columns:minmax(0,1fr)!important}
   .account-page .account-nav{min-width:0}
