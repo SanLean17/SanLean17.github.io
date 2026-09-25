@@ -9,6 +9,7 @@
   const account = document.body.classList.contains('account-page');
   const dialog = document.createElement('section');
   dialog.className = 'mobile-user-navigation';
+  dialog.style.setProperty('--mobile-nav-row-count', Math.max(...groups.map(group=>group[2].length)));
   dialog.id = 'mobileUserNavigation';
   dialog.setAttribute('aria-label','Navegación de usuario');
   dialog.innerHTML = '<div class="mobile-nav-columns"><div class="mobile-nav-groups" role="tablist" aria-label="Categorías" aria-orientation="vertical"></div><nav class="mobile-nav-options" id="mobileNavigationOptions" role="tabpanel" aria-label="Secciones"></nav></div><footer><button type="button" class="mobile-nav-logout">CERRAR SESIÓN</button></footer>';

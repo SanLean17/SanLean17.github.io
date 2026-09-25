@@ -6,19 +6,19 @@
 :is(.user-page,.account-page).mobile-navigation-ready .user-account-trigger{width:44px!important;height:44px!important;padding:10px!important;border:0!important;border-radius:9px!important;background:#09090b!important;gap:0!important}
 :is(.user-page,.account-page).mobile-navigation-ready .user-account-trigger :is(.account-identity-text,.account-chevron){display:none!important}
 :is(.user-page,.account-page).mobile-navigation-ready .user-account-trigger::before{content:'';display:block;width:22px;height:16px;background:linear-gradient(#fff,#fff) top/100% 2px no-repeat,linear-gradient(#fff,#fff) center/100% 2px no-repeat,linear-gradient(#fff,#fff) bottom/100% 2px no-repeat}
-:is(.user-page,.account-page).mobile-navigation-ready .user-account-trigger[aria-expanded="true"]{background:#ff003c!important}
-:is(.user-page,.account-page).mobile-navigation-ready .user-account-trigger[aria-expanded="true"]::before{height:22px;background:linear-gradient(45deg,transparent calc(50% - 1px),#fff calc(50% - 1px),#fff calc(50% + 1px),transparent calc(50% + 1px)),linear-gradient(-45deg,transparent calc(50% - 1px),#fff calc(50% - 1px),#fff calc(50% + 1px),transparent calc(50% + 1px))}
+:is(.user-page,.account-page).mobile-navigation-ready .user-account-trigger[aria-expanded="true"]{padding:6px!important;background:#09090b!important}
+:is(.user-page,.account-page).mobile-navigation-ready .user-account-trigger[aria-expanded="true"]::before{width:32px;height:32px;border-radius:8px;background:linear-gradient(45deg,transparent calc(50% - 1px),#fff calc(50% - 1px),#fff calc(50% + 1px),transparent calc(50% + 1px)) center/16px 16px no-repeat,linear-gradient(-45deg,transparent calc(50% - 1px),#fff calc(50% - 1px),#fff calc(50% + 1px),transparent calc(50% + 1px)) center/16px 16px no-repeat #ff003c}
 :is(.user-page,.account-page).mobile-navigation-ready .site-header{background:#09090b}
 :is(.user-page,.account-page) .mobile-user-navigation[open]{display:block;box-sizing:border-box;position:relative;margin:0;width:100%;padding:0;border:0;border-top:1px solid #29292e;border-bottom:1px solid #29292e;border-radius:0;background:#09090b;color:#fff;font:600 13px/1.45 Montserrat,Arial,sans-serif;animation:mobile-nav-reveal 180ms ease-out}
 @keyframes mobile-nav-reveal{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0)}}
 .mobile-user-navigation button{font:700 11px/1.45 Montserrat,Arial,sans-serif;color:#fff;cursor:pointer;border:0;background:transparent;box-sizing:border-box}
-.mobile-nav-columns{display:grid;grid-template-columns:minmax(88px,32%) minmax(0,1fr)}
+.mobile-nav-columns{--mobile-nav-row-height:var(--sl-control-height,48px);display:grid;grid-template-columns:minmax(88px,32%) minmax(0,1fr);height:calc(var(--mobile-nav-row-height) * var(--mobile-nav-row-count,6))}
 .mobile-nav-groups{background:#060608;border-right:1px solid #29292e}
-.mobile-nav-groups button,.mobile-nav-options a{display:flex;align-items:center;box-sizing:border-box;width:100%;height:64px;margin:0;padding:10px 14px;text-align:left;border:0;border-bottom:1px solid #29292e;border-radius:0;color:#fff;text-decoration:none;overflow-wrap:anywhere}
+.mobile-nav-groups button,.mobile-nav-options a{display:flex;align-items:center;box-sizing:border-box;width:100%;height:var(--mobile-nav-row-height);margin:0;padding:6px 14px;text-align:left;border:0;border-bottom:1px solid #29292e;border-radius:0;color:#fff;text-decoration:none;overflow-wrap:anywhere}
 .mobile-nav-options a{font:600 12px/1.45 Montserrat,Arial,sans-serif}
 .mobile-nav-groups button[aria-selected="true"],.mobile-nav-options a[aria-current="page"]{background:#ff003c;color:#fff}
 .mobile-user-navigation :is(a,button):focus-visible{outline:2px solid #fff;outline-offset:-4px}
-.mobile-user-navigation footer{padding:8px 14px;background:#060608}
-.mobile-user-navigation .mobile-nav-logout{width:100%;min-height:44px;text-align:left;color:#ff003c;padding:10px 0}
+.mobile-user-navigation footer{display:grid;grid-template-columns:minmax(88px,32%) minmax(0,1fr);padding:0;background:#060608;border-top:1px solid #29292e}
+.mobile-user-navigation .mobile-nav-logout{grid-column:2;width:100%;min-height:var(--sl-control-height-small,44px);text-align:left;color:#ff003c;padding:6px 14px;border-left:1px solid #29292e}
 @media(prefers-reduced-motion:reduce){.mobile-user-navigation[open]{animation:none!important}}
 }
