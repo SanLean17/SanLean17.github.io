@@ -192,6 +192,16 @@ Los campos NO deben crecer hasta extremos simplemente para completar una fila o 
 - Botones de acción: `999px`.
 - Padding debe seguir la escala existente: 18 / 24 / 30 / 42 px según jerarquía.
 
+### Altura canónica de card
+
+La referencia aprobada son las cards de INICIO: `CONFIGURACIÓN`, `TWITCH + KICK` y `COLABORADORES`.
+
+- Altura mínima canónica desktop: `200px`.
+- Todas las cards equivalentes de resumen/acceso deben partir de esa misma altura visual.
+- Si una card necesita más espacio por contenido excepcional, puede crecer; nunca debe comprimirse por debajo de `200px`.
+- La regla se aplica mediante el token `--sl-card-height` y el componente `.ui-card`, además de las cards equivalentes ya existentes.
+- La igualdad de altura busca evitar saltos y diferencias visuales entre cards hermanas.
+
 ### BLOQUE A — FORMA GENERAL (APROBADO)
 
 Estas reglas quedan aprobadas como referencia oficial de USUARIO y se mantienen tal como funcionan actualmente:
@@ -256,6 +266,7 @@ La votación debe reiniciarse completa utilizando las mismas cinco cartas y una 
 - Botones reutilizan componente principal/secundario.
 - Campos respetan altura y ancho máximo; no llenan espacios vacíos sin necesidad.
 - Cajas respetan fondo, borde, radio y padding del sistema.
+- Cards equivalentes respetan la altura canónica de `200px`.
 - Usa el mismo offset/columna que el resto de MI PANEL.
 - Sólo una sección de MI PANEL está visible.
 - Responsive no rompe alineaciones ni jerarquía.
