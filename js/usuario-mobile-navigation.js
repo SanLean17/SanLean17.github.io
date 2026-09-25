@@ -7,12 +7,12 @@
     ['account','MI CUENTA', [['home','MI CUENTA'],['profile','MI PERFIL'],['security','SEGURIDAD'],['collaborators','COLABORADORES'],['connections','CONEXIONES']]]
   ];
   const account = document.body.classList.contains('account-page');
-  const dialog = document.createElement('dialog');
+  const dialog = document.createElement('section');
   dialog.className = 'mobile-user-navigation';
   dialog.id = 'mobileUserNavigation';
-  dialog.setAttribute('aria-labelledby','mobileNavigationTitle');
-  dialog.innerHTML = '<header><h2 id="mobileNavigationTitle">NAVEGACIÓN</h2><button type="button" class="mobile-nav-close" aria-label="Cerrar navegación">×</button></header><div class="mobile-nav-columns"><div class="mobile-nav-groups" role="tablist" aria-label="Categorías" aria-orientation="vertical"></div><nav class="mobile-nav-options" id="mobileNavigationOptions" role="tabpanel" aria-label="Secciones"></nav></div><footer><button type="button" class="mobile-nav-logout">CERRAR SESIÓN</button></footer>';
-  document.body.append(dialog);
+  dialog.setAttribute('aria-label','Navegación de usuario');
+  dialog.innerHTML = '<div class="mobile-nav-columns"><div class="mobile-nav-groups" role="tablist" aria-label="Categorías" aria-orientation="vertical"></div><nav class="mobile-nav-options" id="mobileNavigationOptions" role="tabpanel" aria-label="Secciones"></nav></div><footer><button type="button" class="mobile-nav-logout">CERRAR SESIÓN</button></footer>';
+  document.querySelector('.site-header').after(dialog);
   const tabs = dialog.querySelector('.mobile-nav-groups');
   const options = dialog.querySelector('.mobile-nav-options');
   let activeGroup = account ? 'account' : 'panel';
@@ -63,12 +63,12 @@
     else return;
     event.preventDefault();selectGroup(buttons[next].dataset.group);buttons[next].focus();
   });
-  function close(){dialog.close();}
+  function close(){dialog.removeAttribute('open');dialog.dispatchEvent(new Event('close'));}
   dialog.addEventListener('close',()=>{
     document.body.classList.remove('mobile-navigation-open');
-    if(sourceTrigger){sourceTrigger.setAttribute('aria-expanded','false');sourceTrigger.focus();}
+    if(sourceTrigger){sourceTrigger.setAttribute('aria-expanded','false');if(mobile.matches)sourceTrigger.setAttribute('aria-label','Abrir menú de navegación');sourceTrigger.focus();}
   });
-  dialog.querySelector('.mobile-nav-close').addEventListener('click',close);
+  document.addEventListener('keydown',event=>{if(event.key==='Escape' && dialog.hasAttribute('open')){event.preventDefault();close();}});
   dialog.addEventListener('click',event=>{if(event.target===dialog)close()});
   dialog.querySelector('.mobile-nav-logout').addEventListener('click',()=>{
     close();document.getElementById(account?'accountLogout':'headerLogout')?.click();
@@ -78,19 +78,19 @@
     if(!mobile.matches||!trigger)return;
     event.preventDefault();event.stopImmediatePropagation();
     if(document.getElementById('panelView')?.hidden)return;
-    sourceTrigger=trigger;
+    sourceTrigger=trigger;if(dialog.hasAttribute('open')){close();return;}
     const key=currentKey();
     selectGroup(account?'account':['killers','killerPerks','survivor'].includes(key)?'roulette':'panel');
-    dialog.showModal();document.body.classList.add('mobile-navigation-open');
-    trigger.setAttribute('aria-expanded','true');
-    tabs.querySelector('[aria-selected="true"]').focus();
+    dialog.setAttribute('open','');document.body.classList.add('mobile-navigation-open');
+    trigger.setAttribute('aria-expanded','true');trigger.setAttribute('aria-label','Cerrar menú de navegación');
+    tabs.querySelector('[aria-selected="true"]').focus({preventScroll:true});
   },true);
   function syncMode(){
-    if(dialog.open)close();
+    if(dialog.hasAttribute('open'))close();
     document.querySelectorAll('.user-account-trigger').forEach(trigger=>{
       trigger.setAttribute('aria-controls',mobile.matches?dialog.id:'accountIdentityDropdown');
       trigger.setAttribute('aria-expanded','false');
-      if(mobile.matches)trigger.setAttribute('aria-haspopup','dialog');else trigger.removeAttribute('aria-haspopup');
+      trigger.removeAttribute('aria-haspopup');if(mobile.matches)trigger.setAttribute('aria-label','Abrir menú de navegación');else trigger.removeAttribute('aria-label');
     });
     document.querySelectorAll('.user-account-dropdown').forEach(menu=>menu.hidden=true);
   }
