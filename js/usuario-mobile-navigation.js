@@ -2,7 +2,7 @@
 (() => {
   const mobile = matchMedia('(max-width:760px)');
   const groups = [
-    ['panel','MI PANEL', [['home','INICIO'],['overlays','OVERLAYS OBS'],['votes','VOTACIONES'],['giveaways','SORTEOS'],['platforms','TWITCH / KICK'],['tournament','TORNEO 1VS1']]],
+    ['panel','MI PANEL', [['home','INICIO'],['overlays','OVERLAYS OBS'],['votes','CARTAS'],['giveaways','SORTEOS'],['platforms','TWITCH / KICK'],['tournament','TORNEO 1VS1']]],
     ['roulette','RULETAS', [['killers','KILLERS'],['killerPerks','PERKS DE KILLERS'],['survivor','PERKS DE SUPERVIVIENTES']]],
     ['account','MI CUENTA', [['home','MI CUENTA'],['profile','MI PERFIL'],['security','SEGURIDAD'],['collaborators','COLABORADORES'],['connections','CONEXIONES']]]
   ];

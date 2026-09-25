@@ -44,7 +44,7 @@
 
   if(document.body.classList.contains('user-page')&&!document.querySelector('script[data-sanlean-cards]')){
     const script=document.createElement('script');
-    script.src='../js/usuario-cartas.js?v=20260925-1';
+    script.src='../js/usuario-cartas.js?v=20260925-6';
     script.dataset.sanleanCards='true';
     document.body.appendChild(script);
   }

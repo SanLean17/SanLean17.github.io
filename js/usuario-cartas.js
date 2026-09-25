@@ -13,11 +13,14 @@
   function injectCss(){if(document.querySelector('link[data-sanlean-cards]'))return;const link=document.createElement('link');link.rel='stylesheet';link.href='../css/usuario-cartas.css?v=20260925-3';link.dataset.sanleanCards='true';document.head.appendChild(link)}
 
   function renameSurface(){
+    // This runs from a subtree observer: only mutate when the value changes.
+    const setText=(node,value)=>{if(node&&node.textContent!==value)node.textContent=value};
+    const setHtml=(node,value)=>{if(node&&node.innerHTML!==value)node.innerHTML=value};
     document.querySelectorAll('[data-section-key="votes"],[data-tab="votes"]').forEach(btn=>{if(btn.textContent!=='CARTAS')btn.textContent='CARTAS'});
     const head=$('streamVotesPanel')?.querySelector('.stream-module-head');
-    if(head){const kicker=head.querySelector('.eyebrow');if(kicker)kicker.textContent='JUEGO EN STREAM';const title=head.querySelector('h2');if(title)title.textContent='CARTAS';const copy=head.querySelector('p:last-child');if(copy)copy.innerHTML='Generá una ronda de cinco cartas ocultas para que el chat vote o para elegir manualmente.<br>Revelá el resultado ganador y continuá a la ruleta de perks cuando corresponda.'}
+    if(head){setText(head.querySelector('.eyebrow'),'JUEGO EN STREAM');setText(head.querySelector('h2'),'CARTAS');setHtml(head.querySelector('p:last-child'),'Generá una ronda de cinco cartas ocultas para que el chat vote o para elegir manualmente.<br>Revelá el resultado ganador y continuá a la ruleta de perks cuando corresponda.')}
     const output=$('streamVotesPanel')?.querySelector('[data-stream-output="votes"]');
-    if(output){const title=output.querySelector('.stream-output-head h3');if(title)title.textContent='CARTAS EN STREAM';const copy=output.querySelector('.stream-output-head p');if(copy)copy.textContent='El overlay mostrará las cinco cartas, el tiempo y los resultados de la votación debajo de ellas, además de la revelación que controle el streamer.'}
+    if(output){setText(output.querySelector('.stream-output-head h3'),'CARTAS EN STREAM');setText(output.querySelector('.stream-output-head p'),'El overlay mostrará las cinco cartas, el tiempo y los resultados de la votación debajo de ellas, además de la revelación que controle el streamer.')}
     document.querySelectorAll('.account-page .permission-grid label').forEach(label=>{const span=label.querySelector('span');if(span?.textContent.trim()==='VOTACIONES')span.textContent='CARTAS'});
     document.querySelectorAll('.account-page .permission-tags span').forEach(span=>{if(span.textContent.trim()==='VOTACIONES')span.textContent='CARTAS'});
   }
