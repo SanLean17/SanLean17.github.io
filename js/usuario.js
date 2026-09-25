@@ -35,10 +35,18 @@ window.SanLeanPanel={selectSection};
 document.querySelectorAll('.panel-tabs button[data-tab]').forEach(btn=>btn.addEventListener('click',()=>selectSection(btn.dataset.tab)));
 search?.addEventListener('input',render);
 const resetModal=document.getElementById('resetModal');
-document.getElementById('resetWeights')?.addEventListener('click',()=>{if(resetModal)resetModal.hidden=false});
+document.getElementById('resetWeights')?.addEventListener('click',()=>{if(resetModal){resetModal.hidden=false;requestAnimationFrame(()=>document.getElementById('cancelReset')?.focus())}});
 document.getElementById('cancelReset')?.addEventListener('click',()=>{if(resetModal)resetModal.hidden=true});
 document.getElementById('confirmReset')?.addEventListener('click',()=>{Object.keys(weights).filter(k=>k.startsWith(current+':')).forEach(k=>delete weights[k]);Object.keys(bonusEntries).filter(k=>k.startsWith(current+':')).forEach(k=>delete bonusEntries[k]);saveSimulation();if(resetModal)resetModal.hidden=true;render()});
-resetModal?.addEventListener('click',e=>{if(e.target===resetModal)resetModal.hidden=true});
+resetModal?.addEventListener('click',e=>{if(e.target===resetModal)document.getElementById('cancelReset')?.click()});
+
+const confirmationModals=[
+  {modal:document.getElementById('resetModal'),safe:document.getElementById('cancelReset')},
+  {modal:document.getElementById('adminEditModal'),safe:document.getElementById('cancelAdminEdit')},
+  {modal:document.getElementById('tournamentConfirmModal'),safe:document.getElementById('tournamentConfirmCancel')}
+].filter(x=>x.modal&&x.safe);
+confirmationModals.forEach(({modal,safe})=>{const observer=new MutationObserver(()=>{if(!modal.hidden)requestAnimationFrame(()=>safe.focus())});observer.observe(modal,{attributes:true,attributeFilter:['hidden']});modal.addEventListener('click',e=>{if(e.target===modal)safe.click()})});
+document.addEventListener('keydown',e=>{const active=confirmationModals.find(x=>!x.modal.hidden);if(!active)return;if(e.key==='Escape'){e.preventDefault();active.safe.click();return}if(e.key==='Enter'&&document.activeElement!==active.safe){e.preventDefault()}});
 
 window.addEventListener('DOMContentLoaded',()=>{const key=location.hash.replace('#','');selectSection(allPanelKeys.has(key)?key:'killers',{updateHash:false})});
 window.addEventListener('hashchange',()=>{const key=location.hash.replace('#','');if(allPanelKeys.has(key))selectSection(key,{updateHash:false})});
