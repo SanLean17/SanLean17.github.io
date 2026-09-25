@@ -42,3 +42,9 @@
   .user-page :is(.tournament-table,.finished-table){min-width:560px}
   .user-page .ui-table-wrap:focus-visible{outline:2px solid #ff003c;outline-offset:2px}
 }
+
+/* Participant name and status share a row, with breathing room before the badge. */
+.user-page .participant-identity{display:flex;align-items:center;column-gap:35px;row-gap:8px;flex:1;min-width:0}
+.user-page .participant-identity>span{min-width:0;overflow-wrap:anywhere}
+.user-page .participant-identity>.ui-badge{flex-shrink:0;white-space:nowrap}
+@media(max-width:600px){.user-page .participant-identity{flex-wrap:wrap}}
