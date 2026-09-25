@@ -23,7 +23,8 @@
   --sl-title-size:48px;
   --sl-section-title-size:48px;
   --sl-section-kicker-size:13px;
-  --sl-card-title-size:18px;
+  /* Se restaura el tamaño aprobado que ya tenían las cards de INICIO. */
+  --sl-card-title-size:29px;
   --sl-body-size:16px;
   --sl-small-size:11px;
   --sl-body-line:1.5;
@@ -100,13 +101,57 @@
   line-height:var(--sl-body-line)!important;
 }
 
-/* Títulos de card: se conserva el aspecto actual aprobado. */
-.user-page .dashboard-card h3,.account-page .account-home-cards h3{font-size:var(--sl-card-title-size)}
+/* Títulos de card: vuelven exactamente a la escala que tenían antes del Bloque B. */
+.user-page .dashboard-card h3,
+.account-page .account-home-cards h3{
+  font-size:var(--sl-card-title-size)!important;
+  line-height:1!important;
+}
+
+/*
+ CAJA CANÓNICA DE ENCABEZADO
+ MI PANEL, herramientas y MI CUENTA comparten la misma superficie de presentación.
+ Referencias visuales aprobadas: BIENVENIDO A MI PANEL y MI CUENTA.
+*/
+.user-page .dashboard-welcome,
+.user-page .section-context,
+.user-page .stream-module-head,
+.account-page .account-welcome,
+.account-page .section-head{
+  box-sizing:border-box!important;
+  width:100%!important;
+  padding:30px 32px!important;
+  border:1px solid rgba(255,255,255,.10)!important;
+  border-radius:var(--sl-panel-radius)!important;
+  background:rgba(8,8,10,.82)!important;
+  box-shadow:none!important;
+}
+.user-page .section-context,
+.user-page .stream-module-head,
+.account-page .section-head{
+  margin:0 0 22px!important;
+}
+
+/*
+ MI CUENTA forma parte del mismo sistema.
+ El contenedor de sección deja de ser una caja distinta: la caja visual es el encabezado canónico,
+ igual que en INICIO. Así todas las vistas arrancan en la misma posición y con la misma geometría.
+*/
+.account-page .account-section{
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.account-page .account-home{padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
+.account-page .section-head{display:block!important}
+.account-page .section-head>div{width:100%}
 
 /* Superficies */
 .user-page .ui-surface,.user-page .module-box,.user-page .overlay-card,.user-page .connection-card-stream{box-sizing:border-box;background:rgba(8,8,10,.84);border:1px solid var(--sl-border);border-radius:var(--sl-card-radius)}
 .user-page .ui-inner-surface{background:var(--sl-bg-card);border:1px solid var(--sl-border);border-radius:var(--sl-card-radius)}
-.user-page .dashboard-welcome,.user-page .dashboard-card,.user-page .platform-panel,.account-page .account-section,.account-page .account-welcome{border-radius:var(--sl-panel-radius)}
+.user-page .dashboard-card,.user-page .platform-panel,.account-page .account-home-cards article{border-radius:var(--sl-panel-radius)}
 
 /* Botones canónicos */
 .user-page .ui-btn,.user-page .module-actions button,.user-page .overlay-actions button,.user-page .copy-row button,.user-page .connection-card-stream button,.account-page .system-btn{box-sizing:border-box;min-height:var(--sl-control-height-small);padding:0 22px;border-radius:var(--sl-control-radius);font:800 12px var(--sl-font-body);cursor:pointer}
@@ -142,7 +187,6 @@
 
 /* Stream Tools forma parte de USUARIO: mismas medidas, no un sistema paralelo. */
 .user-page .stream-module{margin-top:0}
-.user-page .stream-module-head,.user-page .section-context{margin-bottom:var(--sl-space-5)}
 .user-page .stream-module .module-box,
 .user-page .stream-module .overlay-grid,
 .user-page .stream-module .connection-grid,
@@ -173,4 +217,9 @@
   :root{--sl-title-size:40px;--sl-section-title-size:40px;--sl-body-size:15px;--sl-copy-width:100%}
   .user-page .ui-fields-two-contained,
   .user-page .stream-module .module-fields.two{grid-template-columns:minmax(0,1fr)}
+  .user-page .dashboard-welcome,
+  .user-page .section-context,
+  .user-page .stream-module-head,
+  .account-page .account-welcome,
+  .account-page .section-head{padding:24px 20px!important}
 }
