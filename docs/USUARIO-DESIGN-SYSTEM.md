@@ -54,7 +54,8 @@ Esta estructura se replica en KILLERS, PERKS DE KILLERS, PERKS DE SUPERVIVIENTES
 - Mayúsculas.
 - Letter-spacing: `.16em`.
 - Color: `#FF003C`.
-- Distancia al título: `10px`.
+- Distancia visual al título: `4px`.
+- La categoría roja se desplaza levemente hacia abajo para acercarse al título sin mover el título principal.
 
 #### Título principal / título de sección
 - Referencia: `BIENVENIDO A MI PANEL`.
@@ -131,6 +132,9 @@ Se aplica a:
 
 Reglas actuales:
 - ancho: `100%` de la columna funcional.
+- altura visual desktop canónica: `188px`, tomada de la caja `BIENVENIDO A MI PANEL`.
+- todas las cajas equivalentes deben mantener esa misma altura mínima para evitar saltos al cambiar de sección.
+- en mobile la altura vuelve a ser automática para permitir reflow sin romper contenido.
 - padding: `30px 32px` desktop.
 - radio: `16px`.
 - borde: `1px solid rgba(255,255,255,.10)`.
