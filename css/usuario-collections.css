@@ -49,11 +49,35 @@
 .user-page .vote-live-head{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;font:700 12px/1.5 Montserrat,Arial,sans-serif}
 .user-page .tournament-table .remove-player{font:700 20px/1 Montserrat,Arial,sans-serif!important}
 
+/* VOTACIONES simulation: five hidden cards, normal and special event states. */
+.user-page .vote-sim-shell{display:grid;gap:18px}
+.user-page .vote-sim-toolbar,.user-page .vote-sim-mode,.user-page .vote-sim-actions{display:flex;align-items:center;flex-wrap:wrap;gap:10px}
+.user-page .vote-sim-toolbar{justify-content:space-between;padding:12px 14px;border:1px solid rgba(255,255,255,.10);border-radius:12px;background:#0c0c0f}
+.user-page .vote-sim-toolbar strong{margin-left:auto;font:800 11px/1.2 Montserrat,Arial,sans-serif;color:#fff}
+.user-page .vote-sim-mode{justify-content:space-between}
+.user-page .vote-sim-mode>span{font:800 11px/1.2 Montserrat,Arial,sans-serif;color:#ff7797;letter-spacing:.08em}
+.user-page .vote-sim-mode>strong{font:800 11px/1.2 Montserrat,Arial,sans-serif;color:#fff}
+.user-page .vote-sim-cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.user-page .vote-sim-card{position:relative;min-width:0;min-height:180px;padding:16px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:#0c0c0f;overflow:hidden;transition:border-color 180ms ease,background-color 180ms ease,transform 180ms ease}
+.user-page .vote-sim-card.is-winner{border-color:#ff003c;background:rgba(255,0,60,.07)}
+.user-page .vote-sim-card.is-special{border-color:rgba(255,255,255,.22);background:#15131a}
+.user-page .vote-sim-card.is-special.is-winner{border-color:#ff003c;background:rgba(255,0,60,.10)}
+.user-page .vote-sim-card-face{display:grid;gap:10px}
+.user-page .vote-sim-card-face>b{font:800 30px/1 Montserrat,Arial,sans-serif;color:#fff}
+.user-page .vote-sim-card-face>span{font:700 10px/1.35 Montserrat,Arial,sans-serif;color:#bdbdc6}
+.user-page .vote-sim-card-hidden{position:absolute;left:16px;right:16px;bottom:16px;display:grid;gap:5px;padding-top:12px;border-top:1px solid rgba(255,255,255,.10)}
+.user-page .vote-sim-card-hidden small{font:800 9px/1.2 Montserrat,Arial,sans-serif;letter-spacing:.08em;color:rgba(255,255,255,.42)}
+.user-page .vote-sim-card-hidden strong{font:800 11px/1.35 Montserrat,Arial,sans-serif;color:#fff}
+.user-page .vote-sim-actions button{min-height:36px;padding:8px 12px;border:1px solid rgba(255,255,255,.18);border-radius:9px;background:transparent;color:#eee;font:700 11px/1.2 Montserrat,Arial,sans-serif}
+.user-page .vote-sim-help{margin:0!important;padding:12px 14px;border-left:3px solid #ff003c;background:rgba(255,0,60,.05);border-radius:0 10px 10px 0}
+.user-page .vote-sim-separator{height:1px;background:rgba(255,255,255,.10)}
+
 :is(.user-page,.account-page) .ui-simulation{margin:24px 0;padding:20px;border:1px dashed #ff003c;border-radius:14px;background:#111114}
 :is(.user-page,.account-page) .ui-simulation summary{cursor:pointer;color:#ff7797;font:800 12px/1.5 Montserrat,Arial,sans-serif}
 :is(.user-page,.account-page) .ui-simulation p{margin:12px 0 16px;color:#bdbdc6;font:500 13px/1.5 Montserrat,Arial,sans-serif}
 :is(.user-page,.account-page) .ui-simulation button:disabled{opacity:.55;cursor:default}
 
+@media(max-width:900px){.user-page .vote-sim-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){
   .account-page .account-layout{grid-template-columns:minmax(0,1fr)!important}
   .account-page .account-nav{min-width:0}
@@ -67,6 +91,9 @@
   .user-page .participant-expel{justify-self:end}
   .user-page :is(.tournament-table,.finished-table){min-width:560px}
   .user-page .ui-table-wrap:focus-visible{outline:2px solid #ff003c;outline-offset:2px}
+  .user-page .vote-sim-cards{grid-template-columns:1fr}
+  .user-page .vote-sim-card{min-height:150px}
+  .user-page .vote-sim-toolbar strong{width:100%;margin-left:0}
 }
 
 /* Participant name and status share a row, with breathing room before the badge. */
