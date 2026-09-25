@@ -1,0 +1,56 @@
+/* USUARIO > CARTAS — game-round interface. */
+.user-page #streamVotesPanel .cards-platform-box,
+.user-page #streamVotesPanel .cards-round-box,
+.user-page #streamVotesPanel .cards-live-box,
+.user-page #streamVotesPanel .cards-board-box,
+.user-page #streamVotesPanel .cards-result-box{box-sizing:border-box;width:100%;padding:28px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(8,8,10,.84);margin-top:22px}
+.user-page #streamVotesPanel .cards-section-title{margin:0 0 18px;color:#fff;font:800 13px/1.2 Montserrat,Arial,sans-serif;letter-spacing:.04em}
+.user-page #streamVotesPanel .cards-fields{display:grid;grid-template-columns:repeat(2,minmax(0,460px));gap:19px 35px;align-items:end}
+.user-page #streamVotesPanel .cards-platform-box .cards-fields{grid-template-columns:minmax(0,460px)}
+.user-page #streamVotesPanel .cards-fields>label{display:flex;flex-direction:column;gap:9px;min-width:0;color:#fff;font:800 12px/1.3 Montserrat,Arial,sans-serif}
+.user-page #streamVotesPanel .cards-fields select,
+.user-page #streamVotesPanel .cards-fields input{box-sizing:border-box;width:100%;height:48px;padding:0 16px;border:1px solid rgba(255,255,255,.24);border-radius:10px;background:#09090b;color:#fff;font:500 14px/1 Montserrat,Arial,sans-serif;outline:none}
+.user-page #streamVotesPanel .cards-fields select:focus,
+.user-page #streamVotesPanel .cards-fields input:focus{border-color:#ff003c}
+.user-page #streamVotesPanel .cards-help{max-width:460px;margin:10px 0 0;color:rgba(255,255,255,.55);font:500 11px/1.5 Montserrat,Arial,sans-serif}
+.user-page #streamVotesPanel .cards-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.user-page #streamVotesPanel .cards-actions button{height:44px;padding:0 20px;border-radius:999px;font:800 13px/1 Montserrat,Arial,sans-serif;cursor:pointer}
+.user-page #streamVotesPanel .cards-actions .cards-primary{border:1px solid #ff003c;background:#ff003c;color:#fff}
+.user-page #streamVotesPanel .cards-actions .cards-secondary{border:1px solid #ff003c;background:transparent;color:#fff}
+.user-page #streamVotesPanel .cards-actions button:disabled{opacity:.42;cursor:not-allowed}
+.user-page #streamVotesPanel .cards-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,220px));gap:20px}
+.user-page #streamVotesPanel .cards-metric{box-sizing:border-box;min-height:82px;padding:16px 18px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:#111114}
+.user-page #streamVotesPanel .cards-metric span{display:block;color:rgba(255,255,255,.55);font:800 11px/1.2 Montserrat,Arial,sans-serif;letter-spacing:.08em}
+.user-page #streamVotesPanel .cards-metric strong{display:block;margin-top:8px;color:#fff;font:800 18px/1.2 Montserrat,Arial,sans-serif}
+.user-page #streamVotesPanel .cards-event-badge{display:none;margin-bottom:18px;width:max-content;height:26px;align-items:center;padding:0 10px;border:1px solid rgba(159,123,255,.62);border-radius:999px;background:rgba(110,59,255,.12);color:#c6b2ff;font:800 10px/1 Montserrat,Arial,sans-serif}
+.user-page #streamVotesPanel .cards-event-badge.is-visible{display:inline-flex}
+.user-page #streamVotesPanel .cards-stage{display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:18px;align-items:stretch}
+.user-page #streamVotesPanel .game-card{position:relative;aspect-ratio:2/3;min-width:0;border:1px solid rgba(255,255,255,.12);border-radius:16px;background:linear-gradient(145deg,#19191d,#0b0b0d 62%,#17171a);overflow:hidden;display:grid;place-items:center;transition:transform 180ms ease,border-color 180ms ease,box-shadow 180ms ease,background-color 180ms ease;color:#fff}
+.user-page #streamVotesPanel .game-card:before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 42%,rgba(255,255,255,.08),transparent 42%),linear-gradient(135deg,transparent 40%,rgba(255,0,60,.08));pointer-events:none}
+.user-page #streamVotesPanel .game-card.is-clickable{cursor:pointer}
+.user-page #streamVotesPanel .game-card.is-clickable:hover{transform:translateY(-2px);border-color:rgba(255,0,60,.5)}
+.user-page #streamVotesPanel .game-card.is-winner{border-color:#ff003c;box-shadow:0 0 0 1px rgba(255,0,60,.42),0 0 28px rgba(255,0,60,.34)}
+.user-page #streamVotesPanel .game-card.is-special{border-color:rgba(159,123,255,.72);background:linear-gradient(145deg,#28184b,#120c22 62%,#241542);box-shadow:0 0 24px rgba(110,59,255,.24)}
+.user-page #streamVotesPanel .game-card.is-special.is-winner{border-color:#9f7bff;box-shadow:0 0 0 1px rgba(159,123,255,.55),0 0 34px rgba(110,59,255,.46)}
+.user-page #streamVotesPanel .game-card-letter{position:relative;z-index:1;font:400 clamp(54px,6vw,92px)/1 Impact,'Arial Black',sans-serif;letter-spacing:.01em;text-shadow:0 4px 14px rgba(0,0,0,.5)}
+.user-page #streamVotesPanel .game-card-result{position:absolute;z-index:2;inset:0;display:none;place-items:center;padding:18px;text-align:center;background:linear-gradient(145deg,#111114,#080809);font:800 20px/1.2 Montserrat,Arial,sans-serif}
+.user-page #streamVotesPanel .game-card.is-special .game-card-result{background:linear-gradient(145deg,#28184b,#110b20)}
+.user-page #streamVotesPanel .game-card.is-revealed .game-card-letter{display:none}
+.user-page #streamVotesPanel .game-card.is-revealed .game-card-result{display:grid}
+.user-page #streamVotesPanel .cards-vote-results{display:flex;flex-direction:column;gap:0;margin-top:20px;border:1px solid rgba(255,255,255,.10);border-radius:14px;overflow:hidden;background:#111114}
+.user-page #streamVotesPanel .cards-vote-row{display:grid;grid-template-columns:34px minmax(0,1fr) 120px;gap:14px;align-items:center;min-height:54px;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.10)}
+.user-page #streamVotesPanel .cards-vote-row:last-child{border-bottom:0}
+.user-page #streamVotesPanel .cards-vote-row>b{color:#fff;font:800 14px/1 Montserrat,Arial,sans-serif}
+.user-page #streamVotesPanel .cards-vote-track{height:7px;border-radius:999px;background:rgba(255,255,255,.09);overflow:hidden}
+.user-page #streamVotesPanel .cards-vote-track>i{display:block;height:100%;width:0;background:#ff003c;transition:width 180ms ease}
+.user-page #streamVotesPanel .cards-vote-row.is-special .cards-vote-track>i{background:#9f7bff}
+.user-page #streamVotesPanel .cards-vote-meta{text-align:right;color:rgba(255,255,255,.72);font:700 11px/1.2 Montserrat,Arial,sans-serif;white-space:nowrap}
+.user-page #streamVotesPanel .cards-status{min-height:18px;margin:16px 0 0;color:rgba(255,255,255,.72);font:600 12px/1.5 Montserrat,Arial,sans-serif}
+.user-page #streamVotesPanel .cards-result-summary{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px}
+.user-page #streamVotesPanel .cards-result-summary strong{font:800 18px/1.2 Montserrat,Arial,sans-serif;color:#fff}
+.user-page #streamVotesPanel .cards-result-summary span{color:rgba(255,255,255,.58);font:700 11px/1.3 Montserrat,Arial,sans-serif}
+.user-page #streamVotesPanel .cards-result-box[hidden]{display:none!important}
+.user-page #streamVotesPanel .cards-preview-note{margin:18px 0 0;color:rgba(255,255,255,.5);font:500 11px/1.5 Montserrat,Arial,sans-serif}
+@media(max-width:980px){.user-page #streamVotesPanel .cards-stage{grid-template-columns:repeat(5,minmax(96px,1fr));gap:12px}.user-page #streamVotesPanel .cards-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){.user-page #streamVotesPanel .cards-platform-box,.user-page #streamVotesPanel .cards-round-box,.user-page #streamVotesPanel .cards-live-box,.user-page #streamVotesPanel .cards-board-box,.user-page #streamVotesPanel .cards-result-box{padding:20px}.user-page #streamVotesPanel .cards-fields{grid-template-columns:1fr}.user-page #streamVotesPanel .cards-metrics{grid-template-columns:1fr}.user-page #streamVotesPanel .cards-stage{grid-template-columns:repeat(5,minmax(78px,1fr));gap:8px}.user-page #streamVotesPanel .game-card{border-radius:12px}.user-page #streamVotesPanel .game-card-letter{font-size:50px}.user-page #streamVotesPanel .cards-vote-row{grid-template-columns:28px minmax(0,1fr);gap:10px}.user-page #streamVotesPanel .cards-vote-meta{grid-column:2;text-align:left}.user-page #streamVotesPanel .cards-actions{flex-direction:column}.user-page #streamVotesPanel .cards-actions button{width:100%}}
+@media(max-width:520px){.user-page #streamVotesPanel .cards-stage{overflow-x:auto;grid-template-columns:repeat(5,104px);padding-bottom:8px}.user-page #streamVotesPanel .game-card-letter{font-size:58px}}
