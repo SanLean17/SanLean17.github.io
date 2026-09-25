@@ -125,86 +125,77 @@ Los contenedores exteriores de MI PERFIL, SEGURIDAD, COLABORADORES y CONEXIONES 
 
 La referencia es INICIO y sus cards.
 
-#### 1. Encabezado → contenido siguiente
-- Se conserva la distancia actual aprobada: `22px`.
-- Esta medida se aplica como separación canónica entre el encabezado y el primer bloque de contenido.
-- También se usa provisionalmente entre bloques principales consecutivos dentro de una vista.
-- **Pendiente de revisión futura:** volver a evaluar esta misma distancia cuando se revisen módulos complejos como SORTEOS y TORNEO.
+#### Encabezado → contenido siguiente
+- Distancia canónica: `22px`.
+- También se usa provisionalmente entre bloques principales consecutivos.
+- **Pendiente:** revisar esta distancia al auditar SORTEOS y TORNEO.
 
-#### 2. Grilla de cards
-- Desktop: siempre `3` columnas.
-- Separación horizontal y vertical: `20px`.
-- Si existe una cuarta card, comienza una nueva fila; se completan filas de hasta 3 cards.
-- Responsive: la grilla puede reducir columnas para mantener legibilidad.
-- La clase canónica para futuras grillas es `.ui-card-grid`.
+#### Grilla de cards
+- Desktop: `3` columnas.
+- Gap horizontal y vertical: `20px`.
+- La cuarta card inicia una nueva fila.
+- Responsive puede reducir columnas.
 
-#### 3. Espacio interno de card
-- Padding canónico: `25px`.
-- Referencia: cards de INICIO.
-- Se conserva el mismo aire interior arriba, abajo y laterales.
-
-#### 4. Categoría roja de card → título
-- Categoría roja de card: `13px`.
-- Distancia categoría → título: `7px`.
-- Referencia: `RULETAS` → `CONFIGURACIÓN`.
-
-#### 5. Título de card → párrafo
-- Distancia: `10px`.
-- El párrafo queda más cerca del título que antes, pero mantiene una separación mayor que la relación categoría → título.
-
-#### 6. Interlínea del párrafo dentro de cards
-- Line-height canónico: `1.5`.
-
-#### 7. Párrafo → botón
-- Se conserva la lógica y distancia visual de las cards de INICIO.
-- Los botones permanecen alineados al borde inferior de la card mediante `margin-top:auto`.
-- Tipografía, tamaño y forma del botón quedan sin cambios.
-
-#### 8. Altura de cards
-- Altura mínima canónica desktop: `200px`.
-- Opción aprobada: **mínimo 200px**.
-- Si una card necesita más espacio por contenido excepcional, puede crecer.
-- Cards hermanas deben mantener altura uniforme cuando comparten fila.
-
-#### 9. Distancia entre grupos/bloques
-- Por ahora se usa la misma distancia del encabezado al contenido: `22px`.
-- Esta decisión es provisional y debe recordarse/revisarse más adelante al auditar módulos con varios bloques internos.
+#### Card
+- Padding: `25px`.
+- Categoría roja: `13px`.
+- Categoría → título: `7px`.
+- Título → párrafo: `10px`.
+- Interlínea del párrafo: `1.5`.
+- Botones alineados abajo.
+- Altura mínima: `200px`; puede crecer si el contenido lo requiere.
 
 ## 5. Botones
 
-Todos los botones del sistema deben partir de los componentes canónicos.
+Los botones de acción del sistema toman como referencia los botones de las cards `CONFIGURACIÓN` y `COLABORADORES` de INICIO.
 
-### Principal
-- Fondo `#FF003C`.
-- Texto blanco.
-- Montserrat 800.
-- Altura normal: 44–48 px según contexto.
-- Bordes totalmente redondeados (`999px`).
-
-### Secundario
-- Fondo transparente/oscuro.
-- Borde `#FF003C`.
-- Texto blanco.
-- Misma altura, tipografía y radio que el principal.
-
-No crear botones con radios, alturas, tamaños de fuente o colores arbitrarios.
+### Botón de acción canónico
+- Altura: `44px`.
+- Padding horizontal: `20px`.
+- Radio: `999px`.
+- Tipografía: Montserrat `800`, `11px`.
+- Principal: fondo `#FF003C`, texto blanco.
+- Secundario: fondo transparente, borde `#FF003C`, texto blanco.
+- Esta regla se aplica a los botones de acción de MI CUENTA, MI PERFIL, SEGURIDAD, COLABORADORES, TORNEO, OVERLAYS, VOTACIONES, SORTEOS, plataformas y componentes equivalentes.
+- **Excepción aprobada:** los controles propios de KILLERS, PERKS DE KILLERS y PERKS DE SUPERVIVIENTES conservan su diseño especializado porque manejan más información y no se consideran botones de acción estándar.
+- Los botones de navegación, selects personalizados y controles especializados tampoco se convierten en botones de acción.
 
 ## 6. Campos y formularios
 
-- Altura estándar: `48px`.
-- Radio estándar de campo: `10px`.
+La referencia prioritaria aprobada es `SEGURIDAD → CONTRASEÑA ACTUAL`.
+
+### Ritmo canónico de campo
+- Label → campo: `9px`.
+- Altura de input/select estándar: `48px`.
+- Radio: `10px`.
 - Fondo: `#09090B`.
 - Borde: `rgba(255,255,255,.24)`.
 - Focus: `#FF003C`.
-- Texto: Montserrat 14 px.
+- Texto: Montserrat `14px`.
+- Input → texto de ayuda: `10px`.
+- Entre grupos de campos verticales: `19px`.
+- Entre dos campos que comparten fila: `25px` horizontal.
+- En mobile los campos en dos columnas pasan a una sola columna cuando corresponde.
+
+### Caja funcional canónica
+Todo bloque funcional principal debajo del encabezado debe tener una superficie que lo contenga; no deben quedar formularios o controles principales sueltos sobre el fondo.
+
+- Clase canónica: `.ui-content-box`.
+- Padding: `28px` desktop.
+- Radio: `14px`.
+- Borde: `1px solid rgba(255,255,255,.12)`.
+- Fondo: `rgba(8,8,10,.84)`.
+- Sin glow permanente.
+- En mobile reduce padding para conservar espacio útil.
+- Se aplica a formularios y bloques principales de MI PERFIL, SEGURIDAD, COLABORADORES, CONEXIONES, VOTACIONES, SORTEOS, TORNEO, plataformas y futuras herramientas.
+- Los módulos que ya usan una superficie equivalente (`.module-box`, cards o cajas estructurales existentes) deben adoptar esta geometría antes de crear otra variante.
 
 ### Regla crítica de ancho
 Los campos NO deben crecer hasta extremos simplemente para completar una fila o llenar un vacío.
 
 - Ancho máximo canónico de un formulario/campo largo: `460px`.
-- Dos campos relacionados pueden compartir una fila: `460px + 460px + gap`, con un módulo de hasta `940px`.
+- Dos campos relacionados pueden compartir una fila sin estirarse innecesariamente.
 - Si hay espacio sobrante, se conserva vacío intencionalmente.
-- Un único campo no se estira a 100% de una caja enorme.
 - La alineación responde a la jerarquía del formulario, no al espacio sobrante.
 
 ## 7. Cajas y tarjetas
@@ -213,26 +204,22 @@ Los campos NO deben crecer hasta extremos simplemente para completar una fila o 
 - Borde fino `rgba(255,255,255,.12)`.
 - No inventar sombras, gradientes o iluminaciones diferentes para cada herramienta.
 - Radio de panel/superficie principal: `16px`.
-- Radio de tarjeta estructural: `14px`.
+- Radio de tarjeta estructural y caja funcional: `14px`.
 - Radio de campo: `10px`.
 - Botones de acción: `999px`.
 
 ### Altura canónica de card
-
-La referencia aprobada son las cards de INICIO: `CONFIGURACIÓN`, `TWITCH + KICK` y `COLABORADORES`.
-
-- Altura mínima canónica desktop: `200px`.
+- Altura mínima desktop: `200px`.
 - Padding: `25px`.
 - Separación entre cards: `20px`.
 - Grilla desktop: `3` columnas.
 - Si una card necesita más espacio, puede crecer.
 
 ### BLOQUE A — FORMA GENERAL (APROBADO)
-
-- **Panel principal:** radio `16px`. Referencia visual: caja `BIENVENIDO A MI PANEL`.
-- **Card:** radio `14px`. Referencia visual: cards `CONFIGURACIÓN`, `TWITCH + KICK` y `COLABORADORES` de INICIO.
+- **Panel principal:** radio `16px`.
+- **Card:** radio `14px`.
 - **Input / Select:** radio `10px`.
-- **Botón:** radio `999px`, forma píldora.
+- **Botón:** radio `999px`.
 - **Borde de caja/card:** `rgba(255,255,255,.10-.12)`.
 - **Borde de campo:** `rgba(255,255,255,.24)` y focus en `#FF003C`.
 - **Sombras / iluminaciones:** sin glow permanente; glow rojo suave sólo donde ya esté definido para interacción.
@@ -280,8 +267,9 @@ La votación debe reiniciarse completa utilizando las mismas cinco cartas y una 
 - No introduce un color general nuevo.
 - Encabezados replican la jerarquía aprobada de `BIENVENIDO A MI PANEL`.
 - Párrafos de encabezado usan el ancho y la interlínea aprobados.
-- Botones reutilizan componente principal/secundario.
-- Campos respetan altura y ancho máximo.
+- Botones de acción usan el componente canónico salvo las excepciones aprobadas de KILLERS/PERKS.
+- Campos respetan altura `48px`, label-gap `9px`, ayuda `10px`, separación vertical `19px` y gap horizontal `25px` cuando comparten fila.
+- Todo bloque funcional principal debajo del encabezado usa una superficie canónica o equivalente.
 - Cajas respetan fondo, borde, radio y padding del sistema.
 - Cards equivalentes respetan altura mínima `200px`, padding `25px`, gap `20px` y grilla desktop de 3 columnas.
 - Usa el mismo offset/columna que el resto de MI PANEL.
