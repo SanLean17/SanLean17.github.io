@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "basePath": "../cartas",
+  "fallback": "../rombo.png",
+  "results": {
+    "normal_0": "normal_0.png",
+    "normal_1": "normal_1.png",
+    "normal_2": "normal_2.png",
+    "normal_3": "normal_3.png",
+    "normal_4": "normal_4.png",
+    "survivor_totems": "survivor_totems.png",
+    "survivor_auras": "survivor_auras.png",
+    "survivor_no_mither_empty_random": "survivor_no_mither_empty_random.png",
+    "survivor_no_mither_object_random": "survivor_no_mither_object_random.png",
+    "survivor_two_bad_one_good_random": "survivor_two_bad_one_good_random.png",
+    "survivor_zero_perks_addons": "survivor_zero_perks_addons.png",
+    "killer_totems": "killer_totems.png",
+    "killer_auras": "killer_auras.png",
+    "killer_obsession": "killer_obsession.png",
+    "killer_two_bad_one_good_random": "killer_two_bad_one_good_random.png",
+    "killer_zero_perks_addons": "killer_zero_perks_addons.png"
+  }
+}
