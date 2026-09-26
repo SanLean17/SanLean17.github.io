@@ -5,6 +5,7 @@
   const $=id=>document.getElementById(id);
   const CARDS_PENDING_KEY='sanlean-cards-pending-roulette';
   const CATEGORIES_URL='../data/perk-categories.json';
+  const CONSTRAINTS_URL='../data/perk-constraints.json';
   const overlayKinds={
     roulette_killers:{label:'RULETA DE KILLERS',desc:'Un killer por tirada.',resultCount:1,source:'killers',data:'../data/killers.json',imageBase:'../killers'},
     roulette_killer_perks:{label:'PERKS DE KILLER',desc:'Hasta cuatro perks sin espacios vacíos.',resultCount:4,source:'killerPerks',role:'killer',data:'../data/perks-killer.json',imageBase:'../killer'},
@@ -12,7 +13,7 @@
     vote:{label:'CARTAS',desc:'Cinco cartas ocultas, votos, porcentajes, tiempo y revelación.',resultCount:0},
     giveaway:{label:'SORTEO / PARTICIPANTES',desc:'Palabra clave, estado y cantidad de participantes.',resultCount:0}
   };
-  let session=null,workspace=null,workspaces=[],overlays=[],activeGiveaway=null,giveawayTicker=null,booting=false,bootedUser='',categoryCache=null;
+  let session=null,workspace=null,workspaces=[],overlays=[],activeGiveaway=null,giveawayTicker=null,booting=false,bootedUser='',categoryCache=null,constraintCache=null;
 
   function setStatus(id,text,type=''){const el=$(id);if(!el)return;el.textContent=text||'';el.className='module-status'+(type?` ${type}`:'')}
   function escapeHtml(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
@@ -23,7 +24,9 @@
   }
   function readPendingCardRule(){try{return JSON.parse(localStorage.getItem(CARDS_PENDING_KEY)||'null')}catch{return null}}
   function clearPendingCardRule(){try{localStorage.removeItem(CARDS_PENDING_KEY)}catch{}}
-  async function loadCategories(){if(categoryCache)return categoryCache;const r=await fetch(CATEGORIES_URL,{cache:'no-store'});if(!r.ok)throw new Error('No se pudieron cargar las categorías de perks.');categoryCache=await r.json();return categoryCache}
+  async function loadJsonCached(url,key){const response=await fetch(url,{cache:'no-store'});if(!response.ok)throw new Error(`No se pudo cargar ${key}.`);return response.json()}
+  async function loadCategories(){if(categoryCache)return categoryCache;categoryCache=await loadJsonCached(CATEGORIES_URL,'las categorías de perks');return categoryCache}
+  async function loadConstraints(){if(constraintCache)return constraintCache;constraintCache=await loadJsonCached(CONSTRAINTS_URL,'las restricciones de perks');return constraintCache}
 
   async function getSession(){session=(await client.auth.getSession()).data.session;return session}
   async function loadWorkspaces(){
@@ -41,36 +44,41 @@
   }
   async function loadRouletteSettings(){if(workspace.owner_user_id!==session.user.id)return null;const {data,error}=await client.from('user_roulette_settings').select('settings').eq('user_id',session.user.id).maybeSingle();if(error)throw error;return data?.settings||{weights:{},bonusEntries:{}}}
   function catalogImage(meta,item){if(item.image){const raw=String(item.image).replace(/^\.\.\//,'').replace(/^\//,'');return `${location.origin}/${raw}`}return `${location.origin}/${meta.imageBase.replace(/^\.\.\//,'')}/${encodeURIComponent(item.key)}.png`}
-  async function buildPool(kind){const meta=overlayKinds[kind];if(!meta?.source)return[];const settings=await loadRouletteSettings();if(!settings)return null;const response=await fetch(meta.data,{cache:'no-store'});if(!response.ok)throw new Error('No se pudo cargar el catálogo de la ruleta.');const items=await response.json();return items.map(item=>{const id=`${meta.source}:${item.key}`,weight=Number(settings.weights?.[id]??1);return{key:item.key,name:item.name||item.key,image:catalogImage(meta,item),weight:Math.max(0,weight)}}).filter(x=>x.weight>0)}
-  async function syncRouletteOverlay(overlay){if(!overlayKinds[overlay.kind]?.source)return overlay;const pool=await buildPool(overlay.kind);if(pool===null)return overlay;const settings={...(overlay.settings||{}),pool,resultCount:overlayKinds[overlay.kind].resultCount,syncedAt:new Date().toISOString()};const {data,error}=await client.from('stream_overlays').update({settings,updated_at:new Date().toISOString()}).eq('id',overlay.id).select('*').single();if(error)throw error;return data}
+  async function buildCatalog(kind){const meta=overlayKinds[kind];if(!meta?.source)return{all:[],enabled:[]};const settings=await loadRouletteSettings();if(!settings)return null;const response=await fetch(meta.data,{cache:'no-store'});if(!response.ok)throw new Error('No se pudo cargar el catálogo de la ruleta.');const raw=await response.json();const all=raw.map(item=>{const id=`${meta.source}:${item.key}`,weight=Math.max(0,Number(settings.weights?.[id]??1));return{key:item.key,name:item.name||item.key,image:catalogImage(meta,item),weight,emptySlot:!!item.emptySlot}});return{all,enabled:all.filter(x=>x.weight>0)}}
+  async function syncRouletteOverlay(overlay){if(!overlayKinds[overlay.kind]?.source)return overlay;const catalog=await buildCatalog(overlay.kind);if(catalog===null)return overlay;const settings={...(overlay.settings||{}),pool:catalog.enabled,resultCount:overlayKinds[overlay.kind].resultCount,syncedAt:new Date().toISOString()};const {data,error}=await client.from('stream_overlays').update({settings,updated_at:new Date().toISOString()}).eq('id',overlay.id).select('*').single();if(error)throw error;return data}
 
-  async function itemsForCardRule(kind,pool,rule){
-    const meta=overlayKinds[kind],pending=readPendingCardRule();if(!pending||pending.consumed||pending.source!=='cards'||pending.role!==meta?.role)return null;const spec=pending.rule||{};
-    const byKey=new Map(pool.map(x=>[x.key,x]));
+  function fillFromPreferred(preferred,enabled,count,used){const selected=weightedUnique(preferred,count,used);const nextUsed=new Set([...used,...selected.map(x=>x.key)]);if(selected.length<count)selected.push(...weightedUnique(enabled,count-selected.length,nextUsed));return selected}
+  async function itemsForCardRule(kind,catalog){
+    const meta=overlayKinds[kind],pending=readPendingCardRule();if(!pending||pending.consumed||pending.source!=='cards'||pending.role!==meta?.role)return null;const spec=pending.rule||{},all=catalog.all||[],enabled=catalog.enabled||[],allByKey=new Map(all.map(x=>[x.key,x]));
     if(spec.kind==='no_loadout'||spec.count===0)return{items:[],pending};
-    if(spec.kind==='count')return{items:weightedUnique(pool,Math.max(1,Math.min(4,Number(spec.count)||1))),pending};
+    if(spec.kind==='count')return{items:weightedUnique(enabled,Math.max(1,Math.min(4,Number(spec.count)||1))),pending};
+    const [categories,constraints]=await Promise.all([loadCategories(),loadConstraints()]),roleCats=categories?.[pending.role]||{},roleConstraints=constraints?.[pending.role]||{};
     if(spec.kind==='fixed_random'){
-      const fixed=(spec.fixed||[]).map(k=>byKey.get(k)).filter(Boolean),used=new Set(fixed.map(x=>x.key)),random=weightedUnique(pool,Math.max(0,Number(spec.random)||0),used);return{items:[...fixed,...random].slice(0,4),pending}
+      const fixed=(spec.fixed||[]).map(k=>allByKey.get(k)).filter(Boolean),used=new Set(fixed.map(x=>x.key)),blocked=new Set();
+      for(const item of fixed){for(const key of roleConstraints.fixedRules?.[item.key]?.exclude||[])blocked.add(key)}
+      const randomPool=enabled.filter(x=>!blocked.has(x.key));const random=weightedUnique(randomPool,Math.max(0,Number(spec.random)||0),used);return{items:[...fixed,...random].slice(0,4),pending}
     }
-    const categories=await loadCategories(),roleCats=categories?.[pending.role]||{};
     if(spec.kind==='category'){
-      const keys=new Set(roleCats[spec.category]||[]),categoryPool=pool.filter(x=>keys.has(x.key));return{items:weightedUnique(categoryPool,Math.max(1,Math.min(4,Number(spec.count)||4))),pending}
+      const target=Math.max(1,Math.min(4,Number(spec.count)||4)),keys=new Set(roleCats[spec.category]||[]),preferred=enabled.filter(x=>keys.has(x.key)),fallback=all.filter(x=>keys.has(x.key)).map(x=>({...x,weight:x.weight>0?x.weight:1})),used=new Set();let items=weightedUnique(preferred,target,used);if(items.length<target){used=new Set(items.map(x=>x.key));items.push(...weightedUnique(fallback,target-items.length,used))}return{items:items.slice(0,target),pending}
     }
     if(spec.kind==='quality_mix'){
-      const weakKeys=new Set(roleCats.weak||[]),strongKeys=new Set(roleCats.strong||[]),chosen=[];let used=new Set();const weak=weightedUnique(pool.filter(x=>weakKeys.has(x.key)),Number(spec.weak)||0,used);chosen.push(...weak);used=new Set(chosen.map(x=>x.key));const strong=weightedUnique(pool.filter(x=>strongKeys.has(x.key)),Number(spec.strong)||0,used);chosen.push(...strong);used=new Set(chosen.map(x=>x.key));chosen.push(...weightedUnique(pool,Number(spec.random)||0,used));return{items:chosen.slice(0,4),pending}
+      const weakKeys=new Set(roleCats.weak||[]),strongKeys=new Set(roleCats.strong||[]),chosen=[];let used=new Set();
+      const weakTarget=Math.max(0,Number(spec.weak)||0),strongTarget=Math.max(0,Number(spec.strong)||0),randomTarget=Math.max(0,Number(spec.random)||0);
+      const weakEnabled=enabled.filter(x=>weakKeys.has(x.key)),weakAll=all.filter(x=>weakKeys.has(x.key)).map(x=>({...x,weight:x.weight>0?x.weight:1}));let weak=weightedUnique(weakEnabled,weakTarget,used);if(weak.length<weakTarget){used=new Set(weak.map(x=>x.key));weak.push(...weightedUnique(weakAll,weakTarget-weak.length,used))}chosen.push(...weak);used=new Set(chosen.map(x=>x.key));
+      const strongEnabled=enabled.filter(x=>strongKeys.has(x.key)),strongAll=all.filter(x=>strongKeys.has(x.key)).map(x=>({...x,weight:x.weight>0?x.weight:1}));let strong=weightedUnique(strongEnabled,strongTarget,used);if(strong.length<strongTarget){const localUsed=new Set(used);strong.forEach(x=>localUsed.add(x.key));strong.push(...weightedUnique(strongAll,strongTarget-strong.length,localUsed))}chosen.push(...strong);used=new Set(chosen.map(x=>x.key));chosen.push(...weightedUnique(enabled,randomTarget,used));return{items:chosen.slice(0,4),pending}
     }
-    return null;
+    return null
   }
   async function spinOverlay(id,overrideCount=null){
     let overlay=overlays.find(o=>o.id===id);if(!overlay)return false;
     try{
-      overlay=await syncRouletteOverlay(overlay);const pool=overlay.settings?.pool||[];if(!pool.length)return false;const cardSelection=await itemsForCardRule(overlay.kind,pool);const pending=cardSelection?.pending||null;
-      await client.from('stream_overlays').update({state:{visible:true,status:'spinning',items:[],cardRule:pending?{resultId:pending.resultId,label:pending.label,event:pending.event}:null,startedAt:new Date().toISOString()},updated_at:new Date().toISOString()}).eq('id',overlay.id);
-      const baseCount=Number(overlayKinds[overlay.kind].resultCount)||1,count=Math.max(1,Math.min(4,Number(overrideCount??baseCount)||1));const items=cardSelection?cardSelection.items:weightedUnique(pool,count);
-      setTimeout(async()=>{await client.from('stream_overlays').update({state:{visible:true,status:'result',items:items.map(x=>({key:x.key,name:x.name,image:x.image})),cardRule:pending?{resultId:pending.resultId,label:pending.label,event:pending.event,noAddons:!!pending.rule?.noAddons}:null,finishedAt:new Date().toISOString()},updated_at:new Date().toISOString()}).eq('id',overlay.id)},1150);
-      if(pending)clearPendingCardRule();return true;
+      const catalog=await buildCatalog(overlay.kind);if(catalog===null||!catalog.enabled.length)return false;overlay=await syncRouletteOverlay(overlay);const cardSelection=await itemsForCardRule(overlay.kind,catalog),pending=cardSelection?.pending||null;
+      const {error:startError}=await client.from('stream_overlays').update({state:{visible:true,status:'spinning',items:[],cardRule:pending?{resultId:pending.resultId,label:pending.label,event:pending.event}:null,startedAt:new Date().toISOString()},updated_at:new Date().toISOString()}).eq('id',overlay.id);if(startError)throw startError;
+      const baseCount=Number(overlayKinds[overlay.kind].resultCount)||1,count=Math.max(1,Math.min(4,Number(overrideCount??baseCount)||1)),items=cardSelection?cardSelection.items:weightedUnique(catalog.enabled,count);
+      setTimeout(async()=>{try{const {error}=await client.from('stream_overlays').update({state:{visible:true,status:'result',items:items.map(x=>({key:x.key,name:x.name,image:x.image})),cardRule:pending?{resultId:pending.resultId,label:pending.label,event:pending.event,noAddons:!!pending.rule?.noAddons}:null,finishedAt:new Date().toISOString()},updated_at:new Date().toISOString()}).eq('id',overlay.id);if(error)throw error;if(pending)clearPendingCardRule()}catch(err){console.error('Spin result:',err)}},1150);return true
     }catch(err){console.error('Spin overlay:',err);return false}
   }
+  async function spinByRole(role){const kind=role==='killer'?'roulette_killer_perks':'roulette_survivor_perks',overlay=overlays.find(o=>o.kind===kind);return overlay?spinOverlay(overlay.id):false}
   async function hideOverlay(id){await client.from('stream_overlays').update({state:{visible:false,status:'idle',items:[]},updated_at:new Date().toISOString()}).eq('id',id)}
   async function loadOverlays(){try{overlays=await ensureOverlays();if(workspace.owner_user_id===session.user.id){const synced=[];for(const o of overlays){if(overlayKinds[o.kind]?.source){try{synced.push(await syncRouletteOverlay(o))}catch{synced.push(o)}}else synced.push(o)}overlays=synced}renderOverlays()}catch(err){console.error('Overlays:',err);if($('overlayGrid'))$('overlayGrid').innerHTML='<div class="module-box"><strong>SIN PERMISO DE OVERLAYS</strong><p>No tenés permiso para administrar esta herramienta.</p></div>'}}
   function renderOverlays(){const grid=$('overlayGrid');if(!grid)return;grid.innerHTML='';overlays.sort((a,b)=>Object.keys(overlayKinds).indexOf(a.kind)-Object.keys(overlayKinds).indexOf(b.kind)).forEach(overlay=>{const meta=overlayKinds[overlay.kind]||{label:overlay.kind,desc:''},card=document.createElement('article'),publicUrl=overlayUrl(overlay.public_token),controlUrl=overlayUrl(overlay.control_token),roulette=!!meta.source;card.className='overlay-card';card.innerHTML=`<span>${roulette?'RULETA':'OVERLAY'}</span><h3>${escapeHtml(meta.label)}</h3><p>${escapeHtml(meta.desc)}</p><label class="overlay-url-label">URL OBS · VISUALIZACIÓN</label><div class="copy-row"><input value="${escapeHtml(publicUrl)}" readonly><button type="button" data-copy="public">COPIAR</button></div><label class="overlay-url-label">URL PRIVADA · CONTROL</label><div class="copy-row"><input value="${escapeHtml(controlUrl)}" readonly><button type="button" data-copy="control">COPIAR</button></div><div class="overlay-actions">${roulette?'<button class="spin-overlay" type="button">GIRAR</button>':''}<button class="hide-overlay" type="button">OCULTAR</button><button class="preview-overlay" type="button">VISTA PREVIA</button></div>`;card.querySelector('[data-copy="public"]').onclick=()=>navigator.clipboard.writeText(publicUrl);card.querySelector('[data-copy="control"]').onclick=()=>navigator.clipboard.writeText(controlUrl);card.querySelector('.preview-overlay').onclick=()=>window.open(publicUrl,'_blank','noopener');card.querySelector('.hide-overlay').onclick=()=>hideOverlay(overlay.id);card.querySelector('.spin-overlay')?.addEventListener('click',()=>spinOverlay(overlay.id));grid.appendChild(card)})}
@@ -83,6 +91,7 @@
 
   function bindUi(){$('startGiveaway')?.addEventListener('click',startGiveaway);$('closeGiveaway')?.addEventListener('click',closeGiveaway)}
   async function boot(){if(booting)return;booting=true;try{const current=await getSession();if(!current){booting=false;return}if(bootedUser===current.user.id){booting=false;return}bootedUser=current.user.id;await loadWorkspaces();await refreshWorkspace()}catch(err){console.error('Stream modules:',err)}finally{booting=false}}
+  window.SanLeanStreamTools={spinByRole,spinOverlay:async id=>spinOverlay(id),getWorkspace:()=>workspace,getOverlays:()=>[...overlays],refresh:refreshWorkspace};
   window.addEventListener('DOMContentLoaded',()=>{bindUi();boot()});
   client.auth.onAuthStateChange((event,newSession)=>{if(event==='SIGNED_IN'&&newSession){session=newSession;bootedUser='';setTimeout(boot,0)}if(event==='SIGNED_OUT'){bootedUser='';clearInterval(giveawayTicker)}});
 })();
