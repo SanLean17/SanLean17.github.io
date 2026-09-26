@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "sourceNote": "Curated SanLean pools. DBD Wiki is used as a reference; strong/weak are editorial balance pools and can be tuned independently.",
+  "survivor": {
+    "totem": ["44_smallGame","70_innerStrength","91_counterforce","95_circleOfHealing","96_shadowStep","97_clairvoyance","98_exponential","101_darkTheory","106_overzealous","131_boonIllumination","173_steadfast"],
+    "aura": ["03_alert","07_bond","18_detectivesHunch","21_empathy","25_kindred","33_open-Handed","61_windowsOfOpportunity","97_clairvoyance","102_empathicConnection","114_fogwise","139_stillSight","144_eyesOfBelmont","164_extrasensoryPerception"],
+    "obsession": ["15_decisiveStrike","32_objectOfObsession","45_soleSurvivor","76_forThePeople","78_bloodPact"],
+    "strong": ["01_adrenaline","15_decisiveStrike","17_deliverance","19_distortion","23_hope","29_lithe","48_sprintBurst","54_unbreakable","61_windowsOfOpportunity","74_offTheRecord","76_forThePeople","89_biteTheBullet","111_reassurance","116_backgroundPlayer","122_madeForThis","148_shoulderTheBurden"],
+    "weak": ["04_autodidact","11_calmSpirit","20_diversion","27_leftBehind","30_noMither","33_open-Handed","34_pharmacy","37_premonition","43_slipperyMeat","45_soleSurvivor","51_technician","53_thisIsNotHappening","55_upTheAnte","82_visionary","94_rookieSpirit"]
+  },
+  "killer": {
+    "totem": ["20_hexDevourHope","21_hexHauntedGround","22_hexHuntressLullaby","23_hexNoOneEscapesDeath","24_hexRuin","25_hexTheThirdSeal","26_hexThrillOfTheHunt","68_hexRetribution","72_hexBloodFavour","73_hexUndying","79_hexCrowdControl","85_hexPlaything","88_pentimento","101_faceTheDarkness","114_hexTwoCanPlay","122_hexWretchedFate","129_nothingButMisery","133_hexOvertureOfDoom","136_hiveMind","140_scaredToDeath","143_underYourThumb"],
+    "aura": ["00_aNursesCalling","05_bitterMurmur","12_deerstalker","57_imAllEars","66_gearhead","83_lethalPursuer","91_floodOfRage","94_darknessRevelated","100_nowhereToHide","109_alienInstinct","113_friendsTilTheEnd","123_humanGreed","135_wanderingEye","144_celestialWitness"],
+    "obsession": ["11_darkDevotion","15_dyingLight","39_playWithYourFood","42_rancor","43_rememberMe","44_saveTheBestForLast","59_furtiveChase","64_nemesis","103_gameAfoot","113_friendsTilTheEnd","144_celestialWitness"],
+    "strong": ["00_aNursesCalling","03_barbecueAndChilli","09_corruptIntervention","13_discordance","20_hexDevourHope","24_hexRuin","40_popGoesTheWeasel","67_deadMansSwitch","80_noWayOut","83_lethalPursuer","84_deadlock","87_grimEmbrace","89_painResonance","100_nowhereToHide","113_friendsTilTheEnd"],
+    "weak": ["04_beastOfPrey","10_coulrophobia","12_deerstalker","14_distressing","17_fireUp","28_insidious","29_ironGrasp","33_madGrit","36_monstrousShrine","38_overwhelmingPresence","41_predator","45_shadowborn","49_stridor","51_territorialImperative","55_unrelenting"]
+  }
+}
