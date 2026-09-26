@@ -76,7 +76,7 @@ body.public-mobile :is(.home-feature p,.perk-choice-copy p){font-size:15px;line-
 body.public-mobile .perk-choice-list{display:grid;gap:32px}
 body.public-mobile .placeholder{align-items:center;text-align:center}
 body.public-mobile .placeholder p{font-size:15px;line-height:1.5}
-body.public-mobile.killer-page-bg{background-color:#080809;background-image:linear-gradient(to bottom,transparent 65%,#080809 100%),url('../fondo-final-2.png');background-repeat:no-repeat;background-position:center top;background-size:auto max(100svh,800px);background-attachment:scroll}
+
 body.public-mobile .killer-reel{margin-bottom:16px}
 body.public-mobile :is(.perk-spin-controls,.killer-spin-controls){height:50px;min-height:50px;margin:32px auto 16px}
 body.public-mobile .mobile-killer-stage .killer-spin-controls{margin:16px auto}
@@ -86,4 +86,28 @@ body.public-mobile .build-grid{row-gap:16px}
 body.public-mobile .splash-content{flex-direction:row;align-items:center;margin:auto;gap:16px}
 body.public-mobile .splash-title{font-size:86px}
 }
+}
+
+/* Public mobile refinements: navigation, readable copy and shared backgrounds. */
+@media(max-width:760px){
+body.public-mobile .splash-brand-mark{display:none}
+body.public-mobile :is(p,h1,h2,h3){word-spacing:normal;hyphens:none}
+body.public-mobile :is(.home-feature,.perk-choice-card) h3{color:var(--red)}
+body.public-mobile :is(.home-feature,.perk-choice-card) p{color:#fff}
+body.public-mobile .home-feature::after{content:'ENTRAR →';display:flex;align-items:center;justify-content:center;min-height:44px;padding:10px 28px;border:1px solid var(--red);border-radius:999px;color:#fff;background:var(--red);font:400 18px/1 var(--head);letter-spacing:.3px}
+body.public-mobile .home-feature:focus-visible{outline:2px solid var(--red);outline-offset:8px;border-radius:12px}
+body.public-mobile:is(.perks-menu-page,.one-vs-one-page):not(.mobile-config-open){background-image:linear-gradient(#08080955,#08080955),url('../fondo-web-grande.png');background-size:cover;background-position:center;background-repeat:no-repeat;background-attachment:fixed}
+body.public-mobile.killer-page-bg{background-color:#080809;background-image:url('../fondo-negro-textura-2.png');background-size:100% auto;background-repeat:repeat-y;background-position:center top;background-attachment:scroll}
+body.public-mobile.killer-page-bg::before{content:'';display:block!important;position:absolute;inset:0 0 auto;height:100svh;z-index:0;pointer-events:none;background:linear-gradient(#08080955,#08080955),url('../fondo-web-grande.png') center/cover no-repeat;mask-image:linear-gradient(#000 75%,transparent);-webkit-mask-image:linear-gradient(#000 75%,transparent)}
+body.public-mobile:is(.mobile-tierlist-page,.mobile-config-open){background-color:#080809;background-image:url('../fondo-negro-textura-2.png');background-size:100% auto;background-repeat:repeat-y;background-position:center top;background-attachment:scroll}
+body.public-mobile.killer-page-bg.mobile-config-open::before{display:none!important}
+body.public-mobile .config-grid.open::before{background:url('../fondo-negro-textura-2.png') center top/cover no-repeat}
+body.public-mobile .tier-tabs{justify-content:center;flex-wrap:wrap;padding:0 44px;gap:8px}
+body.public-mobile .tier-tab{padding-inline:12px}
+body.public-mobile .perk-gear-btn{padding:0;text-shadow:none}
+body.public-mobile .mobile-gear-icon{width:30px;height:30px;display:block;flex-shrink:0;color:#fff}
+body.public-mobile .killer-reel .reel-marker-top{top:9px}
+body.public-mobile .killer-reel .reel-marker-bottom{bottom:9px}
+body.public-mobile.public-menu-open{overflow:hidden}
+body.public-mobile.public-menu-open>main{overflow:hidden!important}
 }

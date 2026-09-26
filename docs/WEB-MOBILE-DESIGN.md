@@ -14,3 +14,15 @@ Killers: ancho de carta responsive de 144–184 px; el cálculo del giro en `mai
 lee el ancho real. Fondo de personaje único, sin mosaico, fundido a negro.
 Las ruletas de perks conservan dos columnas y 32 px de separación del título.
 Si el contenido supera la altura disponible, debe poder desplazarse sin solaparse.
+
+
+## Ajustes mobile — 26 de septiembre
+- Splash sin la imagen del logo; conservar SANLEAN y el párrafo.
+- Al ocultar saltos de línea, insertar espacios reales entre palabras y retirarlos al volver a escritorio.
+- Inicio: subtítulos rojos, párrafos blancos y CTA «ENTRAR →» dentro de cada enlace.
+- Inicio, selección de perks y 1VS1 comparten `fondo-web-grande.png`.
+- Killers usa ese mismo fondo en la primera pantalla y continúa con `fondo-negro-textura-2.png`.
+- Ambas Tier Lists y las páginas con configuración abierta usan `fondo-negro-textura-2.png`.
+- Engranaje blanco vectorial en mobile para evitar que iOS lo convierta en emoji.
+- Marcadores de killers: 9 px desde el borde; tamaño de cartas sin cambios.
+- Menú desplegable de arriba hacia abajo y cierre inverso, 220 ms; respetar movimiento reducido.
