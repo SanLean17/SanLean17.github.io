@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "notes": "SanLean gameplay constraints for generated card builds. These are product rules, not a replacement for the DBD catalog.",
+  "survivor": {
+    "fixedRules": {
+      "30_noMither": {
+        "exclude": [
+          "42_selfCare",
+          "76_forThePeople",
+          "95_circleOfHealing"
+        ],
+        "reason": "Avoid results whose core value depends on becoming Healthy or self-healing when Me la Pela keeps the Survivor injured."
+      }
+    },
+    "mutuallyExclusive": []
+  },
+  "killer": {
+    "fixedRules": {},
+    "mutuallyExclusive": []
+  }
+}
