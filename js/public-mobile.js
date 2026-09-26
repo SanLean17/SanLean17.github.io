@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     menuAnimation?.cancel();
     menuAnimation = null;
     body.classList.toggle('public-menu-open', open);
+    if (open) body.classList.add('public-menu-surface');
     trigger.classList.toggle('is-open', open);
     trigger.setAttribute('aria-expanded', String(open));
     trigger.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
@@ -46,6 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (immediate || reducedMotion.matches || menu.hidden) {
       menu.hidden = !open;
+      body.classList.toggle('public-menu-surface', open);
       return;
     }
     const frames = [
@@ -59,6 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
     animation.finished.then(() => {
       if (menuAnimation !== animation) return;
       menu.hidden = !menuOpen;
+      body.classList.toggle('public-menu-surface', menuOpen);
       animation.cancel();
       menuAnimation = null;
     }).catch(() => {});
@@ -85,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
   const main = document.querySelector('main');
-  const compact = ['ruleta-perks-killer.html','ruleta-perks-superviviente.html','halloween.html','creditos.html'].includes(page);
+  const compact = ['ruleta-perks-killer.html','ruleta-perks-superviviente.html','halloween.html','creditos.html','1vs1.html'].includes(page);
   body.classList.toggle('mobile-compact-page',compact);
   body.classList.toggle('mobile-credits-page',page === 'creditos.html');
   body.classList.toggle('mobile-tierlist-page', page.startsWith('tierlist-'));

@@ -2,7 +2,7 @@
 @media(max-width:760px){
 html:has(body.public-mobile){scrollbar-gutter:auto;overflow-y:auto}
 body.public-mobile{background-image:url('../fondo-final-2.png');background-size:100% auto;background-position:center top;background-repeat:repeat-y;background-attachment:scroll}
-body.public-mobile:is(.home-page,.mobile-compact-page):not(.mobile-config-open){background-image:linear-gradient(#08080955,#08080955),url('../fondo-web-grande.png');background-size:cover;background-position:center;background-repeat:no-repeat;background-attachment:fixed}
+body.public-mobile:is(.home-page,.mobile-compact-page):not(.perk-roulette-page){background-image:linear-gradient(#08080955,#08080955),url('../fondo-web-grande.png');background-size:cover;background-position:center;background-repeat:no-repeat;background-attachment:fixed}
 body.public-mobile .header-inner{height:76px;width:calc(100% - 32px)}
 body.public-mobile #mainNav{display:none!important}
 body.public-mobile #menuToggle{display:flex;width:44px;height:44px;padding:10px;gap:5px;border:0;border-radius:9px;background:transparent;align-items:center;justify-content:center;flex-direction:column}
@@ -94,13 +94,11 @@ body.public-mobile .splash-brand-mark{display:none}
 body.public-mobile :is(p,h1,h2,h3){word-spacing:normal;hyphens:none}
 body.public-mobile :is(.home-feature,.perk-choice-card) h3{color:var(--red)}
 body.public-mobile :is(.home-feature,.perk-choice-card) p{color:#fff}
-body.public-mobile .home-feature::after{content:'ENTRAR →';display:flex;align-items:center;justify-content:center;min-height:44px;padding:10px 28px;border:1px solid var(--red);border-radius:999px;color:#fff;background:var(--red);font:400 18px/1 var(--head);letter-spacing:.3px}
 body.public-mobile .home-feature:focus-visible{outline:2px solid var(--red);outline-offset:8px;border-radius:12px}
 body.public-mobile:is(.perks-menu-page,.one-vs-one-page):not(.mobile-config-open){background-image:linear-gradient(#08080955,#08080955),url('../fondo-web-grande.png');background-size:cover;background-position:center;background-repeat:no-repeat;background-attachment:fixed}
 body.public-mobile.killer-page-bg{background-color:#080809;background-image:url('../fondo-negro-textura-2.png');background-size:100% auto;background-repeat:repeat-y;background-position:center top;background-attachment:scroll}
 body.public-mobile.killer-page-bg::before{content:'';display:block!important;position:absolute;inset:0 0 auto;height:100svh;z-index:0;pointer-events:none;background:linear-gradient(#08080955,#08080955),url('../fondo-web-grande.png') center/cover no-repeat;mask-image:linear-gradient(#000 75%,transparent);-webkit-mask-image:linear-gradient(#000 75%,transparent)}
-body.public-mobile:is(.mobile-tierlist-page,.mobile-config-open){background-color:#080809;background-image:url('../fondo-negro-textura-2.png');background-size:100% auto;background-repeat:repeat-y;background-position:center top;background-attachment:scroll}
-body.public-mobile.killer-page-bg.mobile-config-open::before{display:none!important}
+body.public-mobile.mobile-tierlist-page{background-color:#080809;background-image:url('../fondo-negro-textura-2.png');background-size:100% auto;background-repeat:repeat-y;background-position:center top;background-attachment:scroll}
 body.public-mobile .config-grid.open::before{background:url('../fondo-negro-textura-2.png') center top/cover no-repeat}
 body.public-mobile .tier-tabs{justify-content:center;flex-wrap:wrap;padding:0 44px;gap:8px}
 body.public-mobile .tier-tab{padding-inline:12px}
@@ -110,4 +108,19 @@ body.public-mobile .killer-reel .reel-marker-top{top:9px}
 body.public-mobile .killer-reel .reel-marker-bottom{bottom:9px}
 body.public-mobile.public-menu-open{overflow:hidden}
 body.public-mobile.public-menu-open>main{overflow:hidden!important}
+}
+
+/* Keep the hero stable; configuration owns only the background below its heading. */
+@media(max-width:760px){
+body.public-mobile.public-menu-surface .site-header{background:#09090b}
+body.public-mobile .site-header{transition:background-color 220ms ease}
+body.public-mobile:is(.perk-roulette-page,.killer-page-bg){background:#080809 url('../fondo-negro-textura-2.png') center top/100% auto repeat-y; background-attachment:scroll}
+body.public-mobile:is(.perk-roulette-page,.killer-page-bg)::before{content:'';display:block!important;position:absolute;inset:0 0 auto;height:100svh;z-index:0;pointer-events:none;background:linear-gradient(#08080955,#08080955),url('../fondo-web-grande.png') center/cover no-repeat;mask-image:linear-gradient(#000 85%,transparent);-webkit-mask-image:linear-gradient(#000 85%,transparent)}
+body.public-mobile .config-section.gear-visible{position:relative;isolation:isolate;padding-top:16px}
+body.public-mobile .config-section.gear-visible::before{content:'';position:absolute;z-index:-1;top:0;bottom:-34px;left:50%;width:100vw;transform:translateX(-50%);background:#080809 url('../fondo-negro-textura-2.png') center top/100% auto repeat-y;pointer-events:none}
+body.public-mobile .config-grid.open::before{display:none}
+body.public-mobile .tier-tab{border:1px solid var(--red)}
+body.public-mobile .killer-reel{width:100vw;max-width:none;align-self:center;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw)}
+body.public-mobile .killer-reel .reel-edge{width:18px}
+@media(prefers-reduced-motion:reduce){body.public-mobile .site-header{transition:none}}
 }

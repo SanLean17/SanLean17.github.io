@@ -19,10 +19,15 @@ Si el contenido supera la altura disponible, debe poder desplazarse sin solapars
 ## Ajustes mobile — 26 de septiembre
 - Splash sin la imagen del logo; conservar SANLEAN y el párrafo.
 - Al ocultar saltos de línea, insertar espacios reales entre palabras y retirarlos al volver a escritorio.
-- Inicio: subtítulos rojos, párrafos blancos y CTA «ENTRAR →» dentro de cada enlace.
+- Inicio: subtítulos rojos, párrafos blancos sin botones adicionales; toda la opción es un enlace.
 - Inicio, selección de perks y 1VS1 comparten `fondo-web-grande.png`.
 - Killers usa ese mismo fondo en la primera pantalla y continúa con `fondo-negro-textura-2.png`.
-- Ambas Tier Lists y las páginas con configuración abierta usan `fondo-negro-textura-2.png`.
+- Ambas Tier Lists usan `fondo-negro-textura-2.png`. En las ruletas, conservar la imagen superior al abrir configuración y aplicar la textura solamente desde CONFIGURAR hacia abajo.
 - Engranaje blanco vectorial en mobile para evitar que iOS lo convierta en emoji.
 - Marcadores de killers: 9 px desde el borde; tamaño de cartas sin cambios.
 - Menú desplegable de arriba hacia abajo y cierre inverso, 220 ms; respetar movimiento reducido.
+
+- Menú abierto: encabezado y desplegable sobre el mismo negro; restaurarlo al finalizar el cierre.
+- Tier List: borde de acento de 1 px en los botones para distinguir la opción inactiva.
+- 1VS1 sin torneo: centrar título y mensaje como Halloween, usando el mismo contenedor mobile.
+- Ruleta horizontal a ancho de pantalla; sombreados laterales de 18 px en los bordes. Cartas sin cambios.
