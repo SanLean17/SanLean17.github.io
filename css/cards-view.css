@@ -1,4 +1,4 @@
-.sl-diamonds{--cards-accent:#FF003C;container-type:inline-size;width:100%;box-sizing:border-box;color:#fff;font-family:Montserrat,Arial,sans-serif;padding:2.8cqw 0 3.8cqw}
+.sl-diamonds{--cards-accent:#FF003C;container-type:inline-size;width:100%;box-sizing:border-box;color:#fff;font-family:Montserrat,Arial,sans-serif;padding:2.8cqw 3.8cqw 3.8cqw}
 .sl-diamonds.is-chaotic{--cards-accent:#873FFD}
 .sl-cards-hud{display:flex;align-items:center;justify-content:center;gap:1.7cqw;margin:-1.5cqw auto .2cqw;font-weight:900;text-transform:uppercase;text-shadow:0 3px 8px #000;font-size:clamp(18px,2.2cqw,42px)}
 .sl-cards-hud strong{color:#fff;text-shadow:0 0 8px #fff,0 0 20px var(--cards-accent),0 3px 8px #000}.sl-cards-clock{font:900 clamp(28px,3.8cqw,70px)/1 Impact,'Arial Black',sans-serif;letter-spacing:.04em}
@@ -7,25 +7,27 @@
 .sl-diamond.is-upper{top:4%}
 button.sl-diamond:not(:disabled){cursor:pointer}
 button.sl-diamond:focus-visible{outline:2px solid var(--cards-accent);outline-offset:6px;border-radius:8px}
-.sl-diamond-face{position:absolute;inset:0;display:grid;place-items:center;transform-style:preserve-3d}
+.sl-diamond-face{position:absolute;inset:0;display:grid;place-items:center;transform-style:preserve-3d;will-change:transform,filter,opacity}
 .sl-diamond-base{position:absolute;width:100%;height:100%;object-fit:contain}
 .sl-diamond-letter{position:relative;font:900 clamp(50px,9.2cqw,170px)/1 Impact,'Arial Black',sans-serif;text-shadow:0 4px 16px #000,0 0 14px rgba(255,255,255,.3)}
 .sl-diamond-letter[hidden]{display:none}
 .sl-diamond-art{position:absolute;inset:2%;width:96%;height:96%;object-fit:contain}
-.sl-diamond-caption{position:absolute;z-index:30;top:104%;left:-18%;width:136%;box-sizing:border-box;padding:.08em .22em;font-size:clamp(18px,2.35cqw,44px);font-weight:900;line-height:.98;text-align:center;text-wrap:balance;overflow-wrap:anywhere;text-transform:uppercase;text-shadow:0 3px 4px #000,0 0 12px #000}
+.sl-diamond-caption{position:absolute;z-index:30;top:104%;left:-18%;width:136%;box-sizing:border-box;display:flex;justify-content:center;padding:.08em .22em;font-size:clamp(18px,2.25cqw,42px);font-weight:900;line-height:.98;text-align:center;text-wrap:balance;overflow-wrap:normal;word-break:normal;text-transform:uppercase;text-shadow:0 3px 4px #000,0 0 12px #000}
+.sl-diamond-caption>span{display:inline-block;max-width:100%}
 .sl-diamond.is-upper .sl-diamond-caption{top:auto;bottom:104%}
 .sl-diamond-votes{position:absolute;left:50%;top:70%;transform:translateX(-50%);z-index:4;display:flex;align-items:baseline;gap:.35em;padding:.18em .52em;border-radius:999px;background:rgba(0,0,0,.76);border:1px solid color-mix(in srgb,var(--cards-accent) 76%,transparent);text-shadow:0 2px 5px #000;white-space:nowrap}
 .sl-diamond-votes b{font:900 clamp(22px,3.5cqw,62px)/1 Impact,'Arial Black',sans-serif}.sl-diamond-votes small{font-size:clamp(10px,1.25cqw,22px);font-weight:900}
 .sl-diamond.is-winner{z-index:50}
-.sl-diamond.is-winner .sl-diamond-face{filter:drop-shadow(0 0 12px #fff) drop-shadow(0 0 30px var(--cards-accent)) drop-shadow(0 0 58px var(--cards-accent));animation:sl-winner-glow 1.15s ease-in-out infinite}
-.sl-diamond.is-winner::after{content:"";position:absolute;inset:1%;z-index:-1;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.68) 0,rgba(255,255,255,.24) 28%,color-mix(in srgb,var(--cards-accent) 46%,transparent) 56%,transparent 78%);filter:blur(22px);animation:sl-winner-light 1.15s ease-in-out infinite;pointer-events:none}
-.sl-diamond.is-winner .sl-diamond-caption{padding:.18em .38em .24em;border-radius:.38em;background:rgba(4,4,6,.68);box-shadow:inset 0 -3px 0 var(--cards-accent),0 0 20px color-mix(in srgb,var(--cards-accent) 35%,transparent);animation:sl-winner-caption 1.15s ease-in-out infinite}
-.sl-diamond.just-revealed .sl-diamond-art{animation:sl-card-reveal .55s ease-out both}
-@keyframes sl-winner-glow{0%,100%{filter:drop-shadow(0 0 12px #fff) drop-shadow(0 0 30px var(--cards-accent)) drop-shadow(0 0 58px var(--cards-accent));transform:scale(1.02)}50%{filter:drop-shadow(0 0 22px #fff) drop-shadow(0 0 46px var(--cards-accent)) drop-shadow(0 0 80px var(--cards-accent));transform:scale(1.05)}}
-@keyframes sl-winner-light{0%,100%{opacity:.84;transform:scale(1.02)}50%{opacity:1;transform:scale(1.18)}}
-@keyframes sl-winner-caption{0%,100%{opacity:.78;text-shadow:0 3px 4px #000,0 0 8px #fff,0 0 16px var(--cards-accent)}50%{opacity:1;text-shadow:0 3px 4px #000,0 0 15px #fff,0 0 30px var(--cards-accent)}}
-@keyframes sl-card-reveal{from{opacity:0;transform:perspective(700px) rotateY(90deg) scale(.9)}to{opacity:1;transform:perspective(700px) rotateY(0) scale(1)}}
-@media(prefers-reduced-motion:reduce){.sl-diamond.is-winner .sl-diamond-face,.sl-diamond.is-winner::after,.sl-diamond.is-winner .sl-diamond-caption,.sl-diamond.just-revealed .sl-diamond-art{animation:none}}
+.sl-diamond.is-winner .sl-diamond-face{filter:drop-shadow(0 0 10px #fff) drop-shadow(0 0 25px var(--cards-accent)) drop-shadow(0 0 46px var(--cards-accent));animation:sl-winner-glow 1.15s ease-in-out infinite}
+.sl-diamond.is-winner::after{content:"";position:absolute;inset:4%;z-index:-1;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.58) 0,rgba(255,255,255,.20) 28%,color-mix(in srgb,var(--cards-accent) 40%,transparent) 56%,transparent 76%);filter:blur(18px);animation:sl-winner-light 1.15s ease-in-out infinite;pointer-events:none}
+.sl-diamond.is-winner .sl-diamond-caption>span{padding:2px 4px;border-radius:4px;background:rgba(4,4,6,.72);box-shadow:inset 0 -2px 0 var(--cards-accent);animation:sl-winner-caption 1.15s ease-in-out infinite}
+.sl-diamond.just-revealed .sl-diamond-face{animation:sl-card-impact .42s cubic-bezier(.2,.8,.2,1) both}
+.sl-diamond.is-winner.just-revealed .sl-diamond-face{animation:sl-card-impact .42s cubic-bezier(.2,.8,.2,1) both,sl-winner-glow 1.15s ease-in-out .42s infinite}
+@keyframes sl-winner-glow{0%,100%{filter:drop-shadow(0 0 10px #fff) drop-shadow(0 0 25px var(--cards-accent)) drop-shadow(0 0 46px var(--cards-accent));transform:scale(1.015)}50%{filter:drop-shadow(0 0 17px #fff) drop-shadow(0 0 36px var(--cards-accent)) drop-shadow(0 0 60px var(--cards-accent));transform:scale(1.035)}}
+@keyframes sl-winner-light{0%,100%{opacity:.78;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
+@keyframes sl-winner-caption{0%,100%{opacity:.86;text-shadow:0 3px 4px #000,0 0 7px #fff,0 0 12px var(--cards-accent)}50%{opacity:1;text-shadow:0 3px 4px #000,0 0 11px #fff,0 0 20px var(--cards-accent)}}
+@keyframes sl-card-impact{0%{opacity:.15;transform:scale(.72);filter:blur(9px) brightness(2.2)}55%{opacity:1;transform:scale(1.055);filter:blur(0) brightness(1.35)}100%{opacity:1;transform:scale(1);filter:blur(0) brightness(1)}}
+@media(prefers-reduced-motion:reduce){.sl-diamond.is-winner .sl-diamond-face,.sl-diamond.is-winner::after,.sl-diamond.is-winner .sl-diamond-caption>span,.sl-diamond.just-revealed .sl-diamond-face{animation:none}}
 .obs-overlay-root:has(.sl-diamonds){padding:0!important;overflow:visible!important}
 .obs-stage:has(.sl-diamonds){width:min(1920px,100vw,214vh);min-height:0;overflow:visible!important}
 .obs-overlay-page,.obs-overlay-page .obs-stage{background:transparent!important}
