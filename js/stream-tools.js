@@ -132,7 +132,7 @@
       if(update.workspaceId===workspace?.id)setStatus('cardsOverlayStatus','OBS sincronizado.','success');
     }catch(err){
       if(update.workspaceId===workspace?.id){setStatus('cardsOverlayStatus','No se pudo sincronizar OBS. Reintentando…','error');if(!queuedCards)queuedCards=update}
-    }finally{cardsSyncBusy=false;if(queuedCards){clearTimeout(cardsSyncTimer);cardsSyncTimer=setTimeout(flushCards,1500)}}
+    }finally{cardsSyncBusy=false;if(queuedCards){clearTimeout(cardsSyncTimer);cardsSyncTimer=setTimeout(()=>{cardsSyncTimer=null;flushCards()},1500)}}
   }
   window.addEventListener('sanlean:cards-state',event=>queueCards(event.detail));
 

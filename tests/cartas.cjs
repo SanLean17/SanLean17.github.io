@@ -18,7 +18,7 @@ const client={auth:{onAuthStateChange(){}},from(table){let payload;
 const context={window:{SANLEAN_SUPABASE:{url:'https://example.test',publishableKey:'public'},supabase:{createClient:()=>client},addEventListener(){}},document:{getElementById:()=>null},localStorage:{getItem:k=>storage.get(k),setItem:(k,v)=>storage.set(k,v),removeItem:k=>storage.delete(k)},navigator:{},location:{origin:'https://example.test'},crypto:webcrypto,console,setTimeout:(fn)=>setTimeout(fn,0),clearTimeout,clearInterval,fetch:async url=>({ok:true,json:async()=>json(url.replace('../',''))})};
 context.window.window=context.window;vm.createContext(context);
 let source=fs.readFileSync(path.join(root,'js/stream-tools.js'),'utf8');
-source=source.replace('  window.SanLeanStreamTools=',"  window.test={itemsForCardRule,spinOverlay,setWorkspace:(id)=>workspace={id,owner_user_id:'user'},setup:()=>{workspace={id:'w1',owner_user_id:'user'};session={user:{id:'user'}};overlays=[{id:'overlay',workspace_id:'w1',kind:'roulette_survivor_perks',settings:{}}]}};\n  window.SanLeanStreamTools=");
+source=source.replace('  window.SanLeanStreamTools=',"  window.test={itemsForCardRule,spinOverlay,queueCards,flushCards,setWorkspace:(id)=>workspace={id,owner_user_id:'user'},setup:()=>{workspace={id:'w1',owner_user_id:'user'};session={user:{id:'user'}};overlays=[{id:'overlay',workspace_id:'w1',kind:'roulette_survivor_perks',settings:{}},{id:'vote-overlay',workspace_id:'w1',kind:'vote'}]}};\n  window.SanLeanStreamTools=");
 vm.runInContext(source,context);
 const api=context.window.test;api.setup();
 const setRule=(role,rule,id='r1')=>storage.set('sanlean-cards-pending-roulette',JSON.stringify({source:'cards',workspaceId:'w1',roundId:id,role,rule}));
@@ -56,6 +56,13 @@ async function testRules(){
   const first=api.spinOverlay('overlay'),second=api.spinOverlay('overlay');assert.equal(await second,false);assert.equal(await first,true);assert.equal(storage.size,0);
   setRule('survivor',{kind:'no_loadout',count:0,noAddons:true});assert.equal(await api.spinOverlay('overlay'),true);assert.equal(writes.at(-1).payload.state.items.length,0);assert.equal(writes.at(-1).payload.state.cardRule.noAddons,true);
   setRule('survivor',{kind:'count',count:2});failResult=true;assert.equal(await api.spinOverlay('overlay'),false);assert(storage.size);failResult=false;
+  const beforeSync=writes.length;
+  for(let i=0;i<3;i++){
+    api.queueCards({workspaceId:'w1',state:'active',secondsLeft:30-i,cards:[]});
+    await new Promise(r=>setTimeout(r,15));
+  }
+  assert.equal(writes.length-beforeSync,3);
+  api.queueCards({workspaceId:'w2',state:'active',cards:[]});await new Promise(r=>setTimeout(r,15));assert.equal(writes.length-beforeSync,3);
   console.log('PASS: assets, categories, fixed slots, exclusions, unique perks, workspace scope, concurrent spin, one-use and failed-write retention');
 }
 const harness=`<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="../css/usuario-cartas.css"></head><body class="user-page" style="background:#121216;color:white;margin:0"><div id="streamVotesPanel"></div><script>window.spins=0;window.SanLeanStreamTools={getWorkspace:()=>({id:'w1'}),spinByRole:async()=>{window.spins++;await new Promise(r=>setTimeout(r,20));return true}};</script><script src="../js/cards-view.js"></script><script src="../js/usuario-cartas.js"></script></body></html>`;
