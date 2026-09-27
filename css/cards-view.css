@@ -2,9 +2,9 @@
 .sl-diamonds.is-chaotic{--cards-accent:#873FFD}
 .sl-cards-hud{display:flex;align-items:center;justify-content:center;gap:2.2cqw;margin:0 auto .25cqw;font-weight:900;text-transform:uppercase;text-shadow:0 3px 8px #000;font-size:clamp(22px,3cqw,56px)}
 .sl-cards-hud strong{color:#fff;text-shadow:0 0 8px #fff,0 0 20px var(--cards-accent),0 3px 8px #000}.sl-cards-clock{font:900 clamp(32px,4.8cqw,86px)/1 Impact,'Arial Black',sans-serif;letter-spacing:.04em}
-.sl-diamond-layout{position:relative;width:100%;aspect-ratio:2.58/1}
-.sl-diamond{position:absolute;left:calc(var(--position)*16%);top:27%;width:36%;aspect-ratio:1;margin:0;padding:0;border:0;background:none;color:#fff;box-shadow:none;overflow:visible;font-family:Montserrat,Arial,sans-serif;opacity:1}
-.sl-diamond.is-upper{top:-8%}
+.sl-diamond-layout{position:relative;width:100%;aspect-ratio:2.35/1}
+.sl-diamond{position:absolute;left:calc(var(--position)*16.8%);top:31%;width:33%;aspect-ratio:1;margin:0;padding:0;border:0;background:none;color:#fff;box-shadow:none;overflow:visible;font-family:Montserrat,Arial,sans-serif;opacity:1;z-index:1}
+.sl-diamond.is-upper{top:-4%}
 button.sl-diamond:not(:disabled){cursor:pointer}
 button.sl-diamond:focus-visible{outline:2px solid var(--cards-accent);outline-offset:6px;border-radius:8px}
 .sl-diamond-face{position:absolute;inset:0;display:grid;place-items:center;transform-style:preserve-3d}
@@ -12,18 +12,21 @@ button.sl-diamond:focus-visible{outline:2px solid var(--cards-accent);outline-of
 .sl-diamond-letter{position:relative;font:900 clamp(54px,10.5cqw,190px)/1 Impact,'Arial Black',sans-serif;text-shadow:0 4px 16px #000,0 0 14px rgba(255,255,255,.3)}
 .sl-diamond-letter[hidden]{display:none}
 .sl-diamond-art{position:absolute;inset:2%;width:96%;height:96%;object-fit:contain}
-.sl-diamond-caption{position:absolute;top:96%;left:-8%;width:116%;font-size:clamp(22px,3.25cqw,60px);font-weight:900;line-height:1.02;text-align:center;text-wrap:balance;text-transform:uppercase;text-shadow:0 3px 4px #000,0 0 12px #000}
-.sl-diamond.is-upper .sl-diamond-caption{top:auto;bottom:96%}
+.sl-diamond-caption{position:absolute;top:103%;left:-8%;width:116%;font-size:clamp(22px,3.25cqw,60px);font-weight:900;line-height:1.02;text-align:center;text-wrap:balance;text-transform:uppercase;text-shadow:0 3px 4px #000,0 0 12px #000}
+.sl-diamond.is-upper .sl-diamond-caption{top:auto;bottom:103%}
 .sl-diamond-votes{position:absolute;left:50%;top:72%;transform:translateX(-50%);z-index:4;display:flex;align-items:baseline;gap:.35em;padding:.18em .52em;border-radius:999px;background:rgba(0,0,0,.76);border:1px solid color-mix(in srgb,var(--cards-accent) 76%,transparent);text-shadow:0 2px 5px #000;white-space:nowrap}
 .sl-diamond-votes b{font:900 clamp(24px,4cqw,70px)/1 Impact,'Arial Black',sans-serif}.sl-diamond-votes small{font-size:clamp(10px,1.45cqw,24px);font-weight:900}
-.sl-diamond.is-winner .sl-diamond-face{filter:drop-shadow(0 0 9px #fff) drop-shadow(0 0 22px var(--cards-accent)) drop-shadow(0 0 42px var(--cards-accent));animation:sl-winner-glow 1.15s ease-in-out infinite}
-.sl-diamond.is-winner::after{content:"";position:absolute;inset:11%;z-index:-1;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.58) 0,rgba(255,255,255,.18) 28%,color-mix(in srgb,var(--cards-accent) 38%,transparent) 52%,transparent 73%);filter:blur(16px);animation:sl-winner-light 1.15s ease-in-out infinite;pointer-events:none}
+.sl-diamond.is-winner{z-index:20}
+.sl-diamond.is-winner .sl-diamond-face{filter:drop-shadow(0 0 12px #fff) drop-shadow(0 0 28px var(--cards-accent)) drop-shadow(0 0 54px var(--cards-accent));animation:sl-winner-glow 1.15s ease-in-out infinite}
+.sl-diamond.is-winner::after{content:"";position:absolute;inset:5%;z-index:-1;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.64) 0,rgba(255,255,255,.22) 28%,color-mix(in srgb,var(--cards-accent) 42%,transparent) 54%,transparent 76%);filter:blur(19px);animation:sl-winner-light 1.15s ease-in-out infinite;pointer-events:none}
+.sl-diamond.is-winner .sl-diamond-caption{animation:sl-winner-caption 1.15s ease-in-out infinite}
 .sl-diamond.just-revealed .sl-diamond-art{animation:sl-card-reveal .55s ease-out both}
-@keyframes sl-winner-glow{0%,100%{filter:drop-shadow(0 0 9px #fff) drop-shadow(0 0 22px var(--cards-accent)) drop-shadow(0 0 42px var(--cards-accent));transform:scale(1.025)}50%{filter:drop-shadow(0 0 17px #fff) drop-shadow(0 0 34px var(--cards-accent)) drop-shadow(0 0 58px var(--cards-accent));transform:scale(1.055)}}
-@keyframes sl-winner-light{0%,100%{opacity:.78;transform:scale(.98)}50%{opacity:1;transform:scale(1.08)}}
+@keyframes sl-winner-glow{0%,100%{filter:drop-shadow(0 0 12px #fff) drop-shadow(0 0 28px var(--cards-accent)) drop-shadow(0 0 54px var(--cards-accent));transform:scale(1.025)}50%{filter:drop-shadow(0 0 21px #fff) drop-shadow(0 0 42px var(--cards-accent)) drop-shadow(0 0 72px var(--cards-accent));transform:scale(1.055)}}
+@keyframes sl-winner-light{0%,100%{opacity:.82;transform:scale(1)}50%{opacity:1;transform:scale(1.13)}}
+@keyframes sl-winner-caption{0%,100%{opacity:.72;text-shadow:0 3px 4px #000,0 0 8px #fff,0 0 15px var(--cards-accent)}50%{opacity:1;text-shadow:0 3px 4px #000,0 0 14px #fff,0 0 28px var(--cards-accent)}}
 @keyframes sl-card-reveal{from{opacity:0;transform:perspective(700px) rotateY(90deg) scale(.9)}to{opacity:1;transform:perspective(700px) rotateY(0) scale(1)}}
-@media(prefers-reduced-motion:reduce){.sl-diamond.is-winner .sl-diamond-face,.sl-diamond.is-winner::after,.sl-diamond.just-revealed .sl-diamond-art{animation:none}}
+@media(prefers-reduced-motion:reduce){.sl-diamond.is-winner .sl-diamond-face,.sl-diamond.is-winner::after,.sl-diamond.is-winner .sl-diamond-caption,.sl-diamond.just-revealed .sl-diamond-art{animation:none}}
 .obs-overlay-root:has(.sl-diamonds){padding:0!important}
-.obs-stage:has(.sl-diamonds){width:min(1920px,100vw,245vh);min-height:0}
+.obs-stage:has(.sl-diamonds){width:min(1920px,100vw,225vh);min-height:0}
 .obs-overlay-page,.obs-overlay-page .obs-stage{background:transparent!important}
 .obs-control[hidden]{display:none!important}
