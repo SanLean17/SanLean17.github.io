@@ -1,5 +1,5 @@
 .sl-roulette{--roulette-accent:#FF003C;--roulette-diamond:url('../rombo.png');width:100%;container-type:inline-size;color:#fff;font-family:Montserrat,Arial,sans-serif}
-.sl-roulette.is-chaotic{--roulette-accent:#873FFD;--roulette-diamond:url('../rombo-violeta.png')}
+.sl-roulette.is-chaotic{--roulette-accent:#873FFD;--roulette-diamond:url('../rombo-caotico.png')}
 .sl-roulette-slots{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1%;align-items:start;min-width:0}
 .sl-roulette-slot{position:relative;min-width:0;text-align:center}
 .sl-roulette-frame{position:relative;width:100%;aspect-ratio:1;background:var(--roulette-diamond) center/contain no-repeat;display:grid;place-items:center}
