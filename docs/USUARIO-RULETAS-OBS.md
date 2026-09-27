@@ -8,12 +8,15 @@ Cada espacio tiene tres Browser Sources distintos. Pegar la URL de visualizació
 
 ## Comportamiento
 
-- Killers: una selección ponderada de las opciones habilitadas. Puede girar incluso con un único killer habilitado. La animación muestra únicamente el pool habilitado y termina en el retrato ganador.
+- Killers: una selección ponderada de las opciones habilitadas. Puede girar incluso con un único killer habilitado. OBS reproduce el mismo contrato visual de la ruleta pública de Killers —título, carrusel, rectángulos, marcadores, proporciones, escala del ganador y frenado— pero con runtime y estado privados de USUARIO. No se carga ni se reutiliza el JavaScript de la WEB pública.
+- El giro de Killers dura **8 segundos**, con la misma curva de aceleración/frenado que la ruleta pública. El ganador se determina en USUARIO antes de iniciar la animación y OBS termina exactamente en ese resultado; OBS nunca vuelve a sortear por su cuenta.
+- En Killers existe un modo por workspace: **MANTENER KILLERS** permite que un ganador vuelva a salir en cualquier giro; **ELIMINAR AL SALIR** agrega el ganador a la lista de usados después de completar el giro y lo excluye de los siguientes sorteos. **REINICIAR KILLERS USADOS** vacía esa lista y vuelve a habilitar todos los killers que sigan activos en la configuración del propietario.
+- En modo ELIMINAR AL SALIR, los killers usados no se muestran como candidatos en los siguientes giros. Si se agotan todas las opciones habilitadas, el sistema no gira y solicita reiniciar los killers usados.
 - Perks: cuatro slots. Se seleccionan cuatro claves distintas, respetando `data/perk-conflicts.json` en la ruleta normal. El slot vacío puede salir si está habilitado, como en la configuración existente; no se duplica.
 - Un peso cero excluye la opción. Los pesos positivos definen su probabilidad relativa. Sin suficientes opciones compatibles se informa el problema y no se publica una build incompleta.
 - Agregar un nombre aumenta el peso una vez. Si gana una entrada atribuida a ese nombre, se muestra debajo del resultado y se ilumina. La primera entrada es anónima; las siguientes usan los nombres agregados hasta el peso disponible. Un cambio manual del peso manda sobre cuántas entradas participan.
-- Las animaciones duran aproximadamente 4,2 segundos. OBS recibe el mismo resultado confirmado que el panel; no vuelve a sortear. La demora de consulta de OBS puede desfasar ligeramente el momento visual.
-- Las preferencias de reducir movimiento desactivan el desplazamiento. Hay diseños adaptados a ventanas angostas.
+- Las ruletas de perks conservan su animación propia. La ruleta de Killers usa los 8 segundos definidos arriba. En todos los casos OBS recibe el mismo resultado confirmado que el panel; no vuelve a sortear.
+- Las preferencias de reducir movimiento desactivan las animaciones ornamentales compatibles. Hay diseños adaptados a ventanas angostas.
 
 ## CARTAS → ruleta
 
@@ -25,12 +28,13 @@ La regla sólo se aplica al rol y espacio que la creó. Girar Killers no consume
 
 ## Guardado y permisos
 
-- Las configuraciones se guardan en la tabla existente `user_roulette_settings`, con las políticas de propietario existentes.
-- El navegador usa `sanlean-private-roulette:<user_id>`. No lee ni escribe la vieja clave de simulación de la WEB pública.
+- Las configuraciones de pesos se guardan en la tabla existente `user_roulette_settings`, con las políticas de propietario existentes.
+- El modo de repetición de Killers y la lista de killers usados se guardan en `stream_overlays.settings` del workspace correspondiente (`killerRepeatMode` y `usedKillers`). No son preferencias de la WEB pública.
+- El navegador usa `sanlean-private-roulette:<user_id>` para el borrador privado de configuración. No lee ni escribe la vieja clave de simulación de la WEB pública.
 - Los cambios se guardan en orden, se identifica cualquier fallo y se espera el guardado antes de sortear. Un cambio de cuenta no puede enviar el borrador anterior a la nueva cuenta.
-- La configuración pertenece al propietario. Los colaboradores con el permiso existente de OVERLAYS pueden girar con el pool que el propietario sincronizó; no pueden editar sus pesos desde este panel. No se ampliaron permisos ni políticas de base de datos.
+- La configuración pertenece al propietario. Los colaboradores con el permiso existente de OVERLAYS pueden girar con el pool que el propietario sincronizó; no pueden editar sus pesos ni el modo de repetición desde este panel. No se ampliaron permisos ni políticas de base de datos.
 - Los giros paralelos del mismo overlay se bloquean en el panel y entre pestañas con Web Locks. Para la prueba usar un panel controlador por espacio; no hay arbitraje distribuido entre varios dispositivos.
-- No se cargan los scripts ni los controles de las ruletas públicas. No se modificaron esas páginas.
+- No se cargan los scripts ni los controles de las ruletas públicas. La coincidencia visual de Killers es una implementación privada equivalente, no una dependencia entre WEB y USUARIO.
 
 ## Enlaces de demostración
 
