@@ -1,5 +1,7 @@
 # SanLean — CARTAS
 
+> Actualización: el arte, catálogo de resultados y reglas detalladas vigentes están en [cartas/README.md](../cartas/README.md). La representación actual es de cinco rombos; la probabilidad automática aprobada es 15 %.
+
 Este documento define la lógica funcional aprobada para `USUARIO > CARTAS` y su relación con las ruletas de perks. Complementa `docs/USUARIO-DESIGN-SYSTEM.md` y debe respetar el mismo sistema visual de USUARIO.
 
 `CARTAS` reemplaza el nombre anterior `VOTACIONES`. La votación es una modalidad de la herramienta, no el nombre del módulo completo.
@@ -65,7 +67,7 @@ Reglas:
 - Se conserva la misma estructura y las mismas letras, con orden mezclado.
 - Los resultados posibles pueden ser más exigentes que en una ronda normal, por ejemplo `0 PERKS · 0 ADD-ONS`.
 - El catálogo exacto de resultados especiales se definirá por separado.
-- La probabilidad exacta de aparición todavía no está fijada y no debe inventarse localmente en código.
+- La probabilidad aprobada es 15 % por nueva ronda y se define centralmente por SanLean, sin controles para el streamer.
 
 ### Voto acumulable en evento especial
 Cada mensaje válido cuenta como un voto nuevo.

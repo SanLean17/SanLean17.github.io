@@ -1,0 +1,21 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
+let user='owner-a',fail=false,delay=null;
+const writes=[],events=[],storage=new Map(),authCallbacks=[];
+const client={auth:{getSession:async()=>({data:{session:user?{user:{id:user}}:null}}),onAuthStateChange:fn=>authCallbacks.push(fn)},from(){return{select(){return this},eq(){return this},maybeSingle:async()=>({data:{settings:{weights:{'killers:trapper':user==='owner-a'?2:8},bonusEntries:{}}}}),upsert:async row=>{if(delay)await delay;if(fail)return{error:Error('offline')};writes.push(structuredClone(row));return{error:null}}}}};
+const context={window:{gtag(){},SANLEAN_SUPABASE:{},supabase:{createClient:()=>client},addEventListener(){},dispatchEvent:e=>events.push(e)},document:{addEventListener(){},querySelector:()=>null},localStorage:{setItem:(k,v)=>storage.set(k,v)},structuredClone,console,CustomEvent:function(type,options){this.type=type;this.detail=options?.detail},setTimeout:()=>1,clearTimeout(){}};
+vm.createContext(context);vm.runInContext(fs.readFileSync(path.join(__dirname,'../js/sanlean-auth.js'),'utf8'),context);
+const api=context.window.SanLeanAccount;
+(async()=>{
+  await api.syncToBrowser();assert.equal(api.getSettings().weights['killers:trapper'],2);
+  api.queueSettings({weights:{'killers:trapper':5},bonusEntries:{}});await api.flushSettings();assert.equal(writes.at(-1).user_id,'owner-a');assert.equal(writes.at(-1).settings.weights['killers:trapper'],5);
+  assert(storage.has('sanlean-private-roulette:owner-a'));assert(!storage.has('sanlean-roulette-simulation-v1'));
+  api.queueSettings({weights:{'killers:trapper':9},bonusEntries:{}});user='owner-b';await assert.rejects(api.flushSettings());assert.equal(writes.length,1);
+  authCallbacks.forEach(fn=>fn('SIGNED_OUT'));await api.syncToBrowser();assert.equal(api.getSettings().weights['killers:trapper'],8);assert(storage.has('sanlean-private-roulette:owner-b'));
+  fail=true;api.queueSettings({weights:{'killers:trapper':3},bonusEntries:{}});await assert.rejects(api.flushSettings());assert.equal(writes.length,1);
+  fail=false;await api.flushSettings();assert.equal(writes.at(-1).user_id,'owner-b');assert.equal(writes.at(-1).settings.weights['killers:trapper'],3);
+  let release;delay=new Promise(resolve=>release=resolve);
+  api.queueSettings({weights:{'killers:trapper':4},bonusEntries:{}});const pending=api.flushSettings();
+  api.queueSettings({weights:{'killers:trapper':6},bonusEntries:{}});release();delay=null;await pending;
+  assert.equal(writes.at(-1).settings.weights['killers:trapper'],6);
+  console.log('PASS: private account storage, authenticated owner binding, account-switch rejection, failed save retention, serialized latest settings');
+})().catch(error=>{console.error(error);process.exitCode=1});

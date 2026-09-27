@@ -13,7 +13,7 @@ Agregar una **Fuente de navegador**, pegar la URL y usar **1920 × 1080**. El fo
 
 Para una ronda real: entrar en **MI PANEL → OVERLAYS → CARTAS** y copiar **URL OBS · VISUALIZACIÓN**. La ruta real distingue mayúsculas: `/Usuario/overlay.html?token=…`. Cada espacio de streamer tiene sus tokens propios, creados al cargar el panel con una sesión autorizada. No usar la URL privada de control como fuente de transmisión. No se guardan tokens personales en este repositorio.
 
-En **CARTAS** elegir **MANUAL**, rol y **NORMAL / CAÓTICO**, generar la ronda, elegir A–E, revelar ganador y luego revelar otros rombos individualmente o **REVELAR LAS CINCO**. Elegir o finalizar una votación nunca revela el resultado. **CONTINUAR A LA RULETA** aplica la regla una sola vez; **APLICAR PARTIDA SIN PERKS** muestra los resultados de cero perks.
+En **CARTAS** elegir **MANUAL**, rol, generar la ronda, elegir A–E, revelar ganador y luego revelar otros rombos individualmente o **REVELAR LAS CINCO**. Elegir o finalizar una votación nunca revela el resultado. **CONTINUAR A LA RULETA** envía la regla pendiente a la sección correspondiente. El streamer toca **GIRAR** allí para consumirla una sola vez. Los resultados de cero perks se aplican sin animación de giro.
 
 La conexión automática de mensajes Twitch/Kick todavía depende de completar OAuth/entrada de chat del proyecto. La prueba manual funciona sin esa conexión. No se afirma que el chat esté conectado porque exista el selector de plataforma.
 
@@ -60,7 +60,7 @@ Bases compartidas en raíz: `/rombo.png` y `/rombo-caotico.png`. **Una ronda ca�
 - Cada mensaje caótico válido suma, incluso si la misma persona repite su letra. El mensaje debe contener una sola letra A/B/C/D/E, sin importar mayúsculas y espacios externos. `A A A` no cuenta como tres votos.
 - `registerChatMessage({platform,userId,message})` acepta Twitch/Kick según la plataforma seleccionada. En “ambas”, las identidades quedan separadas por plataforma.
 - Ronda de 30 segundos. Empate: se puede repetir con las mismas cinco opciones y votos reiniciados. Cero votos: no hay ganador. Nada dispara la ruleta automáticamente.
-- La probabilidad automática de evento caótico sigue sin definirse (`null`); el selector permite forzarlo para pruebas sin inventar un porcentaje.
+- La probabilidad automática es **15 % por nueva ronda**, aprobada por SanLean. Es independiente entre rondas: una cada 6,67 en promedio, sin cadencia garantizada ni cooldown. Un empate conserva el tipo de evento. El valor se define centralmente en `js/usuario-cartas.js` (`CHAOS_PROBABILITY=0.15`); no hay selector ni ajuste para el streamer. Las demos visuales pueden mostrar cualquiera de los dos estilos sin alterar partidas reales.
 
 ## Qué llega a la ruleta al ganar
 
@@ -104,7 +104,7 @@ Las cantidades 0–4 tienen las mismas reglas cuando aparecen en un evento caót
 
 ### Consumo de un único giro y espacios de streamer
 
-La regla incluye identificador de ronda, rol y espacio de streamer. Sólo puede aplicarse a la ruleta de perks de ese rol y espacio; no modifica la ruleta de killers. Revelar otros rombos no cambia la regla ganadora. El botón queda bloqueado tras un giro exitoso y el almacenamiento pendiente se borra sólo cuando el resultado se confirmó en Supabase. Un error conserva la regla para reintentar.
+La regla incluye identificador de ronda, rol y espacio de streamer. Sólo puede aplicarse a la ruleta de perks de ese rol y espacio; no modifica la ruleta de killers. Revelar otros rombos no cambia la regla ganadora. Continuar nuevamente desde la misma ronda no vuelve a crear una regla consumida. El almacenamiento pendiente se borra sólo cuando el resultado se confirmó en Supabase. Un error conserva la regla para reintentar.
 
 Se bloquean giros simultáneos por overlay y, en navegadores compatibles, entre pestañas del mismo navegador con Web Locks. Una confirmación tardía nunca borra una regla nueva de otra ronda. La selección normal de las ruletas se mantiene cuando no existe una regla de CARTAS aplicable.
 

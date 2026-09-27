@@ -3,19 +3,49 @@
 (()=>{
   const cfg = window.SANLEAN_SUPABASE;
   if (!cfg || !window.supabase) return;
-  const SIM_KEY='sanlean-roulette-simulation-v1';
+  const PRIVATE_SETTINGS_PREFIX='sanlean-private-roulette:';
   const client = window.supabase.createClient(cfg.url, cfg.publishableKey, {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
   window.sanleanSupabase=client;
-  let syncing=false,saveTimer=null,currentProfile=null;
+  let saveTimer=null,currentProfile=null,settingsUserId=null,settingsDraft=null,settingsVersion=0,savedVersion=0,settingsWrite=null;
   const normalizeUsername=v=>String(v||'').trim().toLowerCase();
   const validUsername=v=>/^[a-z0-9_-]{3,30}$/.test(v);
   const api=window.SanLeanAccount={
     async session(){return (await client.auth.getSession()).data.session}, async signIn(email,password){return client.auth.signInWithPassword({email,password})}, async signOut(){return client.auth.signOut()}, async resetPassword(email){return client.auth.resetPasswordForEmail(email,{redirectTo:location.origin+'/Usuario/restablecer-contrasena.html'})}, async updatePassword(password){return client.auth.updateUser({password})},
     async loadProfile(){const s=await api.session();if(!s)return null;const {data,error}=await client.from('user_profiles').select('first_name,last_name,username,role,onboarding_completed').eq('user_id',s.user.id).maybeSingle();if(error)throw error;if(data)return data;const {data:created,error:createError}=await client.from('user_profiles').insert({user_id:s.user.id,role:'owner'}).select('first_name,last_name,username,role,onboarding_completed').single();if(createError)throw createError;return created},
     async saveProfile(firstName,lastName,username,onboardingCompleted){const s=await api.session();if(!s)throw new Error('Sin sesión');const cleanUsername=normalizeUsername(username);if(!validUsername(cleanUsername)){const err=new Error('Nombre de usuario inválido');err.code='USERNAME_INVALID';throw err}const payload={user_id:s.user.id,first_name:firstName.trim(),last_name:lastName.trim(),username:cleanUsername};if(typeof onboardingCompleted==='boolean')payload.onboarding_completed=onboardingCompleted;const {data,error}=await client.from('user_profiles').upsert(payload,{onConflict:'user_id'}).select('first_name,last_name,username,role,onboarding_completed').single();if(error)throw error;currentProfile=data;return data},
-    async loadSettings(){const s=await api.session();if(!s)return null;const {data,error}=await client.from('user_roulette_settings').select('settings').eq('user_id',s.user.id).maybeSingle();if(error)throw error;return data?.settings||{weights:{},bonusEntries:{}}}, async saveSettings(settings){const s=await api.session();if(!s)return;const clean={weights:settings?.weights||{},bonusEntries:settings?.bonusEntries||{}};const {error}=await client.from('user_roulette_settings').upsert({user_id:s.user.id,settings:clean},{onConflict:'user_id'});if(error)throw error}, async syncToBrowser(){const settings=await api.loadSettings();if(!settings)return false;syncing=true;localStorage.setItem(SIM_KEY,JSON.stringify({...settings,updatedAt:Date.now(),source:'supabase'}));syncing=false;return true}, onAuthChange(callback){return client.auth.onAuthStateChange(callback)}
+    async loadSettings(){const s=await api.session();if(!s)return null;const {data,error}=await client.from('user_roulette_settings').select('settings').eq('user_id',s.user.id).maybeSingle();if(error)throw error;return data?.settings||{weights:{},bonusEntries:{}}},
+    async saveSettings(settings,expectedUserId){const s=await api.session();if(!s||s.user.id!==expectedUserId)throw new Error('La sesión cambió. Volvé a cargar el panel.');const {error}=await client.from('user_roulette_settings').upsert({user_id:expectedUserId,settings:{weights:settings.weights||{},bonusEntries:settings.bonusEntries||{}}},{onConflict:'user_id'});if(error)throw error},
+    async syncToBrowser(){
+      const session=await api.session();if(!session)return false;
+      const settings=await api.loadSettings();if(!settings||(await api.session())?.user.id!==session.user.id)return false;
+      clearTimeout(saveTimer);settingsUserId=session.user.id;settingsDraft=structuredClone(settings);settingsVersion=0;savedVersion=0;
+      localStorage.setItem(PRIVATE_SETTINGS_PREFIX+settingsUserId,JSON.stringify(settingsDraft));
+      window.dispatchEvent(new CustomEvent('sanlean:settings-loaded',{detail:structuredClone(settingsDraft)}));return true;
+    },
+    getSettings(){return settingsDraft?structuredClone(settingsDraft):null},
+    queueSettings(settings){
+      if(!settingsUserId||!settingsDraft)throw new Error('Esperá a que cargue la configuración de tu cuenta.');
+      settingsDraft=structuredClone(settings);settingsVersion++;
+      localStorage.setItem(PRIVATE_SETTINGS_PREFIX+settingsUserId,JSON.stringify(settingsDraft));
+      settingsStatus('Guardando configuración…');clearTimeout(saveTimer);
+      saveTimer=setTimeout(()=>api.flushSettings().catch(err=>console.error('Roulette settings:',err)),250);
+    },
+    async flushSettings(){
+      clearTimeout(saveTimer);
+      if(settingsWrite){await settingsWrite;return api.flushSettings()}
+      if(!settingsDraft)return false;
+      if(savedVersion===settingsVersion)return true;
+      const userId=settingsUserId,version=settingsVersion,draft=structuredClone(settingsDraft);
+      settingsWrite=api.saveSettings(draft,userId);
+      try{await settingsWrite;if(userId!==settingsUserId)return false;savedVersion=version;settingsStatus('Configuración guardada.');}
+      catch(err){settingsStatus('No se guardó la configuración. Reintentá antes de girar.');throw err}
+      finally{settingsWrite=null}
+      return api.flushSettings();
+    },
+    onAuthChange(callback){return client.auth.onAuthStateChange(callback)}
   };
-  const nativeSet=Storage.prototype.setItem;Storage.prototype.setItem=function(key,value){nativeSet.call(this,key,value);if(this===localStorage&&key===SIM_KEY&&!syncing){clearTimeout(saveTimer);saveTimer=setTimeout(async()=>{try{await api.saveSettings(JSON.parse(value))}catch(err){console.error('SanLean Supabase save:',err)}},180)}};
+  function settingsStatus(text){window.dispatchEvent(new CustomEvent('sanlean:settings-status',{detail:text}))}
+  client.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT'){clearTimeout(saveTimer);settingsUserId=null;settingsDraft=null;settingsVersion=0;savedVersion=0;window.dispatchEvent(new CustomEvent('sanlean:settings-loaded',{detail:{weights:{},bonusEntries:{}}}))}});
   function msg(text,isError=false){const el=document.getElementById('loginMessage');if(el){el.textContent=text||'';el.classList.toggle('error',!!isError)}}
   function installAccountMenuStyles(){if(document.querySelector('link[data-sanlean-account-menu]'))return;const link=document.createElement('link');link.rel='stylesheet';link.href='../css/usuario-account-menu.css';link.dataset.sanleanAccountMenu='true';document.head.appendChild(link)}
   function setAccountMenu(open){if(document.querySelector(".mobile-user-navigation[open]"))return;const trigger=document.getElementById('accountIdentityTrigger'),menu=document.getElementById('accountIdentityDropdown');if(!trigger||!menu)return;trigger.setAttribute('aria-expanded',open?'true':'false');menu.hidden=!open}
@@ -34,7 +64,7 @@
     const profileOpen=e.target.closest?.('#profileBtn');if(profileOpen){setTimeout(async()=>{const session=await api.session();if(!currentProfile)currentProfile=await api.loadProfile();fillProfile(session,currentProfile);setProfileEditing(false);setPasswordMode(false)},0)}
     const edit=e.target.closest?.('#profileEdit');if(edit){e.preventDefault();e.stopImmediatePropagation();const n=document.getElementById('profileName'),s=document.getElementById('profileSurname'),u=document.getElementById('profileUsername'),out=document.getElementById('profileSaveMessage');if(n.readOnly){setProfileEditing(true);n.focus();return}const name=n.value.trim(),surname=s.value.trim(),username=normalizeUsername(u?.value||currentProfile?.username||'');if(!name||!surname){out.textContent='Completá nombre y apellido.';return}if(!validUsername(username)){out.textContent='El nombre de usuario debe tener entre 3 y 30 caracteres y usar sólo letras minúsculas, números, guion o guion bajo.';return}try{currentProfile=await api.saveProfile(name,surname,username,currentProfile?.onboarding_completed??true);const session=await api.session();fillProfile(session,currentProfile);setProfileEditing(false);out.textContent='Perfil actualizado correctamente.'}catch(err){console.error(err);out.textContent=err.code==='23505'?'Ese nombre de usuario ya está en uso. Elegí otro.':'No se pudo actualizar el perfil.'}return}
     const toggle=e.target.closest?.('#togglePassword');if(toggle){e.preventDefault();e.stopImmediatePropagation();setPasswordMode(true);return}
-    const logout=e.target.closest?.('#demoLogout');if(logout){e.preventDefault();e.stopImmediatePropagation();await api.signOut();localStorage.removeItem(SIM_KEY);setAccountMenu(false);showLogin();return}
+    const logout=e.target.closest?.('#demoLogout');if(logout){e.preventDefault();e.stopImmediatePropagation();await api.signOut();setAccountMenu(false);showLogin();return}
     const forgot=e.target.closest?.('#forgotPassword');if(forgot){e.preventDefault();e.stopImmediatePropagation();msg('');const modal=document.getElementById('forgotPasswordModal'),input=document.getElementById('recoveryEmail'),out=document.getElementById('recoveryEmailMessage');if(input)input.value=document.getElementById('loginEmail')?.value.trim()||'';if(out){out.textContent='';out.className='profile-message'}if(modal)modal.hidden=false;setTimeout(()=>input?.focus(),30);return}
     const closeRecovery=e.target.closest?.('#closeRecoveryEmail');if(closeRecovery){e.preventDefault();document.getElementById('forgotPasswordModal').hidden=true;return}
     const sendRecovery=e.target.closest?.('#sendRecoveryEmail');if(sendRecovery){e.preventDefault();e.stopImmediatePropagation();const input=document.getElementById('recoveryEmail'),out=document.getElementById('recoveryEmailMessage'),email=input?.value.trim()||'';out.className='profile-message';if(!email||!input.checkValidity()){out.textContent='Ingresá un correo electrónico válido.';out.classList.add('error');return}sendRecovery.disabled=true;sendRecovery.textContent='ENVIANDO...';out.textContent='';const {error}=await api.resetPassword(email);if(error){console.error('Password recovery:',error);out.textContent='No se pudo enviar el correo de recuperación. Volvé a intentarlo en unos minutos.';out.classList.add('error')}else{out.textContent='Si el correo está registrado, te enviaremos un enlace para cambiar tu contraseña. Revisá también Spam o Correo no deseado.'}sendRecovery.disabled=false;sendRecovery.textContent='ENVIAR';return}
