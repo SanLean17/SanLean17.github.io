@@ -1,23 +1,34 @@
 {
-  "version": 1,
+  "version": 2,
   "basePath": "../cartas",
   "fallback": "../rombo.png",
+  "backs": {
+    "normal": "../rombo.png",
+    "chaotic": "../rombo-caotico.png"
+  },
   "results": {
-    "normal_0": "normal_0.png",
-    "normal_1": "normal_1.png",
-    "normal_2": "normal_2.png",
-    "normal_3": "normal_3.png",
-    "normal_4": "normal_4.png",
-    "survivor_totems": "survivor_totems.png",
-    "survivor_auras": "survivor_auras.png",
-    "survivor_no_mither_empty_random": "survivor_no_mither_empty_random.png",
-    "survivor_no_mither_object_random": "survivor_no_mither_object_random.png",
-    "survivor_two_bad_one_good_random": "survivor_two_bad_one_good_random.png",
-    "survivor_zero_perks_addons": "survivor_zero_perks_addons.png",
-    "killer_totems": "killer_totems.png",
-    "killer_auras": "killer_auras.png",
-    "killer_obsession": "killer_obsession.png",
-    "killer_two_bad_one_good_random": "killer_two_bad_one_good_random.png",
-    "killer_zero_perks_addons": "killer_zero_perks_addons.png"
+    "normal_0": "normal-0-perks.png",
+    "normal_1": "normal-1-perk.png",
+    "normal_2": "normal-2-perks.png",
+    "normal_3": "normal-3-perks.png",
+    "normal_4": "normal-4-perks.png",
+    "survivor_totems": "caotico-totems-superviviente.png",
+    "survivor_auras": "caotico-auras-superviviente.png",
+    "survivor_two_bad_one_good_random": "caotico-2-malas-1-buena-1-random.png",
+    "survivor_zero_perks_addons": "caotico-0-perks-0-addons.png",
+    "killer_totems": "caotico-totems-killer.png",
+    "killer_auras": "caotico-auras-killer.png",
+    "killer_two_bad_one_good_random": "caotico-2-malas-1-buena-1-random.png",
+    "killer_zero_perks_addons": "caotico-0-perks-0-addons.png",
+    "killer_obsession": "caotico-obsesion-killer.png",
+    "survivor_no_mither_empty_random": "caotico-me-la-pela-slot-vacio-2-random.png",
+    "survivor_no_mither_object_random": "caotico-me-la-pela-objeto-2-random.png"
+  },
+  "chaoticResults": {
+    "normal_0": "caotico-0-perks.png",
+    "normal_1": "caotico-1-perk.png",
+    "normal_2": "caotico-2-perk.png",
+    "normal_3": "caotico-3-perk.png",
+    "normal_4": "caotico-4-perk.png"
   }
 }

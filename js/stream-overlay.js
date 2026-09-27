@@ -56,16 +56,15 @@
       return;
     }
     const items=Array.isArray(state.items)?state.items:[];
-    if(!items.length){stage.innerHTML='';return}
+    if(!items.length){stage.innerHTML=state.cardRule?`<div class="obs-spinning">${escapeHtml(state.cardRule.label)}</div>`:'';return}
     stage.innerHTML=`<div class="obs-roulette">${items.map(item=>`<article class="obs-result-card"><div class="obs-result-diamond">${item.image?`<img src="${escapeHtml(item.image)}" alt="">`:''}</div><strong>${escapeHtml(item.name||item.key||'RESULTADO')}</strong></article>`).join('')}</div>`;
   }
 
   function renderVote(data){
     const s=data.state||{};
-    if(s.visible===false){stage.innerHTML='';root.classList.add('obs-hidden');return}
+    if(s.visible===false||!Array.isArray(s.cards)||!s.cards.length){stage.innerHTML='';delete stage.dataset.cardsSignature;root.classList.add('obs-hidden');return}
     root.classList.remove('obs-hidden');
-    const cards=Array.isArray(s.cards)?s.cards:[];
-    stage.innerHTML=`<div class="obs-vote-box"><div class="obs-vote-head"><h2>${escapeHtml(s.deckName||'VOTACIÓN')}</h2><div class="obs-timer">${s.status==='finished'?(s.winnerSlot?`GANÓ ${escapeHtml(s.winnerSlot)}`:'FINAL'):`${Math.max(0,Number(s.secondsLeft)||0)}s`}</div></div>${cards.map(c=>`<div class="obs-vote-row${s.winnerSlot===c.slot?' winner':''}"><b>${escapeHtml(c.slot||'')}${s.winnerSlot===c.slot?' ★':''}</b><div><div>${escapeHtml(c.label||'')}</div><div class="obs-vote-meter"><i style="width:${Math.max(0,Math.min(100,Number(c.percentage)||0))}%"></i></div></div><span>${Number(c.count)||0} · ${Math.round(Number(c.percentage)||0)}%</span></div>`).join('')}</div>`;
+    window.SanLeanCardsView.render(stage,s);
   }
 
   function renderGiveaway(data){
@@ -87,7 +86,16 @@
   }
 
   async function refresh(){
-    if(!token||!endpoint)return;
+    const demo=new URLSearchParams(location.search).get('demo');
+  if(!token&&['normal','chaotic'].includes(demo)){
+    fetch('../data/cards-assets.json').then(r=>r.json()).then(manifest=>{
+      const special=demo==='chaotic',reveal=new URLSearchParams(location.search).get('reveal')||'none';
+      const ids=special?['normal_4','survivor_no_mither_object_random','survivor_totems','survivor_zero_perks_addons','survivor_two_bad_one_good_random']:['normal_0','normal_1','normal_2','normal_3','normal_4'];
+      const labels=special?['4 PERKS','ME LA PELA + OBJETO DE OBSESIÓN + 2 RANDOM','BUILD DE TÓTEMS','0 PERKS + 0 ADDONS','2 MALAS + 1 BUENA + 1 RANDOM']:['0 PERKS','1 PERK','2 PERKS','3 PERKS','4 PERKS'];
+      render({kind:'vote',canControl:false,state:{visible:true,special,state:'revealed',winner:reveal==='none'?null:'B',cards:ids.map((id,i)=>({letter:'ABCDE'[i],revealed:reveal==='all'||(reveal==='winner'&&i===1),label:labels[i],image:`../cartas/${(special?manifest.chaoticResults[id]:null)||manifest.results[id]}`}))}});
+    });return;
+  }
+  if(!token||!endpoint)return;
     try{
       const r=await fetch(`${endpoint}?token=${encodeURIComponent(token)}`,{cache:'no-store'});
       if(!r.ok){stage.innerHTML='';root.classList.add('obs-hidden');return}
@@ -99,7 +107,16 @@
 
   spinBtn?.addEventListener('click',spin);
   hideBtn?.addEventListener('click',()=>postState({visible:false,status:'idle',items:[]}));
+  const demo=new URLSearchParams(location.search).get('demo');
+  if(!token&&['normal','chaotic'].includes(demo)){
+    fetch('../data/cards-assets.json').then(r=>r.json()).then(manifest=>{
+      const special=demo==='chaotic',reveal=new URLSearchParams(location.search).get('reveal')||'none';
+      const ids=special?['normal_4','survivor_no_mither_object_random','survivor_totems','survivor_zero_perks_addons','survivor_two_bad_one_good_random']:['normal_0','normal_1','normal_2','normal_3','normal_4'];
+      const labels=special?['4 PERKS','ME LA PELA + OBJETO DE OBSESIÓN + 2 RANDOM','BUILD DE TÓTEMS','0 PERKS + 0 ADDONS','2 MALAS + 1 BUENA + 1 RANDOM']:['0 PERKS','1 PERK','2 PERKS','3 PERKS','4 PERKS'];
+      render({kind:'vote',canControl:false,state:{visible:true,special,state:'revealed',winner:reveal==='none'?null:'B',cards:ids.map((id,i)=>({letter:'ABCDE'[i],revealed:reveal==='all'||(reveal==='winner'&&i===1),label:labels[i],image:`../cartas/${(special?manifest.chaoticResults[id]:null)||manifest.results[id]}`}))}});
+    });return;
+  }
   if(!token||!endpoint){root.classList.add('obs-hidden');return}
-  refresh();
-  setInterval(refresh,700);
+  async function poll(){await refresh();setTimeout(poll,700)}
+  poll();
 })();
