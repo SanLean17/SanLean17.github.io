@@ -20,12 +20,12 @@ button.sl-diamond:focus-visible{outline:2px solid var(--cards-accent);outline-of
 .sl-diamond.is-winner{z-index:50}
 .sl-diamond.is-winner .sl-diamond-face{filter:drop-shadow(0 0 10px #fff) drop-shadow(0 0 25px var(--cards-accent)) drop-shadow(0 0 46px var(--cards-accent));animation:sl-winner-glow 1.15s ease-in-out infinite}
 .sl-diamond.is-winner::after{content:"";position:absolute;inset:4%;z-index:-1;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.58) 0,rgba(255,255,255,.20) 28%,color-mix(in srgb,var(--cards-accent) 40%,transparent) 56%,transparent 76%);filter:blur(18px);animation:sl-winner-light 1.15s ease-in-out infinite;pointer-events:none}
-.sl-diamond.is-winner .sl-diamond-caption>span{padding:2px 4px;border-radius:4px;background:rgba(4,4,6,.72);box-shadow:inset 0 -2px 0 var(--cards-accent);animation:sl-winner-caption 1.15s ease-in-out infinite}
+.sl-diamond.is-winner .sl-diamond-caption>span{animation:sl-winner-caption 1.15s ease-in-out infinite}
 .sl-diamond.just-revealed .sl-diamond-face{animation:sl-card-impact .42s cubic-bezier(.2,.8,.2,1) both}
 .sl-diamond.is-winner.just-revealed .sl-diamond-face{animation:sl-card-impact .42s cubic-bezier(.2,.8,.2,1) both,sl-winner-glow 1.15s ease-in-out .42s infinite}
 @keyframes sl-winner-glow{0%,100%{filter:drop-shadow(0 0 10px #fff) drop-shadow(0 0 25px var(--cards-accent)) drop-shadow(0 0 46px var(--cards-accent));transform:scale(1.015)}50%{filter:drop-shadow(0 0 17px #fff) drop-shadow(0 0 36px var(--cards-accent)) drop-shadow(0 0 60px var(--cards-accent));transform:scale(1.035)}}
 @keyframes sl-winner-light{0%,100%{opacity:.78;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
-@keyframes sl-winner-caption{0%,100%{opacity:.86;text-shadow:0 3px 4px #000,0 0 7px #fff,0 0 12px var(--cards-accent)}50%{opacity:1;text-shadow:0 3px 4px #000,0 0 11px #fff,0 0 20px var(--cards-accent)}}
+@keyframes sl-winner-caption{0%,100%{opacity:.72;text-shadow:0 3px 4px #000,0 0 7px #fff,0 0 12px var(--cards-accent);transform:scale(1)}50%{opacity:1;text-shadow:0 3px 4px #000,0 0 13px #fff,0 0 25px var(--cards-accent);transform:scale(1.035)}}
 @keyframes sl-card-impact{0%{opacity:.15;transform:scale(.72);filter:blur(9px) brightness(2.2)}55%{opacity:1;transform:scale(1.055);filter:blur(0) brightness(1.35)}100%{opacity:1;transform:scale(1);filter:blur(0) brightness(1)}}
 @media(prefers-reduced-motion:reduce){.sl-diamond.is-winner .sl-diamond-face,.sl-diamond.is-winner::after,.sl-diamond.is-winner .sl-diamond-caption>span,.sl-diamond.just-revealed .sl-diamond-face{animation:none}}
 .obs-overlay-root:has(.sl-diamonds){padding:0!important;overflow:visible!important}
