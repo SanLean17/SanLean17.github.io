@@ -51,27 +51,27 @@
 
   async function refresh(){
     const demo=new URLSearchParams(location.search).get('demo');
-  if(!token&&['killers','killer-perks','survivor-perks'].includes(demo)){
-    const killer=demo==='killers',role=demo==='survivor-perks'?'survivor':'killer';
-    const file=killer?'killers':`perks-${role}`;
-    fetch(`../data/${file}.json`).then(r=>r.json()).then(catalog=>{
-      const pool=catalog.filter(x=>!x.emptySlot).map(x=>({...x,image:x.image?`../${x.image}`:`../${role}/${x.key}.png`}));
-      const kind=killer?'roulette_killers':role==='killer'?'roulette_killer_perks':'roulette_survivor_perks';
-      const show=()=>render({kind,canControl:false,settings:{pool},state:{visible:true,status:'result',items:pool.slice(0,killer?1:4)}});
-      if(new URLSearchParams(location.search).get('spin')==='1'){
-        render({kind,canControl:false,settings:{pool},state:{visible:true,status:'spinning',items:[],startedAt:new Date().toISOString()}});setTimeout(show,4200);
-      }else show();
-    });return;
-  }
-  if(!token&&['normal','chaotic'].includes(demo)){
-    fetch('../data/cards-assets.json').then(r=>r.json()).then(manifest=>{
-      const special=demo==='chaotic',reveal=new URLSearchParams(location.search).get('reveal')||'none';
-      const ids=special?['normal_4','survivor_no_mither_object_random','survivor_totems','survivor_zero_perks_addons','survivor_two_bad_one_good_random']:['normal_0','normal_1','normal_2','normal_3','normal_4'];
-      const labels=special?['4 PERKS','ME LA PELA + OBJETO DE OBSESIÓN + 2 RANDOM','BUILD DE TÓTEMS','0 PERKS + 0 ADDONS','2 MALAS + 1 BUENA + 1 RANDOM']:['0 PERKS','1 PERK','2 PERKS','3 PERKS','4 PERKS'];
-      render({kind:'vote',canControl:false,state:{visible:true,special,state:'revealed',winner:reveal==='none'?null:'B',cards:ids.map((id,i)=>({letter:'ABCDE'[i],revealed:reveal==='all'||(reveal==='winner'&&i===1),label:labels[i],image:`../cartas/${(special?manifest.chaoticResults[id]:null)||manifest.results[id]}`}))}});
-    });return;
-  }
-  if(!token||!endpoint)return;
+    if(!token&&['killers','killer-perks','survivor-perks'].includes(demo)){
+      const killer=demo==='killers',role=demo==='survivor-perks'?'survivor':'killer';
+      const file=killer?'killers':`perks-${role}`;
+      fetch(`../data/${file}.json`).then(r=>r.json()).then(catalog=>{
+        const pool=catalog.filter(x=>!x.emptySlot).map(x=>({...x,image:x.image?`../${x.image}`:`../${role}/${x.key}.png`}));
+        const kind=killer?'roulette_killers':role==='killer'?'roulette_killer_perks':'roulette_survivor_perks';
+        const show=()=>render({kind,canControl:false,settings:{pool},state:{visible:true,status:'result',items:pool.slice(0,killer?1:4)}});
+        if(new URLSearchParams(location.search).get('spin')==='1'){
+          const targets=pool.slice(0,killer?1:4);render({kind,canControl:false,settings:{pool},state:{visible:true,status:'spinning',items:[],targets,activeSlots:targets.map((_,i)=>i),spinId:'demo',startedAt:new Date().toISOString()}});setTimeout(show,killer?4200:3420);
+        }else show();
+      });return;
+    }
+    if(!token&&['normal','chaotic'].includes(demo)){
+      fetch('../data/cards-assets.json').then(r=>r.json()).then(manifest=>{
+        const special=demo==='chaotic',reveal=new URLSearchParams(location.search).get('reveal')||'none';
+        const ids=special?['normal_4','survivor_no_mither_object_random','survivor_totems','survivor_zero_perks_addons','survivor_two_bad_one_good_random']:['normal_0','normal_1','normal_2','normal_3','normal_4'];
+        const labels=special?['4 PERKS','ME LA PELA + OBJETO DE OBSESIÓN + 2 RANDOM','BUILD DE TÓTEMS','0 PERKS + 0 ADDONS','2 MALAS + 1 BUENA + 1 RANDOM']:['0 PERKS','1 PERK','2 PERKS','3 PERKS','4 PERKS'];
+        render({kind:'vote',canControl:false,state:{visible:true,special,state:'revealed',winner:reveal==='none'?null:'B',cards:ids.map((id,i)=>({letter:'ABCDE'[i],revealed:reveal==='all'||(reveal==='winner'&&i===1),label:labels[i],image:`../cartas/${(special?manifest.chaoticResults[id]:null)||manifest.results[id]}`}))}});
+      });return;
+    }
+    if(!token||!endpoint)return;
     try{
       const r=await fetch(`${endpoint}?token=${encodeURIComponent(token)}`,{cache:'no-store'});
       if(!r.ok){stage.innerHTML='';root.classList.add('obs-hidden');return}
@@ -80,7 +80,6 @@
       if(sig!==lastSignature){lastSignature=sig;render(data)}else snapshot=data;
     }catch(err){console.error('SanLean overlay:',err)}
   }
-
 
   hideBtn?.addEventListener('click',()=>postState({visible:false,status:'idle',items:[]}));
   const demo=new URLSearchParams(location.search).get('demo');
@@ -92,7 +91,7 @@
       const kind=killer?'roulette_killers':role==='killer'?'roulette_killer_perks':'roulette_survivor_perks';
       const show=()=>render({kind,canControl:false,settings:{pool},state:{visible:true,status:'result',items:pool.slice(0,killer?1:4)}});
       if(new URLSearchParams(location.search).get('spin')==='1'){
-        render({kind,canControl:false,settings:{pool},state:{visible:true,status:'spinning',items:[],startedAt:new Date().toISOString()}});setTimeout(show,4200);
+        const targets=pool.slice(0,killer?1:4);render({kind,canControl:false,settings:{pool},state:{visible:true,status:'spinning',items:[],targets,activeSlots:targets.map((_,i)=>i),spinId:'demo',startedAt:new Date().toISOString()}});setTimeout(show,killer?4200:3420);
       }else show();
     });return;
   }
@@ -105,6 +104,6 @@
     });return;
   }
   if(!token||!endpoint){root.classList.add('obs-hidden');return}
-  async function poll(){await refresh();setTimeout(poll,700)}
+  async function poll(){await refresh();setTimeout(poll,120)}
   poll();
 })();
