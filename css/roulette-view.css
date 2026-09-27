@@ -1,27 +1,27 @@
 .sl-roulette{--roulette-accent:#FF003C;width:100%;container-type:inline-size;color:#fff;font-family:Montserrat,Arial,sans-serif}
 .sl-roulette.is-chaotic{--roulette-accent:#873FFD}
-.sl-roulette-slots{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2%;align-items:start;min-width:0}
+.sl-roulette-slots{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1%;align-items:start;min-width:0}
 .sl-roulette-slot{position:relative;min-width:0;text-align:center}
 .sl-roulette-frame{position:relative;width:100%;aspect-ratio:1;background:url('../rombo.png') center/contain no-repeat;display:grid;place-items:center}
-.sl-roulette-frame img{width:70%;height:70%;object-fit:contain;filter:drop-shadow(0 2px 3px #000)}
-.sl-roulette-name{display:block;min-height:2.6em;margin:8px 0 0;padding:0 4px;font-size:clamp(10px,1.8cqw,25px);line-height:1.2;text-transform:uppercase;text-wrap:balance;text-shadow:0 2px 4px #000}
-.sl-roulette-donor{display:block;color:var(--roulette-accent);font-weight:800;font-size:clamp(10px,1.5cqw,20px);overflow-wrap:anywhere;text-shadow:0 2px 4px #000}
-.sl-roulette-caption{text-align:center;margin:22px 0 0;font-weight:800;font-size:clamp(12px,2cqw,28px);text-shadow:0 2px 4px #000}
+.sl-roulette-frame img{width:84%;height:84%;object-fit:contain;filter:drop-shadow(0 3px 5px #000)}
+.sl-roulette-name{display:block;min-height:2.3em;margin:5px 0 0;padding:0 2px;font-size:clamp(18px,2.55cqw,42px);font-weight:900;line-height:1.06;text-transform:uppercase;text-wrap:balance;text-shadow:0 3px 5px #000,0 0 9px #000}
+.sl-roulette-donor{display:block;color:var(--roulette-accent);font-weight:900;font-size:clamp(14px,1.9cqw,28px);overflow-wrap:anywhere;text-shadow:0 2px 4px #000}
+.sl-roulette-caption{text-align:center;margin:10px 0 0;font-weight:900;font-size:clamp(20px,3cqw,48px);text-transform:uppercase;text-shadow:0 3px 7px #000}
 .sl-roulette-slot.is-inactive{opacity:.38}
-.sl-roulette-slot.has-donor .sl-roulette-frame{filter:drop-shadow(0 0 8px var(--roulette-accent))}
-.sl-roulette.is-killers .sl-roulette-slots{display:block;width:32%;min-width:140px;max-width:340px;margin:auto}
+.sl-roulette-slot.has-donor .sl-roulette-frame{filter:drop-shadow(0 0 14px var(--roulette-accent))}
+.sl-roulette.is-killers .sl-roulette-slots{display:block;width:46%;min-width:220px;max-width:620px;margin:auto}
 .sl-roulette-frame.is-portrait{aspect-ratio:142/184;background-image:url('../rectangulo-fondo.png')}
-.sl-roulette-frame.is-portrait img{width:91%;height:91%;object-fit:contain;filter:brightness(1.25)}
+.sl-roulette-frame.is-portrait img{width:94%;height:94%;object-fit:contain;filter:brightness(1.25)}
 .sl-roulette-window{width:100%;aspect-ratio:1;overflow:hidden;background:url('../rombo.png') center/contain no-repeat}
 .sl-roulette.is-killers .sl-roulette-window{aspect-ratio:142/184;background-image:url('../rectangulo-fondo.png')}
 .sl-roulette-strip{animation:sl-roulette-roll 1.2s linear infinite;animation-delay:var(--delay);will-change:transform}
 .sl-roulette-sample{width:100%}.sl-roulette-sample .sl-roulette-name,.sl-roulette-sample .sl-roulette-donor{display:none}
 @keyframes sl-roulette-roll{from{transform:translateY(0)}to{transform:translateY(-50%)}}
 .sl-roulette.is-killers.is-spinning .sl-roulette-slots{width:100%;max-width:none}
-.sl-roulette.is-killers.is-spinning .sl-roulette-window{position:relative;aspect-ratio:3.5;background:none}
-.sl-roulette.is-killers.is-spinning .sl-roulette-window:after{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);border:10px solid transparent;border-top-color:#FF003C}
+.sl-roulette.is-killers.is-spinning .sl-roulette-window{position:relative;aspect-ratio:4.2;background:none}
+.sl-roulette.is-killers.is-spinning .sl-roulette-window:after{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);border:13px solid transparent;border-top-color:#FF003C}
 .sl-roulette.is-killers.is-spinning .sl-roulette-strip{display:flex;width:500%;animation-name:sl-killer-roll;animation-duration:3.5s}
-.sl-roulette.is-killers.is-spinning .sl-roulette-sample{flex:0 0 4%;padding:0 .12%;box-sizing:border-box}
+.sl-roulette.is-killers.is-spinning .sl-roulette-sample{flex:0 0 4%;padding:0 .08%;box-sizing:border-box}
 @keyframes sl-killer-roll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @media(prefers-reduced-motion:reduce){.sl-roulette-strip{animation:none}.sl-roulette.is-spinning .sl-roulette-caption{opacity:.75}}
 .user-page .private-roulette{margin:22px 0;padding:28px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(8,8,10,.84)}
@@ -31,7 +31,7 @@
 .user-page .private-roulette-link span{font-size:12px;color:rgba(255,255,255,.72)}
 .user-page .private-roulette-link button{flex-shrink:0}
 .user-page .private-roulette [hidden]{display:none!important}
-.obs-stage:has(.sl-roulette){width:min(1300px,94vw,165vh);min-height:0}
-.obs-stage .sl-roulette.is-killers{max-height:90vh}
+.obs-stage:has(.sl-roulette){width:min(1840px,99vw,205vh);min-height:0}
+.obs-stage .sl-roulette.is-killers{max-height:98vh}
 .obs-control a{display:flex;align-items:center;color:#fff;background:#111114;padding:0 18px;border:1px solid #FF003C;border-radius:10px;text-decoration:none;font:800 11px Montserrat,Arial,sans-serif}
-@media(max-width:600px){.user-page .private-roulette{padding:20px 12px}.user-page .private-roulette-link{flex-direction:column}.sl-roulette-name{font-size:clamp(9px,2.3cqw,14px)}}
+@media(max-width:600px){.user-page .private-roulette{padding:20px 12px}.user-page .private-roulette-link{flex-direction:column}.sl-roulette-name{font-size:clamp(11px,2.6cqw,16px)}}
