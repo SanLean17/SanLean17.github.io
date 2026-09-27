@@ -8,7 +8,7 @@
 .sl-roulette-donor{display:block;color:var(--roulette-accent);font-weight:900;font-size:clamp(14px,1.9cqw,28px);overflow-wrap:anywhere;text-shadow:0 2px 4px #000}
 .sl-roulette-slot.is-inactive{opacity:1}
 .sl-roulette-slot.has-donor .sl-roulette-frame{filter:drop-shadow(0 0 14px var(--roulette-accent))}
-.sl-roulette-roll-shell{position:relative;width:100%;aspect-ratio:1;overflow:hidden;background:url('../rombo.png') center/contain no-repeat}
+.sl-roulette-roll-shell{position:relative;width:100%;aspect-ratio:1;overflow:hidden;background:none}
 .sl-roulette-canvas{position:relative;z-index:1;display:block;width:100%;height:100%;background:transparent}
 .sl-roulette.is-killers .sl-roulette-slots{display:block;width:46%;min-width:220px;max-width:620px;margin:auto}
 .sl-roulette-frame.is-portrait{aspect-ratio:142/184;background-image:url('../rectangulo-fondo.png')}
