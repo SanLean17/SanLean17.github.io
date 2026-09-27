@@ -128,20 +128,33 @@
         if(!cardSelection&&!catalog.enabled.length)throw new Error('No hay opciones habilitadas. Activá al menos una antes de girar.');
         const baseCount=Number(overlayKinds[overlay.kind].resultCount)||1,count=Math.max(1,Math.min(4,Number(overrideCount??baseCount)||1));
         const items=cardSelection?cardSelection.items:await normalSelection(overlay.kind,catalog.enabled,count);
+        const finalItems=items.map(creditedItem);
         const rule=pending?{resultId:pending.resultId,label:pending.label,event:pending.event,noAddons:!!pending.rule?.noAddons}:null;
         const write=async state=>{const {data,error}=await client.from('stream_overlays').update({state,updated_at:new Date().toISOString()}).eq('id',id).select('id').single();if(error||!data)throw error||new Error('Sin permiso para actualizar la ruleta.');overlay.state=state;window.dispatchEvent(new CustomEvent('sanlean:roulette-state',{detail:{id,kind:overlay.kind,state}}))};
         if(workspace?.id!==overlay.workspace_id)return false;
         const synced=await syncRouletteOverlay(overlay);overlay.settings=synced.settings;
         if(workspace?.id!==overlay.workspace_id)return false;
         const fixedCount=pending?.rule?.kind==='fixed_random'?pending.rule.fixed.length:0;
-        if(items.length){await write({visible:true,status:'spinning',items:items.slice(0,fixedCount).map(creditedItem),spinId:crypto.randomUUID(),durationMs:4200,activeSlots:items.flatMap((x,i)=>i<fixedCount||(pending&&x.emptySlot)?[]:[i]),cardRule:rule,startedAt:new Date().toISOString()});await new Promise(resolve=>setTimeout(resolve,4200));}
-        await write({visible:true,status:'result',items:items.map(creditedItem),cardRule:rule,finishedAt:new Date().toISOString()});
+        const activeSlots=items.flatMap((x,i)=>i<fixedCount||(pending&&x.emptySlot)?[]:[i]);
+        const durationMs=activeSlots.length?3000+Math.max(...activeSlots)*140:0;
+        if(items.length){await write({visible:true,status:'spinning',items:finalItems.slice(0,fixedCount),targets:finalItems,spinId:crypto.randomUUID(),durationMs,activeSlots,cardRule:rule,startedAt:new Date().toISOString()});if(durationMs)await new Promise(resolve=>setTimeout(resolve,durationMs));}
+        await write({visible:true,status:'result',items:finalItems,cardRule:rule,finishedAt:new Date().toISOString()});
         if(pending){clearPendingCardRule(pending);window.dispatchEvent(new CustomEvent('sanlean:card-pending'))}
         return true;
       }catch(err){lastRouletteError=err.message||'No se pudo completar el giro.';setStatus('privateRouletteStatus',lastRouletteError,'error');console.error('Spin overlay:',err);return false}
     };
     try{return navigator.locks?await navigator.locks.request(`sanlean-spin:${id}`,{ifAvailable:true},lock=>lock?run():false):await run()}
     finally{spinningOverlays.delete(id)}
+  }
+  async function prepareByRole(role){
+    const kind=role==='killer'?'roulette_killer_perks':'roulette_survivor_perks',overlay=overlays.find(o=>o.kind===kind);if(!overlay)return false;
+    const pending=readPendingCardRule();if(!pending||pending.role!==role||pending.workspaceId!==workspace?.id)return false;
+    try{
+      const synced=await syncRouletteOverlay(overlay);overlay.settings=synced.settings;
+      const state={visible:true,status:'ready',items:[],cardRule:{resultId:pending.resultId,label:pending.label,event:pending.event,noAddons:!!pending.rule?.noAddons},preparedAt:new Date().toISOString()};
+      const {data,error}=await client.from('stream_overlays').update({state,updated_at:new Date().toISOString()}).eq('id',overlay.id).select('id').single();if(error||!data)throw error||new Error('No se pudo preparar la ruleta.');
+      overlay.state=state;window.dispatchEvent(new CustomEvent('sanlean:roulette-state',{detail:{id:overlay.id,kind,state}}));notifyOverlays();return true;
+    }catch(err){lastRouletteError=err.message||'No se pudo preparar la ruleta.';return false}
   }
   async function spinByRole(role){const kind=role==='killer'?'roulette_killer_perks':'roulette_survivor_perks',overlay=overlays.find(o=>o.kind===kind);return overlay?spinOverlay(overlay.id):false}
   async function hideOverlay(id){
@@ -154,7 +167,6 @@
   async function loadOverlays(){try{overlays=await ensureOverlays();if(workspace.owner_user_id===session.user.id){const synced=[];for(const o of overlays){if(overlayKinds[o.kind]?.source){try{synced.push(await syncRouletteOverlay(o))}catch{synced.push(o)}}else synced.push(o)}overlays=synced}renderOverlays();notifyOverlays()}catch(err){console.error('Overlays:',err);if($('overlayGrid'))$('overlayGrid').innerHTML='<div class="module-box"><strong>SIN PERMISO DE OVERLAYS</strong><p>No tenés permiso para administrar esta herramienta.</p></div>'}}
   function renderOverlays(){const grid=$('overlayGrid');if(!grid)return;grid.innerHTML='';overlays.sort((a,b)=>Object.keys(overlayKinds).indexOf(a.kind)-Object.keys(overlayKinds).indexOf(b.kind)).forEach(overlay=>{const meta=overlayKinds[overlay.kind]||{label:overlay.kind,desc:''},card=document.createElement('article'),publicUrl=overlayUrl(overlay.public_token),controlUrl=overlayUrl(overlay.control_token),roulette=!!meta.source;card.className='overlay-card';card.innerHTML=`<span>${roulette?'RULETA':'OVERLAY'}</span><h3>${escapeHtml(meta.label)}</h3><p>${escapeHtml(meta.desc)}</p><label class="overlay-url-label">URL OBS · VISUALIZACIÓN</label><div class="copy-row"><input value="${escapeHtml(publicUrl)}" readonly><button type="button" data-copy="public">COPIAR</button></div><label class="overlay-url-label">URL PRIVADA · CONTROL</label><div class="copy-row"><input value="${escapeHtml(controlUrl)}" readonly><button type="button" data-copy="control">COPIAR</button></div><div class="overlay-actions">${roulette?'<button class="spin-overlay" type="button">GIRAR</button>':''}<button class="hide-overlay" type="button">OCULTAR</button><button class="preview-overlay" type="button">VISTA PREVIA</button></div>`;card.querySelector('[data-copy="public"]').onclick=()=>navigator.clipboard.writeText(publicUrl);card.querySelector('[data-copy="control"]').onclick=()=>navigator.clipboard.writeText(controlUrl);card.querySelector('.preview-overlay').onclick=()=>window.open(publicUrl,'_blank','noopener');card.querySelector('.hide-overlay').onclick=()=>hideOverlay(overlay.id);card.querySelector('.spin-overlay')?.addEventListener('click',async event=>{event.currentTarget.disabled=true;await spinOverlay(overlay.id);renderOverlays()});grid.appendChild(card)})}
 
-  // Publish a redacted snapshot; unrevealed result IDs/rules never leave the panel.
   let queuedCards=null,cardsSyncTimer=null,cardsSyncBusy=false;
   function queueCards(snapshot){
     if(!snapshot||!workspace||snapshot.workspaceId!==workspace.id)return;
@@ -186,7 +198,7 @@
 
   function bindUi(){$('startGiveaway')?.addEventListener('click',startGiveaway);$('closeGiveaway')?.addEventListener('click',closeGiveaway)}
   async function boot(){if(booting)return;booting=true;try{const current=await getSession();if(!current){booting=false;return}if(bootedUser===current.user.id){booting=false;return}bootedUser=current.user.id;await loadWorkspaces();await refreshWorkspace()}catch(err){console.error('Stream modules:',err)}finally{booting=false}}
-  window.SanLeanStreamTools={getPendingRule:pendingForSection,isOwner:()=>!!workspace&&workspace.owner_user_id===session?.user.id,getLastError:()=>lastRouletteError,overlayUrl,hideOverlay,spinByRole,spinOverlay:async id=>spinOverlay(id),getWorkspace:()=>workspace,getOverlays:()=>[...overlays],refresh:refreshWorkspace};
+  window.SanLeanStreamTools={getPendingRule:pendingForSection,isOwner:()=>!!workspace&&workspace.owner_user_id===session?.user.id,getLastError:()=>lastRouletteError,overlayUrl,hideOverlay,prepareByRole,spinByRole,spinOverlay:async id=>spinOverlay(id),getWorkspace:()=>workspace,getOverlays:()=>[...overlays],refresh:refreshWorkspace};
   window.addEventListener('DOMContentLoaded',()=>{bindUi();boot()});
   client.auth.onAuthStateChange((event,newSession)=>{if(event==='SIGNED_IN'&&newSession){session=newSession;bootedUser='';setTimeout(boot,0)}if(event==='SIGNED_OUT'){bootedUser='';workspace=null;overlays=[];queuedCards=null;clearTimeout(cardsSyncTimer);clearInterval(giveawayTicker);window.SanLeanCards?.reset()}});
 })();
