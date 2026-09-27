@@ -6,9 +6,10 @@
 .sl-roulette-frame img{width:84%;height:84%;object-fit:contain;filter:drop-shadow(0 3px 5px #000)}
 .sl-roulette-name{display:block;min-height:2.3em;margin:5px 0 0;padding:0 2px;font-size:clamp(18px,2.55cqw,42px);font-weight:900;line-height:1.06;text-transform:uppercase;text-wrap:balance;text-shadow:0 3px 5px #000,0 0 9px #000}
 .sl-roulette-donor{display:block;color:var(--roulette-accent);font-weight:900;font-size:clamp(14px,1.9cqw,28px);overflow-wrap:anywhere;text-shadow:0 2px 4px #000}
-.sl-roulette-caption{text-align:center;margin:10px 0 0;font-weight:900;font-size:clamp(20px,3cqw,48px);text-transform:uppercase;text-shadow:0 3px 7px #000}
-.sl-roulette-slot.is-inactive{opacity:.38}
+.sl-roulette-slot.is-inactive{opacity:1}
 .sl-roulette-slot.has-donor .sl-roulette-frame{filter:drop-shadow(0 0 14px var(--roulette-accent))}
+.sl-roulette-roll-shell{position:relative;width:100%;aspect-ratio:1;overflow:hidden;background:url('../rombo.png') center/contain no-repeat}
+.sl-roulette-canvas{position:relative;z-index:1;display:block;width:100%;height:100%;background:transparent}
 .sl-roulette.is-killers .sl-roulette-slots{display:block;width:46%;min-width:220px;max-width:620px;margin:auto}
 .sl-roulette-frame.is-portrait{aspect-ratio:142/184;background-image:url('../rectangulo-fondo.png')}
 .sl-roulette-frame.is-portrait img{width:94%;height:94%;object-fit:contain;filter:brightness(1.25)}
@@ -23,7 +24,7 @@
 .sl-roulette.is-killers.is-spinning .sl-roulette-strip{display:flex;width:500%;animation-name:sl-killer-roll;animation-duration:3.5s}
 .sl-roulette.is-killers.is-spinning .sl-roulette-sample{flex:0 0 4%;padding:0 .08%;box-sizing:border-box}
 @keyframes sl-killer-roll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@media(prefers-reduced-motion:reduce){.sl-roulette-strip{animation:none}.sl-roulette.is-spinning .sl-roulette-caption{opacity:.75}}
+@media(prefers-reduced-motion:reduce){.sl-roulette-strip{animation:none}}
 .user-page .private-roulette{margin:22px 0;padding:28px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(8,8,10,.84)}
 .user-page .private-roulette-stage{max-width:960px;margin:0 auto;min-height:180px}
 .user-page .private-roulette .module-actions{margin-top:24px}
