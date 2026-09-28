@@ -1,12 +1,13 @@
 // SANLEAN — USUARIO navigation controller.
 (()=>{
-  const CORE_KEYS=new Set(['killers','killerPerks','survivor','tournament','overlays','votes','giveaways','platforms']);
-  const MENU_ORDER=['home','overlays','votes','giveaways','platforms','killers','killerPerks','survivor','tournament'];
-  const LABELS={home:'INICIO',overlays:'OVERLAYS OBS',votes:'CARTAS',giveaways:'SORTEOS',platforms:'TWITCH / KICK',killers:'KILLERS',killerPerks:'PERKS DE KILLERS',survivor:'PERKS DE SUPERVIVIENTES',tournament:'TORNEO 1VS1'};
+  const CORE_KEYS=new Set(['killers','killerPerks','survivor','tournament','overlays','votes','giveaways','bits','platforms']);
+  const MENU_ORDER=['home','overlays','votes','giveaways','bits','platforms','killers','killerPerks','survivor','tournament'];
+  const LABELS={home:'INICIO',overlays:'OVERLAYS OBS',votes:'CARTAS',giveaways:'SORTEOS',bits:'BITS / ALERTAS',platforms:'TWITCH / KICK',killers:'KILLERS',killerPerks:'PERKS DE KILLERS',survivor:'PERKS DE SUPERVIVIENTES',tournament:'TORNEO 1VS1'};
   const HEADERS={
     overlays:{kicker:'STREAM',title:'OVERLAYS OBS',copy:'Generá y controlá las vistas transparentes que vas a utilizar durante el stream.<br>Administrá desde acá cada overlay y sus acciones antes de llevarlo a OBS.'},
     votes:{kicker:'JUEGO EN STREAM',title:'CARTAS',copy:'Generá cinco cartas ocultas para que el chat vote durante 30 segundos o elegí una carta manualmente.<br>Revelá el resultado cuando quieras y continuá con la ruleta de perks correspondiente.'},
     giveaways:{kicker:'COMUNIDAD',title:'SORTEOS',copy:'Configurá la participación por palabra clave y definí quién puede ingresar a cada sorteo.<br>Abrí, cerrá y controlá la sesión desde un único lugar durante el stream.'},
+    bits:{kicker:'AUTOMATIZACIONES',title:'BITS / ALERTAS',copy:'Convertí cantidades específicas de Bits en entradas temporales para tus ruletas y mostrá una alerta propia de SanLean en OBS.<br>Cada aporte genera una entrada independiente con su propio vencimiento.'},
     platforms:{kicker:'INTEGRACIONES',title:'TWITCH / KICK',copy:'Vinculá las plataformas de cada streamer para habilitar herramientas y automatizaciones.<br>Administrá las conexiones de Twitch y Kick desde la misma cuenta de SanLean.'},
     killers:{kicker:'RULETAS',title:'KILLERS',copy:'Administrá los killers disponibles en tu ruleta y configurá la presencia de cada opción.<br>Revisá los valores y registrá quién agregó cada killer antes de utilizar la ruleta.'},
     killerPerks:{kicker:'RULETAS',title:'PERKS DE KILLERS',copy:'Administrá las perks de Killer disponibles y configurá la presencia de cada opción.<br>Revisá los valores y registrá quién agregó cada perk antes de utilizar la ruleta.'},
@@ -15,6 +16,49 @@
   };
   const $=id=>document.getElementById(id);
 
+  function ensureBitsPanel(){
+    let section=$('streamBitsPanel');if(section)return section;
+    const panel=$('panelView');if(!panel)return null;
+    section=document.createElement('section');section.id='streamBitsPanel';section.className='stream-module';section.hidden=true;
+    section.innerHTML=`
+      <div class="stream-module-head"></div>
+      <div class="module-box connection-note">
+        <strong>TWITCH NECESARIO</strong>
+        <p>Para recibir Bits reales, SanLean necesita que el streamer conecte Twitch mediante OAuth y autorice el permiso de lectura de Bits. La configuración de Twitch Developers todavía está pendiente.</p>
+        <div class="module-actions"><button id="bitsGoPlatforms" class="module-secondary" type="button">IR A TWITCH / KICK</button></div>
+      </div>
+      <div class="module-box">
+        <div class="module-fields two">
+          <label>CANTIDAD DE BITS<input id="bitsAmount" type="number" min="1" step="1" value="300" placeholder="300"></label>
+          <label>CONDICIÓN<select id="bitsMatchMode"><option value="exact">EXACTAMENTE ESTA CANTIDAD</option><option value="minimum">ESTA CANTIDAD O MÁS</option></select></label>
+        </div>
+        <div class="module-fields two" style="margin-top:18px">
+          <label>RULETA<select id="bitsRoulette"><option value="survivor">PERKS DE SUPERVIVIENTES</option><option value="killerPerks">PERKS DE KILLERS</option><option value="killers">KILLERS</option></select></label>
+          <label>RECOMPENSA<input id="bitsRewardSearch" type="search" placeholder="BUSCAR PERK O KILLER..."></label>
+        </div>
+        <div class="module-fields two" style="margin-top:18px">
+          <label>DURACIÓN DE CADA ENTRADA<input id="bitsDurationHours" type="number" min="1" step="1" value="24"></label>
+          <label>ALERTA EN OBS<select id="bitsAlertEnabled"><option value="yes">MOSTRAR ALERTA SANLEAN</option><option value="no">NO MOSTRAR ALERTA</option></select></label>
+        </div>
+        <div class="fixed-duration"><span>COMPORTAMIENTO DE DUPLICADOS</span><strong>ENTRADAS INDEPENDIENTES</strong></div>
+        <p class="module-help">Si dos personas activan la misma recompensa, se guardan dos entradas distintas. Cada una vence por separado y ambas aumentan la presencia de esa recompensa en la ruleta mientras estén activas.</p>
+        <div class="module-actions"><button id="saveBitsRule" class="module-primary" type="button" disabled>GUARDAR REGLA</button></div>
+        <p id="bitsRuleStatus" class="module-status">Conectá Twitch y completá la configuración de la aplicación SanLean para activar estas reglas.</p>
+      </div>
+      <div class="module-box">
+        <div class="stream-module-head" style="margin-bottom:18px"><p class="eyebrow">OBS</p><h2>ALERTA SANLEAN</h2><p>La alerta se mostrará sobre el stream mediante un Browser Source transparente. Si la ruleta está girando, el evento se guarda inmediatamente y la animación espera a que termine el giro.</p></div>
+        <div class="giveaway-live">
+          <div><span>SONIDO</span><strong>3 SEGUNDOS</strong></div>
+          <div><span>COLA DE EVENTOS</span><strong>ACTIVA</strong></div>
+        </div>
+        <p class="module-help">El evento real se registrará apenas Twitch lo entregue. Sólo se retrasa la animación visual cuando haya otra acción en curso, para que ningún aporte se pierda ni tape el resultado de la ruleta.</p>
+      </div>
+      <div class="module-box">
+        <div class="stream-module-head" style="margin-bottom:18px"><p class="eyebrow">REGLAS</p><h2>REGLAS ACTIVAS</h2><p>Acá aparecerán las automatizaciones configuradas para este streamer cuando la integración de Twitch esté activa.</p></div>
+        <div class="participant-list"><div class="participant-row"><span>TODAVÍA NO HAY REGLAS ACTIVAS.</span><strong>—</strong></div></div>
+      </div>`;
+    const platforms=$('streamPlatformsPanel');if(platforms)platforms.insertAdjacentElement('beforebegin',section);else panel.appendChild(section);return section;
+  }
   function ensureHome(){
     const panel=$('panelView');let home=$('dashboardHome');if(home||!panel)return home;
     home=document.createElement('section');home.id='dashboardHome';home.className='dashboard-home';
@@ -22,25 +66,29 @@
     panel.querySelector('.panel-tabs')?.insertAdjacentElement('afterend',home);return home;
   }
   function normalizeMenu(){
-    const old=document.querySelector('.panel-tabs');if(!old)return null;const tabs=old.cloneNode(true);old.replaceWith(tabs);
+    const old=document.querySelector('.panel-tabs');if(!old)return null;let bitsBtn=old.querySelector('[data-tab="bits"]');if(!bitsBtn){bitsBtn=document.createElement('button');bitsBtn.type='button';bitsBtn.dataset.tab='bits';old.appendChild(bitsBtn)}
+    const tabs=old.cloneNode(true);old.replaceWith(tabs);
     let homeBtn=tabs.querySelector('[data-dashboard="home"]');if(!homeBtn){homeBtn=document.createElement('button');homeBtn.type='button';homeBtn.dataset.dashboard='home';tabs.prepend(homeBtn)}
     const byKey={home:homeBtn};tabs.querySelectorAll('button[data-tab]').forEach(btn=>{byKey[btn.dataset.tab]=btn});
     MENU_ORDER.forEach(key=>{const btn=byKey[key];if(!btn)return;btn.textContent=LABELS[key];btn.classList.remove('active','menu-group-start');btn.dataset.sectionKey=key;tabs.appendChild(btn)});
     byKey.platforms?.classList.add('menu-group-start');byKey.killers?.classList.add('menu-group-start');byKey.tournament?.classList.add('menu-group-start');return tabs;
   }
-  function hideEverySection(){[$('dashboardHome'),$('roulettePanel'),$('tournamentPanel'),$('streamOverlaysPanel'),$('streamVotesPanel'),$('streamGiveawaysPanel'),$('streamPlatformsPanel'),$('platformPanel')].forEach(section=>{if(section)section.hidden=true})}
+  function hideEverySection(){[$('dashboardHome'),$('roulettePanel'),$('tournamentPanel'),$('streamOverlaysPanel'),$('streamVotesPanel'),$('streamGiveawaysPanel'),$('streamBitsPanel'),$('streamPlatformsPanel'),$('platformPanel')].forEach(section=>{if(section)section.hidden=true})}
   function setActive(tabs,key){tabs.querySelectorAll('button').forEach(btn=>btn.classList.toggle('active',btn.dataset.sectionKey===key))}
-  function sectionElement(key){if(['killers','killerPerks','survivor'].includes(key))return $('roulettePanel');if(key==='tournament')return $('tournamentPanel');if(key==='overlays')return $('streamOverlaysPanel');if(key==='votes')return $('streamVotesPanel');if(key==='giveaways')return $('streamGiveawaysPanel');if(key==='platforms')return $('streamPlatformsPanel');return null}
+  function sectionElement(key){if(['killers','killerPerks','survivor'].includes(key))return $('roulettePanel');if(key==='tournament')return $('tournamentPanel');if(key==='overlays')return $('streamOverlaysPanel');if(key==='votes')return $('streamVotesPanel');if(key==='giveaways')return $('streamGiveawaysPanel');if(key==='bits')return $('streamBitsPanel');if(key==='platforms')return $('streamPlatformsPanel');return null}
   function ensureSectionHeader(key){
     const meta=HEADERS[key],section=sectionElement(key);if(!meta||!section)return;let head;
-    if(section.classList.contains('stream-module')){head=section.querySelector('.stream-module-head');if(!head){head=document.createElement('div');head.className='stream-module-head';section.prepend(head)}}
+    if(section.classList.contains('stream-module')){head=section.querySelector(':scope > .stream-module-head');if(!head){head=document.createElement('div');head.className='stream-module-head';section.prepend(head)}}
     else{head=section.querySelector('.section-context');if(!head){head=document.createElement('div');head.className='section-context';section.prepend(head)}}
     head.innerHTML=`<p class="eyebrow">${meta.kicker}</p><h2>${meta.title}</h2><p>${meta.copy}</p>`;
   }
   function show(key,{updateHash=true}={}){
     const tabs=document.querySelector('.panel-tabs');if(!tabs)return;if(!MENU_ORDER.includes(key))key='home';hideEverySection();
-    if(key==='home'){ensureHome().hidden=false}else if(CORE_KEYS.has(key)){ensureSectionHeader(key);window.SanLeanPanel?.selectSection?.(key,{updateHash:false});if($('dashboardHome'))$('dashboardHome').hidden=true;if($('platformPanel'))$('platformPanel').hidden=true}
+    if(key==='home'){ensureHome().hidden=false}else if(CORE_KEYS.has(key)){ensureSectionHeader(key);if(key==='bits'){const section=$('streamBitsPanel');if(section)section.hidden=false}else{window.SanLeanPanel?.selectSection?.(key,{updateHash:false})}if($('dashboardHome'))$('dashboardHome').hidden=true;if($('platformPanel'))$('platformPanel').hidden=true}
     setActive(tabs,key);if(updateHash)history.replaceState(null,'',key==='home'?location.pathname:`#${key}`);
+  }
+  function installBitsInteractions(){
+    $('bitsGoPlatforms')?.addEventListener('click',()=>show('platforms'));
   }
   function installCanonicalStreamSelects(){
     const closeAll=except=>document.querySelectorAll('.stream-module .ui-select-enhanced').forEach(root=>{if(root===except)return;const trigger=root.querySelector(':scope>button'),menu=root.querySelector(':scope>.ui-select-options');if(menu)menu.hidden=true;trigger?.setAttribute('aria-expanded','false')});
@@ -53,7 +101,7 @@
     const scan=root=>root.querySelectorAll?.('.stream-module select:not([hidden])').forEach(enhance);scan(document);new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(node=>{if(node.nodeType!==1)return;if(node.matches?.('.stream-module select:not([hidden])'))enhance(node);scan(node)}))).observe(document.body,{childList:true,subtree:true});document.addEventListener('click',e=>{if(!e.target.closest('.stream-module .ui-select-enhanced'))closeAll()});
   }
   function install(){
-    const panel=$('panelView');if(!panel)return;ensureHome();const tabs=normalizeMenu();if(!tabs)return;Object.keys(HEADERS).forEach(ensureSectionHeader);
+    const panel=$('panelView');if(!panel)return;ensureBitsPanel();ensureHome();const tabs=normalizeMenu();if(!tabs)return;Object.keys(HEADERS).forEach(ensureSectionHeader);installBitsInteractions();
     tabs.addEventListener('click',e=>{const btn=e.target.closest('button[data-section-key]');if(!btn)return;e.preventDefault();show(btn.dataset.sectionKey)});
     $('dashboardHome')?.addEventListener('click',e=>{const go=e.target.closest('[data-go]');if(go){show(go.dataset.go);return}const account=e.target.closest('[data-account]');if(account)location.href=`./cuenta.html#${account.dataset.account}`});
     const openLocation=()=>{const key=location.hash.replace('#','');show(MENU_ORDER.includes(key)?key:'home',{updateHash:false})};window.addEventListener('hashchange',openLocation);new MutationObserver(()=>{if(!panel.hidden)openLocation()}).observe(panel,{attributes:true,attributeFilter:['hidden']});if(!panel.hidden)openLocation();installCanonicalStreamSelects();window.SanLeanUsuarioNavigation={show,order:[...MENU_ORDER]};
