@@ -1,0 +1,6 @@
+const {verifyMessage,webhookSecret}=await import('../supabase/functions/stream-bits/verify.mjs');
+const assert=(await import('node:assert/strict')).default;
+const secret=await webhookSecret('local-fixture-secret'),body=JSON.stringify({event:{bits:300}}),time=new Date().toISOString(),id='fixture-1',encode=s=>new TextEncoder().encode(s);
+const key=await crypto.subtle.importKey('raw',encode(secret),{name:'HMAC',hash:'SHA-256'},false,['sign']);const signature='sha256='+Buffer.from(await crypto.subtle.sign('HMAC',key,encode(id+time+body))).toString('hex');
+const headers=new Headers({'Twitch-Eventsub-Message-Id':id,'Twitch-Eventsub-Message-Timestamp':time,'Twitch-Eventsub-Message-Signature':signature});
+assert(await verifyMessage(headers,body,secret));assert(!await verifyMessage(headers,body+' ',secret));assert(!await verifyMessage(headers,body,'wrong-secret'));assert(!await verifyMessage(headers,body,secret,Date.now()+700000));assert(!await verifyMessage(new Headers(),body,secret));headers.set('Twitch-Eventsub-Message-Signature','sha256=bad');assert(!await verifyMessage(headers,body,secret));console.log('PASS: valid signature, modified body, wrong secret, expired timestamp, missing headers, malformed signature');

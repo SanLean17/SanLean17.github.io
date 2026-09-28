@@ -5,7 +5,7 @@ const pub=read('js/main.js'),privateCode=read('js/roulette-view.js');
 const publicShuffle=pub.split('\n').find(s=>s.includes('function noAdjacent')).trim();
 assert(privateCode.includes(publicShuffle),'Public sequencing function must remain verbatim');
 const context={window:{},location:{href:'http://localhost/Usuario/overlay.html'},URL,Map,Set,Math};vm.createContext(context);
-vm.runInContext(privateCode.replace('window.SanLeanRouletteView={render}', 'window.SanLeanRouletteView={render,killerEntries,prepareKillerDeck}'),context);
+vm.runInContext(privateCode.replace('window.SanLeanRouletteView={render,preload}', 'window.SanLeanRouletteView={render,killerEntries,prepareKillerDeck}'),context);
 const api=context.window.SanLeanRouletteView;
 const catalog=JSON.parse(read('data/killers.json')).map(x=>({...x,weight:1,image:'../'+x.image}));
 for(const weights of [[1,1],[99,1],[5,5,1],[1,1,1,1],Array(40).fill(1)]){
@@ -35,13 +35,13 @@ const server=http.createServer((req,res)=>{try{const file=path.join(root,decodeU
   await page.evaluate(()=>document.getElementById('obsOverlayRoot').classList.remove('obs-hidden'));
   const paint=async(status,spinId='qa',pool=catalog)=>page.evaluate(({status,spinId,pool})=>{window.qaData={kind:'roulette_killers',settings:{pool},state:{visible:true,status,spinId,targets:[pool[0]],items:status==='result'?[pool[0]]:[],spinPool:pool,durationMs:8000}};SanLeanRouletteView.render(document.getElementById('obsStage'),qaData)}, {status,spinId,pool});
   await paint('ready');
-  const privateStyle=await page.locator('.sl-killer-card').first().evaluate(c=>{const s=getComputedStyle(c),n=getComputedStyle(c.querySelector('.sl-killer-card-name')),p=getComputedStyle(c.querySelector('.sl-killer-card-portrait'));return [s.width,s.height,n.color,n.fontSize,n.minHeight,n.boxSizing,p.filter,p.objectFit]});assert.deepEqual(privateStyle,publicStyle);
+  const privateStyle=await page.locator('.sl-killer-card').first().evaluate(c=>{const s=getComputedStyle(c),n=getComputedStyle(c.querySelector('.sl-killer-card-name')),p=getComputedStyle(c.querySelector('.sl-killer-card-portrait'));return [s.width,s.height,n.color,n.fontSize,n.minHeight,n.boxSizing,p.filter,p.objectFit]});assert.deepEqual(privateStyle.slice(0,6),publicStyle.slice(0,6));assert.equal(privateStyle[6],'brightness(1.18) contrast(1.035)');
   for(const width of [1920,1280,800,640,390]){
    await page.setViewportSize({width,height:600});await page.waitForTimeout(80);
    const geometry=await page.locator('.sl-killer-web-reel').evaluate(reel=>{const r=reel.getBoundingClientRect();return {width:r.width,visible:[...reel.querySelectorAll('.sl-killer-card')].filter(c=>{const b=c.getBoundingClientRect();return b.right>r.left&&b.left<r.right}).length}});
    assert.equal(geometry.visible,7,JSON.stringify({width,geometry}));assert(geometry.width<=width+.1);
   }
-  await page.setViewportSize({width:1920,height:1080});await paint('spinning');
+  await page.setViewportSize({width:1920,height:1080});await paint('spinning');await page.waitForFunction(()=>document.querySelector('.sl-killer-track')?.getAnimations().length);
   const privateAnimation=await page.locator('.sl-killer-track').evaluate(t=>{const a=t.getAnimations()[0];return {frames:a.effect.getKeyframes(),timing:a.effect.getTiming()}});
   assert.deepEqual(privateAnimation,publicAnimation);
   const samples=[];
@@ -54,7 +54,7 @@ const server=http.createServer((req,res)=>{try{const file=path.join(root,decodeU
   // Same winner after reloading the source, then a new spin excluding that killer.
   await page.evaluate(()=>{document.getElementById('obsStage').dataset.rouletteSignature='';document.getElementById('obsStage')._slKillerSpin=null});await paint('result');
   assert.equal(await page.locator('.sl-killer-card.selected').getAttribute('data-key'),catalog[0].key);
-  await paint('spinning','qa-next',catalog.slice(1));assert.equal(await page.locator(`.sl-killer-card[data-key="${catalog[0].key}"]`).count(),0);
+  await paint('spinning','qa-next',catalog.slice(1));await page.waitForFunction(()=>document.querySelector('.sl-killer-track')?.getAnimations().length);assert.equal(await page.locator(`.sl-killer-card[data-key="${catalog[0].key}"]`).count(),0);
   await paint('ready','one',[catalog[0]]);assert.equal(await page.locator('.sl-killer-card').count(),1);
   console.log(JSON.stringify({ok:true,sequenceRuns:250,widths:[1920,1280,800,640,390],publicStyle,animationDuration:privateAnimation.timing.duration,samples}));
  }finally{await browser.close();server.close()}

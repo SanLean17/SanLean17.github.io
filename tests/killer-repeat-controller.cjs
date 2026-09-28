@@ -4,8 +4,8 @@ const source=fs.readFileSync(path.join(__dirname,'../js/usuario-roulettes.js'),'
 const raw=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/killers.json'),'utf8')).slice(0,30);
 const overlay={id:'isolated-qa',kind:'roulette_killers',settings:{pool:[]}},writes=[];
 const tools={getOverlays:()=>[overlay],isOwner:()=>true,spinOverlay:async()=>true,getLastError:()=>''};
-const client={from:()=>({update:payload=>({eq:()=>({select:()=>({single:async()=>{writes.push(structuredClone(payload));return {data:{id:overlay.id}}}})})})})};
-const context={window:{SanLeanStreamTools:tools,SanLeanAccount:{getSettings:()=>({}),flushSettings:async()=>{}},dispatchEvent:()=>{}},location:{origin:'https://qa.local'},crypto:require('node:crypto').webcrypto,CustomEvent:class{},navigator:{},setTimeout:cb=>cb(),fetch:async()=>({ok:true,json:async()=>raw}),supabaseClient:()=>client,console};
+const client={from:()=>({update:payload=>({eq:()=>({select:()=>({abortSignal(){return this},single:async()=>{writes.push(structuredClone(payload));return {data:{id:overlay.id}}}})})})})};
+const context={window:{SanLeanStreamTools:tools,SanLeanAccount:{getSettings:()=>({}),flushSettings:async()=>{}},dispatchEvent:()=>{}},location:{origin:'https://qa.local'},crypto:require('node:crypto').webcrypto,CustomEvent:class{},navigator:{},setTimeout:cb=>cb(),fetch:async()=>({ok:true,json:async()=>raw}),supabaseClient:()=>client,loadKillers:async()=>raw,AbortSignal,console};
 vm.createContext(context);
 const start=source.indexOf('  function ensureKillerController()'),end=source.indexOf('  async function writeReady');
 vm.runInContext("let killerControllerInstalled=false,killerError=''; const tools=()=>window.SanLeanStreamTools; const absoluteImage=item=>'https://qa.local/'+item.image; const random01=()=>0;"+source.slice(start,end)+'ensureKillerController();',context);
