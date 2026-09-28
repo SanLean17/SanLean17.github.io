@@ -1,0 +1,17 @@
+/* SANLEAN — interacción canónica de botones secundarios en USUARIO.
+   Regla general: reposo oscuro/outline; hover activo = #FF003C sólido, sin degradados ni glow. */
+.user-page .ui-btn-secondary:not(:disabled),
+.user-page .module-secondary:not(:disabled),
+.user-page .overlay-actions button:not(.spin-overlay):not(:disabled),
+.user-page .copy-row button:not(:disabled),
+.user-page .connection-card-stream button:not(:disabled),
+.user-page .stream-output-actions button:not(:disabled),
+.user-page .stream-output-url button:not(:disabled){transition:background-color .14s ease,border-color .14s ease,color .14s ease!important}
+.user-page .ui-btn-secondary:not(:disabled):hover,
+.user-page .module-secondary:not(:disabled):hover,
+.user-page .overlay-actions button:not(.spin-overlay):not(:disabled):hover,
+.user-page .copy-row button:not(:disabled):hover,
+.user-page .connection-card-stream button:not(:disabled):hover,
+.user-page .stream-output-actions button:not(:disabled):hover,
+.user-page .stream-output-url button:not(:disabled):hover{background:#FF003C!important;background-image:none!important;border-color:#FF003C!important;color:#fff!important;box-shadow:none!important;filter:none!important;opacity:1!important}
+.user-page button:disabled:hover{filter:none!important;box-shadow:none!important}
