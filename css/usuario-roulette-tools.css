@@ -1,4 +1,5 @@
 /* SANLEAN — controles especializados para las tarjetas privadas de KILLERS / PERKS. */
+html{scrollbar-gutter:stable}
 .user-page #roulettePanel .panel-tools{
   grid-template-columns:minmax(0,1fr) auto 48px!important;
   align-items:center!important;
@@ -30,29 +31,41 @@
   height:8px;
   border-right:2px solid #ff003c;
   border-bottom:2px solid #ff003c;
-  transform:translateY(2px) rotate(225deg);
+  transform:translateY(-2px) rotate(45deg);
   transition:transform 180ms ease;
 }
-.user-page #roulettePanel .roulette-collapse-toggle[aria-expanded="false"] .roulette-collapse-chevron{
-  transform:translateY(-2px) rotate(45deg);
+.user-page #roulettePanel .roulette-collapse-toggle[aria-expanded="true"] .roulette-collapse-chevron{
+  transform:translateY(2px) rotate(225deg);
 }
 
-/* Estado minimizado: cada tarjeta conserva identidad visual y reduce el scroll. */
-.user-page #weightGrid.is-collapsed .weight-card{
-  min-height:74px!important;
-  padding:14px 16px!important;
-  grid-template-columns:minmax(0,1fr)!important;
-  gap:0!important;
+/* Estado cerrado: no se muestran tarjetas; sólo una indicación ligera y estable. */
+.user-page #weightGrid.is-collapsed{
+  display:flex!important;
+  min-height:180px;
+  width:100%;
+  box-sizing:border-box;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:30px 24px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:14px;
+  background:#111114;
+  text-align:center;
 }
-.user-page #weightGrid.is-collapsed .weight-card-info{gap:12px!important}
-.user-page #weightGrid.is-collapsed .weight-card img{
-  width:44px!important;
-  height:44px!important;
+.user-page #weightGrid.is-collapsed::before{
+  content:attr(data-collapsed-label);
+  color:#fff;
+  font:800 13px/1.35 Montserrat,Arial,sans-serif;
+  letter-spacing:.02em;
 }
-.user-page #weightGrid.is-collapsed .weight-name{font-size:13px!important}
-.user-page #weightGrid.is-collapsed .weight-controls,
-.user-page #weightGrid.is-collapsed .donor-row,
-.user-page #weightGrid.is-collapsed .bonus-list{display:none!important}
+.user-page #weightGrid.is-collapsed::after{
+  content:attr(data-collapsed-hint);
+  color:rgba(255,255,255,.55);
+  font:500 11px/1.5 Montserrat,Arial,sans-serif;
+}
+.user-page #weightGrid.is-collapsed .weight-card{display:none!important}
 
 @media(max-width:760px){
   .user-page #roulettePanel .panel-tools{
@@ -60,4 +73,5 @@
   }
   .user-page #roulettePanel #resetWeights{grid-column:1/-1!important}
   .user-page #roulettePanel .roulette-collapse-toggle{grid-column:2;grid-row:1}
+  .user-page #weightGrid.is-collapsed{min-height:150px;padding:26px 18px}
 }
