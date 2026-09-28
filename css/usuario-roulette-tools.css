@@ -38,6 +38,26 @@ html{scrollbar-gutter:stable}
   transform:translateY(2px) rotate(225deg);
 }
 
+/* RESTABLECER: mismo comportamiento interactivo que los botones secundarios canónicos. */
+.user-page #roulettePanel #resetWeights{
+  border:1px solid #ff003c!important;
+  background:rgba(8,8,10,.70)!important;
+  color:#fff!important;
+  transition:background-color 180ms ease,border-color 180ms ease,color 180ms ease,transform 120ms ease!important;
+}
+.user-page #roulettePanel #resetWeights:hover,
+.user-page #roulettePanel #resetWeights:focus-visible{
+  border-color:#ff003c!important;
+  background:#ff003c!important;
+  color:#fff!important;
+  outline:none!important;
+}
+.user-page #roulettePanel #resetWeights:active{
+  background:#ff003c!important;
+  color:#fff!important;
+  transform:translateY(1px);
+}
+
 /* Estado oculto: caja fina canónica, sin spinner, pseudo-elementos ni animaciones heredadas. */
 .user-page #weightGrid.is-collapsed{
   display:block!important;
@@ -69,9 +89,9 @@ html{scrollbar-gutter:stable}
   padding:14px 18px;
   border:1px solid rgba(255,255,255,.12);
   border-radius:14px;
-  background:#111114;
-  color:rgba(255,255,255,.72);
-  font:700 12px/1.45 Montserrat,Arial,sans-serif;
+  background:rgba(8,8,10,.84);
+  color:#ff003c;
+  font:800 12px/1.45 Montserrat,Arial,sans-serif;
   letter-spacing:.01em;
   text-align:center;
   animation:none!important;
