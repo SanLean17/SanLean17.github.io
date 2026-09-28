@@ -1,6 +1,6 @@
 // SANLEAN — helpers exclusivos de USUARIO para las tarjetas de KILLERS/PERKS.
 // 1) Enriquece el buscador de PERKS DE KILLERS con el asesino propietario y sus aliases.
-// 2) Mantiene KILLERS/PERKS minimizados por defecto y permite mostrarlos con un control global.
+// 2) Mantiene KILLERS/PERKS ocultos por defecto y permite mostrarlos sin desplazar el viewport.
 (()=>{
   const OWNER_BY_KEY={
     '00_aNursesCalling':'nurse enfermera sally smithson la enfermera',
@@ -90,7 +90,6 @@
     return group?group[2]:'';
   };
 
-  // Enriquecemos sólo el catálogo privado de perks de Killer. La WEB pública no carga este archivo.
   const nativeFetch=window.fetch.bind(window);
   window.fetch=async(...args)=>{
     const response=await nativeFetch(...args);
@@ -112,10 +111,10 @@
 
   const rouletteTabs=new Set(['killers','survivor','killerPerks']);
   const labelFor=key=>({
-    killers:'LAS TARJETAS DE KILLERS ESTÁN MINIMIZADAS',
-    survivor:'LAS TARJETAS DE PERKS DE SUPERVIVIENTES ESTÁN MINIMIZADAS',
-    killerPerks:'LAS TARJETAS DE PERKS DE KILLERS ESTÁN MINIMIZADAS'
-  }[key]||'LAS TARJETAS ESTÁN MINIMIZADAS');
+    killers:'TODOS LOS KILLERS SE ENCUENTRAN OCULTOS',
+    survivor:'TODAS LAS PERKS DE SUPERVIVIENTES SE ENCUENTRAN OCULTAS',
+    killerPerks:'TODAS LAS PERKS DE KILLERS SE ENCUENTRAN OCULTAS'
+  }[key]||'TODAS LAS TARJETAS SE ENCUENTRAN OCULTAS');
 
   function installCollapseControl(){
     const tools=document.querySelector('#roulettePanel .panel-tools'),grid=document.getElementById('weightGrid'),search=document.getElementById('panelSearch');
@@ -123,6 +122,17 @@
 
     let collapsed=true,currentKey=document.querySelector('.panel-tabs button[data-tab].active')?.dataset.tab||'killers';
     const nativeAppend=grid.appendChild.bind(grid);
+    const ensureMessage=()=>{
+      if(!collapsed)return;
+      let message=grid.querySelector('.roulette-collapsed-message');
+      if(!message){
+        message=document.createElement('div');
+        message.className='roulette-collapsed-message';
+        nativeAppend(message);
+      }
+      message.textContent=labelFor(currentKey);
+    };
+
     grid.appendChild=node=>{
       if(collapsed&&node?.classList?.contains('weight-card'))return node;
       return nativeAppend(node);
@@ -136,25 +146,43 @@
     button.innerHTML='<span class="roulette-collapse-chevron" aria-hidden="true"></span>';
     tools.appendChild(button);
 
+    const preserveViewport=callback=>{
+      const top=window.scrollY,left=window.scrollX;
+      callback();
+      button.blur();
+      requestAnimationFrame(()=>{
+        window.scrollTo({top,left,behavior:'auto'});
+        requestAnimationFrame(()=>window.scrollTo({top,left,behavior:'auto'}));
+      });
+    };
+
     const sync=state=>{
       collapsed=state;
       grid.classList.toggle('is-collapsed',collapsed);
-      grid.dataset.collapsedLabel=labelFor(currentKey);
-      grid.dataset.collapsedHint='TOCÁ LA FLECHA ROJA PARA MOSTRARLAS.';
       button.setAttribute('aria-expanded',collapsed?'false':'true');
-      button.setAttribute('aria-label',collapsed?'Mostrar todas las tarjetas':'Minimizar todas las tarjetas');
-      button.title=collapsed?'MOSTRAR TARJETAS':'MINIMIZAR TARJETAS';
-      if(collapsed)grid.replaceChildren();
+      button.setAttribute('aria-label',collapsed?'Mostrar todas las tarjetas':'Ocultar todas las tarjetas');
+      button.title=collapsed?'MOSTRAR TARJETAS':'OCULTAR TARJETAS';
+      if(collapsed){
+        grid.replaceChildren();
+        ensureMessage();
+      }
     };
 
-    button.addEventListener('click',()=>{
-      if(collapsed){
-        sync(false);
-        search.dispatchEvent(new Event('input',{bubbles:true}));
-      }else sync(true);
+    const observer=new MutationObserver(()=>{
+      if(collapsed&&!grid.querySelector('.roulette-collapsed-message'))ensureMessage();
+    });
+    observer.observe(grid,{childList:true});
+
+    button.addEventListener('click',event=>{
+      event.preventDefault();
+      preserveViewport(()=>{
+        if(collapsed){
+          sync(false);
+          search.dispatchEvent(new Event('input',{bubbles:true}));
+        }else sync(true);
+      });
     });
 
-    // Cada vez que se entra a una de estas tres secciones vuelve a empezar minimizada.
     document.addEventListener('click',event=>{
       const tab=event.target.closest('.panel-tabs button[data-tab]');
       if(!tab||!rouletteTabs.has(tab.dataset.tab))return;
@@ -162,11 +190,10 @@
       sync(true);
     },true);
 
-    // Mantiene la posición visual del buscador mientras se filtran resultados.
     document.addEventListener('input',event=>{
       if(event.target!==search||collapsed)return;
-      const y=window.scrollY;
-      requestAnimationFrame(()=>window.scrollTo({top:y,left:0,behavior:'auto'}));
+      const y=window.scrollY,x=window.scrollX;
+      requestAnimationFrame(()=>window.scrollTo({top:y,left:x,behavior:'auto'}));
     },true);
 
     sync(true);
