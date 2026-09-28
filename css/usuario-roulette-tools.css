@@ -38,34 +38,51 @@ html{scrollbar-gutter:stable}
   transform:translateY(2px) rotate(225deg);
 }
 
-/* Estado cerrado: no se muestran tarjetas; sólo una indicación ligera y estable. */
+/* Estado oculto: caja fina canónica, sin spinner, pseudo-elementos ni animaciones heredadas. */
 .user-page #weightGrid.is-collapsed{
-  display:flex!important;
-  min-height:180px;
+  display:block!important;
+  min-height:0!important;
   width:100%;
   box-sizing:border-box;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  padding:30px 24px;
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:14px;
-  background:#111114;
-  text-align:center;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  animation:none!important;
 }
-.user-page #weightGrid.is-collapsed::before{
-  content:attr(data-collapsed-label);
-  color:#fff;
-  font:800 13px/1.35 Montserrat,Arial,sans-serif;
-  letter-spacing:.02em;
-}
-.user-page #weightGrid.is-collapsed::after{
-  content:attr(data-collapsed-hint);
-  color:rgba(255,255,255,.55);
-  font:500 11px/1.5 Montserrat,Arial,sans-serif;
+.user-page #weightGrid.is-collapsed::before,
+.user-page #weightGrid.is-collapsed::after,
+.user-page #weightGrid.is-collapsed:empty::before,
+.user-page #weightGrid.is-collapsed:empty::after{
+  content:none!important;
+  display:none!important;
+  animation:none!important;
 }
 .user-page #weightGrid.is-collapsed .weight-card{display:none!important}
+.user-page #weightGrid .roulette-collapsed-message{
+  box-sizing:border-box;
+  width:100%;
+  min-height:54px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:14px 18px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:14px;
+  background:#111114;
+  color:rgba(255,255,255,.72);
+  font:700 12px/1.45 Montserrat,Arial,sans-serif;
+  letter-spacing:.01em;
+  text-align:center;
+  animation:none!important;
+  transform:none!important;
+}
+.user-page #weightGrid .roulette-collapsed-message::before,
+.user-page #weightGrid .roulette-collapsed-message::after{
+  content:none!important;
+  display:none!important;
+  animation:none!important;
+}
 
 @media(max-width:760px){
   .user-page #roulettePanel .panel-tools{
@@ -73,5 +90,5 @@ html{scrollbar-gutter:stable}
   }
   .user-page #roulettePanel #resetWeights{grid-column:1/-1!important}
   .user-page #roulettePanel .roulette-collapse-toggle{grid-column:2;grid-row:1}
-  .user-page #weightGrid.is-collapsed{min-height:150px;padding:26px 18px}
+  .user-page #weightGrid .roulette-collapsed-message{min-height:50px;padding:12px 14px}
 }
