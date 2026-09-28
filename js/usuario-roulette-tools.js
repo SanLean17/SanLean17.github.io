@@ -1,6 +1,6 @@
 // SANLEAN — helpers exclusivos de USUARIO para las tarjetas de KILLERS/PERKS.
 // 1) Enriquece el buscador de PERKS DE KILLERS con el asesino propietario y sus aliases.
-// 2) Añade el control global para minimizar/expandir todas las tarjetas de la sección.
+// 2) Mantiene KILLERS/PERKS minimizados por defecto y permite mostrarlos con un control global.
 (()=>{
   const OWNER_BY_KEY={
     '00_aNursesCalling':'nurse enfermera sally smithson la enfermera',
@@ -110,28 +110,66 @@
     }catch{return response}
   };
 
+  const rouletteTabs=new Set(['killers','survivor','killerPerks']);
+  const labelFor=key=>({
+    killers:'LAS TARJETAS DE KILLERS ESTÁN MINIMIZADAS',
+    survivor:'LAS TARJETAS DE PERKS DE SUPERVIVIENTES ESTÁN MINIMIZADAS',
+    killerPerks:'LAS TARJETAS DE PERKS DE KILLERS ESTÁN MINIMIZADAS'
+  }[key]||'LAS TARJETAS ESTÁN MINIMIZADAS');
+
   function installCollapseControl(){
-    const tools=document.querySelector('#roulettePanel .panel-tools'),grid=document.getElementById('weightGrid');
-    if(!tools||!grid||document.getElementById('toggleWeightCards'))return;
+    const tools=document.querySelector('#roulettePanel .panel-tools'),grid=document.getElementById('weightGrid'),search=document.getElementById('panelSearch');
+    if(!tools||!grid||!search||document.getElementById('toggleWeightCards'))return;
+
+    let collapsed=true,currentKey=document.querySelector('.panel-tabs button[data-tab].active')?.dataset.tab||'killers';
+    const nativeAppend=grid.appendChild.bind(grid);
+    grid.appendChild=node=>{
+      if(collapsed&&node?.classList?.contains('weight-card'))return node;
+      return nativeAppend(node);
+    };
+
     const button=document.createElement('button');
     button.id='toggleWeightCards';
     button.className='roulette-collapse-toggle';
     button.type='button';
-    button.setAttribute('aria-expanded','true');
     button.setAttribute('aria-controls','weightGrid');
-    button.setAttribute('aria-label','Minimizar todas las tarjetas');
-    button.title='MINIMIZAR TARJETAS';
     button.innerHTML='<span class="roulette-collapse-chevron" aria-hidden="true"></span>';
     tools.appendChild(button);
 
-    const sync=collapsed=>{
+    const sync=state=>{
+      collapsed=state;
       grid.classList.toggle('is-collapsed',collapsed);
+      grid.dataset.collapsedLabel=labelFor(currentKey);
+      grid.dataset.collapsedHint='TOCÁ LA FLECHA ROJA PARA MOSTRARLAS.';
       button.setAttribute('aria-expanded',collapsed?'false':'true');
       button.setAttribute('aria-label',collapsed?'Mostrar todas las tarjetas':'Minimizar todas las tarjetas');
       button.title=collapsed?'MOSTRAR TARJETAS':'MINIMIZAR TARJETAS';
+      if(collapsed)grid.replaceChildren();
     };
-    button.addEventListener('click',()=>sync(!grid.classList.contains('is-collapsed')));
-    sync(false);
+
+    button.addEventListener('click',()=>{
+      if(collapsed){
+        sync(false);
+        search.dispatchEvent(new Event('input',{bubbles:true}));
+      }else sync(true);
+    });
+
+    // Cada vez que se entra a una de estas tres secciones vuelve a empezar minimizada.
+    document.addEventListener('click',event=>{
+      const tab=event.target.closest('.panel-tabs button[data-tab]');
+      if(!tab||!rouletteTabs.has(tab.dataset.tab))return;
+      currentKey=tab.dataset.tab;
+      sync(true);
+    },true);
+
+    // Mantiene la posición visual del buscador mientras se filtran resultados.
+    document.addEventListener('input',event=>{
+      if(event.target!==search||collapsed)return;
+      const y=window.scrollY;
+      requestAnimationFrame(()=>window.scrollTo({top:y,left:0,behavior:'auto'}));
+    },true);
+
+    sync(true);
   }
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',installCollapseControl,{once:true});
