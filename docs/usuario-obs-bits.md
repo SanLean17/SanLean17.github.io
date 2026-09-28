@@ -3,7 +3,7 @@
 ## Cambios aplicados
 
 - Selector MANTENER KILLERS / ELIMINAR KILLERS con respuesta inmediata, guardado en orden, última selección persistida y recuperación ante error.
-- Precarga y decodificación de retratos originales (512 × 512), menor sobreexposición y menor cantidad de tarjetas fuera de pantalla. No se inventó resolución adicional.
+- Precarga y decodificación de retratos originales (512 × 512), menor sobreexposición sin omitir tarjetas durante el movimiento. No se inventó resolución adicional.
 - Killers: se conserva el carrusel, las reglas de secuencia y los 8 segundos de giro. El ganador mantiene resplandor y movimiento hasta generar o girar de nuevo. El nombre del donador también se anima.
 - Perks en OBS: donador arriba del rombo, en color, con animación y tamaño de letra igual al nombre de la perk.
 - Nueva sección BITS Y ALERTAS: reglas por cantidad exacta de bits, buscador, tres ruletas, cantidad de entradas, duración, pausa y eliminación. Una regla por cantidad y propietario. Las entradas se aplican desde el próximo giro; no habilitan opciones desactivadas ni killers ya usados.
@@ -12,13 +12,13 @@
 
 ## Activación pendiente de Twitch
 
-La aplicación de Twitch todavía no existe. La interfaz, base de datos y función están implementadas, pero no hay recepción real de bits hasta completar lo siguiente:
+La aplicación SanLean ya fue registrada en Twitch Developers. La interfaz, base de datos y función están implementadas, pero no hay recepción real de bits hasta completar lo siguiente:
 
 1. Registrar una aplicación de SanLean en https://dev.twitch.tv/console/apps (tipo confidencial, para conservar el secreto en el servidor).
 2. Configurar exactamente esta redirección OAuth:
    `https://ugdwieebdgarkjrrpyal.supabase.co/functions/v1/stream-bits/callback`
 3. En Supabase → Edge Functions → Secrets, guardar `TWITCH_CLIENT_ID` y `TWITCH_CLIENT_SECRET`. No pegarlos en chats ni archivos del repositorio.
-4. En USUARIO → BITS Y ALERTAS, pulsar ACTUALIZAR y CONECTAR TWITCH. Cada propietario autoriza su propio canal con el permiso `bits:read`.
+4. En USUARIO → TWITCH / KICK o MI CUENTA → CONEXIONES, pulsar ACTUALIZAR y CONECTAR TWITCH. Cada propietario autoriza su propio canal con el permiso `bits:read`.
 5. Crear las reglas. Por ejemplo: 300 bits → El Caníbal; 1000 bits → Me la pela (superviviente). Debe coincidir la cantidad exacta del evento, no la suma de donaciones separadas.
 6. Copiar la URL de alertas a una fuente de navegador OBS de 1920 × 1080, ubicada por encima de las ruletas. Comprobar que su audio esté activo en OBS.
 7. Validar un Cheer real en un canal habilitado: una alerta, las entradas configuradas y el donador en el próximo giro. Un evento repetido por Twitch no debe duplicar entradas.
@@ -51,3 +51,13 @@ Las pruebas visuales se ejecutaron en Chromium con datos aislados. No se probó 
 - `tests/`: verificaciones automatizadas y prueba SQL con rollback.
 
 Supabase: migración `stream_bits_rules_alerts` y función `stream-bits` desplegadas. El secreto Twitch queda exclusivamente en el servidor. Las URLs de OBS contienen tokens de lectura y se deben mantener privadas.
+
+## Corrección posterior: cartas visibles y conexión compartida
+
+Se restauraron el armado del mazo y la animación de killers del commit estable `7009cf8`. Se retiró `content-visibility:auto`, que podía omitir el pintado durante el desplazamiento. Se conserva la precarga sin retrasar el inicio del giro.
+
+El donador se centra dentro de la carta y ajusta tamaño/saltos de línea según la longitud. El resplandor tiene cinco veces el radio anterior (55–105 px), en una capa independiente del mazo.
+
+MI PANEL y MI CUENTA usan el mismo componente, espacio de stream y estado verificado por el servidor. BITS/ALERTAS remite a esa conexión. Kick continúa pendiente. El primer ingreso explica que vincular Twitch es opcional y utiliza OAuth. Solo se solicita el permiso actualmente implementado `bits:read`; las funciones futuras pueden necesitar consentimiento adicional, según https://dev.twitch.tv/docs/authentication/scopes/.
+
+Pruebas adicionales: giros completos de ocho segundos en USUARIO y OBS con comprobaciones de retratos durante el movimiento; nombres largos; mismo estado de conexión en ambas pantallas; aislamiento entre espacios y restricción al propietario. No se simuló una conexión real como si estuviera activa.
