@@ -9,3 +9,4 @@ document.write('<script src="../js/usuario-votacion.js?v=20260928-1"><\/script>'
 document.write('<script src="../js/usuario-votacion-nav.js?v=20260928-2"><\/script>');
 document.write('<link rel="stylesheet" href="../css/desafios.css?v=20260928-5">');
 document.write('<script src="../js/usuario-desafios.js?v=20260928-5"><\/script>');
+document.write('<link rel="stylesheet" href="../css/usuario-kickers.css?v=20260928-1">');
