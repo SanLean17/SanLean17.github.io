@@ -1,17 +1,15 @@
 @import url('./usuario-design-system.css?v=20260929-1');
 @import url('./usuario-canonical-selects.css?v=20260929-1');
+@import url('./usuario-segmented-control.css?v=20260929-1');
 
 /* Ajustes BITS / OBS: reutiliza overlay-card, module-box y tokens canónicos de USUARIO. */
 .user-page .bits-legacy-obs-controls{display:none!important}
 .user-page #streamBitsPanel .bits-rules-box:not(.has-rules) .bits-add-wrap{margin-bottom:28px!important}
 .user-page #streamBitsPanel .bits-system-control{box-sizing:border-box!important;width:100%!important;max-width:none!important}
 .user-page #streamBitsPanel .bits-system-control-copy{flex:1 1 auto!important}
-.user-page #streamBitsPanel .bits-pause-button-legacy{display:none!important}
-.user-page #streamBitsPanel .bits-state-switch{position:relative;box-sizing:border-box!important;width:44px!important;min-width:44px!important;height:24px!important;min-height:24px!important;margin-left:auto!important;padding:0!important;border:0!important;border-radius:999px!important;background:#4b4b50!important;box-shadow:none!important;cursor:pointer!important;transition:background-color .18s ease!important}
-.user-page #streamBitsPanel .bits-state-switch span{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .18s ease}
-.user-page #streamBitsPanel .bits-state-switch.is-on{background:var(--sl-accent,#ff003c)!important}
-.user-page #streamBitsPanel .bits-state-switch.is-on span{transform:translateX(20px)}
-.user-page #streamBitsPanel .bits-state-switch:focus-visible{outline:2px solid rgba(255,0,60,.38);outline-offset:3px}
+.user-page #streamBitsPanel .bits-pause-button-legacy,.user-page #streamBitsPanel .bits-state-switch{display:none!important}
+.user-page #streamBitsPanel .bits-pause-choice{width:min(360px,100%);flex:0 0 360px;margin-left:auto}
+.user-page #streamBitsPanel .bits-pause-choice .cards-choice-label{display:block}
 .user-page #streamBitsPanel .bits-system-control.is-paused .bits-control-light{background:#f0ad4e!important;box-shadow:0 0 0 5px rgba(240,173,78,.10)!important}
 .user-page #streamBitsPanel .bits-system-control.is-paused strong{color:#f3c06e!important}
 .user-page #streamBitsPanel .bits-box-kicker{font:800 var(--sl-card-kicker-size,13px)/1.2 var(--sl-font-body,Montserrat,Arial,sans-serif)!important;color:var(--sl-accent,#ff003c)!important;letter-spacing:.16em!important}
@@ -35,5 +33,6 @@
 .user-page #streamGiveawaysPanel .module-fields.two{grid-template-columns:repeat(2,minmax(0,var(--sl-form-width,460px)))!important;justify-content:start!important;column-gap:var(--sl-field-row-gap,35px)!important;row-gap:var(--sl-field-group-gap,19px)!important}
 .user-page #streamGiveawaysPanel .module-fields>label>input:not([type=checkbox]):not([type=radio]),.user-page #streamGiveawaysPanel .module-fields>label>select,.user-page #streamGiveawaysPanel .module-fields>label>.sl-select-enhanced{margin-top:var(--sl-field-label-gap,9px)!important}
 .user-page #streamGiveawaysPanel .module-fields>label>.sl-select-enhanced>button{height:var(--sl-control-height,48px)!important;min-height:var(--sl-control-height,48px)!important}
-@media(max-width:900px){.user-page #streamBitsPanel .bits-sound-row{grid-template-columns:1fr}.user-page #streamBitsPanel .bits-sound-row-actions{justify-content:flex-start!important}.user-page #streamBitsPanel .bits-system-control{align-items:center!important;flex-direction:row!important}.user-page #streamGiveawaysPanel .module-fields.two{grid-template-columns:minmax(0,var(--sl-form-width,460px))!important}}
-@media(max-width:560px){.user-page #streamBitsPanel .bits-sound-row-actions{align-items:stretch!important;flex-direction:column!important}.user-page #streamBitsPanel .bits-sound-row-actions button{width:100%!important}.user-page #streamBitsPanel .bits-system-control{align-items:flex-start!important}.user-page #streamBitsPanel .bits-state-switch{margin-left:auto!important}}
+@media(max-width:900px){.user-page #streamBitsPanel .bits-sound-row{grid-template-columns:1fr}.user-page #streamBitsPanel .bits-sound-row-actions{justify-content:flex-start!important}.user-page #streamGiveawaysPanel .module-fields.two{grid-template-columns:minmax(0,var(--sl-form-width,460px))!important}}
+@media(max-width:760px){.user-page #streamBitsPanel .bits-system-control{align-items:flex-start!important;flex-direction:column!important}.user-page #streamBitsPanel .bits-pause-choice{width:100%;flex:1 1 auto;margin-left:0}}
+@media(max-width:560px){.user-page #streamBitsPanel .bits-sound-row-actions{align-items:stretch!important;flex-direction:column!important}.user-page #streamBitsPanel .bits-sound-row-actions button{width:100%!important}}
