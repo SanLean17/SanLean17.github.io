@@ -36,7 +36,7 @@
 .user-page #streamBitsPanel .bits-control-light{width:10px;height:10px;flex:0 0 10px;border-radius:50%;background:#35d07f;box-shadow:0 0 0 5px rgba(53,208,127,.10),0 0 13px rgba(53,208,127,.32)}
 .user-page #streamBitsPanel .bits-system-control.is-paused .bits-control-light{background:#f0ad4e;box-shadow:0 0 0 5px rgba(240,173,78,.10),0 0 13px rgba(240,173,78,.25)}
 .user-page #streamBitsPanel .bits-system-control.is-paused strong{color:#f3c06e}
-.user-page #streamBitsPanel .bits-system-control>button{flex:0 0 auto}
+.user-page #streamBitsPanel .bits-system-control>button{box-sizing:border-box!important;min-height:var(--sl-control-height-small)!important;height:var(--sl-control-height-small)!important;flex:0 0 auto;padding:0 var(--sl-action-padding-x)!important;border-radius:var(--sl-control-radius)!important;font:800 var(--sl-action-font-size)/1 var(--sl-font-body)!important}
 
 .user-page #streamBitsPanel #bitsForm{margin-top:24px;padding-top:24px;border-top:1px solid rgba(255,255,255,.12)}
 .user-page #streamBitsPanel .bits-fields{display:grid;grid-template-columns:repeat(2,minmax(0,460px));justify-content:start;column-gap:35px;row-gap:19px;margin:0 0 19px;align-items:start}
