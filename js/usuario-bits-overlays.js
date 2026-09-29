@@ -1,45 +1,24 @@
 (()=>{
- const $=id=>document.getElementById(id);
- let observer=null;
+ const $=id=>document.getElementById(id),MAX_BYTES=1024*1024,MAX_SECONDS=6.5;
+ let observer=null,modal=null;
  function renamePauseButtons(){
   const rules=$('bitsActivationToggle'),entries=$('bitsTimerToggle');
-  if(rules){
-   if(rules.textContent.trim()==='PAUSAR ACTIVACIONES')rules.textContent='PAUSAR REGLAS';
-   if(rules.textContent.trim()==='REANUDAR ACTIVACIONES')rules.textContent='REANUDAR REGLAS';
-  }
-  if(entries){
-   if(entries.textContent.trim()==='PAUSAR TEMPORIZADORES')entries.textContent='PAUSAR ENTRADAS';
-   if(entries.textContent.trim()==='REANUDAR TEMPORIZADORES')entries.textContent='REANUDAR ENTRADAS';
-  }
+  if(rules){if(rules.textContent.trim()==='PAUSAR ACTIVACIONES')rules.textContent='PAUSAR REGLAS';if(rules.textContent.trim()==='REANUDAR ACTIVACIONES')rules.textContent='REANUDAR REGLAS'}
+  if(entries){if(entries.textContent.trim()==='PAUSAR TEMPORIZADORES')entries.textContent='PAUSAR ENTRADAS';if(entries.textContent.trim()==='REANUDAR TEMPORIZADORES')entries.textContent='REANUDAR ENTRADAS'}
  }
- function ownerVisible(box){
-  const known=window.SanLeanStreamTools?.getWorkspace?.();
-  if(!known){box.hidden=true;return}
-  box.hidden=!window.SanLeanStreamTools?.isOwner?.();
- }
- function moveObsManager(){
-  const source=$('bitsCopyAlert')?.closest('.module-box'),panel=$('streamOverlaysPanel');
-  if(!source||!panel)return false;
-  source.id='bitsObsManager';
-  source.classList.add('bits-obs-manager');
-  const help=[...panel.children].find(el=>el.classList?.contains('module-help'));
-  if(source.parentElement!==panel)panel.insertBefore(source,help||null);
-  ownerVisible(source);
-  renamePauseButtons();
-  return true;
- }
- function sync(){moveObsManager();renamePauseButtons()}
- function install(){
-  sync();
-  observer?.disconnect();
-  observer=new MutationObserver(()=>sync());
-  const bits=$('streamBitsPanel');
-  if(bits)observer.observe(bits,{childList:true,subtree:true,characterData:true});
-  const manager=$('bitsObsManager');
-  if(manager)observer.observe(manager,{childList:true,subtree:true,characterData:true});
-  window.addEventListener('sanlean:overlays-updated',sync);
-  window.addEventListener('hashchange',sync);
-  setTimeout(sync,0);setTimeout(sync,250);setTimeout(sync,900);
- }
+ function ownerVisible(box){const known=window.SanLeanStreamTools?.getWorkspace?.();if(!known){box.hidden=true;return}box.hidden=!window.SanLeanStreamTools?.isOwner?.()}
+ async function session(){return window.SanLeanAccount?.session?.()}
+ async function soundCall(route,body){const s=await session();if(!s)throw new Error('Volvé a iniciar sesión.');const r=await fetch(window.SANLEAN_SUPABASE.url+'/functions/v1/stream-bits-sounds/'+route,{method:'POST',headers:{Authorization:'Bearer '+s.access_token,'Content-Type':'application/json'},body:JSON.stringify(body),signal:AbortSignal.timeout(15000)}),data=await r.json();if(!r.ok)throw new Error(data.error||'No se pudo completar la operación.');return data}
+ async function uploadSound(style,file){const workspace=window.SanLeanStreamTools?.getWorkspace?.(),s=await session();if(!workspace||!s)throw new Error('Volvé a iniciar sesión.');const form=new FormData();form.append('workspaceId',workspace.id);form.append('style',style);form.append('file',file,file.name);const r=await fetch(window.SANLEAN_SUPABASE.url+'/functions/v1/stream-bits-sounds/upload',{method:'POST',headers:{Authorization:'Bearer '+s.access_token},body:form,signal:AbortSignal.timeout(20000)}),data=await r.json();if(!r.ok)throw new Error(data.error||'No se pudo subir el sonido.');return data}
+ function audioDuration(file){return new Promise((resolve,reject)=>{const src=URL.createObjectURL(file),audio=new Audio();audio.preload='metadata';audio.onloadedmetadata=()=>{const d=audio.duration;URL.revokeObjectURL(src);Number.isFinite(d)?resolve(d):reject(new Error('No se pudo leer la duración del MP3.'))};audio.onerror=()=>{URL.revokeObjectURL(src);reject(new Error('No se pudo leer el MP3.'))};audio.src=src})}
+ function ensureModal(){if(modal)return modal;modal=document.createElement('div');modal.className='profile-modal bits-sound-modal';modal.hidden=true;modal.innerHTML=`<div class="profile-dialog bits-sound-dialog" role="dialog" aria-modal="true" aria-labelledby="bitsSoundModalTitle"><p class="eyebrow">OVERLAYS OBS</p><h2 id="bitsSoundModalTitle">PERSONALIZAR <span>SONIDOS</span></h2><p class="admin-copy">Podés reemplazar los sonidos predeterminados de las alertas. Cada archivo debe ser MP3, pesar como máximo 1 MB y durar hasta 6,5 segundos.</p><div class="bits-sound-custom-list"><article data-style="harmful"><div><span>PERJUDICIAL</span><strong data-state>SONIDO SANLEAN</strong><small>Se usa en reglas marcadas como perjudiciales.</small></div><input data-file type="file" accept="audio/mpeg,.mp3" hidden><div class="module-actions"><button data-upload class="module-secondary" type="button">SUBIR MP3</button><button data-test class="module-secondary" type="button">PROBAR</button><button data-reset class="module-secondary bits-danger" type="button">RESTABLECER</button></div></article><article data-style="beneficial"><div><span>BENEFICIOSA</span><strong data-state>SONIDO SANLEAN</strong><small>Se usa en reglas marcadas como beneficiosas.</small></div><input data-file type="file" accept="audio/mpeg,.mp3" hidden><div class="module-actions"><button data-upload class="module-secondary" type="button">SUBIR MP3</button><button data-test class="module-secondary" type="button">PROBAR</button><button data-reset class="module-secondary bits-danger" type="button">RESTABLECER</button></div></article></div><p class="bits-sound-modal-status" role="status"></p><div class="module-actions bits-sound-modal-footer"><button data-close class="module-secondary" type="button">CERRAR</button></div></div>`;document.body.appendChild(modal);modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});modal.querySelector('[data-close]').onclick=closeModal;document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.hidden)closeModal()});for(const row of modal.querySelectorAll('[data-style]')){const style=row.dataset.style,file=row.querySelector('[data-file]'),upload=row.querySelector('[data-upload]'),reset=row.querySelector('[data-reset]'),test=row.querySelector('[data-test]');upload.onclick=()=>file.click();file.onchange=async()=>{const chosen=file.files?.[0];if(!chosen)return;const status=modal.querySelector('.bits-sound-modal-status');try{if(!chosen.name.toLowerCase().endsWith('.mp3')||(chosen.type&&chosen.type!=='audio/mpeg'&&chosen.type!=='audio/mp3'))throw new Error('Elegí un archivo MP3.');if(chosen.size>MAX_BYTES)throw new Error('El MP3 no puede pesar más de 1 MB.');const duration=await audioDuration(chosen);if(duration>MAX_SECONDS+.05)throw new Error(`El sonido dura ${duration.toFixed(1)} s. El máximo es 6,5 s.`);status.textContent='SUBIENDO SONIDO…';upload.disabled=true;await uploadSound(style,chosen);status.textContent='SONIDO PERSONALIZADO GUARDADO.';await loadSoundStatus()}catch(err){status.textContent=err.message}finally{upload.disabled=false;file.value=''}};reset.onclick=async()=>{const workspace=window.SanLeanStreamTools?.getWorkspace?.(),status=modal.querySelector('.bits-sound-modal-status');if(!workspace)return;reset.disabled=true;try{await soundCall('reset',{workspaceId:workspace.id,style});status.textContent='VOLVIÓ AL SONIDO PREDETERMINADO DE SANLEAN.';await loadSoundStatus()}catch(err){status.textContent=err.message}finally{reset.disabled=false}};test.onclick=()=>$(style==='harmful'?'bitsTestHarmful':'bitsTestBeneficial')?.click()}
+ return modal}
+ function closeModal(){if(modal)modal.hidden=true}
+ async function loadSoundStatus(){const workspace=window.SanLeanStreamTools?.getWorkspace?.();if(!workspace||!modal)return;try{const data=await soundCall('status',{workspaceId:workspace.id});for(const row of modal.querySelectorAll('[data-style]')){const custom=!!data[row.dataset.style];row.querySelector('[data-state]').textContent=custom?'SONIDO PERSONALIZADO':'SONIDO SANLEAN';row.classList.toggle('is-custom',custom);row.querySelector('[data-reset]').disabled=!custom}}catch(err){modal.querySelector('.bits-sound-modal-status').textContent=err.message}}
+ async function openModal(){const m=ensureModal();m.hidden=false;m.querySelector('.bits-sound-modal-status').textContent='';await loadSoundStatus();m.querySelector('[data-close]')?.focus()}
+ function ensureCustomizeButton(source){const alertBlock=source.querySelector('.bits-obs-block'),help=alertBlock?.querySelector('.bits-obs-help');if(!alertBlock||!help||$('bitsCustomizeSounds'))return;const actions=document.createElement('div');actions.className='module-actions bits-customize-sound-actions';actions.innerHTML='<button id="bitsCustomizeSounds" class="module-secondary" type="button">PERSONALIZAR SONIDOS</button>';help.insertAdjacentElement('afterend',actions);$('bitsCustomizeSounds').onclick=openModal}
+ function moveObsManager(){const source=$('bitsCopyAlert')?.closest('.module-box'),panel=$('streamOverlaysPanel');if(!source||!panel)return false;source.id='bitsObsManager';source.classList.add('bits-obs-manager');const help=[...panel.children].find(el=>el.classList?.contains('module-help'));if(source.parentElement!==panel)panel.insertBefore(source,help||null);ownerVisible(source);ensureCustomizeButton(source);renamePauseButtons();return true}
+ function sync(){moveObsManager();renamePauseButtons();if(modal&&!modal.hidden)loadSoundStatus()}
+ function install(){sync();observer?.disconnect();observer=new MutationObserver(()=>sync());const bits=$('streamBitsPanel');if(bits)observer.observe(bits,{childList:true,subtree:true,characterData:true});const manager=$('bitsObsManager');if(manager)observer.observe(manager,{childList:true,subtree:true,characterData:true});window.addEventListener('sanlean:overlays-updated',sync);window.addEventListener('hashchange',sync);setTimeout(sync,0);setTimeout(sync,250);setTimeout(sync,900)}
  window.addEventListener('DOMContentLoaded',install);
 })();
