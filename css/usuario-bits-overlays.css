@@ -23,7 +23,21 @@
 .user-page #streamOverlaysPanel .bits-sound input:focus-visible{outline:2px solid rgba(255,0,60,.35);outline-offset:2px}
 .user-page #streamOverlaysPanel .bits-obs-manager .module-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
 .user-page #streamOverlaysPanel .bits-obs-manager .module-actions button{box-sizing:border-box!important;min-height:var(--sl-control-height-small,44px)!important;height:var(--sl-control-height-small,44px)!important;padding:0 var(--sl-action-padding-x,20px)!important;border-radius:var(--sl-control-radius,999px)!important;font:800 var(--sl-action-font-size,13px)/1 var(--sl-font-body,Montserrat,Arial,sans-serif)!important}
+.user-page #streamOverlaysPanel .bits-customize-sound-actions{margin:-6px 0 18px}
+
+.user-page .bits-sound-modal .bits-sound-dialog{width:min(760px,calc(100vw - 32px));max-width:760px}
+.user-page .bits-sound-custom-list{display:grid;gap:12px;margin:24px 0 0}
+.user-page .bits-sound-custom-list article{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:20px;min-height:96px;padding:16px 18px;border:1px solid var(--sl-border,rgba(255,255,255,.12));border-radius:var(--sl-card-radius,14px);background:var(--sl-bg-card,#111114)}
+.user-page .bits-sound-custom-list article>div:first-child{display:grid;gap:6px;min-width:0}
+.user-page .bits-sound-custom-list article>div:first-child>span{color:var(--sl-accent,#ff003c);font:800 11px/1.2 var(--sl-font-body,Montserrat,Arial,sans-serif);letter-spacing:.12em}
+.user-page .bits-sound-custom-list article>div:first-child>strong{color:#fff;font:800 13px/1.25 var(--sl-font-body,Montserrat,Arial,sans-serif)}
+.user-page .bits-sound-custom-list article.is-custom>div:first-child>strong{color:#6ae6a2}
+.user-page .bits-sound-custom-list article>div:first-child>small{color:var(--sl-text-muted,rgba(255,255,255,.55));font:500 11px/1.5 var(--sl-font-body,Montserrat,Arial,sans-serif)}
+.user-page .bits-sound-custom-list .module-actions,.user-page .bits-sound-modal-footer{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.user-page .bits-sound-custom-list button,.user-page .bits-sound-modal-footer button{box-sizing:border-box!important;min-height:var(--sl-control-height-small,44px)!important;height:var(--sl-control-height-small,44px)!important;padding:0 var(--sl-action-padding-x,20px)!important;border-radius:var(--sl-control-radius,999px)!important;font:800 var(--sl-action-font-size,13px)/1 var(--sl-font-body,Montserrat,Arial,sans-serif)!important}
+.user-page .bits-sound-modal-status{min-height:18px;margin:16px 0 0;color:var(--sl-text-secondary,rgba(255,255,255,.72));font:700 11px/1.5 var(--sl-font-body,Montserrat,Arial,sans-serif)}
+.user-page .bits-sound-modal-footer{justify-content:flex-start;margin-top:18px}
 
 @media(max-width:1000px){.user-page #streamOverlaysPanel .bits-obs-grid{grid-template-columns:1fr}}
-@media(max-width:900px){.user-page #streamBitsPanel .bits-system-control{align-items:flex-start;flex-direction:column}.user-page #streamBitsPanel .bits-system-control>button{margin-left:0!important}}
-@media(max-width:560px){.user-page #streamBitsPanel .bits-system-control>button,.user-page #streamOverlaysPanel .bits-obs-manager .module-actions button{width:100%}.user-page #streamOverlaysPanel .bits-obs-manager .module-actions{align-items:stretch;flex-direction:column}.user-page #streamOverlaysPanel .bits-obs-block{padding:16px}}
+@media(max-width:900px){.user-page #streamBitsPanel .bits-system-control{align-items:flex-start;flex-direction:column}.user-page #streamBitsPanel .bits-system-control>button{margin-left:0!important}.user-page .bits-sound-custom-list article{grid-template-columns:1fr;align-items:start}}
+@media(max-width:560px){.user-page #streamBitsPanel .bits-system-control>button,.user-page #streamOverlaysPanel .bits-obs-manager .module-actions button,.user-page .bits-sound-custom-list button,.user-page .bits-sound-modal-footer button{width:100%}.user-page #streamOverlaysPanel .bits-obs-manager .module-actions,.user-page .bits-sound-custom-list .module-actions,.user-page .bits-sound-modal-footer{align-items:stretch;flex-direction:column}.user-page #streamOverlaysPanel .bits-obs-block{padding:16px}}
