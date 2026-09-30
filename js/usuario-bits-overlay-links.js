@@ -10,7 +10,9 @@
     try{const u=new URL(input.value,location.origin);u.searchParams.set('mode','alert');u.searchParams.set('filter',type);u.searchParams.set('v',VERSION);input.value=u.href}catch{}
    }
    const copy=card.querySelector('p');
-   if(copy)copy.textContent=type==='harmful'?'Muestra únicamente donaciones de reglas perjudiciales en esta Browser Source.':'Muestra únicamente donaciones de reglas beneficiosas en esta Browser Source.';
+   const description=type==='harmful'?'Muestra únicamente donaciones de reglas perjudiciales en esta Browser Source.':'Muestra únicamente donaciones de reglas beneficiosas en esta Browser Source.';
+   // The grid observer also sees our edits: unchanged text must not create new mutations.
+   if(copy&&copy.textContent!==description)copy.textContent=description;
    const actions=card.querySelector('.overlay-actions');
    if(actions&&!actions.querySelector('[data-alert-preview]')){
     const btn=document.createElement('button');btn.type='button';btn.className='module-secondary';btn.dataset.alertPreview=type;btn.textContent='VISTA PREVIA';
