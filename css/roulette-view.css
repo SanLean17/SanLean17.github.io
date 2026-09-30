@@ -16,7 +16,7 @@
 .sl-killer-card.selected .sl-killer-card-donor{animation:sl-donor-pulse 1.7s ease-in-out infinite}
 .sl-killer-card-portrait{filter:brightness(1.18) contrast(1.035);image-rendering:auto}
 @keyframes sl-killer-float{0%,100%{transform:scale(1.22) translateY(0)}50%{transform:scale(1.22) translateY(-4px)}}
-@keyframes sl-killer-glow{0%,100%{box-shadow:0 0 55px #ff003cc0}50%{box-shadow:0 0 20px #ffffff70,0 0 105px #ff003c}}
+@keyframes sl-killer-glow{0%,100%{box-shadow:0 0 20px 8px #ff003ce6,0 0 55px 12px #ff003c}50%{box-shadow:0 0 22px 10px #ff335fcc,0 0 105px 18px #ff003c}}
 @keyframes sl-killer-breathe{0%,100%{filter:brightness(1.18) contrast(1.035)}50%{filter:brightness(1.24) contrast(1.035)}}
 @keyframes sl-donor-pulse{0%,100%{scale:1;filter:drop-shadow(0 0 3px #ff003c)}50%{scale:1.06;filter:drop-shadow(0 0 9px #ff003c)}}
 .obs-stage .sl-roulette-donor{position:absolute;left:0;right:0;bottom:100%;margin:0 0 8px;color:var(--roulette-accent);font-size:clamp(18px,2.55cqw,42px);font-weight:900;line-height:1.06;text-transform:uppercase;text-align:center;overflow-wrap:anywhere;animation:sl-donor-pulse 1.7s ease-in-out infinite}
@@ -31,8 +31,8 @@
 /* Paint the halo on a small stationary layer, outside the translated deck. */
 .sl-killer-web{position:relative;isolation:isolate;--winner-width:239px;--winner-height:339px}
 .sl-killer-web-reel{z-index:1}
-.sl-killer-web:has(.sl-killer-card.selected)::before{content:"";position:absolute;z-index:0;left:50%;top:50%;width:var(--winner-width);height:var(--winner-height);transform:translate(-50%,-50%);border-radius:8px;pointer-events:none;animation:sl-killer-glow 1.7s ease-in-out infinite}
+.sl-killer-web:has(.sl-killer-card.selected)::before{content:"";position:absolute;z-index:3;left:50%;top:50%;width:var(--winner-width);height:var(--winner-height);transform:translate(-50%,-50%);border-radius:8px;pointer-events:none;animation:sl-killer-glow 1.7s ease-in-out infinite}
 .user-page .private-roulette-stage .sl-killer-web{--winner-width:188px;--winner-height:268px}
 .sl-killer-card.selected.donated .sl-killer-card-donor{font-size:var(--sl-donor-font,25px)}
 @media(max-width:760px){.user-page .private-roulette-stage .sl-killer-web{--winner-width:161px;--winner-height:229px}}
-@media(prefers-reduced-motion:reduce){.sl-killer-web:has(.sl-killer-card.selected)::before{animation:none;box-shadow:0 0 55px #ff003cc0}}
+@media(prefers-reduced-motion:reduce){.sl-killer-web:has(.sl-killer-card.selected)::before{animation:none;box-shadow:0 0 20px 8px #ff003ce6,0 0 55px 12px #ff003c}}

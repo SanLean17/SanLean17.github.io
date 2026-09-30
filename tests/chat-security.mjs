@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {pkce,SCOPES,validState} from '../supabase/functions/stream-kick/oauth.mjs';
+import {verifyKick} from '../supabase/functions/stream-kick/verify.mjs';
+import {stripTypeScriptTypes} from 'node:module';
+import fs from 'node:fs';
+for(const fn of ['stream-bits','stream-kick'])stripTypeScriptTypes(fs.readFileSync(new URL('../supabase/functions/'+fn+'/index.ts',import.meta.url),'utf8'));
+const a=await pkce(),b=await pkce();assert.notEqual(a.verifier,b.verifier);assert.equal(a.verifier.length,43);assert.equal(a.challenge,Buffer.from(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(a.verifier))).toString('base64url'));assert(SCOPES.includes('events:subscribe'));assert(validState(crypto.randomUUID()));assert(!validState('forged'));
+const keys=await crypto.subtle.generateKey({name:'RSASSA-PKCS1-v1_5',modulusLength:2048,publicExponent:new Uint8Array([1,0,1]),hash:'SHA-256'},true,['sign','verify']);
+const raw=JSON.stringify({content:'A'}),time=new Date().toISOString(),h=new Headers({'Kick-Event-Message-Id':'qa-message','Kick-Event-Message-Timestamp':time});
+const signature=await crypto.subtle.sign('RSASSA-PKCS1-v1_5',keys.privateKey,new TextEncoder().encode('qa-message.'+time+'.'+raw));h.set('Kick-Event-Signature',Buffer.from(signature).toString('base64'));
+assert(await verifyKick(h,raw,keys.publicKey));assert(!await verifyKick(h,raw+' ',keys.publicKey));assert(!await verifyKick(h,raw,keys.publicKey,Date.now()+700000));h.set('Kick-Event-Message-Id','forged');assert(!await verifyKick(h,raw,keys.publicKey));h.set('Kick-Event-Signature','invalid');assert(!await verifyKick(h,raw,keys.publicKey));
+console.log('PASS: both edge functions parse; PKCE generation/challenge; OAuth state; Kick valid, altered, expired, forged-ID and invalid signatures');
