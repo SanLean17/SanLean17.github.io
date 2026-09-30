@@ -1,0 +1,13 @@
+const {chromium}=require('playwright'),assert=require('node:assert/strict'),path=require('node:path');
+(async()=>{const browser=await chromium.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true});try{const page=await browser.newPage();await page.setContent('<section id="streamPlatformsPanel"></section>');await page.evaluate(()=>{
+ window.qa={workspace:'one',rows:[],cards:[],poll:[],platform:'both',startedAt:Date.now()-1000};window.setInterval=fn=>{window.tick=fn};
+ window.SanLeanStreamTools={getWorkspace:()=>({id:qa.workspace})};window.SanLeanCards={getState:()=>({workspaceId:qa.workspace,platform:qa.platform,startedAt:qa.startedAt}),receiveChatMessage:m=>qa.cards.push(m)};window.SanLeanPoll={getState:()=>({workspaceId:qa.workspace,startedAt:qa.startedAt}),ingestVote:(...m)=>qa.poll.push(m)};
+ window.sanleanSupabase={from:()=>{let filters=[],descending=false;return{select(){return this},eq(k,v){filters.push(r=>r[k]===v);return this},gt(k,v){filters.push(r=>k==='created_at'||r[k]>v);return this},order(k,o){descending=o?.ascending===false;return this},limit(n){return Promise.resolve({data:qa.rows.filter(r=>filters.every(f=>f(r))).sort((a,b)=>descending?b.id-a.id:a.id-b.id).slice(0,n)})}}}};
+ });await page.addScriptTag({path:path.join(__dirname,'../js/usuario-chat.js')});
+ const tick=async()=>{await page.evaluate(()=>tick());await page.evaluate(()=>Promise.resolve())};await tick();
+ await page.evaluate(()=>{const row={id:1,workspace_id:'one',platform:'twitch',message_id:'a',user_id:'42',username:'<img src=x onerror=alert(1)>',message:'A',sent_at:new Date().toISOString()};qa.rows=[row,{...row,id:2,platform:'kick'},{...row,id:3},{...row,id:4,workspace_id:'other'},{...row,id:5,message_id:'old',sent_at:'2000-01-01T00:00:00Z'}]});await tick();
+ assert.deepEqual(await page.evaluate(()=>qa.cards.map(x=>x.username)),['twitch:42','kick:42']);assert.equal(await page.locator('#streamChatMessages img').count(),0);assert.equal(await page.evaluate(()=>qa.poll.length),2);
+ await page.evaluate(()=>{qa.workspace='two';qa.rows=[]});await tick();assert.equal(await page.locator('#streamChatMessages p').count(),0);
+ await page.evaluate(()=>{qa.platform='kick';qa.rows=[{id:6,workspace_id:'two',platform:'twitch',message_id:'b',user_id:'42',username:'viewer',message:'B',sent_at:new Date().toISOString()}]});await tick();assert.equal(await page.evaluate(()=>qa.cards.length),2);
+ console.log('PASS: initial history skipped, message dedup, platform-specific viewer IDs, old votes excluded, workspace reset, platform selection, escaped chat text');
+}finally{await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});
