@@ -1,0 +1,38 @@
+/* SANLEAN — kicker/categoria pequeña canónica de USUARIO.
+   Referencia obligatoria: INICIO > "PANEL DE USUARIO". */
+.user-page .eyebrow,
+.account-page .eyebrow,
+.user-page .section-kicker,
+.account-page .section-kicker,
+.user-page .card-kicker,
+.account-page .card-kicker,
+.user-page .ui-kicker,
+.account-page .ui-kicker,
+.user-page .module-kicker,
+.account-page .module-kicker,
+.user-page .stream-kicker,
+.account-page .stream-kicker,
+.user-page [data-ui-kicker],
+.account-page [data-ui-kicker],
+.user-page .stream-output-head>span:first-child,
+.user-page .overlay-card>span:first-child,
+.user-page .private-roulette>.private-roulette-title,
+.user-page .private-roulette>h3:first-child{
+  margin:0 0 var(--sl-kicker-title-gap,4px)!important;
+  color:var(--sl-accent,#ff003c)!important;
+  font-family:var(--sl-font-body,Montserrat,Arial,sans-serif)!important;
+  font-size:var(--sl-section-kicker-size,13px)!important;
+  font-weight:800!important;
+  line-height:1.2!important;
+  letter-spacing:.16em!important;
+  text-transform:uppercase!important;
+}
+
+/* El kicker dentro de una cabecera mantiene el mismo pequeño desplazamiento visual de INICIO. */
+.user-page .dashboard-welcome .eyebrow,
+.user-page .section-context .eyebrow,
+.user-page .stream-module-head .eyebrow,
+.account-page .account-welcome .section-kicker,
+.account-page .section-head .section-kicker{
+  transform:translateY(var(--sl-kicker-shift,4px))!important;
+}

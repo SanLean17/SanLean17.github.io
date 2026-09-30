@@ -1,0 +1,38 @@
+@import url('./usuario-design-system.css?v=20260929-1');
+@import url('./usuario-canonical-selects.css?v=20260929-1');
+@import url('./usuario-segmented-control.css?v=20260929-1');
+
+/* Ajustes BITS / OBS: reutiliza overlay-card, module-box y tokens canónicos de USUARIO. */
+.user-page .bits-legacy-obs-controls{display:none!important}
+.user-page #streamBitsPanel .bits-rules-box:not(.has-rules) .bits-add-wrap{margin-bottom:28px!important}
+.user-page #streamBitsPanel .bits-system-control{box-sizing:border-box!important;width:100%!important;max-width:none!important}
+.user-page #streamBitsPanel .bits-system-control-copy{flex:1 1 auto!important}
+.user-page #streamBitsPanel .bits-pause-button-legacy,.user-page #streamBitsPanel .bits-state-switch{display:none!important}
+.user-page #streamBitsPanel .bits-pause-choice{width:min(360px,100%);flex:0 0 360px;margin-left:auto}
+.user-page #streamBitsPanel .bits-pause-choice .cards-choice-label{display:block}
+.user-page #streamBitsPanel .bits-system-control.is-paused .bits-control-light{background:#f0ad4e!important;box-shadow:0 0 0 5px rgba(240,173,78,.10)!important}
+.user-page #streamBitsPanel .bits-system-control.is-paused strong{color:#f3c06e!important}
+.user-page #streamBitsPanel .bits-box-kicker{font:800 var(--sl-card-kicker-size,13px)/1.2 var(--sl-font-body,Montserrat,Arial,sans-serif)!important;color:var(--sl-accent,#ff003c)!important;letter-spacing:.16em!important}
+.user-page #streamBitsPanel .bits-box-head h3{font:800 var(--sl-card-title-size,29px)/1 var(--sl-font-body,Montserrat,Arial,sans-serif)!important;color:#fff!important}
+.user-page #streamBitsPanel .bits-box-head p{margin:var(--sl-card-title-copy-gap,10px) 0 0!important;color:var(--sl-text-secondary,rgba(255,255,255,.72))!important;line-height:var(--sl-card-copy-line,1.5)!important}
+.user-page #streamBitsPanel .bits-sound-customization{margin-bottom:20px}
+.user-page #streamBitsPanel .bits-sound-rules{margin:-2px 0 18px;color:var(--sl-text-muted,rgba(255,255,255,.55));font:800 10px/1.4 var(--sl-font-body,Montserrat,Arial,sans-serif);letter-spacing:.08em}
+.user-page #streamBitsPanel .bits-sound-custom-list{border-top:1px solid var(--sl-border,rgba(255,255,255,.12))}
+.user-page #streamBitsPanel .bits-sound-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:24px;padding:18px 0;border-bottom:1px solid var(--sl-border,rgba(255,255,255,.12))}
+.user-page #streamBitsPanel .bits-sound-row-copy{min-width:0}
+.user-page #streamBitsPanel .bits-sound-row-copy .bits-box-kicker{margin-bottom:7px!important}
+.user-page #streamBitsPanel .bits-sound-row-copy strong{display:block;color:#fff;font:800 14px/1.3 var(--sl-font-body,Montserrat,Arial,sans-serif)}
+.user-page #streamBitsPanel .bits-sound-row.is-custom .bits-sound-row-copy strong{color:#6ae6a2}
+.user-page #streamBitsPanel .bits-sound-row-copy p{max-width:560px;margin:7px 0 0;color:var(--sl-text-muted,rgba(255,255,255,.55));font:500 11px/1.5 var(--sl-font-body,Montserrat,Arial,sans-serif)}
+.user-page #streamBitsPanel .bits-sound-row-actions{justify-content:flex-end!important;margin-top:0!important}
+.user-page #streamOverlaysPanel .bits-overlay-sound-check{display:flex!important;flex-direction:row!important;align-items:center!important;gap:10px!important;width:max-content;max-width:100%;margin-top:18px!important;color:#fff!important;font:800 11px/1.3 var(--sl-font-body,Montserrat,Arial,sans-serif)!important;letter-spacing:.04em!important;cursor:pointer}
+.user-page #streamOverlaysPanel .bits-overlay-sound-check input{appearance:none!important;-webkit-appearance:none!important;width:18px!important;height:18px!important;min-height:18px!important;flex:0 0 18px!important;margin:0!important;padding:0!important;border:1px solid rgba(255,255,255,.28)!important;border-radius:5px!important;background:var(--sl-bg-surface,#09090b)!important;display:grid!important;place-items:center!important;cursor:pointer!important}
+.user-page #streamOverlaysPanel .bits-overlay-sound-check input:checked{border-color:var(--sl-accent,#ff003c)!important;background:var(--sl-accent,#ff003c)!important}
+.user-page #streamOverlaysPanel .bits-overlay-sound-check input:checked:after{content:'';width:8px;height:4px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translateY(-1px)}
+.user-page #streamGiveawaysPanel .module-fields>label{gap:0!important;max-width:var(--sl-form-width,460px)!important}
+.user-page #streamGiveawaysPanel .module-fields.two{grid-template-columns:repeat(2,minmax(0,var(--sl-form-width,460px)))!important;justify-content:start!important;column-gap:var(--sl-field-row-gap,35px)!important;row-gap:var(--sl-field-group-gap,19px)!important}
+.user-page #streamGiveawaysPanel .module-fields>label>input:not([type=checkbox]):not([type=radio]),.user-page #streamGiveawaysPanel .module-fields>label>select,.user-page #streamGiveawaysPanel .module-fields>label>.sl-select-enhanced{margin-top:var(--sl-field-label-gap,9px)!important}
+.user-page #streamGiveawaysPanel .module-fields>label>.sl-select-enhanced>button{height:var(--sl-control-height,48px)!important;min-height:var(--sl-control-height,48px)!important}
+@media(max-width:900px){.user-page #streamBitsPanel .bits-sound-row{grid-template-columns:1fr}.user-page #streamBitsPanel .bits-sound-row-actions{justify-content:flex-start!important}.user-page #streamGiveawaysPanel .module-fields.two{grid-template-columns:minmax(0,var(--sl-form-width,460px))!important}}
+@media(max-width:760px){.user-page #streamBitsPanel .bits-system-control{align-items:flex-start!important;flex-direction:column!important}.user-page #streamBitsPanel .bits-pause-choice{width:100%;flex:1 1 auto;margin-left:0}}
+@media(max-width:560px){.user-page #streamBitsPanel .bits-sound-row-actions{align-items:stretch!important;flex-direction:column!important}.user-page #streamBitsPanel .bits-sound-row-actions button{width:100%!important}}

@@ -1,4 +1,144 @@
-/* Private bits editor follows USUARIO spacing and controls. */
-.user-page #streamBitsPanel{min-width:0}.user-page #streamBitsPanel .module-box{border-radius:14px;margin-bottom:20px}.bits-fields{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:22px 0}.bits-fields label,#bitsForm>label{display:flex;flex-direction:column;gap:9px;font-size:11px;font-weight:800}.bits-fields input,.bits-fields select,#bitsSearch{width:100%;min-width:0;min-height:44px;padding:10px 12px;border:1px solid #ffffff30;border-radius:10px;background:#111114;color:#fff;font:inherit}.bits-results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-height:300px;overflow:auto;margin-top:12px}.bits-option{display:flex;align-items:center;gap:9px;text-align:left;padding:8px;border:1px solid #ffffff25;border-radius:10px;background:#111114;color:white;cursor:pointer}.bits-option img{width:44px;height:52px;object-fit:contain}.bits-option span{font:700 11px/1.3 Montserrat,Arial,sans-serif}.bits-option:hover,.bits-option:focus-visible{border-color:#ff003c}.bits-rules{margin-top:20px}.bits-rule{border-top:1px solid #ffffff20;padding:18px 0}.bits-rule strong{font-size:14px}.bits-rule p{font-size:11px;color:#ffffffb0;margin-top:7px}.bits-bonus{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #ffffff20;font-size:13px}.bits-sound{display:flex!important;align-items:center;gap:10px;margin:18px 0}.bits-sound input{width:18px;height:18px;accent-color:#ff003c}#bitsForm[hidden],#bitsOwner[hidden]{display:none!important}#bitsSelected{color:#ff003c;margin-top:12px}.bits-bonus button{border:1px solid #ffffff30;border-radius:10px;background:#111114;color:white;padding:10px;cursor:pointer}@media(max-width:700px){.bits-fields{grid-template-columns:1fr}.bits-results{grid-template-columns:1fr 1fr}.bits-option span{font-size:10px}}
+/* BITS / ALERTAS — layout específico; controles visuales heredados del Design System canónico de USUARIO. */
+.user-page #streamBitsPanel{min-width:0}
+.user-page #streamBitsPanel .module-box{margin-bottom:20px}
+.user-page #streamBitsPanel .bits-box{display:block}
+.user-page #streamBitsPanel .bits-box-head{max-width:760px;margin-bottom:22px}
+.user-page #streamBitsPanel .bits-box-kicker{display:block;margin:0 0 7px;color:var(--sl-accent,#ff003c);font:800 13px/1.2 Montserrat,Arial,sans-serif;letter-spacing:.16em;text-transform:uppercase}
+.user-page #streamBitsPanel .bits-box-head h3{margin:0;color:#fff;font:800 29px/1 Montserrat,Arial,sans-serif;letter-spacing:0}
+.user-page #streamBitsPanel .bits-box-head p{max-width:690px;margin:10px 0 0;color:rgba(255,255,255,.72);font:500 14px/1.5 Montserrat,Arial,sans-serif}
 
-#streamBitsPanel .module-actions button{min-height:42px;border:1px solid #ffffff30;border-radius:10px;background:#111114;color:#fff;padding:10px 16px;font:800 11px Montserrat,Arial,sans-serif;cursor:pointer}#streamBitsPanel .module-actions button.module-primary{background:#ff003c;border-color:#ff003c}#streamBitsPanel .module-actions button:disabled{opacity:.45;cursor:default}#streamBitsPanel .bits-sound{flex-direction:row!important;font:700 11px Montserrat,Arial,sans-serif}#streamBitsPanel #bitsSound{appearance:auto;width:18px!important;height:18px!important;min-height:0;margin:0;flex:none}
+.user-page #streamBitsPanel .bits-connection-state{display:flex;align-items:center;gap:14px;max-width:720px;min-height:82px;box-sizing:border-box;margin:0 0 20px;padding:16px 18px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:#111114}
+.user-page #streamBitsPanel .bits-status-light{width:11px;height:11px;flex:0 0 11px;border-radius:50%;background:#777;box-shadow:0 0 0 5px rgba(119,119,119,.10)}
+.user-page #streamBitsPanel .bits-connection-state>div{min-width:0;display:grid;gap:5px}
+.user-page #streamBitsPanel .bits-connection-state strong{font:800 14px/1.2 Montserrat,Arial,sans-serif;color:#fff}
+.user-page #streamBitsPanel .bits-connection-state span:not(.bits-status-light){font:500 11px/1.45 Montserrat,Arial,sans-serif;color:rgba(255,255,255,.62)}
+.user-page #streamBitsPanel .bits-connection-state.is-connected .bits-status-light{background:#35d07f;box-shadow:0 0 0 5px rgba(53,208,127,.12),0 0 16px rgba(53,208,127,.42)}
+.user-page #streamBitsPanel .bits-connection-state.is-warning .bits-status-light{background:#f0ad4e;box-shadow:0 0 0 5px rgba(240,173,78,.11)}
+.user-page #streamBitsPanel .bits-connection-state.is-error .bits-status-light{background:#ff003c;box-shadow:0 0 0 5px rgba(255,0,60,.11)}
+
+.user-page #streamBitsPanel .module-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.user-page #streamBitsPanel #bitsAddWrap[hidden],
+.user-page #streamBitsPanel #bitsForm[hidden],
+.user-page #streamBitsPanel #bitsOwner[hidden],
+.user-page #streamBitsPanel #bitsPermission[hidden]{display:none!important}
+
+.user-page #streamBitsPanel .bits-rules-toolbar{display:block}
+.user-page #streamBitsPanel .bits-add-wrap{justify-content:center;margin-top:0}
+.user-page #streamBitsPanel .bits-rules-box.has-rules .bits-rules-toolbar{display:grid;grid-template-columns:minmax(0,760px) auto;align-items:end;gap:28px}
+.user-page #streamBitsPanel .bits-rules-box.has-rules .bits-add-wrap{justify-content:flex-end;align-self:end;margin-bottom:22px}
+.user-page #streamBitsPanel .bits-rules-box.has-rules .bits-rules-head{margin-bottom:22px}
+
+.user-page #streamBitsPanel .bits-system-control{display:flex;align-items:center;justify-content:space-between;gap:24px;max-width:955px;margin:0 0 22px;padding:16px 0;border-top:1px solid rgba(255,255,255,.11);border-bottom:1px solid rgba(255,255,255,.11)}
+.user-page #streamBitsPanel .bits-system-control-copy{display:flex;align-items:center;gap:13px;min-width:0}
+.user-page #streamBitsPanel .bits-system-control-copy>div{display:grid;gap:5px;min-width:0}
+.user-page #streamBitsPanel .bits-system-control strong{color:#fff;font:800 12px/1.25 Montserrat,Arial,sans-serif;letter-spacing:.03em}
+.user-page #streamBitsPanel .bits-system-control p{max-width:650px;margin:0;color:rgba(255,255,255,.58);font:500 11px/1.45 Montserrat,Arial,sans-serif}
+.user-page #streamBitsPanel .bits-control-light{width:10px;height:10px;flex:0 0 10px;border-radius:50%;background:#35d07f;box-shadow:0 0 0 5px rgba(53,208,127,.10),0 0 13px rgba(53,208,127,.32)}
+.user-page #streamBitsPanel .bits-system-control.is-paused .bits-control-light{background:#f0ad4e;box-shadow:0 0 0 5px rgba(240,173,78,.10),0 0 13px rgba(240,173,78,.25)}
+.user-page #streamBitsPanel .bits-system-control.is-paused strong{color:#f3c06e}
+.user-page #streamBitsPanel .bits-system-control>button{box-sizing:border-box!important;min-height:var(--sl-control-height-small)!important;height:var(--sl-control-height-small)!important;flex:0 0 auto;padding:0 var(--sl-action-padding-x)!important;border-radius:var(--sl-control-radius)!important;font:800 var(--sl-action-font-size)/1 var(--sl-font-body)!important}
+
+.user-page #streamBitsPanel #bitsForm{margin-top:24px;padding-top:24px;border-top:1px solid rgba(255,255,255,.12)}
+.user-page #streamBitsPanel .bits-fields{display:grid;grid-template-columns:repeat(2,minmax(0,460px));justify-content:start;column-gap:35px;row-gap:19px;margin:0 0 19px;align-items:start}
+/* Regla local únicamente de estructura: respeta exactamente LABEL 9px CONTROL 10px AYUDA del Design System. */
+.user-page #streamBitsPanel .bits-field,
+.user-page #streamBitsPanel .bits-search-field{display:block!important;min-width:0;margin:0!important;font-size:11px!important;font-weight:800!important;letter-spacing:.06em!important;line-height:1.35!important}
+.user-page #streamBitsPanel .bits-field-label{display:block;min-height:15px;margin:0;padding:0;font:800 11px/1.35 Montserrat,Arial,sans-serif;letter-spacing:.06em;color:#fff}
+.user-page #streamBitsPanel .bits-field>input:not([type=checkbox]):not([type=radio]),
+.user-page #streamBitsPanel .bits-search-field>input,
+.user-page #streamBitsPanel .bits-field>.sl-select-enhanced{box-sizing:border-box!important;width:100%!important;margin-top:9px!important}
+.user-page #streamBitsPanel .bits-field>input:not([type=checkbox]):not([type=radio]),
+.user-page #streamBitsPanel .bits-search-field>input{height:48px!important;min-height:48px!important}
+.user-page #streamBitsPanel .bits-field>.sl-select-enhanced>button{height:48px!important;min-height:48px!important}
+.user-page #streamBitsPanel .bits-field small,
+.user-page #streamBitsPanel .bits-search-field small{display:block!important;box-sizing:border-box!important;width:min(100%,460px)!important;max-width:460px!important;margin:10px 0 0!important;color:rgba(255,255,255,.55)!important;font:500 11px/1.5 Montserrat,Arial,sans-serif!important;letter-spacing:0!important}
+.user-page #streamBitsPanel .bits-search-field{width:100%;max-width:460px}
+.user-page #streamBitsPanel .bits-alert-style-field{grid-column:1}
+.user-page #streamBitsPanel #bitsSearch{-webkit-appearance:none;appearance:none}
+.user-page #streamBitsPanel #bitsSearch::-webkit-search-cancel-button{display:none}
+.user-page #streamBitsPanel input[type=number]{-moz-appearance:textfield}
+.user-page #streamBitsPanel input[type=number]::-webkit-outer-spin-button,
+.user-page #streamBitsPanel input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+
+.user-page #streamBitsPanel .bits-results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-width:955px;max-height:245px;overflow:auto;margin-top:12px;padding-right:2px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.20) transparent}
+.user-page #streamBitsPanel .bits-results::-webkit-scrollbar{width:6px}
+.user-page #streamBitsPanel .bits-results::-webkit-scrollbar-track{background:transparent}
+.user-page #streamBitsPanel .bits-results::-webkit-scrollbar-thumb{border-radius:999px;background:rgba(255,255,255,.20)}
+.user-page #streamBitsPanel .bits-results::-webkit-scrollbar-thumb:hover{background:#ff003c}
+.user-page #streamBitsPanel .bits-option{position:relative;display:flex;align-items:center;gap:9px;min-height:64px;text-align:left;padding:8px;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:#111114;color:#fff;cursor:pointer}
+.user-page #streamBitsPanel .bits-option img{width:44px;height:52px;object-fit:contain}
+.user-page #streamBitsPanel .bits-option-copy{display:grid;gap:5px;min-width:0}
+.user-page #streamBitsPanel .bits-option-copy b{font:700 11px/1.3 Montserrat,Arial,sans-serif}
+.user-page #streamBitsPanel .bits-option-copy small{display:flex;align-items:center;gap:5px;color:#ff5379;font:800 9px/1.2 Montserrat,Arial,sans-serif;letter-spacing:.04em}
+.user-page #streamBitsPanel .bits-option-copy small i{display:grid;place-items:center;width:15px;height:15px;border:1px solid #ff003c;border-radius:50%;font-style:normal;font-size:12px;line-height:1;color:#ff003c}
+.user-page #streamBitsPanel .bits-option:hover,
+.user-page #streamBitsPanel .bits-option:focus-visible{border-color:#ff003c;outline:none}
+.user-page #streamBitsPanel .bits-option.is-assigned{opacity:.48;cursor:not-allowed;border-color:rgba(255,0,60,.34);filter:saturate(.55)}
+.user-page #streamBitsPanel .bits-option.is-assigned:after{content:attr(data-tooltip);position:absolute;z-index:20;left:8px;right:8px;bottom:calc(100% + 7px);padding:8px 10px;border:1px solid rgba(255,0,60,.55);border-radius:9px;background:#141414;color:#fff;font:700 10px/1.35 Montserrat,Arial,sans-serif;opacity:0;pointer-events:none;transform:translateY(4px);transition:.14s ease}
+.user-page #streamBitsPanel .bits-option.is-assigned:hover:after,
+.user-page #streamBitsPanel .bits-option.is-assigned:focus-visible:after{opacity:1;transform:translateY(0)}
+.user-page #streamBitsPanel .bits-selected{margin:12px 0 0;color:#ff003c;font:800 11px/1.4 Montserrat,Arial,sans-serif;letter-spacing:.06em}
+.user-page #streamBitsPanel .bits-form-notice{box-sizing:border-box;max-width:720px;margin:14px 0 0;padding:12px 14px;border:1px solid rgba(255,0,60,.45);border-radius:10px;background:rgba(255,0,60,.08);color:#fff;font:700 11px/1.5 Montserrat,Arial,sans-serif}
+.user-page #streamBitsPanel .bits-form-notice[hidden]{display:none!important}
+.user-page #streamBitsPanel .bits-form-actions{margin-top:20px}
+
+.user-page #streamBitsPanel .bits-rules{display:grid;gap:12px;margin-top:22px}
+.user-page #streamBitsPanel .bits-rule{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:24px;padding:18px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:#111114}
+.user-page #streamBitsPanel .bits-rule-copy{min-width:0}
+.user-page #streamBitsPanel .bits-rule strong{font:800 14px/1.35 Montserrat,Arial,sans-serif}
+.user-page #streamBitsPanel .bits-rule p{margin:7px 0 0;color:rgba(255,255,255,.65);font:500 11px/1.5 Montserrat,Arial,sans-serif}
+.user-page #streamBitsPanel .bits-rule-actions{justify-content:flex-end;align-items:center}
+.user-page #streamBitsPanel .bits-danger{border-color:rgba(255,0,60,.55)!important}
+.user-page #streamBitsPanel .bits-rules-note{margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,.12)}
+.user-page #streamBitsPanel .bits-rules-note p{max-width:700px;margin:0;color:rgba(255,255,255,.55);font:500 11px/1.5 Montserrat,Arial,sans-serif}
+
+.user-page #streamBitsPanel .bits-empty{box-sizing:border-box;max-width:720px;min-height:82px;padding:16px 18px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:#111114}
+.user-page #streamBitsPanel .bits-empty strong{font:800 12px/1.3 Montserrat,Arial,sans-serif;color:#fff}
+.user-page #streamBitsPanel .bits-empty p{margin:7px 0 0;color:rgba(255,255,255,.58);font:500 11px/1.5 Montserrat,Arial,sans-serif}
+
+.user-page #streamBitsPanel #bitsBonuses{display:grid;gap:10px}
+.user-page #streamBitsPanel .bits-bonus{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:20px;min-height:82px;padding:14px 16px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:#111114}
+.user-page #streamBitsPanel .bits-bonus-copy{min-width:0}
+.user-page #streamBitsPanel .bits-bonus-copy strong{font:800 13px/1.35 Montserrat,Arial,sans-serif;color:#fff}
+.user-page #streamBitsPanel .bits-bonus-copy p{margin:6px 0 0;color:rgba(255,255,255,.58);font:600 10px/1.4 Montserrat,Arial,sans-serif}
+.user-page #streamBitsPanel .bits-bonus-side{display:flex;align-items:center;justify-content:flex-end;gap:12px}
+.user-page #streamBitsPanel .bits-countdown{min-width:84px;padding:8px 10px;border:1px solid rgba(53,208,127,.25);border-radius:999px;background:rgba(53,208,127,.08);color:#6ae6a2;text-align:center;font:800 11px/1 Montserrat,Arial,sans-serif;letter-spacing:.04em}
+.user-page #streamBitsPanel .bits-countdown.is-paused{border-color:rgba(240,173,78,.35);background:rgba(240,173,78,.08);color:#f3c06e}
+
+.user-page #streamBitsPanel .bits-obs-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:2px}
+.user-page #streamBitsPanel .bits-obs-block{min-width:0;padding:20px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:#111114}
+.user-page #streamBitsPanel .bits-obs-kicker{display:block;margin:0 0 7px;color:#ff003c;font:800 11px/1.2 Montserrat,Arial,sans-serif;letter-spacing:.14em}
+.user-page #streamBitsPanel .bits-obs-block h4{margin:0;color:#fff;font:800 18px/1.1 Montserrat,Arial,sans-serif}
+.user-page #streamBitsPanel .bits-obs-block>p:not(.bits-obs-help){max-width:470px;margin:9px 0 18px;color:rgba(255,255,255,.66);font:500 12px/1.5 Montserrat,Arial,sans-serif}
+.user-page #streamBitsPanel .bits-obs-help{max-width:470px;margin:-8px 0 18px;color:rgba(255,255,255,.52);font:500 10px/1.5 Montserrat,Arial,sans-serif}
+.user-page #streamBitsPanel .bits-sound{display:flex!important;align-items:center;gap:10px;width:max-content;max-width:100%;margin:0 0 18px!important;font:700 11px/1.3 Montserrat,Arial,sans-serif;letter-spacing:.04em;cursor:pointer}
+.user-page #streamBitsPanel .bits-sound input{appearance:none!important;-webkit-appearance:none!important;width:18px!important;height:18px!important;min-height:18px!important;flex:0 0 18px;margin:0!important;border:1px solid rgba(255,255,255,.28)!important;border-radius:5px!important;background:#09090b!important;display:grid;place-items:center;cursor:pointer}
+.user-page #streamBitsPanel .bits-sound input:checked{border-color:#ff003c!important;background:#ff003c!important}
+.user-page #streamBitsPanel .bits-sound input:checked:after{content:'';width:8px;height:4px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translateY(-1px)}
+.user-page #streamBitsPanel .bits-sound input:focus-visible{outline:2px solid rgba(255,0,60,.35);outline-offset:2px}
+
+@media(max-width:1000px){
+ .user-page #streamBitsPanel .bits-rules-box.has-rules .bits-rules-toolbar{grid-template-columns:1fr}
+ .user-page #streamBitsPanel .bits-rules-box.has-rules .bits-add-wrap{justify-content:flex-start;margin:-6px 0 0}
+ .user-page #streamBitsPanel .bits-obs-grid{grid-template-columns:1fr}
+}
+@media(max-width:900px){
+ .user-page #streamBitsPanel .bits-fields{grid-template-columns:minmax(0,460px)}
+ .user-page #streamBitsPanel .bits-alert-style-field{grid-column:auto}
+ .user-page #streamBitsPanel .bits-results{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .user-page #streamBitsPanel .bits-rule{grid-template-columns:1fr;align-items:start}
+ .user-page #streamBitsPanel .bits-rule-actions{justify-content:flex-start}
+ .user-page #streamBitsPanel .bits-bonus{grid-template-columns:1fr}
+ .user-page #streamBitsPanel .bits-bonus-side{justify-content:flex-start}
+ .user-page #streamBitsPanel .bits-system-control{align-items:flex-start;flex-direction:column}
+}
+@media(max-width:560px){
+ .user-page #streamBitsPanel .bits-results{grid-template-columns:1fr}
+ .user-page #streamBitsPanel .module-actions{align-items:stretch;flex-direction:column}
+ .user-page #streamBitsPanel .module-actions button{width:100%}
+ .user-page #streamBitsPanel .bits-connection-state{align-items:flex-start}
+ .user-page #streamBitsPanel .bits-bonus-side{align-items:stretch;flex-direction:column}
+ .user-page #streamBitsPanel .bits-countdown{width:100%}
+ .user-page #streamBitsPanel .bits-obs-block{padding:16px}
+ .user-page #streamBitsPanel .bits-system-control>button{width:100%}
+}
