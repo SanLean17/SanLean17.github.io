@@ -24,7 +24,7 @@
       if(!ctx.workspace){state.textContent='Abrí MI PANEL una vez para preparar tu espacio de stream.';return}
       if(!ctx.owner){state.textContent='Solo el propietario puede autorizar el canal de este stream.';return}
       try{const result=await request('status',ctx,platform);if(version!==revision||!card.isConnected)return;
-        const name=platform.toUpperCase();state.textContent=result.connected?name+' CONECTADO'+(result.name?' · '+result.name:'')+(platform==='twitch'?' · BITS ACTIVOS':''):result.configured?name+' SIN VINCULAR':'Pendiente de configurar la aplicación '+name+' de SanLean.';
+        const name=platform.toUpperCase();state.textContent=result.connected?name+' CONECTADO'+(result.name?' · '+result.name:'')+(platform==='twitch'?' · BITS ACTIVOS':'')+(result.chatConnected?' · CHAT ACTIVO':' · CHAT PENDIENTE'):result.configured?name+' SIN VINCULAR':'Pendiente de configurar la aplicación '+name+' de SanLean.';
         button.textContent=result.reauthorize?'ACTUALIZAR PERMISOS':result.connected?name+' VINCULADO':'CONECTAR '+name;button.disabled=(result.connected&&!result.reauthorize)||!result.configured;
         button.onclick=async()=>{button.disabled=true;try{const current=await context();if(!current?.owner||current.workspace.id!==ctx.workspace.id)throw new Error('Cambió el espacio de stream. Actualizá la conexión.');const data=await request('connect',current,platform);location.assign(data.url)}catch(e){state.textContent=e.message;button.disabled=false}};
       }catch(e){state.textContent=e.message}
