@@ -2,7 +2,25 @@
  const params=new URLSearchParams(location.search),token=params.get('token'),demo=params.get('demo')==='1',mode=params.get('mode')==='active'?'active':'alert',demoStyle=['harmful','beneficial','neutral'].includes(params.get('style'))?params.get('style'):'neutral',alertFilter=['harmful','beneficial'].includes(params.get('filter'))?params.get('filter'):'',stage=document.getElementById('bitsAlertStage'),dock=document.getElementById('bitsActiveDock'),queue=[];
  let showing=false,cursor=null,sound=true,active=[],offset=0,rotateTimer=null,audioCtx=null,timersPaused=false,resolvedAt=0,resolvedSounds={harmful:'',beneficial:''};
  const recordedAudioFiles={
-  harmful:Array.from({length:11},(_,i)=>`../assets/audio/bits-harmful-v5.part${String(i).padStart(2,'0')}.b64?v=20260930-2`),
+  harmful:[
+   '../assets/audio/bits-harmful-v5.part00.b64?v=20260930-4',
+   '../assets/audio/bits-harmful-v5.part01a.b64?v=20260930-4',
+   '../assets/audio/bits-harmful-v5.part01b.b64?v=20260930-4',
+   '../assets/audio/bits-harmful-v5.part01c.b64?v=20260930-4',
+   '../assets/audio/bits-harmful-v5.part02.b64?v=20260930-4',
+   '../assets/audio/bits-harmful-v5.part03a.b64?v=20260930-4',
+   '../assets/audio/bits-harmful-v5.part03b.b64?v=20260930-4',
+   '../assets/audio/bits-harmful-v5.part03c.b64?v=20260930-4',
+   '../assets/audio/bits-harmful-v5.part04.b64?v=20260930-4',
+   '../assets/audio/bits-harmful-v5.part05.b64?v=20260930-4',
+   '../assets/audio/bits-harmful-v5.part06.b64?v=20260930-4',
+   '../assets/audio/bits-harmful-v5.part07.b64?v=20260930-4',
+   '../assets/audio/bits-harmful-v5.part08a.b64?v=20260930-4',
+   '../assets/audio/bits-harmful-v5.part08b.b64?v=20260930-4',
+   '../assets/audio/bits-harmful-v5.part08c.b64?v=20260930-4',
+   '../assets/audio/bits-harmful-v5.part09.b64?v=20260930-4',
+   '../assets/audio/bits-harmful-v5.part10.b64?v=20260930-4'
+  ],
   beneficial:Array.from({length:7},(_,i)=>`../assets/audio/bits-beneficial-v4.part${String(i).padStart(2,'0')}.b64?v=20260929-7`)
  },recordedAudioUrls=new Map(),playingAudio=new Set();
  document.body.dataset.mode=mode;
