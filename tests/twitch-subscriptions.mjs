@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {findSubscription} from '../supabase/functions/stream-bits/subscriptions.mjs';
+const callback='https://example.test/webhook',user='42';
+const make=(type='channel.cheer',id='42')=>({id:'existing',type,condition:{broadcaster_user_id:id,user_id:id},transport:{method:'webhook',callback}});
+let calls=0;
+const fetcher=async url=>{const q=new URL(url).searchParams;assert.equal(q.get('user_id'),user);assert.equal(q.has('type'),false);assert.equal(q.has('status'),false);calls++;return Response.json(calls===1?{data:[make('channel.chat.message'),make('channel.cheer','other')],pagination:{cursor:'second'}}:{data:[make()],pagination:{}})};
+assert.equal((await findSubscription({},user,'channel.cheer',callback,fetcher)).id,'existing');assert.equal(calls,2);
+assert.equal((await findSubscription({},user,'channel.chat.message',callback,async()=>Response.json({data:[make('channel.chat.message')]}))).id,'existing');
+assert.equal(await findSubscription({},user,'channel.cheer','wrong',async()=>Response.json({data:[make()]})),null);
+await assert.rejects(()=>findSubscription({},user,'channel.cheer',callback,async()=>new Response('',{status:400})),/400/);
+await assert.rejects(()=>findSubscription({},user,'channel.cheer',callback,async()=>Response.json({data:[],pagination:{cursor:'repeat'}})),/repeated/);
+console.log('PASS: one allowed Twitch filter; existing cheer and chat subscriptions recovered; pagination; channel/type/callback isolation; HTTP errors and cursor loops');
