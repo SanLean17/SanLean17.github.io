@@ -36,3 +36,37 @@
 .sl-killer-card.selected.donated .sl-killer-card-donor{font-size:var(--sl-donor-font,25px)}
 @media(max-width:760px){.user-page .private-roulette-stage .sl-killer-web{--winner-width:161px;--winner-height:229px}}
 @media(prefers-reduced-motion:reduce){.sl-killer-web:has(.sl-killer-card.selected)::before{animation:none;box-shadow:0 0 20px 8px #ff003ce6,0 0 55px 12px #ff003c}}
+
+
+/* OBS broadcast readability: preserve detail after Twitch downsizes the 1080p player. */
+.obs-overlay-page .obs-stage .sl-roulette-frame img{
+  padding:5.2%;
+  filter:contrast(1.08) brightness(1.04) saturate(1.03) drop-shadow(0 3px 5px #000);
+}
+.obs-overlay-page .obs-stage .sl-roulette-name{
+  margin-top:4px;
+  font-size:clamp(20px,2.72cqw,44px);
+  line-height:1.02;
+  text-shadow:0 3px 5px #000,0 0 10px #000,0 0 2px rgba(255,255,255,.22);
+}
+.obs-overlay-page .obs-stage .sl-roulette-name.is-long-name{
+  font-size:clamp(18px,2.28cqw,37px);
+}
+.obs-overlay-page .obs-stage .sl-killer-card-portrait{
+  left:4px;
+  top:3px;
+  width:calc(100% - 8px);
+  height:calc(100% - 6px);
+  filter:brightness(1.18) contrast(1.08) saturate(1.035);
+}
+.obs-overlay-page .obs-stage .sl-killer-card-name{
+  left:4px;
+  right:4px;
+  bottom:8px;
+  min-height:44px;
+  padding:4px 5px;
+  font-size:18px;
+  line-height:1.02;
+  text-shadow:0 3px 6px #000,0 0 10px #000,0 0 2px rgba(255,255,255,.18);
+}
+.obs-overlay-page .obs-stage .sl-killer-card.selected .sl-killer-card-name{font-size:20px}
