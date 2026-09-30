@@ -20,13 +20,14 @@
   };
   function render(target,state,{interactive=false,onChoose}={}){
     const cards=state?.cards||[];
-    const signature=JSON.stringify([interactive,state?.roundId,state?.special,state?.winner,state?.state,state?.secondsLeft,state?.totalVotes,cards.map(c=>[c.letter,c.votes,c.revealed,c.resultId,c.label,c.image])]);
+    const signature=JSON.stringify([interactive,state?.roundId,state?.special,state?.winner,state?.state,state?.endsAt,state?.totalVotes,cards.map(c=>[c.letter,c.votes,c.revealed,c.resultId,c.label,c.image])]);
     if(target.dataset.cardsSignature===signature)return;
     target.dataset.cardsSignature=signature;
     const previous=new Set([...target.querySelectorAll('.sl-diamond.is-revealed')].map(x=>x.dataset.card));
     const base=state?.special?'../rombo-caotico.png':'../rombo.png';
     const showVoting=!interactive&&state?.mode==='chat'&&['active','awaiting-reveal','tie','revealed'].includes(state?.state);
-    const seconds=Math.max(0,Number(state?.secondsLeft)||0);
+    const deadline=Number(state?.endsAt)||0;
+    const seconds=deadline&&state?.state==='active'?Math.max(0,Math.ceil((deadline-Date.now())/1000)):Math.max(0,Number(state?.secondsLeft)||0);
     const clock=`00:${String(seconds).padStart(2,'0')}`;
     const hud=showVoting?`<div class="sl-cards-hud"><strong>${escape(stateLabel(state))}</strong><span class="sl-cards-clock">${state.state==='active'?clock:'00:00'}</span><span>${Number(state.totalVotes)||0} VOTOS</span></div>`:'';
     target.innerHTML=`<div class="sl-diamonds${state?.special?' is-chaotic':''}${interactive?' is-control-preview':''}">${hud}<div class="sl-diamond-layout">${cards.slice(0,5).map((c,i)=>{
@@ -39,6 +40,8 @@
         ${showVoting&&!revealed?`<span class="sl-diamond-votes"><b>${votes}</b><small>${votes===1?'VOTO':'VOTOS'}</small></span>`:''}
       </${interactive?'button':'article'}>`;
     }).join('')}</div></div>`;
+    if(target._slCardsClockTimer){clearInterval(target._slCardsClockTimer);target._slCardsClockTimer=null}
+    if(showVoting&&state?.state==='active'&&deadline){const updateClock=()=>{const el=target.querySelector('.sl-cards-clock');if(!el)return;const left=Math.max(0,Math.ceil((deadline-Date.now())/1000));el.textContent=`00:${String(left).padStart(2,'0')}`;if(left<=0&&target._slCardsClockTimer){clearInterval(target._slCardsClockTimer);target._slCardsClockTimer=null}};updateClock();target._slCardsClockTimer=setInterval(updateClock,200)}
     if(interactive)target.querySelectorAll('button:not(:disabled)').forEach(b=>b.addEventListener('click',()=>onChoose?.(b.dataset.card)));
   }
   window.SanLeanCardsView={render};
