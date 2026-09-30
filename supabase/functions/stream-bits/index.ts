@@ -8,121 +8,23 @@ const CHAT_SCOPES=['bits:read','user:read:chat','user:bot','channel:bot'];
 const callback=url+'/functions/v1/stream-bits/callback',webhook=url+'/functions/v1/stream-bits/webhook';
 const json=(body:unknown,status=200)=>Response.json(body,{status,headers:cors});
 const checked=async(q:any)=>{const {data,error}=await q;if(error)throw error;return data};
-async function owner(req:Request,workspaceId:string){
- const token=(req.headers.get('authorization')||'').replace(/^Bearer /,'');
- const {data,error}=await db.auth.getUser(token);if(error||!data.user)throw new Error('Unauthorized');
- const row=await checked(db.from('streamer_workspaces').select('id').eq('id',workspaceId).eq('owner_user_id',data.user.id).maybeSingle());
- if(!row)throw new Error('Forbidden');return data.user.id;
-}
-async function twitchToken(values:Record<string,string>){
- const r=await fetch('https://id.twitch.tv/oauth2/token',{method:'POST',body:new URLSearchParams({client_id:clientId,client_secret:clientSecret,...values}),signal:AbortSignal.timeout(12000)});
- if(!r.ok)throw new Error('Twitch token exchange failed');return r.json();
-}
-Deno.serve(async(req:Request)=>{
- if(req.method==='OPTIONS')return new Response('ok',{headers:cors});
- try{
- const u=new URL(req.url),route=u.pathname.split('/').at(-1);
+async function owner(req:Request,workspaceId:string){const token=(req.headers.get('authorization')||'').replace(/^Bearer /,'');const {data,error}=await db.auth.getUser(token);if(error||!data.user)throw new Error('Unauthorized');const row=await checked(db.from('streamer_workspaces').select('id').eq('id',workspaceId).eq('owner_user_id',data.user.id).maybeSingle());if(!row)throw new Error('Forbidden');return data.user.id}
+async function twitchToken(values:Record<string,string>){const r=await fetch('https://id.twitch.tv/oauth2/token',{method:'POST',body:new URLSearchParams({client_id:clientId,client_secret:clientSecret,...values}),signal:AbortSignal.timeout(12000)});if(!r.ok)throw new Error('Twitch token exchange failed');return r.json()}
+async function activeBonuses(workspaceId:string,timersPaused:boolean){const rows=await checked(db.from('stream_bits_bonuses').select('event_id,donor,expires_at,created_at,paused_remaining_seconds').eq('workspace_id',workspaceId).order('created_at',{ascending:false}).limit(200));const active=(rows||[]).filter((row:any)=>timersPaused?(row.expires_at===null||row.paused_remaining_seconds!==null):(!row.expires_at||Date.parse(row.expires_at)>Date.now()));const eventIds=[...new Set(active.map((row:any)=>row.event_id).filter(Boolean))];if(!eventIds.length)return [];const events=await checked(db.from('stream_bits_events').select('id,donor,bits,item_name,quantity,created_at').eq('workspace_id',workspaceId).in('id',eventIds));const meta=new Map<string,{expires_at:string|null,paused_remaining_seconds:number|null}>();for(const row of active){const key=String(row.event_id);if(!meta.has(key))meta.set(key,{expires_at:row.expires_at||null,paused_remaining_seconds:row.paused_remaining_seconds??null})}return (events||[]).map((event:any)=>({...event,...(meta.get(String(event.id))||{expires_at:null,paused_remaining_seconds:null})})).sort((a:any,b:any)=>Date.parse(b.created_at)-Date.parse(a.created_at))}
+Deno.serve(async(req:Request)=>{if(req.method==='OPTIONS')return new Response('ok',{headers:cors});try{const u=new URL(req.url),route=u.pathname.split('/').at(-1);
  if(route==='webhook'&&req.method==='POST'){
-  if(!clientSecret)return json({error:'not_configured'},503);
-  const raw=await req.text();if(raw.length>100000)return json({error:'payload_too_large'},413);
-  const secret=await webhookSecret(clientSecret);
-  if(!await verifyMessage(req.headers,raw,secret))return json({error:'invalid_signature'},403);
-  const payload=JSON.parse(raw),subscription=payload.subscription;
-  if(!['channel.cheer','channel.chat.message'].includes(subscription?.type))return json({error:'unsupported_event'},400);
-  const type=req.headers.get('Twitch-Eventsub-Message-Type');
-  const broadcaster=subscription.condition?.broadcaster_user_id;
-  if(subscription.type==='channel.chat.message'){
-   if(subscription.condition?.user_id!==broadcaster)return json({error:'invalid_reader'},403);
-   if(type==='webhook_callback_verification'){
-    const rows=await checked(db.from('stream_chat_subscriptions').update({subscription_id:subscription.id,connected:true}).eq('platform','twitch').eq('broadcaster_id',broadcaster).select('workspace_id'));
-    return rows?.length?new Response(payload.challenge,{headers:{'Content-Type':'text/plain'}}):json({error:'unknown_channel'},403);
-   }
-   if(type==='revocation'){await checked(db.from('stream_chat_subscriptions').update({connected:false}).eq('platform','twitch').eq('subscription_id',subscription.id));return new Response(null,{status:204})}
-   const e=payload.event;
-   if(type!=='notification'||e?.broadcaster_user_id!==broadcaster||!e.message_id||!e.chatter_user_id||typeof e.message?.text!=='string')return json({error:'invalid_chat'},400);
-   const channel=await checked(db.from('stream_chat_subscriptions').select('workspace_id').eq('platform','twitch').eq('broadcaster_id',broadcaster).eq('subscription_id',subscription.id).eq('connected',true).maybeSingle());
-   if(!channel)return json({error:'unknown_subscription'},403);
-   await checked(db.rpc('stream_chat_ingest',{p_workspace:channel.workspace_id,p_platform:'twitch',p_message_id:e.message_id,p_user_id:e.chatter_user_id,p_username:String(e.chatter_user_name||e.chatter_user_login).slice(0,100),p_message:e.message.text.slice(0,4000),p_sent_at:req.headers.get('Twitch-Eventsub-Message-Timestamp')}));
-   return new Response(null,{status:204});
-  }
-  if(type==='webhook_callback_verification'){
-   const rows=await checked(db.from('stream_bits_channels').update({subscription_id:subscription.id,connected:true}).eq('broadcaster_id',broadcaster).select('workspace_id'));
-   if(!rows?.length)return json({error:'unknown_channel'},403);
-   return new Response(payload.challenge,{headers:{'Content-Type':'text/plain'}});
-  }
-  if(type==='revocation'){
-   const rows=await checked(db.from('stream_bits_channels').update({connected:false}).eq('subscription_id',subscription.id).select('workspace_id'));
-   for(const row of rows||[])await checked(db.from('stream_platform_connections').update({connected:false}).eq('workspace_id',row.workspace_id).eq('platform','twitch'));
-   return new Response(null,{status:204});
-  }
-  if(type!=='notification'||payload.event?.broadcaster_user_id!==broadcaster)return json({error:'invalid_event'},400);
-  const e=payload.event;if(!Number.isInteger(e.bits)||e.bits<1)return json({error:'invalid_bits'},400);
-  const channel=await checked(db.from('stream_bits_channels').select('subscription_id').eq('broadcaster_id',broadcaster).eq('connected',true).maybeSingle());
-  if(channel?.subscription_id!==subscription.id)return json({error:'unknown_subscription'},403);
-  await checked(db.rpc('stream_bits_ingest',{p_message_id:req.headers.get('Twitch-Eventsub-Message-Id'),p_broadcaster:broadcaster,p_bits:e.bits,p_donor:e.is_anonymous?'ANÓNIMO':String(e.user_name||e.user_login||'ANÓNIMO').slice(0,100)}));
-  return new Response(null,{status:204});
+  if(!clientSecret)return json({error:'not_configured'},503);const raw=await req.text();if(raw.length>100000)return json({error:'payload_too_large'},413);const secret=await webhookSecret(clientSecret);if(!await verifyMessage(req.headers,raw,secret))return json({error:'invalid_signature'},403);const payload=JSON.parse(raw),subscription=payload.subscription;if(!['channel.cheer','channel.chat.message'].includes(subscription?.type))return json({error:'unsupported_event'},400);const type=req.headers.get('Twitch-Eventsub-Message-Type'),broadcaster=subscription.condition?.broadcaster_user_id;
+  if(subscription.type==='channel.chat.message'){if(subscription.condition?.user_id!==broadcaster)return json({error:'invalid_reader'},403);if(type==='webhook_callback_verification'){const rows=await checked(db.from('stream_chat_subscriptions').update({subscription_id:subscription.id,connected:true}).eq('platform','twitch').eq('broadcaster_id',broadcaster).select('workspace_id'));return rows?.length?new Response(payload.challenge,{headers:{'Content-Type':'text/plain'}}):json({error:'unknown_channel'},403)}if(type==='revocation'){await checked(db.from('stream_chat_subscriptions').update({connected:false}).eq('platform','twitch').eq('subscription_id',subscription.id));return new Response(null,{status:204})}const e=payload.event;if(type!=='notification'||e?.broadcaster_user_id!==broadcaster||!e.message_id||!e.chatter_user_id||typeof e.message?.text!=='string')return json({error:'invalid_chat'},400);const channel=await checked(db.from('stream_chat_subscriptions').select('workspace_id').eq('platform','twitch').eq('broadcaster_id',broadcaster).eq('subscription_id',subscription.id).eq('connected',true).maybeSingle());if(!channel)return json({error:'unknown_subscription'},403);await checked(db.rpc('stream_chat_ingest',{p_workspace:channel.workspace_id,p_platform:'twitch',p_message_id:e.message_id,p_user_id:e.chatter_user_id,p_username:String(e.chatter_user_name||e.chatter_user_login).slice(0,100),p_message:e.message.text.slice(0,4000),p_sent_at:req.headers.get('Twitch-Eventsub-Message-Timestamp')}));return new Response(null,{status:204})}
+  if(type==='webhook_callback_verification'){const rows=await checked(db.from('stream_bits_channels').update({subscription_id:subscription.id,connected:true}).eq('broadcaster_id',broadcaster).select('workspace_id'));if(!rows?.length)return json({error:'unknown_channel'},403);return new Response(payload.challenge,{headers:{'Content-Type':'text/plain'}})}
+  if(type==='revocation'){const rows=await checked(db.from('stream_bits_channels').update({connected:false}).eq('subscription_id',subscription.id).select('workspace_id'));for(const row of rows||[])await checked(db.from('stream_platform_connections').update({connected:false}).eq('workspace_id',row.workspace_id).eq('platform','twitch'));return new Response(null,{status:204})}
+  if(type!=='notification'||payload.event?.broadcaster_user_id!==broadcaster)return json({error:'invalid_event'},400);const e=payload.event;if(!Number.isInteger(e.bits)||e.bits<1)return json({error:'invalid_bits'},400);const channel=await checked(db.from('stream_bits_channels').select('subscription_id').eq('broadcaster_id',broadcaster).eq('connected',true).maybeSingle());if(channel?.subscription_id!==subscription.id)return json({error:'unknown_subscription'},403);await checked(db.rpc('stream_bits_ingest',{p_message_id:req.headers.get('Twitch-Eventsub-Message-Id'),p_broadcaster:broadcaster,p_bits:e.bits,p_donor:e.is_anonymous?'ANÓNIMO':String(e.user_name||e.user_login||'ANÓNIMO').slice(0,100)}));return new Response(null,{status:204})
  }
- if(route==='callback'&&req.method==='GET'){
-  const state=u.searchParams.get('state')||'';
-  if(!/^[a-f0-9-]{36}$/.test(state))return json({error:'invalid_state'},400);
-  const rows=await checked(db.from('stream_bits_oauth').delete().eq('state',state).gt('expires_at',new Date().toISOString()).select('*'));
-  const flow=rows?.[0];if(!flow)return json({error:'expired_state'},400);
-  const workspace=await checked(db.from('streamer_workspaces').select('id').eq('id',flow.workspace_id).eq('owner_user_id',flow.user_id).maybeSingle());
-  if(!workspace)return json({error:'forbidden'},403);
-  if(u.searchParams.has('error'))return Response.redirect('https://sanlean.com.ar/Usuario/index.html#platforms',303);
-  const token=await twitchToken({grant_type:'authorization_code',code:u.searchParams.get('code')||'',redirect_uri:callback});
-  if(!CHAT_SCOPES.every(scope=>token.scope?.includes(scope)))return json({error:'missing_permissions'},403);
-  const users=await fetch('https://api.twitch.tv/helix/users',{headers:{'Client-Id':clientId,Authorization:'Bearer '+token.access_token},signal:AbortSignal.timeout(12000)});
-  if(!users.ok)throw new Error('Twitch user lookup failed');const user=(await users.json()).data?.[0];if(!user)throw new Error('No Twitch user');
-  const existing=await checked(db.from('stream_bits_channels').select('broadcaster_id').eq('workspace_id',flow.workspace_id).maybeSingle());
-  if(existing&&existing.broadcaster_id!==user.id)return json({error:'different_channel_connected'},409);
-  await checked(db.from('stream_bits_channels').upsert({workspace_id:flow.workspace_id,broadcaster_id:user.id,connected:false}));
-  const app=await twitchToken({grant_type:'client_credentials'}),headers={'Client-Id':clientId,Authorization:'Bearer '+app.access_token,'Content-Type':'application/json'};
-  const response=await fetch('https://api.twitch.tv/helix/eventsub/subscriptions',{method:'POST',headers,body:JSON.stringify({type:'channel.cheer',version:'1',condition:{broadcaster_user_id:user.id},transport:{method:'webhook',callback:webhook,secret:await webhookSecret(clientSecret)}}),signal:AbortSignal.timeout(12000)});
-  let subscription;
-  if(response.status===409){
-   const list=await fetch('https://api.twitch.tv/helix/eventsub/subscriptions?type=channel.cheer&user_id='+user.id,{headers,signal:AbortSignal.timeout(12000)});
-   if(!list.ok)throw new Error('Twitch subscription lookup failed');
-   subscription=(await list.json()).data?.find((s:any)=>s.condition?.broadcaster_user_id===user.id&&s.transport?.callback===webhook);
-  }else{if(!response.ok)throw new Error('Twitch subscription failed');subscription=(await response.json()).data?.[0]}
-  if(!subscription)throw new Error('Twitch subscription not found');
-  // The verification callback may already have marked this channel connected.
-  await checked(db.from('stream_bits_channels').update({subscription_id:subscription.id,...(subscription.status==='enabled'?{connected:true}:{})}).eq('workspace_id',flow.workspace_id));
-  await checked(db.from('stream_chat_subscriptions').upsert({workspace_id:flow.workspace_id,platform:'twitch',broadcaster_id:user.id},{onConflict:'workspace_id,platform'}));
-  const chatResponse=await fetch('https://api.twitch.tv/helix/eventsub/subscriptions',{method:'POST',headers,body:JSON.stringify({type:'channel.chat.message',version:'1',condition:{broadcaster_user_id:user.id,user_id:user.id},transport:{method:'webhook',callback:webhook,secret:await webhookSecret(clientSecret)}}),signal:AbortSignal.timeout(12000)});
-  let chatSubscription;
-  if(chatResponse.status===409){const list=await fetch('https://api.twitch.tv/helix/eventsub/subscriptions?type=channel.chat.message&user_id='+user.id,{headers,signal:AbortSignal.timeout(12000)});if(!list.ok)throw new Error('Chat subscription lookup failed');chatSubscription=(await list.json()).data?.find((s:any)=>s.condition?.broadcaster_user_id===user.id&&s.condition?.user_id===user.id&&s.transport?.callback===webhook)}else{if(!chatResponse.ok)throw new Error('Chat subscription failed');chatSubscription=(await chatResponse.json()).data?.[0]}
-  if(!chatSubscription)throw new Error('Chat subscription missing');
-  await checked(db.from('stream_chat_subscriptions').update({subscription_id:chatSubscription.id,...(chatSubscription.status==='enabled'?{connected:true}:{})}).eq('workspace_id',flow.workspace_id).eq('platform','twitch'));
-  await checked(db.from('stream_platform_connections').upsert({workspace_id:flow.workspace_id,platform:'twitch',platform_user_id:user.id,username:user.login,display_name:user.display_name,scopes:CHAT_SCOPES,connected:true},{onConflict:'workspace_id,platform'}));
-  return Response.redirect('https://sanlean.com.ar/Usuario/index.html#platforms',303);
- }
- if(route==='alerts'&&req.method==='GET'){
-  const token=u.searchParams.get('token')||'';if(!/^[a-f0-9-]{36}$/.test(token))return json({error:'invalid_token'},403);
-  const settings=await checked(db.from('stream_bits_settings').select('workspace_id,sound_enabled').eq('alert_token',token).maybeSingle());
-  if(!settings)return json({error:'invalid_token'},403);
-  const after=u.searchParams.get('after');
-  if(after!==null&&!/^\d{1,18}$/.test(after))return json({error:'invalid_cursor'},400);
-  const latest=await checked(db.from('stream_bits_events').select('id').eq('workspace_id',settings.workspace_id).order('id',{ascending:false}).limit(1));
-  if(after===null)return json({cursor:String(latest?.[0]?.id||0),events:[],sound:settings.sound_enabled});
-  const events=await checked(db.from('stream_bits_events').select('id,donor,bits,item_name,image,kind,quantity,created_at').eq('workspace_id',settings.workspace_id).gt('id',after).gt('created_at',new Date(Date.now()-300000).toISOString()).order('id').limit(50));
-  return json({events,cursor:String(events?.at(-1)?.id||latest?.[0]?.id||after),sound:settings.sound_enabled});
- }
- if(req.method!=='POST')return json({error:'not_found'},404);
- const body=await req.json(),workspaceId=body.workspaceId;
- if(typeof workspaceId!=='string'||!workspaceId)return json({error:'missing_workspace'},400);
- const userId=await owner(req,workspaceId);
- if(route==='status'){
-  const channel=await checked(db.from('stream_bits_channels').select('connected').eq('workspace_id',workspaceId).maybeSingle());
-  const chat=await checked(db.from('stream_chat_subscriptions').select('connected').eq('workspace_id',workspaceId).eq('platform','twitch').maybeSingle());
-  return json({configured:!!(clientId&&clientSecret),connected:!!channel?.connected,chatConnected:!!chat?.connected,reauthorize:!!channel?.connected&&!chat?.connected});
- }
- if(route==='connect'){
-  if(!clientId||!clientSecret)return json({error:'Primero debe configurarse la aplicación de Twitch de SanLean.'},503);
-  await checked(db.from('stream_bits_oauth').delete().eq('workspace_id',workspaceId));
-  const flow=await checked(db.from('stream_bits_oauth').insert({workspace_id:workspaceId,user_id:userId}).select('state').single());
-  return json({url:'https://id.twitch.tv/oauth2/authorize?'+new URLSearchParams({client_id:clientId,redirect_uri:callback,response_type:'code',scope:CHAT_SCOPES.join(' '),state:flow.state,force_verify:'true'})});
- }
- return json({error:'not_found'},404);
- }catch(e){const msg=String((e as Error).message);return json({error:msg==='Unauthorized'?'Sesión vencida. Volvé a ingresar.':msg==='Forbidden'?'Solo el propietario puede configurar bits.':'No se pudo completar la operación. Reintentá.'},msg==='Unauthorized'?401:msg==='Forbidden'?403:500)}
-});
+ if(route==='callback'&&req.method==='GET'){const state=u.searchParams.get('state')||'';if(!/^[a-f0-9-]{36}$/.test(state))return json({error:'invalid_state'},400);const rows=await checked(db.from('stream_bits_oauth').delete().eq('state',state).gt('expires_at',new Date().toISOString()).select('*'));const flow=rows?.[0];if(!flow)return json({error:'expired_state'},400);const workspace=await checked(db.from('streamer_workspaces').select('id').eq('id',flow.workspace_id).eq('owner_user_id',flow.user_id).maybeSingle());if(!workspace)return json({error:'forbidden'},403);if(u.searchParams.has('error'))return Response.redirect('https://sanlean.com.ar/Usuario/index.html#platforms',303);const token=await twitchToken({grant_type:'authorization_code',code:u.searchParams.get('code')||'',redirect_uri:callback});if(!CHAT_SCOPES.every(scope=>token.scope?.includes(scope)))return json({error:'missing_permissions'},403);const users=await fetch('https://api.twitch.tv/helix/users',{headers:{'Client-Id':clientId,Authorization:'Bearer '+token.access_token},signal:AbortSignal.timeout(12000)});if(!users.ok)throw new Error('Twitch user lookup failed');const user=(await users.json()).data?.[0];if(!user)throw new Error('No Twitch user');const existing=await checked(db.from('stream_bits_channels').select('broadcaster_id').eq('workspace_id',flow.workspace_id).maybeSingle());if(existing&&existing.broadcaster_id!==user.id)return json({error:'different_channel_connected'},409);await checked(db.from('stream_bits_channels').upsert({workspace_id:flow.workspace_id,broadcaster_id:user.id,connected:false}));const app=await twitchToken({grant_type:'client_credentials'}),headers={'Client-Id':clientId,Authorization:'Bearer '+app.access_token,'Content-Type':'application/json'};const response=await fetch('https://api.twitch.tv/helix/eventsub/subscriptions',{method:'POST',headers,body:JSON.stringify({type:'channel.cheer',version:'1',condition:{broadcaster_user_id:user.id},transport:{method:'webhook',callback:webhook,secret:await webhookSecret(clientSecret)}}),signal:AbortSignal.timeout(12000)});let subscription;if(response.status===409){const list=await fetch('https://api.twitch.tv/helix/eventsub/subscriptions?type=channel.cheer&user_id='+user.id,{headers,signal:AbortSignal.timeout(12000)});if(!list.ok)throw new Error('Twitch subscription lookup failed');subscription=(await list.json()).data?.find((s:any)=>s.condition?.broadcaster_user_id===user.id&&s.transport?.callback===webhook)}else{if(!response.ok)throw new Error('Twitch subscription failed');subscription=(await response.json()).data?.[0]}if(!subscription)throw new Error('Twitch subscription not found');await checked(db.from('stream_bits_channels').update({subscription_id:subscription.id,...(subscription.status==='enabled'?{connected:true}:{})}).eq('workspace_id',flow.workspace_id));await checked(db.from('stream_chat_subscriptions').upsert({workspace_id:flow.workspace_id,platform:'twitch',broadcaster_id:user.id},{onConflict:'workspace_id,platform'}));const chatResponse=await fetch('https://api.twitch.tv/helix/eventsub/subscriptions',{method:'POST',headers,body:JSON.stringify({type:'channel.chat.message',version:'1',condition:{broadcaster_user_id:user.id,user_id:user.id},transport:{method:'webhook',callback:webhook,secret:await webhookSecret(clientSecret)}}),signal:AbortSignal.timeout(12000)});let chatSubscription;if(chatResponse.status===409){const list=await fetch('https://api.twitch.tv/helix/eventsub/subscriptions?type=channel.chat.message&user_id='+user.id,{headers,signal:AbortSignal.timeout(12000)});if(!list.ok)throw new Error('Chat subscription lookup failed');chatSubscription=(await list.json()).data?.find((s:any)=>s.condition?.broadcaster_user_id===user.id&&s.condition?.user_id===user.id&&s.transport?.callback===webhook)}else{if(!chatResponse.ok)throw new Error('Chat subscription failed');chatSubscription=(await chatResponse.json()).data?.[0]}if(!chatSubscription)throw new Error('Chat subscription missing');await checked(db.from('stream_chat_subscriptions').update({subscription_id:chatSubscription.id,...(chatSubscription.status==='enabled'?{connected:true}:{})}).eq('workspace_id',flow.workspace_id).eq('platform','twitch'));await checked(db.from('stream_platform_connections').upsert({workspace_id:flow.workspace_id,platform:'twitch',platform_user_id:user.id,username:user.login,display_name:user.display_name,scopes:CHAT_SCOPES,connected:true},{onConflict:'workspace_id,platform'}));return Response.redirect('https://sanlean.com.ar/Usuario/index.html#platforms',303)}
+ if(route==='alerts'&&req.method==='GET'){const alertToken=u.searchParams.get('token')||'';if(!/^[a-f0-9-]{36}$/.test(alertToken))return json({error:'invalid_token'},403);const settings=await checked(db.from('stream_bits_settings').select('workspace_id,sound_enabled,timers_paused').eq('alert_token',alertToken).maybeSingle());if(!settings)return json({error:'invalid_token'},403);const after=u.searchParams.get('after');if(after!==null&&!/^\d{1,18}$/.test(after))return json({error:'invalid_cursor'},400);const latest=await checked(db.from('stream_bits_events').select('id').eq('workspace_id',settings.workspace_id).order('id',{ascending:false}).limit(1));const active=await activeBonuses(settings.workspace_id,!!settings.timers_paused);if(after===null)return json({cursor:String(latest?.[0]?.id||0),events:[],active,sound:settings.sound_enabled,timersPaused:!!settings.timers_paused});const events=await checked(db.from('stream_bits_events').select('id,donor,bits,item_name,image,kind,quantity,alert_style,created_at').eq('workspace_id',settings.workspace_id).gt('id',after).gt('created_at',new Date(Date.now()-300000).toISOString()).order('id').limit(50));return json({events,cursor:String(events?.at(-1)?.id||latest?.[0]?.id||after),active,sound:settings.sound_enabled,timersPaused:!!settings.timers_paused})}
+ if(req.method!=='POST')return json({error:'not_found'},404);const body=await req.json(),workspaceId=body.workspaceId;if(typeof workspaceId!=='string'||!workspaceId)return json({error:'missing_workspace'},400);await owner(req,workspaceId);
+ if(route==='status'){const channel=await checked(db.from('stream_bits_channels').select('connected').eq('workspace_id',workspaceId).maybeSingle());const chat=await checked(db.from('stream_chat_subscriptions').select('connected').eq('workspace_id',workspaceId).eq('platform','twitch').maybeSingle());const settings=await checked(db.from('stream_bits_settings').select('activations_paused,timers_paused').eq('workspace_id',workspaceId).maybeSingle());return json({configured:!!(clientId&&clientSecret),connected:!!channel?.connected,chatConnected:!!chat?.connected,reauthorize:!!channel?.connected&&!chat?.connected,activationsPaused:!!settings?.activations_paused,timersPaused:!!settings?.timers_paused})}
+ if(route==='set-activations-paused'){if(typeof body.paused!=='boolean')return json({error:'invalid_pause_state'},400);await checked(db.from('stream_bits_settings').update({activations_paused:body.paused}).eq('workspace_id',workspaceId));return json({ok:true,paused:body.paused})}
+ if(route==='set-timers-paused'){if(typeof body.paused!=='boolean')return json({error:'invalid_pause_state'},400);await checked(db.rpc('stream_bits_set_timers_paused',{p_workspace:workspaceId,p_paused:body.paused}));return json({ok:true,paused:body.paused})}
+ if(route==='test-alert'){const style=['harmful','beneficial','neutral'].includes(body.style)?body.style:'neutral',harmful=style==='harmful',beneficial=style==='beneficial';const event=await checked(db.from('stream_bits_events').insert({workspace_id:workspaceId,donor:'PRUEBA SANLEAN',bits:harmful?500:beneficial?600:300,item_name:harmful?'ME LA PELA':beneficial?'AGILIDAD':'AGITACIÓN',image:harmful?'../survivor/30_noMither.png':beneficial?'../survivor/29_lithe.png':'../killer/01_agitation.png',kind:harmful||beneficial?'survivor':'killerPerks',quantity:1,alert_style:style}).select('id').single());return json({ok:true,eventId:event.id})}
+ if(route==='connect'){if(!clientId||!clientSecret)return json({error:'Primero debe configurarse la aplicación de Twitch de SanLean.'},503);await checked(db.from('stream_bits_oauth').delete().eq('workspace_id',workspaceId));const userId=(await db.auth.getUser((req.headers.get('authorization')||'').replace(/^Bearer /,''))).data.user?.id;if(!userId)throw new Error('Unauthorized');const flow=await checked(db.from('stream_bits_oauth').insert({workspace_id:workspaceId,user_id:userId}).select('state').single());return json({url:'https://id.twitch.tv/oauth2/authorize?'+new URLSearchParams({client_id:clientId,redirect_uri:callback,response_type:'code',scope:CHAT_SCOPES.join(' '),state:flow.state,force_verify:'true'})})}
+ return json({error:'not_found'},404)}catch(e){const msg=String((e as Error).message);return json({error:msg==='Unauthorized'?'Sesión vencida. Volvé a ingresar.':msg==='Forbidden'?'Solo el propietario puede configurar bits.':'No se pudo completar la operación. Reintentá.'},msg==='Unauthorized'?401:msg==='Forbidden'?403:500)}});
