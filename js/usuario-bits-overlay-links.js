@@ -1,5 +1,5 @@
 (()=>{
- const VERSION='20260930-2';
+ const VERSION='20260930-4';
  const TYPES=['harmful','beneficial'];
  function apply(){
   for(const type of TYPES){
