@@ -216,3 +216,108 @@
   .obs-overlay-page .sl-cards-vote-row>b{font-size:24px}
   .obs-overlay-page .sl-cards-vote-row>span{font-size:18px}
 }
+
+
+/* OBS CARTAS refinement v11: large cards, taller working field, compact voting stack. */
+.obs-overlay-root:has(.sl-diamonds){padding:0!important;overflow:hidden!important}
+.obs-overlay-page .obs-stage:has(.sl-diamonds){
+  position:relative;
+  width:min(1780px,96vw);
+  height:min(1030px,96vh);
+  max-width:none;
+  aspect-ratio:auto;
+  min-height:0;
+  overflow:visible!important;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.obs-overlay-page .sl-diamonds,
+.obs-overlay-page .sl-diamonds.is-manual-mode{
+  box-sizing:border-box;
+  width:100%;
+  height:100%;
+  display:grid;
+  grid-template-rows:150px minmax(0,1fr) 146px;
+  align-items:center;
+  padding:18px 34px 16px;
+}
+.obs-overlay-page .sl-cards-hud{
+  grid-row:1;
+  width:100%;
+  min-height:0;
+  margin:0;
+  gap:6px;
+  overflow:visible;
+}
+.obs-overlay-page .sl-cards-status-label{font-size:27px}
+.obs-overlay-page .sl-cards-clock{font-size:94px}
+.obs-overlay-page .sl-cards-live-meta{gap:32px;min-height:27px}
+.obs-overlay-page .sl-cards-live-meta span{font-size:19px}
+.obs-overlay-page .sl-cards-live-meta b{font-size:21px}
+.obs-overlay-page .sl-diamond-layout,
+.obs-overlay-page .sl-diamonds.is-manual-mode .sl-diamond-layout{
+  grid-row:2;
+  align-self:center;
+  width:100%;
+  height:660px;
+  aspect-ratio:auto;
+  margin:0;
+}
+.obs-overlay-page .sl-diamond{
+  left:calc(var(--position)*18%);
+  width:28%;
+  top:27%;
+}
+.obs-overlay-page .sl-diamond.is-upper{top:3%}
+.obs-overlay-page .sl-diamond-caption,
+.obs-overlay-page .sl-diamond.is-upper .sl-diamond-caption{
+  top:101%!important;
+  bottom:auto!important;
+  left:-13%;
+  width:126%;
+  font-size:28px;
+  line-height:1.02;
+}
+.obs-overlay-page .sl-cards-vote-panel{
+  grid-row:3;
+  align-self:end;
+  width:880px;
+  max-width:62%;
+  margin:10px auto 0;
+  display:grid;
+  gap:2px;
+}
+.obs-overlay-page .sl-cards-vote-row{
+  box-sizing:border-box;
+  grid-template-columns:38px minmax(0,1fr) 170px;
+  align-items:center;
+  gap:10px;
+  min-height:24px;
+  padding:2px 10px;
+  border-radius:11px;
+  background:rgba(24,24,28,.52);
+  border:1px solid color-mix(in srgb,var(--cards-accent) 46%,rgba(255,255,255,.17));
+  box-shadow:0 3px 10px rgba(0,0,0,.10);
+  backdrop-filter:blur(2px);
+}
+.obs-overlay-page .sl-cards-vote-row>b{
+  font:900 21px/1 Montserrat,Arial,sans-serif;
+  text-shadow:0 2px 3px #000;
+}
+.obs-overlay-page .sl-cards-vote-track{
+  height:8px;
+  background:rgba(255,255,255,.16);
+}
+.obs-overlay-page .sl-cards-vote-row>span{
+  font:900 16px/1 Montserrat,Arial,sans-serif;
+  text-shadow:0 2px 3px #000;
+}
+@media(max-width:1200px){
+  .obs-overlay-page .obs-stage:has(.sl-diamonds){width:96vw;height:96vh}
+  .obs-overlay-page .sl-diamonds,
+  .obs-overlay-page .sl-diamonds.is-manual-mode{grid-template-rows:140px minmax(0,1fr) 138px;padding:14px 28px}
+  .obs-overlay-page .sl-diamond-layout{height:610px}
+  .obs-overlay-page .sl-cards-clock{font-size:86px}
+  .obs-overlay-page .sl-cards-vote-panel{max-width:68%}
+}
