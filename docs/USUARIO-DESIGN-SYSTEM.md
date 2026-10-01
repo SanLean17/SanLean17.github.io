@@ -293,19 +293,44 @@ Al pulsar una opción:
 
 La implementación final del router de MI PANEL vive en `js/usuario-stream-tabs.js`.
 
-## 9. Votaciones
+## 9. CARTAS / Votaciones
+
+### Flujo CHAT
+1. El streamer pulsa `GENERAR CARTAS`.
+2. Se generan y muestran las cinco cartas A–E en USUARIO y OBS, pero todavía no se aceptan votos.
+3. El estado visible es `LA VOTACIÓN ESTÁ POR COMENZAR` / `POR COMENZAR` y el contador queda preparado en `00:30`.
+4. El streamer pulsa `INICIAR VOTACIÓN`.
+5. Recién entonces comienza la ventana real de 30 segundos y se aceptan votos del chat.
+6. El contador usa un timestamp de cierre real (`endsAt`), no una resta dependiente de `setInterval`.
+
+### Visual de votos en OBS
+- Los votos NO se dibujan encima ni debajo de cada carta individual.
+- Se muestran debajo del conjunto completo de cinco cartas.
+- Una fila compacta por letra A–E: letra a la izquierda, barra horizontal central y votos/porcentaje a la derecha.
+- Cada fila tiene su propio fondo oscuro semitransparente; no existe una caja oscura única envolviendo todo el bloque.
+- Todas las superficies y barras usan bordes curvos.
+- EVENTO NORMAL usa el acento rojo canónico `#FF003C`.
+- EVENTO CAÓTICO usa el acento caótico ya establecido.
+- El ancho del bloque se alinea visualmente con el ancho del conjunto de cartas.
 
 ### Ganador único
 1. Termina la votación.
-2. Se revela la carta ganadora.
-3. El sistema queda esperando.
-4. Si corresponde una ruleta, aparece una acción para continuar.
-5. La ruleta sólo comienza cuando el streamer pulsa el botón.
+2. El sistema determina el ganador pero NO revela todavía su contenido.
+3. La carta ganadora se ilumina automáticamente en USUARIO y OBS.
+4. Se habilita `REVELAR CARTA GANADORA`.
+5. Sólo al pulsarlo se revela el contenido de esa carta.
+6. Si corresponde una ruleta, aparece después la acción para continuar.
+7. La ruleta nunca gira automáticamente; el streamer conserva el control manual.
+
+### Modo MANUAL
+- `GENERAR CARTAS` mantiene el flujo actual.
+- Al seleccionar una carta manualmente, esa carta se ilumina automáticamente en USUARIO y OBS sin revelar todavía su contenido.
+- El streamer puede cambiar la selección antes de pulsar `REVELAR CARTA GANADORA`.
 
 ### Empate
 Un empate NO produce ganador y NO continúa a una ruleta.
 
-La votación debe reiniciarse completa utilizando las mismas cinco cartas y una nueva ronda de 30 segundos. Los votos de la ronda empatada no se arrastran.
+Se conservan exactamente las mismas cinco cartas. Los votos se limpian y se prepara una nueva ronda; el streamer vuelve a pulsar `INICIAR VOTACIÓN` para abrir otros 30 segundos. Los votos de la ronda empatada no se arrastran.
 
 ## 10. Checklist obligatorio antes de considerar terminado un módulo
 
