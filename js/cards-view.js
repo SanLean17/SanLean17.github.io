@@ -25,11 +25,12 @@
     target.dataset.cardsSignature=signature;
     const previous=new Set([...target.querySelectorAll('.sl-diamond.is-revealed')].map(x=>x.dataset.card));
     const base=state?.special?'../rombo-caotico.png':'../rombo.png';
+    const showHud=!interactive&&state?.mode==='chat'&&['preview','active','awaiting-reveal','tie','revealed'].includes(state?.state);
     const showVoting=!interactive&&state?.mode==='chat'&&['active','awaiting-reveal','tie','revealed'].includes(state?.state);
     const deadline=Number(state?.endsAt)||0;
     const seconds=deadline&&state?.state==='active'?Math.max(0,Math.ceil((deadline-Date.now())/1000)):Math.max(0,Number(state?.secondsLeft)||0);
     const clock=`00:${String(seconds).padStart(2,'0')}`;
-    const hud=showVoting?`<div class="sl-cards-hud"><strong>${escape(stateLabel(state))}</strong><span class="sl-cards-clock">${state.state==='active'?clock:'00:00'}</span><span>${Number(state.totalVotes)||0} VOTOS</span></div>`:'';
+    const hud=showHud?`<div class="sl-cards-hud"><strong>${escape(stateLabel(state))}</strong><span class="sl-cards-clock">${state.state==='active'?clock:state.state==='preview'?'00:30':'00:00'}</span><span>${Number(state.totalVotes)||0} VOTOS</span></div>`:'';
     target.innerHTML=`<div class="sl-diamonds${state?.special?' is-chaotic':''}${interactive?' is-control-preview':''}">${hud}<div class="sl-diamond-layout">${cards.slice(0,5).map((c,i)=>{
       const letter=String(c.letter||'ABCDE'[i]),revealed=!!c.revealed;
       const clickable=interactive&&(state.state==='manual-choice'||(state.state==='revealed'&&!revealed));
