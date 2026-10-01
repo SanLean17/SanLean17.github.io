@@ -164,3 +164,65 @@
 .obs-overlay-page .obs-stage .sl-roulette-donor.is-long-name{
   font-size:clamp(21px,2.4cqw,40px);
 }
+
+
+/* OBS donor label v6: centered to the winning card, free horizontal width, maximum text clarity. */
+@keyframes sl-donor-visibility-pulse{
+  0%,100%{opacity:.86}
+  50%{opacity:1}
+}
+.obs-overlay-page .sl-killer-card.selected,
+.obs-overlay-page .sl-killer-card.selected.donated{
+  overflow:visible!important;
+}
+.obs-overlay-page .sl-killer-card.selected .sl-killer-card-donor{
+  display:block;
+  left:50%!important;
+  right:auto!important;
+  top:50%;
+  width:max-content!important;
+  min-width:100%;
+  max-width:none!important;
+  padding:0 10px;
+  box-sizing:border-box;
+  transform:translate(-50%,-50%)!important;
+  transform-origin:center;
+  white-space:nowrap;
+  overflow:visible;
+  word-break:normal;
+  overflow-wrap:normal;
+  color:#ff003c;
+  font:900 25px/1 Montserrat,Arial,sans-serif!important;
+  letter-spacing:.015em;
+  text-align:center;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:geometricPrecision;
+  -webkit-text-stroke:.55px #050505;
+  paint-order:stroke fill;
+  filter:none!important;
+  text-shadow:0 2px 2px #000,1px 0 0 #000,-1px 0 0 #000!important;
+  animation:sl-donor-visibility-pulse 1.55s ease-in-out infinite!important;
+}
+.obs-overlay-page .obs-stage .sl-roulette-donor{
+  left:50%;
+  right:auto;
+  width:max-content;
+  max-width:none;
+  transform:translateX(-50%)!important;
+  overflow:visible;
+  white-space:nowrap;
+  word-break:normal;
+  overflow-wrap:normal;
+  font:900 clamp(20px,2.25cqw,38px)/1 Montserrat,Arial,sans-serif;
+  letter-spacing:.012em;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:geometricPrecision;
+  -webkit-text-stroke:.55px #050505;
+  paint-order:stroke fill;
+  filter:none!important;
+  text-shadow:0 2px 2px #000,1px 0 0 #000,-1px 0 0 #000!important;
+  animation:sl-donor-visibility-pulse 1.55s ease-in-out infinite!important;
+}
+.obs-overlay-page .obs-stage .sl-roulette-donor.is-long-name{
+  font-size:clamp(19px,2.05cqw,35px);
+}
