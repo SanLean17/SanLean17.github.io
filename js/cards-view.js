@@ -32,7 +32,7 @@
     const seconds=deadline&&state?.state==='active'?Math.max(0,Math.ceil((deadline-Date.now())/1000)):Math.max(0,Number(state?.secondsLeft)||0);
     const clock=`00:${String(seconds).padStart(2,'0')}`;
     const hud=showHud?`<div class="sl-cards-hud"><strong>${escape(stateLabel(state))}</strong><span class="sl-cards-clock">${state.state==='active'?clock:state.state==='preview'?'00:30':'00:00'}</span><span>${Number(state.totalVotes)||0} VOTOS</span></div>`:'';
-    target.innerHTML=`<div class="sl-diamonds${state?.special?' is-chaotic':''}${interactive?' is-control-preview':''}">${hud}<div class="sl-diamond-layout">${cards.slice(0,5).map((c,i)=>{
+    target.innerHTML=`<div class="sl-diamonds${state?.special?' is-chaotic':''}${interactive?' is-control-preview':''}${showHud?' has-hud':''}${showVoteSpace?' has-vote-space':''}${cards.some(card=>card.revealed)?' has-revealed':''}">${hud}<div class="sl-diamond-layout">${cards.slice(0,5).map((c,i)=>{
       const letter=String(c.letter||'ABCDE'[i]),revealed=!!c.revealed;
       const clickable=interactive&&(state.state==='manual-choice'||(state.state==='revealed'&&!revealed));
       return `<${interactive?'button type="button"':'article'} class="sl-diamond${i%2?' is-upper':''}${state.winner===letter?' is-winner':''}${revealed?' is-revealed':''}${revealed&&!previous.has(letter)?' just-revealed':''}" data-card="${escape(letter)}" style="--position:${i}" ${interactive?`${clickable?'':'disabled'} aria-label="${escape(`Rombo ${letter}${revealed?`: ${displayLabel(c)}`:''}`)}"`:''}>
