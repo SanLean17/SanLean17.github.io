@@ -61,7 +61,7 @@
 .sl-cards-vote-panel.is-pending{visibility:hidden;pointer-events:none}
 
 
-/* OBS CARTAS layout: one canonical 1600×900 safe area for NORMAL and CAÓTICO. */
+/* OBS CARTAS layout: one canonical 1600×900 safe area for NORMAL, CAÓTICO and MANUAL. */
 .obs-overlay-root:has(.sl-diamonds){padding:0!important;overflow:hidden!important}
 .obs-overlay-page .obs-stage:has(.sl-diamonds){
   position:relative;
@@ -79,11 +79,12 @@
   width:100%;
   height:100%;
   display:grid;
-  grid-template-rows:142px 1fr 210px;
+  grid-template-rows:142px 450px 270px;
   align-items:center;
   padding:16px 42px 22px;
 }
 .obs-overlay-page .sl-cards-hud{
+  grid-row:1;
   width:100%;
   min-height:0;
   margin:0;
@@ -117,7 +118,7 @@
   min-height:24px;
 }
 .obs-overlay-page .sl-cards-live-meta span{
-  color:rgba(255,255,255,.84);
+  color:#fff;
   font:800 17px/1 Montserrat,Arial,sans-serif;
   letter-spacing:.045em;
   text-transform:uppercase;
@@ -125,17 +126,19 @@
 }
 .obs-overlay-page .sl-cards-live-meta b{margin-left:5px;color:#fff;font-size:19px;font-weight:900}
 .obs-overlay-page .sl-diamond-layout{
+  grid-row:2;
+  align-self:center;
   width:100%;
-  height:520px;
+  height:450px;
   aspect-ratio:auto;
   margin:0;
 }
 .obs-overlay-page .sl-diamond{
   left:calc(var(--position)*19.2%);
   width:23.2%;
-  top:24%;
+  top:21%;
 }
-.obs-overlay-page .sl-diamond.is-upper{top:2%}
+.obs-overlay-page .sl-diamond.is-upper{top:1%}
 .obs-overlay-page .sl-diamond-caption,
 .obs-overlay-page .sl-diamond.is-upper .sl-diamond-caption{
   top:101%!important;
@@ -146,68 +149,70 @@
   line-height:1.02;
 }
 .obs-overlay-page .sl-cards-vote-panel{
-  align-self:center;
+  grid-row:3;
+  align-self:end;
   width:1080px;
   max-width:78%;
-  margin:10px auto 0;
+  margin:30px auto 0;
   display:grid;
   gap:6px;
 }
 .obs-overlay-page .sl-cards-vote-row{
-  grid-template-columns:46px minmax(0,1fr) 210px;
+  box-sizing:border-box;
+  display:grid;
+  grid-template-columns:50px minmax(0,1fr) 220px;
   align-items:center;
   gap:16px;
-  min-height:42px;
+  min-height:44px;
   padding:6px 16px;
   border-radius:14px;
-  background:rgba(30,30,34,.50);
-  border:1px solid color-mix(in srgb,var(--cards-accent) 42%,rgba(255,255,255,.18));
-  box-shadow:0 4px 14px rgba(0,0,0,.12);
+  background:rgba(30,30,34,.42);
+  border:1px solid color-mix(in srgb,var(--cards-accent) 48%,rgba(255,255,255,.20));
+  box-shadow:0 4px 14px rgba(0,0,0,.10);
   backdrop-filter:blur(2px);
+  opacity:1;
 }
 .obs-overlay-page .sl-cards-vote-row>b{
   color:#fff;
-  font:900 25px/1 Montserrat,Arial,sans-serif;
+  opacity:1;
+  font:900 27px/1 Montserrat,Arial,sans-serif;
   text-align:center;
+  text-shadow:0 2px 4px #000;
 }
 .obs-overlay-page .sl-cards-vote-track{
-  height:17px;
+  height:18px;
   border-radius:999px;
-  background:rgba(255,255,255,.17);
+  background:rgba(255,255,255,.18);
+  opacity:1;
 }
-.obs-overlay-page .sl-cards-vote-track>i{border-radius:999px}
+.obs-overlay-page .sl-cards-vote-track>i{
+  border-radius:999px;
+  background:var(--cards-accent);
+  opacity:1;
+  box-shadow:0 0 8px color-mix(in srgb,var(--cards-accent) 45%,transparent);
+}
 .obs-overlay-page .sl-cards-vote-row>span{
-  color:rgba(255,255,255,.96);
-  font:800 19px/1 Montserrat,Arial,sans-serif;
+  color:#fff;
+  opacity:1;
+  font:900 20px/1 Montserrat,Arial,sans-serif;
   text-align:right;
   white-space:nowrap;
+  text-shadow:0 2px 4px #000;
 }
 .obs-overlay-page .sl-cards-vote-row.is-winner{
-  background:color-mix(in srgb,var(--cards-accent) 16%,rgba(30,30,34,.62));
-  border-color:color-mix(in srgb,var(--cards-accent) 76%,rgba(255,255,255,.18));
+  background:color-mix(in srgb,var(--cards-accent) 14%,rgba(30,30,34,.48));
+  border-color:color-mix(in srgb,var(--cards-accent) 78%,rgba(255,255,255,.22));
 }
 .obs-overlay-page .sl-cards-vote-panel.is-pending{visibility:hidden;pointer-events:none}
+.obs-overlay-page .sl-diamonds.is-manual-mode{grid-template-rows:142px 450px 270px}
+.obs-overlay-page .sl-diamonds.is-manual-mode .sl-diamond-layout{grid-row:2;align-self:center}
 @media(max-width:1200px){
-  .obs-overlay-page .sl-diamonds{grid-template-rows:134px 1fr 198px;padding:14px 36px 18px}
+  .obs-overlay-page .sl-diamonds,
+  .obs-overlay-page .sl-diamonds.is-manual-mode{grid-template-rows:134px 430px 250px;padding:14px 36px 18px}
   .obs-overlay-page .sl-cards-clock{font-size:84px}
-  .obs-overlay-page .sl-diamond-layout{height:500px}
-  .obs-overlay-page .sl-cards-vote-panel{max-width:82%}
-  .obs-overlay-page .sl-cards-vote-row{grid-template-columns:42px minmax(0,1fr) 188px}
-  .obs-overlay-page .sl-cards-vote-row>b{font-size:22px}
-  .obs-overlay-page .sl-cards-vote-row>span{font-size:17px}
-}
-
-
-/* Manual CARTAS uses the exact same OBS geometry as CHAT, without HUD/vote UI. */
-.obs-overlay-page .sl-diamonds.is-manual-mode{
-  grid-template-rows:142px 1fr 210px;
-}
-.obs-overlay-page .sl-diamonds.is-manual-mode .sl-diamond-layout{
-  grid-row:2;
-  align-self:center;
-}
-@media(max-width:1200px){
-  .obs-overlay-page .sl-diamonds.is-manual-mode{
-    grid-template-rows:134px 1fr 198px;
-  }
+  .obs-overlay-page .sl-diamond-layout{height:430px}
+  .obs-overlay-page .sl-cards-vote-panel{max-width:82%;margin-top:26px}
+  .obs-overlay-page .sl-cards-vote-row{grid-template-columns:46px minmax(0,1fr) 200px}
+  .obs-overlay-page .sl-cards-vote-row>b{font-size:24px}
+  .obs-overlay-page .sl-cards-vote-row>span{font-size:18px}
 }
