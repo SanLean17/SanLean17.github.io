@@ -6,7 +6,7 @@
     seen.add(row.platform+':'+row.message_id);if(seen.size>2000)seen.delete(seen.values().next().value);
     const detail={platform:row.platform,userId:row.user_id,username:row.username,message:row.message,sentAt:row.sent_at,workspaceId};
     const round=window.SanLeanCards?.getState();
-    if(round?.workspaceId===workspaceId&&Date.parse(row.sent_at)>=round.startedAt&&(round.platform==='both'||round.platform===row.platform))window.SanLeanCards.receiveChatMessage({username:row.platform+':'+row.user_id,message:row.message});
+    if(round?.workspaceId===workspaceId&&Date.parse(row.sent_at)>=round.startedAt&&(round.platform==='both'||round.platform===row.platform))window.SanLeanCards.receiveChatMessage({username:row.platform+':'+row.user_id,message:row.message,sentAt:row.sent_at});
     const vote=window.SanLeanPoll?.getState();if(vote?.workspaceId===workspaceId&&Date.parse(row.sent_at)>=vote.startedAt)window.SanLeanPoll.ingestVote(row.platform+':'+row.user_id,row.message);
     window.dispatchEvent(new CustomEvent('sanlean:chat-message',{detail}));
     const log=document.getElementById('streamChatMessages');if(log){const item=document.createElement('p'),name=document.createElement('strong');name.textContent=row.platform.toUpperCase()+' · '+row.username+': ';item.append(name,document.createTextNode(row.message));log.append(item);while(log.children.length>50)log.firstElementChild.remove();log.scrollTop=log.scrollHeight}
