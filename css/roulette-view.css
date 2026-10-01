@@ -146,3 +146,21 @@
 .obs-overlay-page .obs-stage .sl-roulette-donor.is-long-name{
   font-size:clamp(19px,2.3cqw,38px);
 }
+
+
+/* Compact Twitch player: final donor text tuning. */
+.obs-overlay-page .sl-killer-card.selected .sl-killer-card-donor,
+.obs-overlay-page .obs-stage .sl-roulette-donor{
+  opacity:1;
+  -webkit-text-stroke:1px rgba(5,5,5,.96);
+  text-shadow:0 2px 2px #000,0 0 1px #000!important;
+}
+.obs-overlay-page .sl-killer-card.selected .sl-killer-card-donor{
+  font-size:29px!important;
+}
+.obs-overlay-page .obs-stage .sl-roulette-donor{
+  font-size:clamp(23px,2.8cqw,47px);
+}
+.obs-overlay-page .obs-stage .sl-roulette-donor.is-long-name{
+  font-size:clamp(21px,2.4cqw,40px);
+}
