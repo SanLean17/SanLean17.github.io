@@ -61,11 +61,8 @@
 .sl-cards-vote-panel.is-pending{visibility:hidden;pointer-events:none}
 
 
-/* OBS CARTAS layout: fixed 1600×900 safe area inside a 1920×1080 Browser Source. */
-.obs-overlay-root:has(.sl-diamonds){
-  padding:0!important;
-  overflow:hidden!important;
-}
+/* OBS CARTAS layout: one canonical 1600×900 safe area for NORMAL and CAÓTICO. */
+.obs-overlay-root:has(.sl-diamonds){padding:0!important;overflow:hidden!important}
 .obs-overlay-page .obs-stage:has(.sl-diamonds){
   position:relative;
   width:min(1600px,83.333vw,148.148vh);
@@ -82,9 +79,9 @@
   width:100%;
   height:100%;
   display:grid;
-  grid-template-rows:132px 1fr 236px;
+  grid-template-rows:142px 1fr 210px;
   align-items:center;
-  padding:18px 42px 24px;
+  padding:16px 42px 22px;
 }
 .obs-overlay-page .sl-cards-hud{
   width:100%;
@@ -100,7 +97,7 @@
 }
 .obs-overlay-page .sl-cards-status-label{
   color:#fff;
-  font:900 24px/1 Montserrat,Arial,sans-serif;
+  font:900 25px/1 Montserrat,Arial,sans-serif;
   letter-spacing:.10em;
   text-transform:uppercase;
   text-shadow:0 3px 8px #000,0 0 15px var(--cards-accent);
@@ -108,7 +105,7 @@
 .obs-overlay-page .sl-cards-clock{
   display:block;
   color:#fff;
-  font:900 88px/.88 Impact,'Arial Black',sans-serif;
+  font:900 92px/.88 Impact,'Arial Black',sans-serif;
   letter-spacing:.035em;
   text-shadow:0 4px 10px #000,0 0 18px rgba(0,0,0,.82);
 }
@@ -116,170 +113,86 @@
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:24px;
-  min-height:22px;
+  gap:28px;
+  min-height:24px;
 }
 .obs-overlay-page .sl-cards-live-meta span{
-  color:rgba(255,255,255,.82);
-  font:800 15px/1 Montserrat,Arial,sans-serif;
+  color:rgba(255,255,255,.84);
+  font:800 17px/1 Montserrat,Arial,sans-serif;
   letter-spacing:.045em;
   text-transform:uppercase;
   text-shadow:0 2px 5px #000;
 }
-.obs-overlay-page .sl-cards-live-meta b{margin-left:5px;color:#fff;font-weight:900}
+.obs-overlay-page .sl-cards-live-meta b{margin-left:5px;color:#fff;font-size:19px;font-weight:900}
 .obs-overlay-page .sl-diamond-layout{
   width:100%;
-  height:508px;
+  height:520px;
   aspect-ratio:auto;
   margin:0;
-}
-.obs-overlay-page .sl-diamond{
-  width:27%;
-}
-.obs-overlay-page .sl-diamond-caption,
-.obs-overlay-page .sl-diamond.is-upper .sl-diamond-caption{
-  top:102%!important;
-  bottom:auto!important;
-  left:-12%;
-  width:124%;
-  font-size:30px;
-  line-height:1;
-}
-.obs-overlay-page .sl-cards-vote-panel{
-  align-self:end;
-  width:1040px;
-  max-width:76%;
-  margin:0 auto;
-  display:grid;
-  gap:7px;
-}
-.obs-overlay-page .sl-cards-vote-row{
-  grid-template-columns:44px minmax(0,1fr) 190px;
-  align-items:center;
-  gap:15px;
-  min-height:39px;
-  padding:5px 15px;
-  border-radius:14px;
-  background:rgba(28,28,32,.48);
-  border:1px solid color-mix(in srgb,var(--cards-accent) 42%,rgba(255,255,255,.18));
-  box-shadow:0 4px 14px rgba(0,0,0,.13);
-  backdrop-filter:blur(2px);
-}
-.obs-overlay-page .sl-cards-vote-row>b{
-  color:#fff;
-  font:900 21px/1 Montserrat,Arial,sans-serif;
-  text-align:center;
-}
-.obs-overlay-page .sl-cards-vote-track{
-  height:14px;
-  border-radius:999px;
-  background:rgba(255,255,255,.15);
-}
-.obs-overlay-page .sl-cards-vote-track>i{
-  border-radius:999px;
-}
-.obs-overlay-page .sl-cards-vote-row>span{
-  color:rgba(255,255,255,.94);
-  font:800 16px/1 Montserrat,Arial,sans-serif;
-  text-align:right;
-  white-space:nowrap;
-}
-.obs-overlay-page .sl-cards-vote-row.is-winner{
-  background:color-mix(in srgb,var(--cards-accent) 15%,rgba(28,28,32,.58));
-  border-color:color-mix(in srgb,var(--cards-accent) 76%,rgba(255,255,255,.18));
-}
-.obs-overlay-page .sl-cards-vote-panel.is-pending{
-  visibility:hidden;
-  pointer-events:none;
-}
-@media(max-width:1200px){
-  .obs-overlay-page .sl-diamonds{grid-template-rows:120px 1fr 220px;padding:16px 34px 20px}
-  .obs-overlay-page .sl-cards-clock{font-size:78px}
-  .obs-overlay-page .sl-diamond-layout{height:470px}
-  .obs-overlay-page .sl-cards-vote-panel{max-width:80%}
-}
-
-
-/* OBS CARTAS refinement v7: more air, smaller vote rows, larger live metrics. */
-.obs-overlay-page .sl-diamonds{
-  grid-template-rows:144px 1fr 170px;
-  padding:16px 46px 18px;
-}
-.obs-overlay-page .sl-cards-hud{
-  gap:6px;
-}
-.obs-overlay-page .sl-cards-status-label{
-  font-size:27px;
-  letter-spacing:.11em;
-}
-.obs-overlay-page .sl-cards-clock{
-  font-size:92px;
-}
-.obs-overlay-page .sl-cards-live-meta{
-  gap:30px;
-  min-height:26px;
-}
-.obs-overlay-page .sl-cards-live-meta span{
-  font-size:18px;
-  letter-spacing:.05em;
-}
-.obs-overlay-page .sl-cards-live-meta b{
-  margin-left:6px;
-  font-size:20px;
-}
-.obs-overlay-page .sl-diamond-layout{
-  height:538px;
 }
 .obs-overlay-page .sl-diamond{
   left:calc(var(--position)*19.2%);
   width:23.2%;
   top:24%;
 }
-.obs-overlay-page .sl-diamond.is-upper{
-  top:2%;
-}
+.obs-overlay-page .sl-diamond.is-upper{top:2%}
 .obs-overlay-page .sl-diamond-caption,
 .obs-overlay-page .sl-diamond.is-upper .sl-diamond-caption{
   top:101%!important;
   bottom:auto!important;
   left:-9%;
   width:118%;
-  font-size:27px;
+  font-size:28px;
   line-height:1.02;
 }
 .obs-overlay-page .sl-cards-vote-panel{
   align-self:center;
-  width:940px;
-  max-width:70%;
-  margin:16px auto 0;
-  gap:4px;
+  width:1080px;
+  max-width:78%;
+  margin:10px auto 0;
+  display:grid;
+  gap:6px;
 }
 .obs-overlay-page .sl-cards-vote-row{
-  grid-template-columns:34px minmax(0,1fr) 154px;
-  gap:11px;
-  min-height:27px;
-  padding:3px 12px;
-  border-radius:12px;
-  background:rgba(26,26,30,.54);
+  grid-template-columns:46px minmax(0,1fr) 210px;
+  align-items:center;
+  gap:16px;
+  min-height:42px;
+  padding:6px 16px;
+  border-radius:14px;
+  background:rgba(30,30,34,.50);
+  border:1px solid color-mix(in srgb,var(--cards-accent) 42%,rgba(255,255,255,.18));
+  box-shadow:0 4px 14px rgba(0,0,0,.12);
+  backdrop-filter:blur(2px);
 }
 .obs-overlay-page .sl-cards-vote-row>b{
-  font-size:16px;
+  color:#fff;
+  font:900 25px/1 Montserrat,Arial,sans-serif;
+  text-align:center;
 }
 .obs-overlay-page .sl-cards-vote-track{
-  height:9px;
+  height:17px;
+  border-radius:999px;
+  background:rgba(255,255,255,.17);
 }
+.obs-overlay-page .sl-cards-vote-track>i{border-radius:999px}
 .obs-overlay-page .sl-cards-vote-row>span{
-  font-size:13px;
+  color:rgba(255,255,255,.96);
+  font:800 19px/1 Montserrat,Arial,sans-serif;
+  text-align:right;
+  white-space:nowrap;
 }
+.obs-overlay-page .sl-cards-vote-row.is-winner{
+  background:color-mix(in srgb,var(--cards-accent) 16%,rgba(30,30,34,.62));
+  border-color:color-mix(in srgb,var(--cards-accent) 76%,rgba(255,255,255,.18));
+}
+.obs-overlay-page .sl-cards-vote-panel.is-pending{visibility:hidden;pointer-events:none}
 @media(max-width:1200px){
-  .obs-overlay-page .sl-diamonds{
-    grid-template-rows:136px 1fr 164px;
-    padding:14px 38px 16px;
-  }
-  .obs-overlay-page .sl-cards-clock{font-size:82px}
-  .obs-overlay-page .sl-cards-status-label{font-size:24px}
-  .obs-overlay-page .sl-cards-live-meta span{font-size:16px}
-  .obs-overlay-page .sl-cards-live-meta b{font-size:18px}
-  .obs-overlay-page .sl-diamond-layout{height:510px}
-  .obs-overlay-page .sl-cards-vote-panel{max-width:74%}
+  .obs-overlay-page .sl-diamonds{grid-template-rows:134px 1fr 198px;padding:14px 36px 18px}
+  .obs-overlay-page .sl-cards-clock{font-size:84px}
+  .obs-overlay-page .sl-diamond-layout{height:500px}
+  .obs-overlay-page .sl-cards-vote-panel{max-width:82%}
+  .obs-overlay-page .sl-cards-vote-row{grid-template-columns:42px minmax(0,1fr) 188px}
+  .obs-overlay-page .sl-cards-vote-row>b{font-size:22px}
+  .obs-overlay-page .sl-cards-vote-row>span{font-size:17px}
 }
