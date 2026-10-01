@@ -196,3 +196,18 @@
   .obs-overlay-page .sl-cards-vote-row>b{font-size:22px}
   .obs-overlay-page .sl-cards-vote-row>span{font-size:17px}
 }
+
+
+/* Manual CARTAS uses the exact same OBS geometry as CHAT, without HUD/vote UI. */
+.obs-overlay-page .sl-diamonds.is-manual-mode{
+  grid-template-rows:142px 1fr 210px;
+}
+.obs-overlay-page .sl-diamonds.is-manual-mode .sl-diamond-layout{
+  grid-row:2;
+  align-self:center;
+}
+@media(max-width:1200px){
+  .obs-overlay-page .sl-diamonds.is-manual-mode{
+    grid-template-rows:134px 1fr 198px;
+  }
+}
