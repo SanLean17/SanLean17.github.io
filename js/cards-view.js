@@ -26,6 +26,7 @@
     const previous=new Set([...target.querySelectorAll('.sl-diamond.is-revealed')].map(x=>x.dataset.card));
     const base=state?.special?'../rombo-caotico.png':'../rombo.png';
     const showHud=!interactive&&state?.mode==='chat'&&['preview','active','awaiting-reveal','tie','revealed'].includes(state?.state);
+    const showVoteSpace=!interactive&&state?.mode==='chat'&&['preview','active','awaiting-reveal','tie','revealed'].includes(state?.state);
     const showVoting=!interactive&&state?.mode==='chat'&&['active','awaiting-reveal','tie','revealed'].includes(state?.state);
     const deadline=Number(state?.endsAt)||0;
     const seconds=deadline&&state?.state==='active'?Math.max(0,Math.ceil((deadline-Date.now())/1000)):Math.max(0,Number(state?.secondsLeft)||0);
@@ -38,7 +39,7 @@
         <span class="sl-diamond-face"><img class="sl-diamond-base" src="${base}" alt=""><span class="sl-diamond-letter" ${revealed?'hidden':''}>${escape(letter)}</span>${revealed&&safeImage(c.image)?`<img class="sl-diamond-art" src="${escape(c.image)}" alt="">`:''}</span>
         ${revealed&&!interactive?`<span class="sl-diamond-caption"><span>${captionHtml(c)}</span></span>`:''}
       </${interactive?'button':'article'}>`;
-    }).join('')}</div>${showVoting?`<div class="sl-cards-vote-panel" aria-label="Resultados de la votación">${cards.slice(0,5).map((card,index)=>{const letter=String(card.letter||'ABCDE'[index]),votes=Number(card.votes)||0,percent=Number(state.totalVotes)>0?Math.round(votes/Number(state.totalVotes)*100):0;return `<div class="sl-cards-vote-row${state.winner===letter?' is-winner':''}"><b>${escape(letter)}</b><div class="sl-cards-vote-track"><i style="width:${percent}%"></i></div><span>${votes} ${votes===1?'VOTO':'VOTOS'} · ${percent}%</span></div>`}).join('')}</div>`:''}</div>`;
+    }).join('')}</div>${showVoteSpace?`<div class="sl-cards-vote-panel${showVoting?'':' is-pending'}" aria-label="Resultados de la votación">${cards.slice(0,5).map((card,index)=>{const letter=String(card.letter||'ABCDE'[index]),votes=Number(card.votes)||0,percent=Number(state.totalVotes)>0?Math.round(votes/Number(state.totalVotes)*100):0;return `<div class="sl-cards-vote-row${state.winner===letter?' is-winner':''}"><b>${escape(letter)}</b><div class="sl-cards-vote-track"><i style="width:${percent}%"></i></div><span>${votes} ${votes===1?'VOTO':'VOTOS'} · ${percent}%</span></div>`}).join('')}</div>`:''}</div>`;
     if(target._slCardsClockTimer){clearInterval(target._slCardsClockTimer);target._slCardsClockTimer=null}
     if(showVoting&&state?.state==='active'&&deadline){const updateClock=()=>{const el=target.querySelector('.sl-cards-clock');if(!el)return;const left=Math.max(0,Math.ceil((deadline-Date.now())/1000));el.textContent=`00:${String(left).padStart(2,'0')}`;if(left<=0&&target._slCardsClockTimer){clearInterval(target._slCardsClockTimer);target._slCardsClockTimer=null}};updateClock();target._slCardsClockTimer=setInterval(updateClock,200)}
     if(interactive)target.querySelectorAll('button:not(:disabled)').forEach(b=>b.addEventListener('click',()=>onChoose?.(b.dataset.card)));
