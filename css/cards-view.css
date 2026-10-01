@@ -63,9 +63,12 @@
 
 /* OBS CARTAS layout: fixed HUD / cards / voting zones inside 16:9. */
 .obs-overlay-page .obs-stage:has(.sl-diamonds){
-  width:min(1680px,96vw,144vh);
-  max-height:96vh;
+  width:min(1800px,98vw,164vh);
+  min-height:min(980px,94vh);
   overflow:visible!important;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 .obs-overlay-page .sl-diamonds{
   box-sizing:border-box;
@@ -73,23 +76,51 @@
   grid-template-rows:auto auto auto;
   align-content:center;
   width:100%;
-  padding:1.1cqw 3cqw 1.5cqw;
+  padding:.9cqw 2.6cqw 1.25cqw;
 }
 .obs-overlay-page .sl-cards-hud{
-  min-height:clamp(54px,4.8cqw,78px);
-  margin:0 auto .85cqw;
-  gap:clamp(16px,1.5cqw,28px);
+  min-height:clamp(108px,8.6cqw,154px);
+  margin:0 auto .7cqw;
+  display:flex;
+  flex-direction:column;
   align-items:center;
+  justify-content:center;
+  gap:clamp(4px,.34cqw,7px);
   white-space:nowrap;
+  text-align:center;
 }
-.obs-overlay-page .sl-cards-hud strong{
-  font-size:clamp(18px,1.7cqw,30px);
+.obs-overlay-page .sl-cards-status-label{
+  color:#fff;
+  font:900 clamp(18px,1.7cqw,29px)/1 Montserrat,Arial,sans-serif;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  text-shadow:0 3px 8px #000,0 0 16px var(--cards-accent);
 }
 .obs-overlay-page .sl-cards-clock{
-  font-size:clamp(38px,4.4cqw,72px);
+  display:block;
+  color:#fff;
+  font:900 clamp(58px,6.4cqw,108px)/.9 Impact,'Arial Black',sans-serif;
+  letter-spacing:.035em;
+  text-shadow:0 4px 10px #000,0 0 18px rgba(0,0,0,.85);
 }
-.obs-overlay-page .sl-cards-hud>span:last-child{
-  font-size:clamp(14px,1.35cqw,24px);
+.obs-overlay-page .sl-cards-live-meta{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:clamp(14px,1.4cqw,26px);
+  min-height:24px;
+}
+.obs-overlay-page .sl-cards-live-meta span{
+  color:rgba(255,255,255,.78);
+  font:800 clamp(12px,1.12cqw,19px)/1 Montserrat,Arial,sans-serif;
+  letter-spacing:.035em;
+  text-transform:uppercase;
+  text-shadow:0 2px 5px #000;
+}
+.obs-overlay-page .sl-cards-live-meta b{
+  margin-left:.35em;
+  color:#fff;
+  font-weight:900;
 }
 .obs-overlay-page .sl-diamond-layout{
   width:100%;
@@ -106,35 +137,41 @@
   line-height:1;
 }
 .obs-overlay-page .sl-cards-vote-panel{
-  width:92%;
-  margin:clamp(34px,3.2cqw,56px) auto 0;
-  gap:clamp(5px,.42cqw,8px);
+  width:min(72%,1120px);
+  margin:clamp(26px,2.3cqw,40px) auto 0;
+  gap:clamp(7px,.54cqw,10px);
 }
 .obs-overlay-page .sl-cards-vote-row{
-  grid-template-columns:clamp(30px,2.1cqw,40px) minmax(0,1fr) minmax(128px,13cqw);
-  min-height:clamp(34px,2.55cqw,41px);
-  gap:clamp(9px,.72cqw,13px);
-  padding:clamp(5px,.4cqw,7px) clamp(11px,.8cqw,15px);
-  border-radius:14px;
-  background:rgba(9,9,12,.68);
-  border-color:color-mix(in srgb,var(--cards-accent) 34%,rgba(255,255,255,.12));
-  box-shadow:0 5px 16px rgba(0,0,0,.18);
+  grid-template-columns:clamp(36px,2.5cqw,48px) minmax(0,1fr) minmax(150px,14cqw);
+  min-height:clamp(44px,3.25cqw,54px);
+  gap:clamp(12px,.9cqw,17px);
+  padding:clamp(7px,.56cqw,10px) clamp(14px,1cqw,18px);
+  border-radius:16px;
+  background:rgba(20,20,24,.54);
+  border-color:color-mix(in srgb,var(--cards-accent) 40%,rgba(255,255,255,.16));
+  box-shadow:0 5px 16px rgba(0,0,0,.14);
   backdrop-filter:blur(3px);
 }
 .obs-overlay-page .sl-cards-vote-row>b{
-  font-size:clamp(15px,1.35cqw,22px);
+  font-size:clamp(19px,1.55cqw,27px);
 }
 .obs-overlay-page .sl-cards-vote-track{
-  height:clamp(9px,.78cqw,13px);
-  background:rgba(255,255,255,.11);
+  height:clamp(13px,1.02cqw,17px);
+  background:rgba(255,255,255,.14);
 }
 .obs-overlay-page .sl-cards-vote-row>span{
-  font-size:clamp(11px,1cqw,17px);
+  color:rgba(255,255,255,.9);
+  font-size:clamp(14px,1.15cqw,20px);
 }
 .obs-overlay-page .sl-cards-vote-row.is-winner{
-  background:color-mix(in srgb,var(--cards-accent) 12%,rgba(9,9,12,.78));
+  background:color-mix(in srgb,var(--cards-accent) 14%,rgba(20,20,24,.66));
+  border-color:color-mix(in srgb,var(--cards-accent) 72%,rgba(255,255,255,.18));
+}
+.obs-overlay-page .sl-cards-vote-panel.is-pending{
+  visibility:hidden;
+  pointer-events:none;
 }
 @media(max-width:1100px){
-  .obs-overlay-page .obs-stage:has(.sl-diamonds){width:min(96vw,138vh)}
-  .obs-overlay-page .sl-cards-vote-panel{width:94%}
+  .obs-overlay-page .obs-stage:has(.sl-diamonds){width:min(98vw,156vh)}
+  .obs-overlay-page .sl-cards-vote-panel{width:78%}
 }
