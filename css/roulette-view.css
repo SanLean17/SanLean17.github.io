@@ -226,3 +226,24 @@
 .obs-overlay-page .obs-stage .sl-roulette-donor.is-long-name{
   font-size:clamp(19px,2.05cqw,35px);
 }
+
+
+/* OBS donor label v7: isolate the name from the winner glow without changing the glow itself. */
+.obs-overlay-page .sl-killer-card.selected .sl-killer-card-donor,
+.obs-overlay-page .obs-stage .sl-roulette-donor{
+  background:rgba(5,5,7,.84);
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:10px;
+  box-shadow:0 4px 12px rgba(0,0,0,.38);
+  padding:6px 12px!important;
+  -webkit-text-stroke:.35px #050505;
+  text-shadow:0 1px 1px #000,0 2px 3px #000!important;
+  backdrop-filter:blur(1px);
+}
+.obs-overlay-page .sl-killer-card.selected .sl-killer-card-donor{
+  min-width:auto!important;
+  width:max-content!important;
+}
+.obs-overlay-page .obs-stage .sl-roulette-donor{
+  width:max-content!important;
+}
