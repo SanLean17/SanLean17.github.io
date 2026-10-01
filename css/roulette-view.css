@@ -70,3 +70,45 @@
   text-shadow:0 3px 6px #000,0 0 10px #000,0 0 2px rgba(255,255,255,.18);
 }
 .obs-overlay-page .obs-stage .sl-killer-card.selected .sl-killer-card-name{font-size:20px}
+
+
+/* OBS donor labels: keep pulse effect while preserving crisp text at stream scale. */
+@keyframes sl-donor-pulse-crisp{
+  0%,100%{
+    opacity:.9;
+    text-shadow:
+      -2px -2px 0 #050505,
+      2px -2px 0 #050505,
+      -2px 2px 0 #050505,
+      2px 2px 0 #050505,
+      0 0 4px #000,
+      0 0 5px var(--roulette-accent,#ff003c);
+  }
+  50%{
+    opacity:1;
+    text-shadow:
+      -2px -2px 0 #050505,
+      2px -2px 0 #050505,
+      -2px 2px 0 #050505,
+      2px 2px 0 #050505,
+      0 0 5px #000,
+      0 0 10px var(--roulette-accent,#ff003c);
+  }
+}
+.obs-overlay-page .sl-killer-card.selected .sl-killer-card-donor,
+.obs-overlay-page .obs-stage .sl-roulette-donor{
+  -webkit-font-smoothing:antialiased;
+  text-rendering:geometricPrecision;
+  filter:none!important;
+  transform:translateZ(0);
+  animation:sl-donor-pulse-crisp 1.7s ease-in-out infinite!important;
+}
+.obs-overlay-page .sl-killer-card.selected .sl-killer-card-donor{
+  color:#ff003c;
+  font-weight:900;
+  letter-spacing:.01em;
+}
+.obs-overlay-page .obs-stage .sl-roulette-donor{
+  font-weight:900;
+  letter-spacing:.005em;
+}
