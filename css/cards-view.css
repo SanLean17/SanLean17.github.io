@@ -198,3 +198,88 @@
   .obs-overlay-page .sl-diamond-layout{height:470px}
   .obs-overlay-page .sl-cards-vote-panel{max-width:80%}
 }
+
+
+/* OBS CARTAS refinement v7: more air, smaller vote rows, larger live metrics. */
+.obs-overlay-page .sl-diamonds{
+  grid-template-rows:144px 1fr 170px;
+  padding:16px 46px 18px;
+}
+.obs-overlay-page .sl-cards-hud{
+  gap:6px;
+}
+.obs-overlay-page .sl-cards-status-label{
+  font-size:27px;
+  letter-spacing:.11em;
+}
+.obs-overlay-page .sl-cards-clock{
+  font-size:92px;
+}
+.obs-overlay-page .sl-cards-live-meta{
+  gap:30px;
+  min-height:26px;
+}
+.obs-overlay-page .sl-cards-live-meta span{
+  font-size:18px;
+  letter-spacing:.05em;
+}
+.obs-overlay-page .sl-cards-live-meta b{
+  margin-left:6px;
+  font-size:20px;
+}
+.obs-overlay-page .sl-diamond-layout{
+  height:538px;
+}
+.obs-overlay-page .sl-diamond{
+  left:calc(var(--position)*19.2%);
+  width:23.2%;
+  top:24%;
+}
+.obs-overlay-page .sl-diamond.is-upper{
+  top:2%;
+}
+.obs-overlay-page .sl-diamond-caption,
+.obs-overlay-page .sl-diamond.is-upper .sl-diamond-caption{
+  top:101%!important;
+  bottom:auto!important;
+  left:-9%;
+  width:118%;
+  font-size:27px;
+  line-height:1.02;
+}
+.obs-overlay-page .sl-cards-vote-panel{
+  align-self:center;
+  width:940px;
+  max-width:70%;
+  margin:16px auto 0;
+  gap:4px;
+}
+.obs-overlay-page .sl-cards-vote-row{
+  grid-template-columns:34px minmax(0,1fr) 154px;
+  gap:11px;
+  min-height:27px;
+  padding:3px 12px;
+  border-radius:12px;
+  background:rgba(26,26,30,.54);
+}
+.obs-overlay-page .sl-cards-vote-row>b{
+  font-size:16px;
+}
+.obs-overlay-page .sl-cards-vote-track{
+  height:9px;
+}
+.obs-overlay-page .sl-cards-vote-row>span{
+  font-size:13px;
+}
+@media(max-width:1200px){
+  .obs-overlay-page .sl-diamonds{
+    grid-template-rows:136px 1fr 164px;
+    padding:14px 38px 16px;
+  }
+  .obs-overlay-page .sl-cards-clock{font-size:82px}
+  .obs-overlay-page .sl-cards-status-label{font-size:24px}
+  .obs-overlay-page .sl-cards-live-meta span{font-size:16px}
+  .obs-overlay-page .sl-cards-live-meta b{font-size:18px}
+  .obs-overlay-page .sl-diamond-layout{height:510px}
+  .obs-overlay-page .sl-cards-vote-panel{max-width:74%}
+}
