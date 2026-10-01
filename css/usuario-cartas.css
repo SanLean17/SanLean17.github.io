@@ -1,4 +1,4 @@
-@import url('./cards-view.css?v=20261001-2');
+@import url('./cards-view.css?v=20261001-3');
 @import url('./usuario-segmented-control.css');
 /* USUARIO > CARTAS — keep established components; control actions live directly below round configuration. */
 .user-page #streamVotesPanel .cards-platform-box,.user-page #streamVotesPanel .cards-round-box,.user-page #streamVotesPanel .cards-control-box,.user-page #streamVotesPanel .cards-live-box,.user-page #streamVotesPanel .cards-board-box{box-sizing:border-box;width:100%;padding:22px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(8,8,10,.84);margin-top:16px}
