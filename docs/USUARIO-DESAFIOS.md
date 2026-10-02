@@ -120,3 +120,30 @@ WIN STREAK es independiente de METAS y usa su propio overlay `challenge_streak` 
 - El número de la racha aparece al costado.
 - Browser Source recomendada: **520 × 260** con fondo transparente.
 - La actualización del número usa una animación breve y no reinicia ni modifica la racha por sí sola.
+
+
+## DESAFÍOS — orden inline
+
+Cada herramienta se despliega inmediatamente debajo de su propia fila dentro de DESAFÍOS:
+- METAS → contenido de METAS → WIN STREAK → ALL KILLER CHALLENGE → ALL SURVIVOR CHALLENGE.
+- WIN STREAK → contenido de WIN STREAK → resto de herramientas.
+- Volver a pulsar ABRIR/CERRAR pliega únicamente esa herramienta.
+- Sólo una herramienta permanece expandida a la vez.
+
+## Historial
+
+HISTORIAL ocupa todo el ancho de la columna funcional y posee un plegado general.
+Dentro se separan grupos plegables:
+- MIS METAS.
+- WIN STREAK.
+- futuras herramientas equivalentes.
+
+Las filas guardadas incluyen fecha de finalización.
+
+## WIN STREAK — cierre y finalización
+
+- CERRAR termina la sesión activa sin agregarla al historial y devuelve a la configuración para iniciar otra racha/rol.
+- FINALIZAR WIN STREAK guarda rol, Killer cuando corresponda, racha alcanzada y fecha en el historial de WIN STREAK.
+- Superviviente usa el icono de escapes.
+- Killer utiliza el retrato seleccionado del catálogo oficial interno.
+- Browser Source recomendada: **520 × 220 px**.
