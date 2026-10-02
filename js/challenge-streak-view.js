@@ -15,7 +15,7 @@
     if(!preview&&(!v.visible||v.status!=='active')){target.innerHTML='';return}
     const image=v.role==='killer'&&v.killer?.image?escape(v.killer.image):'../assets/usuario/desafios/metas/escapes.png';
     const alt=v.role==='killer'?(v.killer?.name||'Killer'):'Superviviente';
-    target.innerHTML=`<div class="sl-streak-view${preview?' is-preview':''}">
+    target.innerHTML=`<div class="sl-streak-view${preview?' is-preview':''}" data-role="${escape(v.role)}">
       <div class="sl-streak-title"><span>WIN</span><b>STREAK</b></div>
       <div class="sl-streak-main ${v.layout==='image-right'?'is-image-right':''}">
         <div class="sl-streak-image"><img src="${image}" alt="${escape(alt)}"></div>
