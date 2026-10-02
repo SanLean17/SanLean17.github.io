@@ -438,5 +438,545 @@
       400,
       490
     ]
+  },
+  "survivors/S01_DwightFairfield_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      28,
+      332,
+      464
+    ]
+  },
+  "survivors/S02_MegThomas_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      79,
+      31,
+      353,
+      461
+    ]
+  },
+  "survivors/S03_ClaudetteMorel_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      121,
+      32,
+      323,
+      460
+    ]
+  },
+  "survivors/S04_JakePark_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      81,
+      43,
+      363,
+      449
+    ]
+  },
+  "survivors/S05_NeaKarlsson_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      116,
+      38,
+      328,
+      454
+    ]
+  },
+  "survivors/S06_LaurieStrode_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      44,
+      328,
+      446
+    ]
+  },
+  "survivors/S07_AceVisconti_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      80,
+      42,
+      364,
+      450
+    ]
+  },
+  "survivors/S08_WilliamBillOverbeck_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      108,
+      37,
+      336,
+      455
+    ]
+  },
+  "survivors/S09_FengMin_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      92,
+      42,
+      352,
+      450
+    ]
+  },
+  "survivors/S10_DavidKing_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      38,
+      380,
+      454
+    ]
+  },
+  "survivors/S11_QuentinSmith_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      39,
+      360,
+      453
+    ]
+  },
+  "survivors/S12_DetectiveDavidTapp_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      36,
+      382,
+      456
+    ]
+  },
+  "survivors/S13_KateDenson_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      103,
+      42,
+      340,
+      447
+    ]
+  },
+  "survivors/S14_AdamFrancis_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      120,
+      40,
+      324,
+      452
+    ]
+  },
+  "survivors/S15_JeffJohansen_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      32,
+      380,
+      460
+    ]
+  },
+  "survivors/S16_JaneRomero_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      44,
+      380,
+      448
+    ]
+  },
+  "survivors/S17_AshleyJWilliams_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      76,
+      39,
+      368,
+      453
+    ]
+  },
+  "survivors/S18_SteveHarrington_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      110,
+      32,
+      334,
+      460
+    ]
+  },
+  "survivors/T_UI_S19_NancyWheeler_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      88,
+      60,
+      316,
+      440
+    ]
+  },
+  "survivors/S20_YuiKimura_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      77,
+      33,
+      371,
+      458
+    ]
+  },
+  "survivors/S21_ZarinaKassir_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      72,
+      36,
+      360,
+      456
+    ]
+  },
+  "survivors/S22_CherylMason_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      44,
+      376,
+      448
+    ]
+  },
+  "survivors/S23_FelixRichter_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      116,
+      28,
+      328,
+      464
+    ]
+  },
+  "survivors/S24_ElodieRakoto_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      116,
+      24,
+      332,
+      468
+    ]
+  },
+  "survivors/S25_YunJinLee_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      44,
+      380,
+      448
+    ]
+  },
+  "survivors/S26_JillValentine_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      132,
+      46,
+      312,
+      446
+    ]
+  },
+  "survivors/S27_LeonSKennedy_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      42,
+      380,
+      450
+    ]
+  },
+  "survivors/S28_MikaelaReid_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      44,
+      380,
+      448
+    ]
+  },
+  "survivors/S29_JonahVasquez_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      34,
+      376,
+      458
+    ]
+  },
+  "survivors/S30_YoichiAsakawa_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      112,
+      34,
+      332,
+      458
+    ]
+  },
+  "survivors/S31_HaddieKaur_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      46,
+      380,
+      446
+    ]
+  },
+  "survivors/S32_AdaWong_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      34,
+      304,
+      458
+    ]
+  },
+  "survivors/S33_RebeccaChambers_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      36,
+      380,
+      456
+    ]
+  },
+  "survivors/S34_VittorioToscano_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      30,
+      380,
+      462
+    ]
+  },
+  "survivors/S35_ThalitaLyra_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      73,
+      44,
+      371,
+      447
+    ]
+  },
+  "survivors/S36_RenatoLyra_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      22,
+      376,
+      469
+    ]
+  },
+  "survivors/S37_GabrielSoma_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      41,
+      348,
+      451
+    ]
+  },
+  "survivors/S38_NicolasCage_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      32,
+      380,
+      460
+    ]
+  },
+  "survivors/S39_EllenRipley_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      23,
+      380,
+      469
+    ]
+  },
+  "survivors/S40_AlanWake_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      25,
+      380,
+      467
+    ]
+  },
+  "survivors/S41_SableWard_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      116,
+      56,
+      328,
+      436
+    ]
+  },
+  "survivors/S42_TheTroupe_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      44,
+      48,
+      452,
+      462
+    ]
+  },
+  "survivors/S43_LaraCroft_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      124,
+      48,
+      328,
+      462
+    ]
+  },
+  "survivors/S44_TrevorBelmont_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      72,
+      36,
+      372,
+      474
+    ]
+  },
+  "survivors/S45_TaurieCain_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      44,
+      44,
+      400,
+      466
+    ]
+  },
+  "survivors/S46_OrelaRose_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      88,
+      63,
+      356,
+      417
+    ]
+  },
+  "survivors/S47_RickGrimes_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      44,
+      36,
+      396,
+      475
+    ]
+  },
+  "survivors/S48_MichonneGrimes_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      48,
+      372,
+      462
+    ]
+  },
+  "survivors/T_UI_S49_VeeBoonyasak_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      72,
+      56,
+      368,
+      454
+    ]
+  },
+  "survivors/T_UI_S50_DustinHenderson_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      60,
+      63,
+      384,
+      447
+    ]
+  },
+  "survivors/T_UI_S51_Eleven_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      88,
+      55,
+      356,
+      455
+    ]
+  },
+  "survivors/T_UI_S52_KwonTaeYoung_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      44,
+      66,
+      396,
+      444
+    ]
+  },
+  "survivors/T_UI_S53_ShaneWiigwaas_Portrait.webp": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      48,
+      376,
+      462
+    ]
+  },
+  "survivors/T_UI_S54_Aurora_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      56,
+      40,
+      388,
+      471
+    ]
   }
 }

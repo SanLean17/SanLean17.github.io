@@ -227,7 +227,7 @@ ALL KILLER CHALLENGE usa el catálogo real `data/killers.json`; la cantidad no s
 - Overlay independiente `challenge_all_killers`.
 - Browser Source recomendada: **1920 × 300 px**.
 - El roster OBS llena filas de hasta 19 Killers. Con 44 Killers: **19 / 19 / 6**, sin omitir personajes.
-- Todas las cartas mantienen el mismo tamaño; la última fila queda centrada.
+- Todas las cartas mantienen el mismo tamaño; la última fila admite izquierda, centro (predeterminado) o derecha.
 - El pulso del Killer actual es CSS local y no genera tráfico de red adicional.
 
 ### Historial
@@ -239,7 +239,7 @@ Cada registro guarda:
 - fallidos y pendientes.
 
 ### Arquitectura reutilizable
-El renderer `challenge-roster-view.js` es compartido y se diseñó para reutilizarse en ALL SURVIVOR CHALLENGE cambiando catálogo, textos y reglas de resultado, sin duplicar la capa visual.
+Los dos challenges comparten `challenge-roster-view.js` y el controlador `usuario-all-killer-challenge.js`, parametrizado por tipo, catálogo, textos e IDs. Cada instancia mantiene su sesión e historial independientes.
 
 
 ### Ajuste visual OBS ALL KILLER
@@ -247,12 +247,25 @@ El renderer `challenge-roster-view.js` es compartido y se diseñó para reutiliz
 - Las filas no usan gap horizontal ni vertical: las cartas quedan pegadas entre sí.
 - Fondo de carta restaurado a `rgba(8,8,10,.78)`; retratos a opacidad completa en todos los estados.
 - Completado y fallido mantienen B/N, pero sin transparencia excesiva para conservar legibilidad.
-- Medida recomendada actual: **1920 × 300 px**: tres filas de cartas de 100 × 100 px. Las dos primeras contienen 19 Killers, con 10 px libres a cada lado; la última conserva sus 6 cartas centradas.
+- Medida recomendada actual: **1920 × 300 px**: tres filas de cartas de 100 px de alto y 1920/19 ≈ 101,05 px de ancho, para llegar a ambos extremos sin margen lateral. Killers: 19 / 19 / 6; Survivors: 19 / 19 / 16.
 - El contenedor OBS ocupa el ancho y alto reales de la fuente; se elimina el límite heredado de 1200 px que cortaba las primeras columnas al centrar un roster de 1920 px.
-- El encuadre OBS usa los límites de transparencia de `data/challenge-roster-bounds.json`, medidos con `tests/build-roster-bounds.py`. Un SVG con `preserveAspectRatio="xMidYMid meet"` amplía el retrato completo hasta el límite interior de la carta (98 × 98 px a la medida recomendada). Sólo se excluye margen totalmente transparente: los archivos originales y todos sus píxeles visibles permanecen intactos.
+- El encuadre OBS usa los límites de transparencia de `data/challenge-roster-bounds.json`, medidos con `tests/build-roster-bounds.py`. Un SVG con `preserveAspectRatio="xMidYMid meet"` amplía el retrato completo hasta el límite interior de la carta (aproximadamente 99 × 98 px a la medida recomendada). Sólo se excluye margen totalmente transparente: los archivos originales y todos sus píxeles visibles permanecen intactos.
 - Las nuevas imágenes sin límites medidos se muestran completas con `object-fit:contain` como respaldo. Al ampliar el catálogo, ejecutar el medidor para aprovechar también sus márgenes vacíos.
 - Trazo de separación entre cartas: borde de 1 px `rgba(255,255,255,.3)`. Las marcas ✓/× se ubican en el 28% inferior de la carta para despejar la cara, con sombra oscura para mantener contraste.
 - La altura se adapta si falta espacio. Una fuente más alta deja espacio transparente debajo sin agrandar las cartas. Cada nueva fila requiere 100 px adicionales; a partir de 58 Killers usar 1920 × 400.
 - El pulso rojo se dibuja dentro de la carta, por lo que sigue visible en los bordes de la fuente. La entrada/salida usa opacidad sin escalar el roster.
 - En OBS: actualizar la fuente de navegador y usar 1920 × 300. Usar escala 100% (1920 × 300 en el lienzo), eliminando la reducción manual anterior; conservar la posición superior deseada. No estirar esta barra a la altura total de la escena.
 - Validación: `node tests/challenge-roster-layout.cjs` comprueba los píxeles visibles de las 44 imágenes contra el encuadre, filas centradas hasta los bordes, marcas inferiores, estados, pausa/continuar, ocultar/mostrar y respaldo sin límites medidos. Usa datos aislados en siete tamaños entre 320 y 1920 px. No escribe datos reales.
+
+
+### ALL SURVIVOR CHALLENGE y alineación persistente
+- Catálogo privado `data/survivors.json`: 54 retratos existentes en `survivors/`, sin alterar la WEB pública ni las imágenes originales.
+- Overlay independiente `challenge_all_survivors`, creado por el cargador habitual de OVERLAYS OBS con sus propias URLs pública y de control.
+- Mismo flujo de Killers: INICIAR, buscar/seleccionar personaje, MARCAR ESCAPE, MARCAR DERROTA, VOLVER A PENDIENTE, PAUSAR/CONTINUAR, OCULTAR/MOSTRAR y FINALIZAR. Finalizar guarda fechas, duración y contadores en su propio historial.
+- Ambos paneles tienen el control segmentado canónico ÚLTIMA FILA EN OBS: IZQUIERDA / CENTRO / DERECHA. Se persiste en `stream_overlays.settings.lastRowAlignment` y conserva el historial y la sesión. Registros anteriores sin esa opción usan centro.
+- La opción se puede cambiar antes de iniciar, durante la sesión o en pausa. La medida OBS se calcula desde el catálogo: actualmente ambos usan **1920 × 300**, escala 100%.
+- La migración `allow_all_survivor_challenge_overlay` sólo amplía el CHECK de tipos de overlay. Conserva RLS, permisos, índices únicos por workspace/tipo y los tokens independientes.
+- Inicio reservado al propietario, controles operativos para miembros con permiso `overlays`, conforme a las reglas existentes. Cada escritura filtra por overlay y workspace; una respuesta tardía no modifica otro stream al cambiar de workspace.
+- Verificación: `tests/all-challenges.cjs` cubre ambos paneles en desktop y móvil, persistencia, independencia, fallos y cambio de workspace. Ejecutar `tests/challenge-roster-layout.cjs` con `ROSTER_ROLE=killers` y `ROSTER_ROLE=survivors` para ambos catálogos y las tres alineaciones.
+- `tests/all-challenges-database.sql` verificó el nuevo tipo, acceso del propietario, tokens de lectura/control y rechazo de usuarios ajenos dentro de una transacción revertida. No conserva datos de prueba. Requiere que aún no exista el overlay Survivor en el workspace elegido.
+- La revisión de seguridad mantuvo los RPC de overlay por token existentes: su ejecución pública es intencional y el token privado sigue siendo necesario para escribir. Referencia del aviso: https://supabase.com/docs/guides/database/database-linter?lint=0028_anon_security_definer_function_executable

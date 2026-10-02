@@ -1,4 +1,4 @@
-@import url('usuario-segmented-control.css');
+@import url('usuario-segmented-control.css?v=20261002-1');
 .challenges-panel{--challenge-accent:var(--sl-accent,#FF003C)}
 .challenge-selector{margin-bottom:var(--sl-section-gap)!important;padding-top:10px!important;padding-bottom:10px!important}
 .challenge-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:28px;min-height:86px;padding:18px 0;border-bottom:1px solid var(--sl-border)}

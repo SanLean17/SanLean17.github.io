@@ -24,7 +24,7 @@ const root=path.resolve(__dirname,'..');
   // Execute the unchanged OVERLAYS OBS renderer with isolated workspaces and tokens.
   const panel=await browser.newPage();await panel.route('**/*',r=>r.fulfill({contentType:'text/html',body:'<select id="workspaceSelect"></select><div id="overlayGrid"></div>'}));await panel.goto('https://fixture.test/Usuario/test.html');
   await panel.evaluate(()=>{
-   const kinds=['roulette_killers','roulette_killer_perks','roulette_survivor_perks','vote','challenge_goal','challenge_streak','challenge_all_killers','giveaway'];
+   const kinds=['roulette_killers','roulette_killer_perks','roulette_survivor_perks','vote','challenge_goal','challenge_streak','challenge_all_killers','challenge_all_survivors','giveaway'];
    window.SANLEAN_SUPABASE={url:'fixture',publishableKey:'fixture'};
    window.supabase={createClient:()=>({auth:{getSession:async()=>({data:{session:{user:{id:'collaborator'}}}}),onAuthStateChange:()=>{}},from:table=>{
     const q={select:()=>q,eq:()=>q,order:()=>Promise.resolve({data:table==='streamer_workspaces'?[{id:'workspace-test',name:'TEST',owner_user_id:'owner'}]:kinds.map(kind=>({id:kind,kind,public_token:'public-'+kind,control_token:'private-'+kind,state:{status:'paused',visible:false},settings:{}}))}),maybeSingle:async()=>({data:null})};return q;
@@ -32,7 +32,7 @@ const root=path.resolve(__dirname,'..');
   });
   await panel.addScriptTag({content:fs.readFileSync(path.join(root,'js/stream-tools.js'),'utf8')});await panel.evaluate(()=>window.dispatchEvent(new Event('DOMContentLoaded')));
   await panel.waitForSelector('.overlay-card');
-  for(const [kind,label]of [['challenge_goal','META'],['challenge_streak','WIN STREAK']]){
+  for(const [kind,label]of [['challenge_goal','META'],['challenge_streak','WIN STREAK'],['challenge_all_killers','ALL KILLER CHALLENGE'],['challenge_all_survivors','ALL SURVIVOR CHALLENGE']]){
    const card=panel.locator('.overlay-card').filter({has:panel.getByRole('heading',{name:label,exact:true})});
    assert.equal(await card.locator('input').first().inputValue(),'https://fixture.test/Usuario/overlay.html?token=public-'+kind);
   }

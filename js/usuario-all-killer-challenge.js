@@ -1,11 +1,19 @@
-/* SANLEAN — USUARIO > DESAFÍOS > ALL KILLER CHALLENGE. */
+/* SANLEAN — shared ALL KILLER / ALL SURVIVOR challenge controller. */
 (()=>{
   const cfg=window.SANLEAN_SUPABASE;if(!cfg||!window.supabase)return;
   const client=window.supabase.createClient(cfg.url,cfg.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
-  const $=id=>document.getElementById(id),tools=()=>window.SanLeanStreamTools;
+  function createChallenge({kind,prefix,title,role,plural,singular,example,winLabel,loseLabel}){
+  const id=value=>value.replace(/^allKiller/,prefix);
+  const $=value=>document.getElementById(id(value)),tools=()=>window.SanLeanStreamTools;
+  // Keep one canonical template and localize only fixed UI copy, never catalog names.
+  const ui=markup=>markup.replaceAll('allKiller',prefix).replaceAll('ALL KILLER CHALLENGE',title)
+    .replaceAll('KILLERS',plural.toUpperCase()).replaceAll('Killers',plural).replaceAll('KILLER',singular.toUpperCase()).replaceAll('Killer',singular)
+    .replaceAll('EJ. ONI, MYERS, CAZADORA...',example).replaceAll('MARCAR GANADO',winLabel).replaceAll('MARCAR PERDIDO',loseLabel)
+    .replaceAll('victorias y derrotas',role==='survivors'?'escapes y derrotas':'victorias y derrotas')
+    .replaceAll('victoria o derrota',role==='survivors'?'escape o derrota':'victoria o derrota');
   let open=false,busy=false,catalog=[],search='',installed=false;
 
-  const overlay=()=>tools()?.getOverlays?.().find(o=>o.kind==='challenge_all_killers')||null;
+  const overlay=()=>tools()?.getOverlays?.().find(o=>o.kind===kind)||null;
   const workspace=()=>tools()?.getWorkspace?.()||null;
   const isActive=o=>o?.state?.status==='active';
   const isPaused=o=>o?.state?.status==='paused';
@@ -16,31 +24,40 @@
 
   async function loadCatalog(){
     if(catalog.length)return catalog;
-    const r=await fetch('../data/killers.json',{cache:'no-store'});if(!r.ok)throw new Error('No se pudo cargar el catálogo de Killers.');
+    const r=await fetch(`../data/${role}.json`,{cache:'no-store'});if(!r.ok)throw new Error('No se pudo cargar el catálogo de Killers.');
     const rows=await r.json();
-    catalog=rows.filter(x=>x?.key&&x?.image).map(x=>({...x,image:'../'+String(x.image).replace(/^\.\.\//,'').replace(/^\//,''),search:norm(`${x.key} ${x.name||''} ${aliases[x.key]||''}`)}));
+    catalog=rows.filter(x=>x?.key&&x?.image).map(x=>({...x,image:'../'+String(x.image).replace(/^\.\.\//,'').replace(/^\//,''),search:norm(`${x.key} ${x.name||''} ${role==='killers'?aliases[x.key]||'':''}`)}));
     return catalog;
   }
 
   function install(){
     if(installed)return;const selector=$('challengeSelector');if(!selector)return;
-    const row=[...selector.querySelectorAll('.challenge-row')].find(r=>r.querySelector('h3')?.textContent.trim()==='ALL KILLER CHALLENGE');if(!row)return;
+    const row=[...selector.querySelectorAll('.challenge-row')].find(r=>r.querySelector('h3')?.textContent.trim()===title);if(!row)return;
     installed=true;
-    const copy=row.querySelector('.challenge-copy p');if(copy)copy.textContent='Completá todos los Killers, registrá victorias y derrotas y conservá el progreso entre streams.';const actions=row.querySelector('.module-actions');actions.innerHTML='<button id="allKillerOpen" class="module-secondary challenge-open-btn" type="button" aria-expanded="false"><span>ABRIR</span><i class="challenge-open-chevron" aria-hidden="true"></i></button>';
-    const inline=document.createElement('div');inline.id='allKillerInline';inline.className='challenge-inline-area';inline.hidden=true;row.insertAdjacentElement('afterend',inline);
-    inline.innerHTML=`<section id="allKillerPanel" class="module-box all-challenge-panel">
+    const copy=row.querySelector('.challenge-copy p');if(copy)copy.textContent=ui('Completá todos los Killers, registrá victorias y derrotas y conservá el progreso entre streams.');const actions=row.querySelector('.module-actions');actions.innerHTML=ui('<button id="allKillerOpen" class="module-secondary challenge-open-btn" type="button" aria-expanded="false"><span>ABRIR</span><i class="challenge-open-chevron" aria-hidden="true"></i></button>');
+    const inline=document.createElement('div');inline.id=id('allKillerInline');inline.className='challenge-inline-area';inline.hidden=true;row.insertAdjacentElement('afterend',inline);
+    inline.innerHTML=ui(`<section id="allKillerPanel" class="module-box all-challenge-panel">
       <div class="challenge-config-head"><div><span>ALL KILLER CHALLENGE</span><h3>CONFIGURACIÓN</h3><p>Completá el roster de Killers. Seleccioná el personaje que estás jugando y registrá cada victoria o derrota.</p></div></div>
-      <div id="allKillerSetup"><div class="all-challenge-intro"><strong id="allKillerTotalLabel">44 KILLERS</strong><p>El tiempo del desafío se registra internamente sólo mientras la sesión está activa.</p></div><div class="module-actions challenge-goal-actions"><button id="allKillerStart" class="module-primary" type="button">INICIAR ALL KILLER CHALLENGE</button></div></div>
+      <div class="challenge-streak-layout cards-choice-field">
+        <span class="cards-choice-label">ÚLTIMA FILA EN OBS</span>
+        <div id="allKillerAlignment" class="cards-segmented" data-segments="3" role="group" aria-label="Alineación de la última fila">
+          <button type="button" data-alignment="left" aria-pressed="false">IZQUIERDA</button>
+          <button type="button" data-alignment="center" aria-pressed="true">CENTRO</button>
+          <button type="button" data-alignment="right" aria-pressed="false">DERECHA</button>
+        </div>
+        <p id="allKillerObsSize" class="ui-field-help">Se guarda para este challenge y este stream.</p>
+      </div>
+      <div id="allKillerSetup"><div class="all-challenge-intro"><strong id="allKillerTotalLabel">CARGANDO...</strong><p>El tiempo del desafío se registra internamente sólo mientras la sesión está activa.</p></div><div class="module-actions challenge-goal-actions"><button id="allKillerStart" class="module-primary" type="button">INICIAR ALL KILLER CHALLENGE</button></div></div>
       <div id="allKillerLive" hidden>
         <div class="challenge-active-head"><div><span id="allKillerStateLabel">CHALLENGE ACTIVO</span><h3>CONTROL</h3></div></div>
-        <div class="all-challenge-stats"><div><span>COMPLETADOS</span><strong id="allKillerCompleted">0 / 44</strong></div><div><span>FALLIDOS</span><strong id="allKillerFailed">0</strong></div><div><span>PENDIENTES</span><strong id="allKillerPending">44</strong></div></div>
+        <div class="all-challenge-stats"><div><span>COMPLETADOS</span><strong id="allKillerCompleted">0 / 0</strong></div><div><span>FALLIDOS</span><strong id="allKillerFailed">0</strong></div><div><span>PENDIENTES</span><strong id="allKillerPending">0</strong></div></div>
         <label class="all-challenge-search">BUSCAR KILLER<input id="allKillerSearch" type="search" placeholder="EJ. ONI, MYERS, CAZADORA..." autocomplete="off"></label>
         <div id="allKillerGrid" class="all-challenge-grid"></div>
         <div id="allKillerSelection" class="all-challenge-selection" hidden><div><span>KILLER ACTUAL</span><strong id="allKillerSelectedName">—</strong></div><div class="all-challenge-result-actions"><button id="allKillerWin" class="ui-btn ui-btn-primary" type="button">MARCAR GANADO</button><button id="allKillerLose" class="ui-btn ui-btn-secondary" type="button">MARCAR PERDIDO</button><button id="allKillerPendingBtn" class="ui-btn ui-btn-secondary" type="button">VOLVER A PENDIENTE</button></div></div>
         <div class="module-actions challenge-active-actions all-challenge-session-actions"><button id="allKillerPause" class="module-secondary" type="button">PAUSAR</button><button id="allKillerObs" class="module-secondary" type="button">OCULTAR EN OBS</button><button id="allKillerFinish" class="module-secondary challenge-danger" type="button">FINALIZAR CHALLENGE</button></div>
         <p class="ui-field-help">PAUSAR conserva todo el progreso y detiene el tiempo acumulado. FINALIZAR lo guarda en el historial.</p>
       </div><p id="allKillerStatus" class="module-status" role="status"></p>
-    </section>`;
+    </section>`);
 
     installHistory();
     bind();
@@ -50,12 +67,12 @@
 
   function installHistory(){
     const body=$('challengeHistoryBody');if(!body||$('allKillerHistoryToggle'))return;
-    const group=document.createElement('section');group.className='challenge-history-group';group.innerHTML=`<button id="allKillerHistoryToggle" class="challenge-library-toggle" type="button" aria-expanded="false"><span><small>HISTORIAL</small><strong>ALL KILLER CHALLENGE</strong></span><i class="challenge-open-chevron" aria-hidden="true"></i></button><div id="allKillerHistoryBody" class="challenge-history-body" hidden><div id="allKillerHistory" class="challenge-history-list"></div><p id="allKillerHistoryEmpty" class="challenge-empty">TODAVÍA NO HAY ALL KILLER CHALLENGES GUARDADOS.</p></div>`;
+    const group=document.createElement('section');group.className='challenge-history-group';group.innerHTML=ui(`<button id="allKillerHistoryToggle" class="challenge-library-toggle" type="button" aria-expanded="false"><span><small>HISTORIAL</small><strong>ALL KILLER CHALLENGE</strong></span><i class="challenge-open-chevron" aria-hidden="true"></i></button><div id="allKillerHistoryBody" class="challenge-history-body" hidden><div id="allKillerHistory" class="challenge-history-list"></div><p id="allKillerHistoryEmpty" class="challenge-empty">TODAVÍA NO HAY ALL KILLER CHALLENGES GUARDADOS.</p></div>`);
     body.appendChild(group);
-    group.querySelector('#allKillerHistoryToggle').addEventListener('click',e=>{const b=e.currentTarget,expanded=b.getAttribute('aria-expanded')==='true';b.setAttribute('aria-expanded',String(!expanded));$('allKillerHistoryBody').hidden=expanded});
+    group.querySelector('button').addEventListener('click',e=>{const b=e.currentTarget,expanded=b.getAttribute('aria-expanded')==='true';b.setAttribute('aria-expanded',String(!expanded));$('allKillerHistoryBody').hidden=expanded});
   }
 
-  function setStatus(t=''){$('allKillerStatus')&&($('allKillerStatus').textContent=t)}
+  function setStatus(t=''){$('allKillerStatus')&&($('allKillerStatus').textContent=ui(t))}
   function stateOf(key){return overlay()?.state?.entries?.[key]||'pending'}
   function counts(){
     let completed=0,failed=0;for(const k of catalog){const s=stateOf(k.key);if(s==='completed')completed++;else if(s==='failed')failed++}
@@ -73,12 +90,19 @@
     const o=overlay(),ws=workspace();if(!o||!ws)throw new Error('ALL KILLER CHALLENGE todavía no está disponible.');
     const update={updated_at:new Date().toISOString()};if(patch.settings)update.settings=patch.settings;if(patch.state)update.state=patch.state;
     const {data,error}=await client.from('stream_overlays').update(update).eq('id',o.id).eq('workspace_id',ws.id).select('*').single();if(error||!data)throw error||new Error('No se pudo guardar el challenge.');
-    const current=overlay();if(current){if(patch.settings)current.settings=data.settings;if(patch.state)current.state=data.state}
-    window.dispatchEvent(new CustomEvent('sanlean:challenge-all-killers',{detail:data}));window.dispatchEvent(new CustomEvent('sanlean:overlays-updated'));return data;
+    const current=overlay();if(current?.id===o.id&&workspace()?.id===ws.id){if(patch.settings)current.settings=data.settings;if(patch.state)current.state=data.state}
+    window.dispatchEvent(new CustomEvent('sanlean:challenge-all-updated',{detail:data}));window.dispatchEvent(new CustomEvent('sanlean:overlays-updated'));return data;
+  }
+
+  async function saveAlignment(value){
+    if(busy||!['left','center','right'].includes(value)||!overlay())return;
+    busy=true;setStatus('');refresh();
+    try{const o=overlay();await write({settings:{...(o.settings||{}),lastRowAlignment:value}})}
+    catch(err){setStatus(err.message||'No se pudo guardar la alineación.')}finally{busy=false;refresh()}
   }
 
   async function start(){
-    if(busy)return;const o=overlay();if(!o||isSession(o))return;busy=true;setStatus('');
+    if(busy)return;const o=overlay();if(!o||isSession(o)||!catalog.length)return;busy=true;setStatus('');
     try{
       if(!tools()?.isOwner?.())throw new Error('La configuración pertenece al propietario del stream.');
       const now=new Date().toISOString(),entries={};catalog.forEach(k=>entries[k.key]='pending');
@@ -133,8 +157,11 @@
   function refresh(){
     if(!installed)return;const o=overlay(),session=isSession(o),paused=isPaused(o),state=o?.state||{},c=counts();
     $('allKillerInline').hidden=!open;$('allKillerOpen').setAttribute('aria-expanded',String(open));$('allKillerOpen').querySelector('span').textContent=open?'CERRAR':'ABRIR';
+    const alignment=['left','center','right'].includes(o?.settings?.lastRowAlignment)?o.settings.lastRowAlignment:'center';
+    $('allKillerAlignment').querySelectorAll('[data-alignment]').forEach(button=>{button.setAttribute('aria-pressed',String(button.dataset.alignment===alignment));button.disabled=busy||!o});
     $('allKillerSetup').hidden=session;$('allKillerLive').hidden=!session;
-    $('allKillerTotalLabel').textContent=`${catalog.length||44} KILLERS`;
+    $('allKillerTotalLabel').textContent=`${catalog.length} ${plural.toUpperCase()}`;
+    $('allKillerObsSize').textContent=`Se guarda para este challenge y este stream. OBS: 1920 × ${Math.max(1,Math.ceil(catalog.length/19))*100} px.`;
     if(session){
       $('allKillerStateLabel').textContent=paused?'CHALLENGE PAUSADO':'CHALLENGE ACTIVO';
       $('allKillerCompleted').textContent=`${c.completed} / ${catalog.length}`;$('allKillerFailed').textContent=String(c.failed);$('allKillerPending').textContent=String(c.pending);
@@ -144,22 +171,27 @@
       const obs=$('allKillerObs');obs.textContent=paused?'OCULTO EN PAUSA':state.visible===false?'MOSTRAR EN OBS':'OCULTAR EN OBS';obs.disabled=busy||paused;
       $('allKillerFinish').disabled=busy;
     }
-    $('allKillerStart').disabled=busy||!tools()?.isOwner?.()||session;
+    $('allKillerStart').disabled=busy||!tools()?.isOwner?.()||session||!catalog.length||!o;
     renderGrid();renderHistory();
   }
 
   function toggleOpen(){
     open=!open;
-    if(open){['goalConfigureOpen','streakConfigureOpen'].forEach(id=>{const b=$(id);if(b?.getAttribute('aria-expanded')==='true')b.click()})}
+    if(open){['goalConfigureOpen','streakConfigureOpen',prefix==='allKiller'?'allSurvivorOpen':'allKillerOpen'].forEach(buttonId=>{const b=document.getElementById(buttonId);if(b?.getAttribute('aria-expanded')==='true')b.click()})}
     refresh();if(open)setTimeout(()=>$('allKillerPanel')?.scrollIntoView({behavior:'smooth',block:'nearest'}),40);
   }
 
   function bind(){
+    ['goalConfigureOpen','streakConfigureOpen'].forEach(buttonId=>document.getElementById(buttonId)?.addEventListener('click',e=>{if(open&&e.currentTarget.getAttribute('aria-expanded')==='true'){open=false;refresh()}}));
+    $('allKillerAlignment').addEventListener('click',e=>{const b=e.target.closest('[data-alignment]');if(b)saveAlignment(b.dataset.alignment)});
     $('allKillerOpen').addEventListener('click',toggleOpen);$('allKillerStart').addEventListener('click',start);$('allKillerSearch').addEventListener('input',e=>{search=e.currentTarget.value;renderGrid()});
     $('allKillerWin').addEventListener('click',()=>mark('completed'));$('allKillerLose').addEventListener('click',()=>mark('failed'));$('allKillerPendingBtn').addEventListener('click',()=>mark('pending'));
     $('allKillerPause').addEventListener('click',pauseOrContinue);$('allKillerObs').addEventListener('click',toggleObs);$('allKillerFinish').addEventListener('click',finish);
-    window.addEventListener('sanlean:overlays-updated',refresh);window.addEventListener('sanlean:challenge-all-killers',refresh);window.addEventListener('sanlean:section',refresh);
+    window.addEventListener('sanlean:overlays-updated',refresh);window.addEventListener('sanlean:challenge-all-updated',refresh);window.addEventListener('sanlean:section',refresh);
   }
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(install,80),{once:true});else setTimeout(install,80);
+  }
+  createChallenge({kind:'challenge_all_killers',prefix:'allKiller',title:'ALL KILLER CHALLENGE',role:'killers',plural:'Killers',singular:'Killer',example:'EJ. ONI, MYERS, CAZADORA...',winLabel:'MARCAR GANADO',loseLabel:'MARCAR PERDIDO'});
+  createChallenge({kind:'challenge_all_survivors',prefix:'allSurvivor',title:'ALL SURVIVOR CHALLENGE',role:'survivors',plural:'Supervivientes',singular:'Superviviente',example:'EJ. DWIGHT, MEG, SABLE...',winLabel:'MARCAR ESCAPE',loseLabel:'MARCAR DERROTA'});
 })();

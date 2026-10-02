@@ -1,19 +1,20 @@
 /* SANLEAN — roster visual compartido para ALL KILLER / ALL SURVIVOR CHALLENGE. */
 (()=>{
-  let killerCatalog=null,killerLoading=null,lastTarget=null,lastData=null,lastOptions=null;
+  const catalogs={},loading={},pending=new WeakMap();
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-  async function loadKillers(){
-    if(killerCatalog)return killerCatalog;
-    if(killerLoading)return killerLoading;
-    killerLoading=Promise.all([
-      fetch('../data/killers.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('No se pudo cargar el catálogo de Killers.');return r.json()}),
-      fetch('../data/challenge-roster-bounds.json?v=20261002-1').then(r=>r.ok?r.json():{}).catch(()=>({}))
+  async function loadCatalog(role='killers'){
+    role=role==='survivors'?'survivors':'killers';
+    if(catalogs[role])return catalogs[role];
+    if(loading[role])return loading[role];
+    loading[role]=Promise.all([
+      fetch(`../data/${role}.json`,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('No se pudo cargar el catálogo.');return r.json()}),
+      fetch('../data/challenge-roster-bounds.json?v=20261002-2').then(r=>r.ok?r.json():{}).catch(()=>({}))
     ]).then(([rows,bounds])=>{
-      killerCatalog=rows.filter(x=>x?.key&&x?.image).map(x=>{const source=String(x.image).replace(/^\.\.\//,'').replace(/^\//,'');return {...x,image:'../'+source,portraitBounds:bounds[source]}});
-      return killerCatalog;
-    }).finally(()=>killerLoading=null);
-    return killerLoading;
+      catalogs[role]=rows.filter(x=>x?.key&&x?.image).map(x=>{const source=String(x.image).replace(/^\.\.\//,'').replace(/^\//,'');return {...x,image:'../'+source,portraitBounds:bounds[source]}});
+      return catalogs[role];
+    }).finally(()=>delete loading[role]);
+    return loading[role];
   }
 
   function rowsBalanced(items,count=3){
@@ -36,10 +37,11 @@
   }
 
   function renderNow(target,data,{preview=false}={}){
-    const state=data?.state||{},catalog=killerCatalog||[];
+    const state=data?.state||{},catalog=catalogs[data?.kind==='challenge_all_survivors'?'survivors':'killers']||[];
     if(!preview&&(state.visible===false||!['active','paused'].includes(state.status))){target.innerHTML='';return}
     const current=state.currentKey||'',rows=preview?rowsBalanced(catalog,3):rowsForObs(catalog),maxCols=preview?Math.max(1,...rows.map(r=>r.length)):19;
-    target.innerHTML=`<div class="sl-roster-view${preview?' is-preview':''}" style="--roster-cols:${maxCols};--roster-rows:${Math.max(1,rows.length)}">
+    const alignment=['left','center','right'].includes(data?.settings?.lastRowAlignment)?data.settings.lastRowAlignment:'center';
+    target.innerHTML=`<div class="sl-roster-view${preview?' is-preview':''}" data-last-row-alignment="${alignment}" style="--roster-cols:${maxCols};--roster-rows:${Math.max(1,rows.length)}">
       ${rows.map(row=>`<div class="sl-roster-row">${row.map(item=>{
         const status=stateFor(data,item.key),isCurrent=current===item.key;
         const cls=['sl-roster-card',`is-${status}`,isCurrent?'is-current':''].filter(Boolean).join(' ');
@@ -54,11 +56,13 @@
   }
 
   function render(target,data,options={}){
-    if(!target)return;lastTarget=target;lastData=data;lastOptions=options;
-    if(killerCatalog){renderNow(target,data,options);return}
+    if(!target)return;
+    const request={data,options};pending.set(target,request);
+    const role=data?.kind==='challenge_all_survivors'?'survivors':'killers';
+    if(catalogs[role]){renderNow(target,data,options);return}
     target.innerHTML='';
-    loadKillers().then(()=>{if(lastTarget===target)renderNow(target,lastData,lastOptions||{})}).catch(()=>{target.innerHTML=''});
+    loadCatalog(role).then(()=>{if(pending.get(target)===request)renderNow(target,data,options)}).catch(()=>{if(pending.get(target)===request)target.innerHTML=''});
   }
 
-  window.SanLeanChallengeRosterView={render,loadKillers,rowsBalanced,rowsForObs};
+  window.SanLeanChallengeRosterView={render,loadKillers:()=>loadCatalog('killers'),loadCatalog,rowsBalanced,rowsForObs};
 })();

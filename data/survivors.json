@@ -1,0 +1,272 @@
+[
+  {
+    "key": "dwightfairfield",
+    "name": "Dwight Fairfield",
+    "image": "survivors/S01_DwightFairfield_Portrait.png"
+  },
+  {
+    "key": "megthomas",
+    "name": "Meg Thomas",
+    "image": "survivors/S02_MegThomas_Portrait.png"
+  },
+  {
+    "key": "claudettemorel",
+    "name": "Claudette Morel",
+    "image": "survivors/S03_ClaudetteMorel_Portrait.png"
+  },
+  {
+    "key": "jakepark",
+    "name": "Jake Park",
+    "image": "survivors/S04_JakePark_Portrait.png"
+  },
+  {
+    "key": "neakarlsson",
+    "name": "Nea Karlsson",
+    "image": "survivors/S05_NeaKarlsson_Portrait.png"
+  },
+  {
+    "key": "lauriestrode",
+    "name": "Laurie Strode",
+    "image": "survivors/S06_LaurieStrode_Portrait.png"
+  },
+  {
+    "key": "acevisconti",
+    "name": "Ace Visconti",
+    "image": "survivors/S07_AceVisconti_Portrait.png"
+  },
+  {
+    "key": "williambilloverbeck",
+    "name": "William «Bill» Overbeck",
+    "image": "survivors/S08_WilliamBillOverbeck_Portrait.png"
+  },
+  {
+    "key": "fengmin",
+    "name": "Feng Min",
+    "image": "survivors/S09_FengMin_Portrait.png"
+  },
+  {
+    "key": "davidking",
+    "name": "David King",
+    "image": "survivors/S10_DavidKing_Portrait.png"
+  },
+  {
+    "key": "quentinsmith",
+    "name": "Quentin Smith",
+    "image": "survivors/S11_QuentinSmith_Portrait.png"
+  },
+  {
+    "key": "detectivedavidtapp",
+    "name": "Detective David Tapp",
+    "image": "survivors/S12_DetectiveDavidTapp_Portrait.png"
+  },
+  {
+    "key": "katedenson",
+    "name": "Kate Denson",
+    "image": "survivors/S13_KateDenson_Portrait.png"
+  },
+  {
+    "key": "adamfrancis",
+    "name": "Adam Francis",
+    "image": "survivors/S14_AdamFrancis_Portrait.png"
+  },
+  {
+    "key": "jeffjohansen",
+    "name": "Jeff Johansen",
+    "image": "survivors/S15_JeffJohansen_Portrait.png"
+  },
+  {
+    "key": "janeromero",
+    "name": "Jane Romero",
+    "image": "survivors/S16_JaneRomero_Portrait.png"
+  },
+  {
+    "key": "ashleyjwilliams",
+    "name": "Ashley J. Williams",
+    "image": "survivors/S17_AshleyJWilliams_Portrait.png"
+  },
+  {
+    "key": "steveharrington",
+    "name": "Steve Harrington",
+    "image": "survivors/S18_SteveHarrington_Portrait.png"
+  },
+  {
+    "key": "nancywheeler",
+    "name": "Nancy Wheeler",
+    "image": "survivors/T_UI_S19_NancyWheeler_Portrait.png"
+  },
+  {
+    "key": "yuikimura",
+    "name": "Yui Kimura",
+    "image": "survivors/S20_YuiKimura_Portrait.png"
+  },
+  {
+    "key": "zarinakassir",
+    "name": "Zarina Kassir",
+    "image": "survivors/S21_ZarinaKassir_Portrait.png"
+  },
+  {
+    "key": "cherylmason",
+    "name": "Cheryl Mason",
+    "image": "survivors/S22_CherylMason_Portrait.png"
+  },
+  {
+    "key": "felixrichter",
+    "name": "Felix Richter",
+    "image": "survivors/S23_FelixRichter_Portrait.png"
+  },
+  {
+    "key": "elodierakoto",
+    "name": "Élodie Rakoto",
+    "image": "survivors/S24_ElodieRakoto_Portrait.png"
+  },
+  {
+    "key": "yunjinlee",
+    "name": "Yun-Jin Lee",
+    "image": "survivors/S25_YunJinLee_Portrait.png"
+  },
+  {
+    "key": "jillvalentine",
+    "name": "Jill Valentine",
+    "image": "survivors/S26_JillValentine_Portrait.png"
+  },
+  {
+    "key": "leonskennedy",
+    "name": "Leon S. Kennedy",
+    "image": "survivors/S27_LeonSKennedy_Portrait.png"
+  },
+  {
+    "key": "mikaelareid",
+    "name": "Mikaela Reid",
+    "image": "survivors/S28_MikaelaReid_Portrait.png"
+  },
+  {
+    "key": "jonahvasquez",
+    "name": "Jonah Vasquez",
+    "image": "survivors/S29_JonahVasquez_Portrait.png"
+  },
+  {
+    "key": "yoichiasakawa",
+    "name": "Yoichi Asakawa",
+    "image": "survivors/S30_YoichiAsakawa_Portrait.png"
+  },
+  {
+    "key": "haddiekaur",
+    "name": "Haddie Kaur",
+    "image": "survivors/S31_HaddieKaur_Portrait.png"
+  },
+  {
+    "key": "adawong",
+    "name": "Ada Wong",
+    "image": "survivors/S32_AdaWong_Portrait.png"
+  },
+  {
+    "key": "rebeccachambers",
+    "name": "Rebecca Chambers",
+    "image": "survivors/S33_RebeccaChambers_Portrait.png"
+  },
+  {
+    "key": "vittoriotoscano",
+    "name": "Vittorio Toscano",
+    "image": "survivors/S34_VittorioToscano_Portrait.png"
+  },
+  {
+    "key": "thalitalyra",
+    "name": "Thalita Lyra",
+    "image": "survivors/S35_ThalitaLyra_Portrait.png"
+  },
+  {
+    "key": "renatolyra",
+    "name": "Renato Lyra",
+    "image": "survivors/S36_RenatoLyra_Portrait.png"
+  },
+  {
+    "key": "gabrielsoma",
+    "name": "Gabriel Soma",
+    "image": "survivors/S37_GabrielSoma_Portrait.png"
+  },
+  {
+    "key": "nicolascage",
+    "name": "Nicolas Cage",
+    "image": "survivors/S38_NicolasCage_Portrait.png"
+  },
+  {
+    "key": "ellenripley",
+    "name": "Ellen Ripley",
+    "image": "survivors/S39_EllenRipley_Portrait.png"
+  },
+  {
+    "key": "alanwake",
+    "name": "Alan Wake",
+    "image": "survivors/S40_AlanWake_Portrait.png"
+  },
+  {
+    "key": "sableward",
+    "name": "Sable Ward",
+    "image": "survivors/S41_SableWard_Portrait.png"
+  },
+  {
+    "key": "thetroupe",
+    "name": "Aestri Yazar / Baermar Uraz",
+    "image": "survivors/S42_TheTroupe_Portrait.png"
+  },
+  {
+    "key": "laracroft",
+    "name": "Lara Croft",
+    "image": "survivors/S43_LaraCroft_Portrait.png"
+  },
+  {
+    "key": "trevorbelmont",
+    "name": "Trevor Belmont",
+    "image": "survivors/S44_TrevorBelmont_Portrait.png"
+  },
+  {
+    "key": "tauriecain",
+    "name": "Taurie Cain",
+    "image": "survivors/S45_TaurieCain_Portrait.png"
+  },
+  {
+    "key": "orelarose",
+    "name": "Orela Rose",
+    "image": "survivors/S46_OrelaRose_Portrait.png"
+  },
+  {
+    "key": "rickgrimes",
+    "name": "Rick Grimes",
+    "image": "survivors/S47_RickGrimes_Portrait.png"
+  },
+  {
+    "key": "michonnegrimes",
+    "name": "Michonne Grimes",
+    "image": "survivors/S48_MichonneGrimes_Portrait.png"
+  },
+  {
+    "key": "veeboonyasak",
+    "name": "Vee Boonyasak",
+    "image": "survivors/T_UI_S49_VeeBoonyasak_Portrait.png"
+  },
+  {
+    "key": "dustinhenderson",
+    "name": "Dustin Henderson",
+    "image": "survivors/T_UI_S50_DustinHenderson_Portrait.png"
+  },
+  {
+    "key": "eleven",
+    "name": "Eleven",
+    "image": "survivors/T_UI_S51_Eleven_Portrait.png"
+  },
+  {
+    "key": "kwontaeyoung",
+    "name": "Kwon Tae Young",
+    "image": "survivors/T_UI_S52_KwonTaeYoung_Portrait.png"
+  },
+  {
+    "key": "shanewiigwaas",
+    "name": "Shane Wiigwaas",
+    "image": "survivors/T_UI_S53_ShaneWiigwaas_Portrait.webp"
+  },
+  {
+    "key": "aurora",
+    "name": "Aurora",
+    "image": "survivors/T_UI_S54_Aurora_Portrait.png"
+  }
+]

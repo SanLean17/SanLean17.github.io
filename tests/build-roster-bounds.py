@@ -5,7 +5,8 @@ from PIL import Image
 
 root = Path(__file__).resolve().parents[1]
 bounds = {}
-for item in json.loads((root / 'data/killers.json').read_text(encoding='utf-8')):
+catalog = sum((json.loads((root / f'data/{role}.json').read_text(encoding='utf-8')) for role in ('killers', 'survivors')), [])
+for item in catalog:
     with Image.open(root / item['image']) as image:
         box = image.convert('RGBA').getchannel('A').getbbox()
         if box:

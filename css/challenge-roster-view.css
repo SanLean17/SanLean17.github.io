@@ -147,12 +147,14 @@
   overflow:visible;
 }
 .obs-stage:has(.sl-roster-view) .sl-roster-view{
-  /* Approved stream size: 19 x 100px cards across 1920px, 300px for 44 killers. */
+  /* Approved stream size: 19 cards fill 1920px (~101px wide), with 100px height. */
   --roster-card-height:min(100px,calc(100vh/var(--roster-rows)),calc(100vw/var(--roster-cols)));
   width:100%;
   padding:0;
 }
-.obs-stage .sl-roster-card{flex:0 0 var(--roster-card-height);height:var(--roster-card-height);border-color:rgba(255,255,255,.3)}
+.obs-stage .sl-roster-card{flex:0 0 calc(100% / var(--roster-cols));height:var(--roster-card-height);border-color:rgba(255,255,255,.3)}
+.obs-stage .sl-roster-view[data-last-row-alignment="left"] .sl-roster-row:last-child{justify-content:flex-start}
+.obs-stage .sl-roster-view[data-last-row-alignment="right"] .sl-roster-row:last-child{justify-content:flex-end}
 .obs-stage .sl-roster-mark{
   inset:auto 0 1px;
   height:28%;

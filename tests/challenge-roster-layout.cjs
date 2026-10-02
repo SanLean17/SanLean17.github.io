@@ -3,7 +3,8 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const root = path.resolve(__dirname, '..');
-const catalog = JSON.parse(fs.readFileSync(path.join(root, 'data/killers.json'), 'utf8'));
+const role=process.env.ROSTER_ROLE==='survivors'?'survivors':'killers';
+const catalog = JSON.parse(fs.readFileSync(path.join(root, `data/${role}.json`), 'utf8'));
 
 (async () => {
   const browser = await chromium.launch({headless:true, ...(process.env.CHROME_PATH ? {executablePath:process.env.CHROME_PATH} : {})});
@@ -12,7 +13,7 @@ const catalog = JSON.parse(fs.readFileSync(path.join(root, 'data/killers.json'),
     const errors = [], writes = [];
     let missingBounds=false;
     page.on('pageerror', error => errors.push(error.message));
-    let snapshot = {kind:'challenge_all_killers',state:{status:'active',visible:true,currentKey:catalog[0].key,entries:{[catalog[7].key]:'completed',[catalog[25].key]:'failed'}},settings:{}};
+    let snapshot = {kind:`challenge_all_${role}`,state:{status:'active',visible:true,currentKey:catalog[0].key,entries:{[catalog[7].key]:'completed',[catalog[25].key]:'failed'}},settings:{}};
     await page.route('**/*', route => {
       const url = new URL(route.request().url());
       if (url.pathname.includes('/rest/v1/rpc/')) {
@@ -23,7 +24,7 @@ const catalog = JSON.parse(fs.readFileSync(path.join(root, 'data/killers.json'),
         if(missingBounds && url.pathname.endsWith('/challenge-roster-bounds.json')) return route.fulfill({contentType:'application/json',body:'{}'});
         const file = path.join(root, decodeURIComponent(url.pathname));
         if (process.env.ROSTER_BASELINE && url.pathname.endsWith('/challenge-roster-view.css')) return route.fulfill({contentType:'text/css',body:fs.readFileSync(process.env.ROSTER_BASELINE,'utf8')});
-        return route.fulfill({path:file,contentType:({'.html':'text/html','.js':'text/javascript','.css':'text/css','.json':'application/json','.png':'image/png'})[path.extname(file)]});
+        return route.fulfill({path:file,contentType:({'.html':'text/html','.js':'text/javascript','.css':'text/css','.json':'application/json','.png':'image/png','.webp':'image/webp'})[path.extname(file)]});
       }
       return route.abort();
     });
@@ -63,9 +64,9 @@ const catalog = JSON.parse(fs.readFileSync(path.join(root, 'data/killers.json'),
     for (const [width,height] of [[1920,300],[1920,384],[1280,203],[960,152],[740,120],[390,80],[320,80]]) {
       await page.setViewportSize({width,height});
       const g = await geometry();
-      assert.deepEqual(g.rows.map(r=>r.length),[19,19,6]);
-      assert.equal(g.portraits.length,44);
-      if(width===1920) assert(Math.abs(g.rows[0][0].left-10)<1 && Math.abs(g.rows[0].at(-1).right-1910)<1,'100px cards leave 10px on each side');
+      assert.deepEqual(g.rows.map(r=>r.length),[19,19,catalog.length-38]);
+      assert.equal(g.portraits.length,catalog.length);
+      if(width===1920) assert(Math.abs(g.rows[0][0].left)<1 && Math.abs(g.rows[0].at(-1).right-1920)<1,'Full rows reach both edges');
       assert(g.names);assert.equal(g.background,'rgba(0, 0, 0, 0)');
       for(const row of g.rows) {
         assert(Math.abs(row[0].left + row.at(-1).right - width)<1, 'Each row is centered');
@@ -77,7 +78,7 @@ const catalog = JSON.parse(fs.readFileSync(path.join(root, 'data/killers.json'),
         assert(Math.abs(img.width/img.height-img.ratio)<.02,'Portrait keeps natural aspect ratio');
         assert(Math.max(img.width/img.box.width,img.height/img.box.height)>.99,'Visible portrait fills its available bounds');
       }
-      if(width===1920 && height===300) assert(g.rows.flat().every(c=>Math.abs(c.width-100)<.1&&Math.abs(c.height-100)<.1),'Approved 100px cards');
+      if(width===1920 && height===300) assert(g.rows.flat().every(c=>Math.abs(c.width-1920/19)<.1&&Math.abs(c.height-100)<.1),'100px height and full-width rows');
       if(process.env.QA_OUTPUT) {
         fs.mkdirSync(process.env.QA_OUTPUT,{recursive:true});
         await page.screenshot({path:path.join(process.env.QA_OUTPUT,`roster-${width}x${height}.png`),omitBackground:true});
@@ -109,12 +110,21 @@ const catalog = JSON.parse(fs.readFileSync(path.join(root, 'data/killers.json'),
     await page.emulateMedia({reducedMotion:'reduce'});
     assert.equal(await page.locator('.is-current').evaluate(e=>getComputedStyle(e).animationName),'none');
     assert.deepEqual(await page.evaluate(()=>window.SanLeanChallengeRosterView.rowsForObs(Array.from({length:49},(_,i)=>i)).map(r=>r.length)),[19,19,11],'Future catalog keeps every killer');
+    for(const alignment of ['left','center','right']) {
+      snapshot.settings.lastRowAlignment=alignment;
+      await page.waitForFunction(value=>document.querySelector('.sl-roster-view')?.dataset.lastRowAlignment===value,alignment);
+      const rows=(await geometry()).rows,last=rows.at(-1);
+      if(alignment==='left')assert(Math.abs(last[0].left)<1);
+      if(alignment==='right')assert(Math.abs(last.at(-1).right-1920)<1);
+      if(alignment==='center')assert(Math.abs(last[0].left+last.at(-1).right-1920)<1);
+      if(process.env.QA_OUTPUT)await page.screenshot({path:path.join(process.env.QA_OUTPUT,`${role}-${alignment}.png`),omitBackground:true});
+    }
     missingBounds=true;
     await page.reload();
     await page.waitForSelector('.sl-roster-image img');
-    await page.waitForFunction(()=>document.images.length===44&&[...document.images].every(i=>i.complete&&i.naturalWidth));
-    assert.equal(await page.locator('.sl-roster-card').count(),44,'New portraits without measured bounds fall back to full image');
+    await page.waitForFunction(count=>document.images.length===count&&[...document.images].every(i=>i.complete&&i.naturalWidth),catalog.length);
+    assert.equal(await page.locator('.sl-roster-card').count(),catalog.length,'New portraits without measured bounds fall back to full image');
     assert.deepEqual(writes,[]);assert.deepEqual(errors,[]);
-    console.log('PASS: all 44 portraits contained, 19/19/6 centered rows, seven viewport sizes, all states, hide/show and pause/resume, reduced motion, no live writes or JS errors.');
+    console.log(`PASS: ${role}, ${catalog.length} portraits, three alignments, seven viewports, states, hide/show, pause/resume, reduced motion, no live writes or JS errors.`);
   } finally { await browser.close(); }
 })().catch(error=>{console.error(error);process.exitCode=1});

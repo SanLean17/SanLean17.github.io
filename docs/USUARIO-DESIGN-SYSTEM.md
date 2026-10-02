@@ -311,9 +311,9 @@ La implementación final del router de MI PANEL vive en `js/usuario-stream-tabs.
 - WIN STREAK no tiene objetivo máximo: sólo racha actual, edición manual, +1 / -1 y reinicio. CERRAR abandona la sesión sin guardarla en historial; FINALIZAR WIN STREAK sí guarda rol/Killer, racha y fecha.
 - WIN STREAK reutiliza el control segmentado canónico para IMAGEN IZQUIERDA / IMAGEN DERECHA. La orientación se persiste por workspace y el overlay usa un pulso CSS local muy leve, desactivado con prefers-reduced-motion.
 - WIN STREAK distingue PAUSAR/CONTINUAR de FINALIZAR: pausar conserva la sesión y la oculta; finalizar la envía al historial. Tanto WIN STREAK como METAS poseen OCULTAR/MOSTRAR EN OBS como control de visibilidad independiente del progreso.
-- ALL KILLER CHALLENGE reutiliza el patrón de sesión persistente: PAUSAR / CONTINUAR, OCULTAR / MOSTRAR EN OBS y FINALIZAR. El tiempo sólo se registra para historial.
-- El roster ALL KILLER CHALLENGE en OBS llena filas de 19 cartas de 100 × 100 px a 1920 px de ancho, según la escala aprobada en el stream. Con 44 Killers ocupa 1920 × 300 px (19 / 19 / 6, última fila centrada y 10 px laterales en las filas completas). Conserva los estados visuales canónicos: pendiente normal, actual rojo, completado B/N + tilde verde, fallido B/N + cruz roja. Las marcas van abajo y los retratos completos aprovechan sus límites de transparencia.
-- El catálogo nunca se hardcodea: ALL KILLER lee `data/killers.json` y el renderer compartido queda preparado para ALL SURVIVOR.
+- ALL KILLER CHALLENGE y ALL SURVIVOR CHALLENGE reutilizan el patrón de sesión persistente: PAUSAR / CONTINUAR, OCULTAR / MOSTRAR EN OBS y FINALIZAR. El tiempo sólo se registra para historial.
+- Los rosters ALL CHALLENGE en OBS llenan filas de 19 cartas de 100 px de alto y ancho 100% / 19 para llegar a los extremos. A 1920 px cada carta mide aproximadamente 101 × 100 px. Killers: 19 / 19 / 6; Survivors: 19 / 19 / 16, ambos 1920 × 300. La última fila usa izquierda, centro o derecha según la opción persistente de su challenge. Conserva los estados visuales canónicos: pendiente normal, actual rojo, completado B/N + tilde verde, fallido B/N + cruz roja. Las marcas van abajo y los retratos completos aprovechan sus límites de transparencia.
+- El catálogo nunca se hardcodea: ALL KILLER lee `data/killers.json` y ALL SURVIVOR lee `data/survivors.json`, con el mismo renderer y controlador parametrizados.
 
 ## 10. CARTAS / Votaciones
 
@@ -390,3 +390,6 @@ Una solicitud referida únicamente a USUARIO no debe modificar la WEB pública s
 - OCULTAR EN OBS / MOSTRAR EN OBS controla sólo visibilidad durante una sesión activa; en pausa muestra OCULTO EN PAUSA deshabilitado.
 - Los enlaces de META y WIN STREAK viven en OVERLAYS OBS. DESAFÍOS no duplica el bloque OBS / VISTA DE LA META.
 - Se reutilizan encabezados, ayudas, campos, selectores y botones canónicos en desktop y mobile. La compactación del overlay Superviviente es específica de la composición OBS y su preview compartido; no cambia tokens del panel ni el retrato Killer.
+
+### Control segmentado con tres opciones
+- Reutilizar `.cards-segmented` con `data-segments="3"` para tres opciones mutuamente excluyentes (por ejemplo alineación izquierda/centro/derecha). Mantiene la geometría y estados canónicos. A 480 px o menos se apila en una columna para conservar las etiquetas completas. Dos opciones conservan su distribución existente.

@@ -8,4 +8,6 @@
 .user-page .cards-segmented button[aria-pressed="true"]{background:#ff003c;color:#fff;box-shadow:0 4px 14px rgba(255,0,60,.18)}
 .user-page .cards-segmented button:focus-visible{outline:2px solid #ff003c;outline-offset:2px}
 .user-page .cards-segmented button:disabled{opacity:.42;cursor:not-allowed}
+.user-page .cards-segmented[data-segments="3"]{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:480px){.user-page .cards-segmented[data-segments="3"]{height:auto;grid-template-columns:1fr}}
 @media(max-width:760px){.user-page .cards-choice-grid{grid-template-columns:1fr}.user-page .cards-segmented button{padding:0 10px;font-size:11px}}
