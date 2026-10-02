@@ -10,6 +10,8 @@
   const workspace=()=>tools()?.getWorkspace?.()||null;
   const isLive=o=>['active','reached'].includes(o?.state?.status);
   const isStreakLive=o=>o?.state?.status==='active';
+  const isStreakPaused=o=>o?.state?.status==='paused';
+  const isStreakSession=o=>['active','paused'].includes(o?.state?.status);
   const escape=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const roleLabel=role=>role==='both'?'KILLER + SUPERVIVIENTE':role==='survivor'?'SUPERVIVIENTE':'KILLER';
   const normalizeRole=value=>['killer','survivor','both'].includes(value)?value:'killer';
@@ -51,7 +53,7 @@
         <div class="ui-field-help challenge-icon-help" aria-label="Palabras recomendadas para los iconos">
           <span>ICONOS SEGÚN EL NOMBRE</span><ul class="challenge-icon-vocabulary">${[['escapes','ESCAPES'],['escotilla','TRAMPILLA / ESCOTILLA'],['me-la-pela','ME LA PELA'],['salvada','SALVADAS'],['de-frente','DE FRENTE'],['puntos-de-sangre','PUNTOS DE SANGRE'],['motores','GENERADORES'],['randoms','RANDOM']].map(([key,label])=>`<li><img src="../assets/usuario/desafios/metas/${key}.png" alt="" width="24" height="24"><span>${label}</span></li>`).join('')}</ul>
         </div>
-        <div class="module-actions challenge-active-actions"><button id="goalSaveLive" class="module-primary" type="button">GUARDAR CAMBIOS</button><button id="goalFinish" class="module-secondary challenge-danger" type="button">FINALIZAR META</button></div>
+        <div class="module-actions challenge-active-actions"><button id="goalSaveLive" class="module-primary" type="button">GUARDAR CAMBIOS</button><button id="goalObsToggle" class="module-secondary" type="button">OCULTAR EN OBS</button><button id="goalFinish" class="module-secondary challenge-danger" type="button">FINALIZAR META</button></div>
         <p id="goalActiveStatus" class="module-status" role="status"></p>
       </section>
 
@@ -90,7 +92,7 @@
               <button id="streakReset" class="ui-btn ui-btn-secondary" type="button">REINICIAR RACHA</button>
             </div>
           </div>
-          <div class="module-actions challenge-active-actions"><button id="streakClose" class="module-secondary" type="button">CERRAR</button><button id="streakFinish" class="module-secondary challenge-danger" type="button">FINALIZAR WIN STREAK</button></div>
+          <div class="module-actions challenge-active-actions"><button id="streakPause" class="module-secondary" type="button">PAUSAR</button><button id="streakObsToggle" class="module-secondary" type="button">OCULTAR EN OBS</button><button id="streakFinish" class="module-secondary challenge-danger" type="button">FINALIZAR WIN STREAK</button></div>
         </div>
         <p id="streakStatus" class="module-status" role="status"></p>
       </section>
@@ -177,7 +179,7 @@
     const form=readLive(),version=editVersion,key=contextKey();
     const save=async()=>{
       const overlay=goalOverlay();if(key!==contextKey()||!overlay||!isLive(overlay))return false;
-      const status=form.current>=form.target?'reached':'active',settings={...(overlay.settings||{}),title:form.title,role:form.role,target:form.target},state={...overlay.state,...form,visible:true,status,updatedAt:new Date().toISOString()};
+      const status=form.current>=form.target?'reached':'active',settings={...(overlay.settings||{}),title:form.title,role:form.role,target:form.target},state={...overlay.state,...form,visible:overlay.state?.visible!==false,status,updatedAt:new Date().toISOString()};
       delete state.finishedAt;
       await writeOverlay({settings,state});
       if(key!==contextKey())return false;
@@ -190,6 +192,14 @@
 
   async function changeProgress(delta){
     if(busy)return;const overlay=goalOverlay();if(!overlay||!isLive(overlay))return;const base=Math.max(0,Number($('goalLiveCurrent')?.value)||0),current=Math.max(0,Math.min(999999999,base+delta));$('goalLiveCurrent').value=String(current);dirty=true;editVersion++;busy=true;refresh();try{await saveLive({silent:true})}catch(err){$('goalActiveStatus').textContent=err.message||'No se pudo actualizar el contador.'}finally{busy=false;refresh()}
+  }
+
+  async function toggleGoalObs(){
+    if(busy)return;const overlay=goalOverlay();if(!overlay||!isLive(overlay))return;busy=true;
+    try{
+      const visible=overlay.state?.visible===false;
+      await writeOverlay({state:{...overlay.state,visible,updatedAt:new Date().toISOString()}});
+    }catch(err){$('goalActiveStatus').textContent=err.message||'No se pudo cambiar la visibilidad en OBS.'}finally{busy=false;refresh()}
   }
 
   async function finishGoal(){
@@ -232,7 +242,7 @@
   }
 
   function initializeStreakConfig(){
-    if(streakConfigInitialized||isStreakLive(streakOverlay()))return;
+    if(streakConfigInitialized||isStreakSession(streakOverlay()))return;
     const settings=streakOverlay()?.settings||{},role=settings.role==='killer'?'killer':'survivor';
     setSelect($('streakRole'),role);
     selectedStreakKiller=settings.killer?streakKillers.find(k=>k.key===settings.killer.key)||settings.killer:null;
@@ -256,7 +266,7 @@
     streakBusy=true;
     try{
       const settings={...(overlay.settings||{}),layout:next},patch={settings};
-      if(isStreakLive(overlay))patch.state={...overlay.state,layout:next,updatedAt:new Date().toISOString()};
+      if(isStreakSession(overlay))patch.state={...overlay.state,layout:next,updatedAt:new Date().toISOString()};
       await writeStreakOverlay(patch);
     }catch(err){$('streakStatus').textContent=err.message||'No se pudo guardar la distribución.'}finally{streakBusy=false;refreshStreak()}
   }
@@ -309,8 +319,8 @@
   }
 
   function saveStreakCurrent(value=null){
-    clearTimeout(streakSaveTimer);const overlay=streakOverlay();if(!overlay||!isStreakLive(overlay))return Promise.resolve(false);
-    const source=value===null?$('streakCurrent')?.value:value,current=Math.max(0,Math.min(999999999,Math.floor(Number(source)||0))),state={...overlay.state,current,visible:true,status:'active',updatedAt:new Date().toISOString()};
+    clearTimeout(streakSaveTimer);const overlay=streakOverlay();if(!overlay||!isStreakSession(overlay))return Promise.resolve(false);
+    const source=value===null?$('streakCurrent')?.value:value,current=Math.max(0,Math.min(999999999,Math.floor(Number(source)||0))),state={...overlay.state,current,visible:overlay.state?.visible!==false,status:overlay.state?.status||'active',updatedAt:new Date().toISOString()};
     if($('streakCurrent'))$('streakCurrent').value=String(current);
     return writeStreakOverlay({state}).then(()=>true);
   }
@@ -326,17 +336,33 @@
     try{await saveStreakCurrent(0)}catch(err){$('streakStatus').textContent=err.message||'No se pudo reiniciar la racha.'}finally{streakBusy=false;refreshStreak()}
   }
 
-  async function closeStreak(){
+  async function pauseStreak(){
     if(streakBusy)return;const overlay=streakOverlay();if(!overlay||!isStreakLive(overlay))return;streakBusy=true;
     try{
-      clearTimeout(streakSaveTimer);
-      await writeStreakOverlay({state:{...overlay.state,visible:false,status:'idle',current:0,closedAt:new Date().toISOString(),updatedAt:new Date().toISOString()}});
-      streakConfigInitialized=false;selectedStreakKiller=null;$('streakStatus').textContent='';
-    }catch(err){$('streakStatus').textContent=err.message||'No se pudo cerrar WIN STREAK.'}finally{streakBusy=false;initializeStreakConfig();refreshStreak()}
+      clearTimeout(streakSaveTimer);if(isStreakLive(overlay)){const current=Math.max(0,Number($('streakCurrent')?.value)||0);await saveStreakCurrent(current)}
+      const latest=streakOverlay();await writeStreakOverlay({state:{...latest.state,visible:false,status:'paused',pausedAt:new Date().toISOString(),updatedAt:new Date().toISOString()}});
+      $('streakStatus').textContent='';
+    }catch(err){$('streakStatus').textContent=err.message||'No se pudo pausar WIN STREAK.'}finally{streakBusy=false;refreshStreak()}
+  }
+
+  async function continueStreak(){
+    if(streakBusy)return;const overlay=streakOverlay();if(!overlay||!isStreakPaused(overlay))return;streakBusy=true;
+    try{
+      await writeStreakOverlay({state:{...overlay.state,visible:true,status:'active',resumedAt:new Date().toISOString(),updatedAt:new Date().toISOString()}});
+      $('streakStatus').textContent='';
+    }catch(err){$('streakStatus').textContent=err.message||'No se pudo continuar WIN STREAK.'}finally{streakBusy=false;refreshStreak()}
+  }
+
+  async function toggleStreakObs(){
+    if(streakBusy)return;const overlay=streakOverlay();if(!overlay||!isStreakSession(overlay)||isStreakPaused(overlay))return;streakBusy=true;
+    try{
+      const visible=overlay.state?.visible===false;
+      await writeStreakOverlay({state:{...overlay.state,visible,updatedAt:new Date().toISOString()}});
+    }catch(err){$('streakStatus').textContent=err.message||'No se pudo cambiar la visibilidad en OBS.'}finally{streakBusy=false;refreshStreak()}
   }
 
   async function finishStreak(){
-    if(streakBusy)return;const overlay=streakOverlay();if(!overlay||!isStreakLive(overlay))return;streakBusy=true;
+    if(streakBusy)return;const overlay=streakOverlay();if(!overlay||!isStreakSession(overlay))return;streakBusy=true;
     try{
       clearTimeout(streakSaveTimer);const current=Math.max(0,Number($('streakCurrent')?.value)||0);await saveStreakCurrent(current);
       const latest=streakOverlay(),finishedAt=new Date().toISOString(),record={role:latest.state.role||'survivor',killer:latest.state.killer||null,current:Number(latest.state.current)||0,startedAt:latest.state.startedAt||null,finishedAt};
@@ -347,15 +373,22 @@
   }
 
   function refreshStreak(){
-    const panel=$('streakPanel');if(!panel)return;const open=activeChallenge==='streak',overlay=streakOverlay(),live=isStreakLive(overlay),state=overlay?.state||{};
-    panel.hidden=!open;$('streakConfig').hidden=live;$('streakLive').hidden=!live;
+    const panel=$('streakPanel');if(!panel)return;
+    const open=activeChallenge==='streak',overlay=streakOverlay(),session=isStreakSession(overlay),paused=isStreakPaused(overlay),state=overlay?.state||{};
+    panel.hidden=!open;$('streakConfig').hidden=session;$('streakLive').hidden=!session;
     if(!open)return;
-    if(!live){
+    if(!session){
       initializeStreakConfig();syncStreakSelection();renderStreakKillers();syncStreakLayoutButtons();
     }else{
       const current=$('streakCurrent');if(current&&document.activeElement!==current&&!streakBusy)current.value=String(Math.max(0,Number(state.current)||0));
       $('streakLiveName').textContent=state.role==='killer'?(state.killer?.name||'KILLER'):'SUPERVIVIENTE';
-      ['streakCurrent','streakMinus','streakPlus','streakReset','streakClose','streakFinish','streakLayoutLeft','streakLayoutRight'].forEach(id=>{if($(id))$(id).disabled=streakBusy});if($('streakMinus'))$('streakMinus').disabled=streakBusy||(Number(state.current)||0)<=0;
+      ['streakCurrent','streakMinus','streakPlus','streakReset','streakPause','streakObsToggle','streakFinish','streakLayoutLeft','streakLayoutRight'].forEach(id=>{if($(id))$(id).disabled=streakBusy});
+      if($('streakMinus'))$('streakMinus').disabled=streakBusy||paused||(Number(state.current)||0)<=0;
+      if($('streakPlus'))$('streakPlus').disabled=streakBusy||paused;
+      if($('streakReset'))$('streakReset').disabled=streakBusy||paused;
+      if($('streakCurrent'))$('streakCurrent').disabled=streakBusy||paused;
+      const pauseBtn=$('streakPause');if(pauseBtn){pauseBtn.textContent=paused?'CONTINUAR':'PAUSAR';pauseBtn.disabled=streakBusy}
+      const obsBtn=$('streakObsToggle');if(obsBtn){obsBtn.textContent=paused?'OCULTO EN PAUSA':(state.visible===false?'MOSTRAR EN OBS':'OCULTAR EN OBS');obsBtn.disabled=streakBusy||paused}
       window.SanLeanChallengeStreakView?.render($('streakUserPreview'),overlay,{preview:true});syncStreakLayoutButtons();
     }
     syncStreakSelection();
@@ -386,7 +419,7 @@
     const overlay=goalOverlay(),owner=!!tools()?.isOwner?.(),live=isLive(overlay),state=overlay?.state||{},goalOpen=activeChallenge==='goal',config=$('goalConfigurator');
     if(config)config.hidden=!goalOpen||live;$('goalActiveBox').hidden=!goalOpen||!live;$('goalOutput').hidden=!goalOpen||!live||!overlay;
     ['goalTitle','goalRole','goalTarget'].forEach(id=>{if($(id))$(id).disabled=busy||!owner});if($('goalStart'))$('goalStart').disabled=busy||!owner;
-    if(live){if(!dirty)syncLiveFields(state,changed);['goalLiveTitle','goalLiveRole','goalLiveCurrent','goalLiveTarget','goalMinus','goalPlus','goalSaveLive','goalFinish'].forEach(id=>{if($(id))$(id).disabled=busy});if($('goalMinus'))$('goalMinus').disabled=busy||(Number(state.current)||0)<=0}
+    if(live){if(!dirty)syncLiveFields(state,changed);['goalLiveTitle','goalLiveRole','goalLiveCurrent','goalLiveTarget','goalMinus','goalPlus','goalSaveLive','goalObsToggle','goalFinish'].forEach(id=>{if($(id))$(id).disabled=busy});if($('goalMinus'))$('goalMinus').disabled=busy||(Number(state.current)||0)<=0;const obsBtn=$('goalObsToggle');if(obsBtn)obsBtn.textContent=state.visible===false?'MOSTRAR EN OBS':'OCULTAR EN OBS'}
     if(overlay&&goalOpen&&live){const publicUrl=`${location.origin}/Usuario/overlay.html?token=${encodeURIComponent(overlay.public_token||'')}`;$('goalObsUrl').value=publicUrl;window.SanLeanChallengeGoalView?.render($('goalPreview'),dirty?{...overlay,state:{...state,...readLive()}}:overlay,{preview:true})}
     if(!goalOpen||!live){if(!live){cancelLiveTimer();dirty=false}$('goalPreview')._goalResizeObserver?.disconnect();$('goalPreview').replaceChildren();$('goalObsUrl').value='';if(!live)$('goalActiveStatus').textContent=''}
     renderHistory(overlay);renderStreakHistory(streakOverlay());refreshStreak();syncChallengeButtons();
@@ -407,13 +440,13 @@
     $('goalStart')?.addEventListener('click',startGoal);
     $('goalMinus')?.addEventListener('click',()=>changeProgress(-1));$('goalPlus')?.addEventListener('click',()=>changeProgress(1));['goalLiveTitle','goalLiveCurrent','goalLiveTarget'].forEach(id=>$(id)?.addEventListener('input',scheduleLiveSave));$('goalLiveRole')?.addEventListener('change',scheduleLiveSave);
     $('goalSaveLive')?.addEventListener('click',async()=>{if(busy)return;busy=true;refresh();try{await saveLive()}catch(err){$('goalActiveStatus').textContent=err.message||'No se pudieron guardar los cambios.'}finally{busy=false;refresh()}});
-    $('goalFinish')?.addEventListener('click',finishGoal);
+    $('goalObsToggle')?.addEventListener('click',toggleGoalObs);$('goalFinish')?.addEventListener('click',finishGoal);
     $('goalCopyUrl')?.addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('goalObsUrl').value);$('goalActiveStatus').textContent='URL de OBS copiada.'}catch{$('goalActiveStatus').textContent='No se pudo copiar la URL.'}});
     $('streakRole')?.addEventListener('change',()=>{if(syncing)return;if($('streakRole').value!=='killer')selectedStreakKiller=null;syncStreakSelection();renderStreakKillers();$('streakStatus').textContent=''});
     $('streakKillerSearch')?.addEventListener('input',renderStreakKillers);
     $('streakLayoutLeft')?.addEventListener('click',()=>setStreakLayout('image-left'));$('streakLayoutRight')?.addEventListener('click',()=>setStreakLayout('image-right'));
-    $('streakStart')?.addEventListener('click',startStreak);$('streakMinus')?.addEventListener('click',()=>changeStreak(-1));$('streakPlus')?.addEventListener('click',()=>changeStreak(1));$('streakReset')?.addEventListener('click',resetStreak);$('streakClose')?.addEventListener('click',closeStreak);$('streakFinish')?.addEventListener('click',finishStreak);
-    $('streakCurrent')?.addEventListener('input',()=>{clearTimeout(streakSaveTimer);streakSaveTimer=setTimeout(()=>saveStreakCurrent().catch(err=>$('streakStatus').textContent=err.message||'No se pudo actualizar la racha.'),320)});
+    $('streakStart')?.addEventListener('click',startStreak);$('streakMinus')?.addEventListener('click',()=>changeStreak(-1));$('streakPlus')?.addEventListener('click',()=>changeStreak(1));$('streakReset')?.addEventListener('click',resetStreak);$('streakPause')?.addEventListener('click',()=>isStreakPaused(streakOverlay())?continueStreak():pauseStreak());$('streakObsToggle')?.addEventListener('click',toggleStreakObs);$('streakFinish')?.addEventListener('click',finishStreak);
+    $('streakCurrent')?.addEventListener('input',()=>{if(!isStreakLive(streakOverlay()))return;clearTimeout(streakSaveTimer);streakSaveTimer=setTimeout(()=>saveStreakCurrent().catch(err=>$('streakStatus').textContent=err.message||'No se pudo actualizar la racha.'),320)});
     window.addEventListener('sanlean:overlays-updated',()=>{refresh();refreshStreak()});window.addEventListener('sanlean:challenge-goal',refresh);window.addEventListener('sanlean:challenge-streak',refreshStreak);window.addEventListener('sanlean:section',()=>{refresh();refreshStreak()});
   }
 
