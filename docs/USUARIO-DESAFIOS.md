@@ -247,10 +247,12 @@ El renderer `challenge-roster-view.js` es compartido y se diseñó para reutiliz
 - Las tres filas no usan gap horizontal ni vertical: las cartas quedan pegadas entre sí.
 - Fondo de carta restaurado a `rgba(8,8,10,.78)`; retratos a opacidad completa en todos los estados.
 - Completado y fallido mantienen B/N, pero sin transparencia excesiva para conservar legibilidad.
-- Medida recomendada actual: **1920 × 384 px**: tres filas de 120 px y margen exterior de 12 px por lado para el glow. Sin nombres, cada retrato dispone de hasta 112 px de alto, frente a los 81 px del ajuste compacto anterior.
+- Medida recomendada actual: **1920 × 384 px**: tres filas de 128 px, sin margen exterior. Las dos filas completas llegan a ambos bordes de la fuente; la última conserva sus 14 cartas centradas.
 - El contenedor OBS ocupa el ancho y alto reales de la fuente; se elimina el límite heredado de 1200 px que cortaba las primeras columnas al centrar un roster de 1920 px.
-- Imágenes con dimensiones automáticas, límites interiores y `object-fit:contain`: se muestra el retrato original completo sin deformar ni ampliar por recorte.
+- El encuadre OBS usa los límites de transparencia de `data/challenge-roster-bounds.json`, medidos con `tests/build-roster-bounds.py`. Un SVG con `preserveAspectRatio="xMidYMid meet"` amplía el retrato completo hasta el límite interior de la carta (126 × 126 px a la medida recomendada). Sólo se excluye margen totalmente transparente: los archivos originales y todos sus píxeles visibles permanecen intactos.
+- Las nuevas imágenes sin límites medidos se muestran completas con `object-fit:contain` como respaldo. Al ampliar el catálogo, ejecutar el medidor para aprovechar también sus márgenes vacíos.
+- Trazo de separación entre cartas: borde de 1 px `rgba(255,255,255,.3)`. Las marcas ✓/× se ubican en el 28% inferior de la carta para despejar la cara, con sombra oscura para mantener contraste.
 - Si la fuente es más pequeña, la altura se adapta al espacio disponible. 1920 × 250 sigue entrando, pero reduce el tamaño de los retratos; se recomienda 384 px para reconocerlos mejor.
-- El pulso modifica sólo el glow y la entrada/salida usa opacidad, sin escalar el roster fuera de la fuente.
+- El pulso rojo se dibuja dentro de la carta, por lo que sigue visible en los bordes de la fuente. La entrada/salida usa opacidad sin escalar el roster.
 - En OBS: actualizar la fuente de navegador y usar 1920 × 384. Si la fuente tiene recorte manual previo, restablecer su transformación/recorte antes de ubicarla en la parte superior del stream.
-- Validación: `node tests/challenge-roster-layout.cjs` comprueba las 44 imágenes, filas centradas, límites del retrato, estados, pausa/continuar y ocultar/mostrar con datos aislados en siete tamaños entre 320 y 1920 px. No escribe datos reales.
+- Validación: `node tests/challenge-roster-layout.cjs` comprueba los píxeles visibles de las 44 imágenes contra el encuadre, filas centradas hasta los bordes, marcas inferiores, estados, pausa/continuar, ocultar/mostrar y respaldo sin límites medidos. Usa datos aislados en siete tamaños entre 320 y 1920 px. No escribe datos reales.

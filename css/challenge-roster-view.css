@@ -40,7 +40,7 @@
   min-width:0;
   min-height:0;
 }
-.sl-roster-image img{
+.sl-roster-image img,.sl-roster-portrait{
   display:block;
   width:auto;
   height:auto;
@@ -66,10 +66,13 @@
   text-shadow:0 2px 4px #000;
 }
 .obs-overlay-page .sl-roster-name{display:none}
-.obs-overlay-page .sl-roster-image{inset:3px}
+.obs-overlay-page .sl-roster-image{inset:0}
+.sl-roster-portrait{width:100%;height:100%;overflow:hidden}
 
 .sl-roster-card.is-completed img,
-.sl-roster-card.is-failed img{
+.sl-roster-card.is-failed img,
+.sl-roster-card.is-completed .sl-roster-portrait,
+.sl-roster-card.is-failed .sl-roster-portrait{
   filter:grayscale(1) brightness(.85) drop-shadow(0 2px 4px rgba(0,0,0,.68));
   opacity:1;
 }
@@ -96,7 +99,7 @@
   animation:sl-roster-current 2.8s ease-in-out infinite;
 }
 .sl-roster-card.is-current .sl-roster-mark{display:none}
-.sl-roster-card.is-current img{filter:none;opacity:1}
+.sl-roster-card.is-current img,.sl-roster-card.is-current .sl-roster-portrait{filter:none;opacity:1}
 
 @keyframes sl-roster-current{
   0%,100%{
@@ -144,13 +147,24 @@
   overflow:visible;
 }
 .obs-stage:has(.sl-roster-view) .sl-roster-view{
-  /* 3 x 120px cards + 12px of safe space above/below = 384px. */
-  --roster-card-height:min(120px,calc((100vh - 24px)/3),calc((100vw - 24px)/var(--roster-cols)));
-  width:min(1920px,100%);
-  padding:12px;
+  /* Edge-to-edge at 1920 x 384: three rows of 128px, no outer gutter. */
+  --roster-card-height:min(128px,calc(100vh/3),calc(100vw/var(--roster-cols)));
+  width:100%;
+  padding:0;
 }
-.obs-stage .sl-roster-card{height:var(--roster-card-height)}
-.obs-stage .sl-roster-mark{font-size:clamp(12px,3vw,36px)}
+.obs-stage .sl-roster-card{height:var(--roster-card-height);border-color:rgba(255,255,255,.3)}
+.obs-stage .sl-roster-mark{
+  inset:auto 0 1px;
+  height:28%;
+  font-size:clamp(10px,1.8vw,32px);
+  background:radial-gradient(ellipse at bottom,rgba(0,0,0,.8),transparent 68%);
+}
+/* Keep the red pulse inside edge cards, where an outer glow would be clipped. */
+.obs-stage .sl-roster-card.is-current{border-color:#ff003c;animation-name:sl-roster-current-inset}
+@keyframes sl-roster-current-inset{
+  0%,100%{box-shadow:0 0 0 2px #ff003c inset,0 0 7px rgba(255,0,60,.35) inset}
+  50%{box-shadow:0 0 0 2px #ff003c inset,0 0 13px rgba(255,0,60,.65) inset}
+}
 /* Fade without scaling/translating the source outside its safe bounds. */
 .obs-overlay-root.obs-entering:has(.sl-roster-view){animation:sl-roster-in .4s ease both}
 .obs-overlay-root.obs-leaving:has(.sl-roster-view){animation:sl-roster-out .4s ease both}
@@ -161,5 +175,5 @@
   .obs-overlay-root.obs-leaving:has(.sl-roster-view){animation:none}
 }
 @media(prefers-reduced-motion:reduce){
-  .sl-roster-card.is-current{animation:none}
+  .sl-roster-card.is-current,.obs-stage .sl-roster-card.is-current{animation:none}
 }

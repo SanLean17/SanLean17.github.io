@@ -1,0 +1,442 @@
+{
+  "assets/killers/K01_TheTrapper_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      97,
+      48,
+      349,
+      444
+    ]
+  },
+  "assets/killers/K02_TheWraith_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      27,
+      358,
+      465
+    ]
+  },
+  "assets/killers/K03_TheHillbilly_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      21,
+      380,
+      471
+    ]
+  },
+  "assets/killers/K04_TheNurse_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      48,
+      380,
+      443
+    ]
+  },
+  "assets/killers/K06_TheShape_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      71,
+      22,
+      373,
+      470
+    ]
+  },
+  "assets/killers/K05_TheHag_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      28,
+      382,
+      464
+    ]
+  },
+  "assets/killers/K07_TheDoctor_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      92,
+      40,
+      354,
+      452
+    ]
+  },
+  "assets/killers/K08_TheHuntress_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      146,
+      30,
+      299,
+      462
+    ]
+  },
+  "assets/killers/K09_TheCannibal_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      24,
+      382,
+      467
+    ]
+  },
+  "assets/killers/K10_TheNightmare_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      36,
+      380,
+      456
+    ]
+  },
+  "assets/killers/K11_ThePig_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      35,
+      353,
+      453
+    ]
+  },
+  "assets/killers/K12_TheClown_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      40,
+      382,
+      452
+    ]
+  },
+  "assets/killers/K13_TheSpirit_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      24,
+      381,
+      467
+    ]
+  },
+  "assets/killers/K14_TheLegion_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      44,
+      380,
+      445
+    ]
+  },
+  "assets/killers/K15_ThePlague_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      38,
+      380,
+      454
+    ]
+  },
+  "assets/killers/K16_TheGhostface_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      64,
+      382,
+      426
+    ]
+  },
+  "assets/killers/K17_TheDemogorgon_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      52,
+      382,
+      436
+    ]
+  },
+  "assets/killers/K18_TheOni_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      21,
+      382,
+      469
+    ]
+  },
+  "assets/killers/K19_TheDeathslinger_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      37,
+      382,
+      455
+    ]
+  },
+  "assets/killers/K20_TheExecutioner_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      20,
+      380,
+      472
+    ]
+  },
+  "assets/killers/K21_TheBlight_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      52,
+      382,
+      440
+    ]
+  },
+  "assets/killers/K22_TheTwins_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      80,
+      21,
+      366,
+      471
+    ]
+  },
+  "assets/killers/K23_TheTrickster_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      57,
+      382,
+      435
+    ]
+  },
+  "assets/killers/K24_TheNemesis_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      34,
+      382,
+      456
+    ]
+  },
+  "assets/killers/K25_TheCenobite_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      37,
+      380,
+      454
+    ]
+  },
+  "assets/killers/K26_TheArtist_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      50,
+      380,
+      442
+    ]
+  },
+  "assets/killers/K27_TheOnryo_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      96,
+      76,
+      348,
+      415
+    ]
+  },
+  "assets/killers/K28_TheDredge_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      24,
+      382,
+      468
+    ]
+  },
+  "assets/killers/K29_TheMasterMind_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      92,
+      44,
+      351,
+      448
+    ]
+  },
+  "assets/killers/K30_TheKnight_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      24,
+      380,
+      467
+    ]
+  },
+  "assets/killers/K32_TheSingularity_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      55,
+      382,
+      435
+    ]
+  },
+  "assets/killers/K33_TheXenomorph_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      23,
+      381,
+      467
+    ]
+  },
+  "assets/killers/K34_TheYerkes_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      80,
+      61,
+      364,
+      431
+    ]
+  },
+  "assets/killers/K35_TheUnknown_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      20,
+      380,
+      472
+    ]
+  },
+  "assets/killers/K36_TheLich_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      31,
+      375,
+      479
+    ]
+  },
+  "assets/killers/K37_TheDracula_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      44,
+      44,
+      400,
+      466
+    ]
+  },
+  "assets/killers/K38_TheHoundmaster_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      44,
+      20,
+      400,
+      490
+    ]
+  },
+  "assets/killers/K31_TheSkullMerchant_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      44,
+      384,
+      444
+    ]
+  },
+  "assets/killers/K40_TheAnimatronic_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      24,
+      380,
+      486
+    ]
+  },
+  "assets/killers/T_UI_K42_TheFirst_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      44,
+      34,
+      404,
+      475
+    ]
+  },
+  "assets/killers/K39_TheGhoul_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      20,
+      384,
+      489
+    ]
+  },
+  "assets/killers/T_UI_K43_TheSlasher_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      44,
+      380,
+      465
+    ]
+  },
+  "assets/killers/T_UI_K44_TheJudgment_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      64,
+      20,
+      384,
+      486
+    ]
+  },
+  "assets/killers/T_UI_K41_TheKrasue_Portrait.png": {
+    "width": 512,
+    "height": 512,
+    "viewBox": [
+      48,
+      20,
+      400,
+      490
+    ]
+  }
+}

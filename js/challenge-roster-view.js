@@ -6,8 +6,11 @@
   async function loadKillers(){
     if(killerCatalog)return killerCatalog;
     if(killerLoading)return killerLoading;
-    killerLoading=fetch('../data/killers.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('No se pudo cargar el catálogo de Killers.');return r.json()}).then(rows=>{
-      killerCatalog=rows.filter(x=>x?.key&&x?.image).map(x=>({...x,image:'../'+String(x.image).replace(/^\.\.\//,'').replace(/^\//,'')}));
+    killerLoading=Promise.all([
+      fetch('../data/killers.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('No se pudo cargar el catálogo de Killers.');return r.json()}),
+      fetch('../data/challenge-roster-bounds.json?v=20261002-1').then(r=>r.ok?r.json():{}).catch(()=>({}))
+    ]).then(([rows,bounds])=>{
+      killerCatalog=rows.filter(x=>x?.key&&x?.image).map(x=>{const source=String(x.image).replace(/^\.\.\//,'').replace(/^\//,'');return {...x,image:'../'+source,portraitBounds:bounds[source]}});
       return killerCatalog;
     }).finally(()=>killerLoading=null);
     return killerLoading;
@@ -34,7 +37,7 @@
         const cls=['sl-roster-card',`is-${status}`,isCurrent?'is-current':''].filter(Boolean).join(' ');
         const mark=status==='completed'?'✓':status==='failed'?'×':'';
         return `<div class="${cls}" data-key="${esc(item.key)}" title="${esc(item.name||item.key)}">
-          <div class="sl-roster-image"><img src="${esc(item.image)}" alt="${esc(item.name||item.key)}"></div>
+          <div class="sl-roster-image">${!preview&&item.portraitBounds?`<svg class="sl-roster-portrait" viewBox="${item.portraitBounds.viewBox.join(' ')}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${esc(item.name||item.key)}"><image href="${esc(item.image)}" width="${item.portraitBounds.width}" height="${item.portraitBounds.height}" /></svg>`:`<img src="${esc(item.image)}" alt="${esc(item.name||item.key)}">`}</div>
           ${mark?`<span class="sl-roster-mark" aria-hidden="true">${mark}</span>`:''}
           <span class="sl-roster-name">${esc(item.name||item.key)}</span>
         </div>`;
