@@ -83,7 +83,7 @@
           <div class="module-actions challenge-goal-actions"><button id="streakStart" class="module-primary" type="button">INICIAR WIN STREAK</button></div>
         </div>
         <div id="streakLive" hidden>
-          <div class="challenge-active-head"><div><span>WIN STREAK ACTIVA</span><h3 id="streakLiveName">SUPERVIVIENTE</h3></div></div>
+          <div class="challenge-active-head"><div><span id="streakSessionState">WIN STREAK ACTIVA</span><h3 id="streakLiveName">SUPERVIVIENTE</h3></div></div>
           <div class="challenge-streak-live-layout">
             <div id="streakUserPreview" class="challenge-streak-user-preview"></div>
             <div class="challenge-streak-controls">
@@ -387,6 +387,7 @@
       if($('streakPlus'))$('streakPlus').disabled=streakBusy||paused;
       if($('streakReset'))$('streakReset').disabled=streakBusy||paused;
       if($('streakCurrent'))$('streakCurrent').disabled=streakBusy||paused;
+      const sessionState=$('streakSessionState');if(sessionState)sessionState.textContent=paused?'WIN STREAK PAUSADA':'WIN STREAK ACTIVA';
       const pauseBtn=$('streakPause');if(pauseBtn){pauseBtn.textContent=paused?'CONTINUAR':'PAUSAR';pauseBtn.disabled=streakBusy}
       const obsBtn=$('streakObsToggle');if(obsBtn){obsBtn.textContent=paused?'OCULTO EN PAUSA':(state.visible===false?'MOSTRAR EN OBS':'OCULTAR EN OBS');obsBtn.disabled=streakBusy||paused}
       window.SanLeanChallengeStreakView?.render($('streakUserPreview'),overlay,{preview:true});syncStreakLayoutButtons();
