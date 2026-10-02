@@ -49,3 +49,8 @@
  .challenge-progress-edit .challenge-step{width:52px!important;min-width:52px!important}
  .challenge-active-actions #goalFinish{margin-left:0}
 }
+
+/* Inputs numéricos de METAS: sin controles nativos del navegador. */
+.challenge-goal-form input[type="number"],.challenge-live-form input[type="number"]{-moz-appearance:textfield;appearance:textfield}
+.challenge-goal-form input[type="number"]::-webkit-outer-spin-button,.challenge-goal-form input[type="number"]::-webkit-inner-spin-button,.challenge-live-form input[type="number"]::-webkit-outer-spin-button,.challenge-live-form input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.challenge-live-form .ui-field-help{margin-top:10px!important}
