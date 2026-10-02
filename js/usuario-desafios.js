@@ -62,6 +62,13 @@
 
       <section id="streakPanel" class="module-box challenge-streak-panel" hidden>
         <div class="challenge-config-head"><div><span>WIN STREAK</span><h3>CONFIGURACIÓN</h3><p>Superviviente cuenta escapes. Killer permite elegir un personaje específico y llevar su racha de victorias.</p></div></div>
+        <div class="challenge-streak-layout cards-choice-field">
+          <span class="cards-choice-label">DISTRIBUCIÓN EN OBS</span>
+          <div class="cards-segmented" role="group" aria-label="Distribución de imagen y número">
+            <button id="streakLayoutLeft" type="button" aria-pressed="true">IMAGEN IZQUIERDA</button>
+            <button id="streakLayoutRight" type="button" aria-pressed="false">IMAGEN DERECHA</button>
+          </div>
+        </div>
         <div id="streakConfig">
           <div class="challenge-streak-form">
             <label>ROL<select id="streakRole"><option value="survivor">SUPERVIVIENTE</option><option value="killer">KILLER</option></select></label>
@@ -88,10 +95,7 @@
         <p id="streakStatus" class="module-status" role="status"></p>
       </section>
 
-      <section id="streakOutput" class="stream-output-box challenge-streak-output" hidden>
-        <div class="stream-output-head"><div><span>OBS</span><h3>WIN STREAK</h3><p>Overlay compacto para mostrar el personaje y la racha actual.</p></div></div>
-        <div class="stream-output-grid"><div id="streakPreview" class="stream-preview-frame"></div><div class="stream-output-side"><div class="stream-output-field"><label>URL OBS · VISUALIZACIÓN</label><div class="stream-output-url"><input id="streakObsUrl" type="text" readonly><button id="streakCopyUrl" type="button">COPIAR</button></div></div><p class="stream-output-note">Fuente de navegador recomendada: 520 × 220, fondo transparente.</p></div></div>
-      </section>
+
 
       <section id="challengeHistorySection" class="challenge-history-shell">
         <button id="challengeHistoryToggle" class="challenge-history-master-toggle" type="button" aria-expanded="false">
@@ -129,7 +133,7 @@
     }
     if(streakRow&&!$('streakInlineArea')){
       const wrap=document.createElement('div');wrap.id='streakInlineArea';wrap.className='challenge-inline-area';wrap.hidden=true;
-      streakRow.insertAdjacentElement('afterend',wrap);['streakPanel','streakOutput'].forEach(id=>{const el=$(id);if(el)wrap.appendChild(el)});
+      streakRow.insertAdjacentElement('afterend',wrap);['streakPanel'].forEach(id=>{const el=$(id);if(el)wrap.appendChild(el)});
     }
   }
 
@@ -235,6 +239,28 @@
     streakConfigInitialized=true;syncStreakSelection();renderStreakKillers();
   }
 
+  function streakLayout(){
+    const settings=streakOverlay()?.settings||{},state=streakOverlay()?.state||{};
+    return (state.layout||settings.layout)==='image-right'?'image-right':'image-left';
+  }
+
+  function syncStreakLayoutButtons(layout=streakLayout()){
+    const right=layout==='image-right';
+    $('streakLayoutLeft')?.setAttribute('aria-pressed',String(!right));
+    $('streakLayoutRight')?.setAttribute('aria-pressed',String(right));
+  }
+
+  async function setStreakLayout(layout){
+    if(streakBusy)return;const overlay=streakOverlay();if(!overlay)return;
+    const next=layout==='image-right'?'image-right':'image-left';syncStreakLayoutButtons(next);
+    streakBusy=true;
+    try{
+      const settings={...(overlay.settings||{}),layout:next},patch={settings};
+      if(isStreakLive(overlay))patch.state={...overlay.state,layout:next,updatedAt:new Date().toISOString()};
+      await writeStreakOverlay(patch);
+    }catch(err){$('streakStatus').textContent=err.message||'No se pudo guardar la distribución.'}finally{streakBusy=false;refreshStreak()}
+  }
+
   async function loadStreakKillers(){
     if(streakKillers.length)return streakKillers;
     try{
@@ -276,8 +302,8 @@
     streakBusy=true;refreshStreak();
     try{
       if(!tools()?.isOwner?.())throw new Error('La configuración de WIN STREAK pertenece al propietario del stream.');
-      const killer=role==='killer'?{key:selectedStreakKiller.key,name:selectedStreakKiller.name,image:selectedStreakKiller.image}:null,now=new Date().toISOString();
-      const settings={...(overlay.settings||{}),role,killer},state={visible:true,status:'active',current:0,role,killer,startedAt:now,updatedAt:now};
+      const killer=role==='killer'?{key:selectedStreakKiller.key,name:selectedStreakKiller.name,image:selectedStreakKiller.image}:null,now=new Date().toISOString(),layout=streakLayout();
+      const settings={...(overlay.settings||{}),role,killer,layout},state={visible:true,status:'active',current:0,role,killer,layout,startedAt:now,updatedAt:now};
       await writeStreakOverlay({settings,state});
     }catch(err){$('streakStatus').textContent=err.message||'No se pudo iniciar WIN STREAK.'}finally{streakBusy=false;refreshStreak()}
   }
@@ -322,16 +348,15 @@
 
   function refreshStreak(){
     const panel=$('streakPanel');if(!panel)return;const open=activeChallenge==='streak',overlay=streakOverlay(),live=isStreakLive(overlay),state=overlay?.state||{};
-    panel.hidden=!open;$('streakConfig').hidden=live;$('streakLive').hidden=!live;$('streakOutput').hidden=!open||!live;
+    panel.hidden=!open;$('streakConfig').hidden=live;$('streakLive').hidden=!live;
     if(!open)return;
     if(!live){
-      initializeStreakConfig();syncStreakSelection();renderStreakKillers();$('streakPreview').replaceChildren();$('streakObsUrl').value='';
+      initializeStreakConfig();syncStreakSelection();renderStreakKillers();syncStreakLayoutButtons();
     }else{
       const current=$('streakCurrent');if(current&&document.activeElement!==current&&!streakBusy)current.value=String(Math.max(0,Number(state.current)||0));
       $('streakLiveName').textContent=state.role==='killer'?(state.killer?.name||'KILLER'):'SUPERVIVIENTE';
-      ['streakCurrent','streakMinus','streakPlus','streakReset','streakClose','streakFinish'].forEach(id=>{if($(id))$(id).disabled=streakBusy});if($('streakMinus'))$('streakMinus').disabled=streakBusy||(Number(state.current)||0)<=0;
-      window.SanLeanChallengeStreakView?.render($('streakUserPreview'),overlay,{preview:true});window.SanLeanChallengeStreakView?.render($('streakPreview'),overlay,{preview:true});
-      $('streakObsUrl').value=`${location.origin}/Usuario/overlay.html?token=${encodeURIComponent(overlay.public_token||'')}`;
+      ['streakCurrent','streakMinus','streakPlus','streakReset','streakClose','streakFinish','streakLayoutLeft','streakLayoutRight'].forEach(id=>{if($(id))$(id).disabled=streakBusy});if($('streakMinus'))$('streakMinus').disabled=streakBusy||(Number(state.current)||0)<=0;
+      window.SanLeanChallengeStreakView?.render($('streakUserPreview'),overlay,{preview:true});syncStreakLayoutButtons();
     }
     syncStreakSelection();
   }
@@ -386,9 +411,9 @@
     $('goalCopyUrl')?.addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('goalObsUrl').value);$('goalActiveStatus').textContent='URL de OBS copiada.'}catch{$('goalActiveStatus').textContent='No se pudo copiar la URL.'}});
     $('streakRole')?.addEventListener('change',()=>{if(syncing)return;if($('streakRole').value!=='killer')selectedStreakKiller=null;syncStreakSelection();renderStreakKillers();$('streakStatus').textContent=''});
     $('streakKillerSearch')?.addEventListener('input',renderStreakKillers);
+    $('streakLayoutLeft')?.addEventListener('click',()=>setStreakLayout('image-left'));$('streakLayoutRight')?.addEventListener('click',()=>setStreakLayout('image-right'));
     $('streakStart')?.addEventListener('click',startStreak);$('streakMinus')?.addEventListener('click',()=>changeStreak(-1));$('streakPlus')?.addEventListener('click',()=>changeStreak(1));$('streakReset')?.addEventListener('click',resetStreak);$('streakClose')?.addEventListener('click',closeStreak);$('streakFinish')?.addEventListener('click',finishStreak);
     $('streakCurrent')?.addEventListener('input',()=>{clearTimeout(streakSaveTimer);streakSaveTimer=setTimeout(()=>saveStreakCurrent().catch(err=>$('streakStatus').textContent=err.message||'No se pudo actualizar la racha.'),320)});
-    $('streakCopyUrl')?.addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('streakObsUrl').value);$('streakStatus').textContent='URL de OBS copiada.'}catch{$('streakStatus').textContent='No se pudo copiar la URL.'}});
     window.addEventListener('sanlean:overlays-updated',()=>{refresh();refreshStreak()});window.addEventListener('sanlean:challenge-goal',refresh);window.addEventListener('sanlean:challenge-streak',refreshStreak);window.addEventListener('sanlean:section',()=>{refresh();refreshStreak()});
   }
 
