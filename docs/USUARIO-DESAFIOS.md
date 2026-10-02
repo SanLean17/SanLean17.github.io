@@ -225,7 +225,7 @@ ALL KILLER CHALLENGE usa el catálogo real `data/killers.json`; la cantidad no s
 
 ### OBS
 - Overlay independiente `challenge_all_killers`.
-- Browser Source recomendada: **1920 × 360 px**.
+- Browser Source recomendada: **1920 × 250 px**.
 - El roster se divide dinámicamente en tres filas balanceadas. Con 44 Killers: **15 / 15 / 14**.
 - Todas las cartas mantienen el mismo tamaño; la última fila queda centrada.
 - El pulso del Killer actual es CSS local y no genera tráfico de red adicional.
@@ -240,3 +240,11 @@ Cada registro guarda:
 
 ### Arquitectura reutilizable
 El renderer `challenge-roster-view.js` es compartido y se diseñó para reutilizarse en ALL SURVIVOR CHALLENGE cambiando catálogo, textos y reglas de resultado, sin duplicar la capa visual.
+
+
+### Ajuste visual OBS ALL KILLER
+- En OBS los nombres se ocultan para priorizar el retrato a tamaño chico; USUARIO puede conservarlos.
+- Las tres filas no usan gap horizontal ni vertical: las cartas quedan pegadas entre sí.
+- Fondo de carta negro sólido y retrato a opacidad completa en estado pendiente/actual.
+- Completado y fallido mantienen B/N, pero sin transparencia excesiva para conservar legibilidad.
+- Altura recomendada actual: **1920 × 250 px**.
