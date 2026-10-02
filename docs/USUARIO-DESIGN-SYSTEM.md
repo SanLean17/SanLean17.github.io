@@ -299,10 +299,10 @@ La implementación final del router de MI PANEL vive en `js/usuario-stream-tabs.
 
 - DESAFÍOS forma parte de USUARIO y nunca comparte estado con las ruletas de la WEB pública.
 - METAS usa el workspace del streamer como ámbito de configuración, progreso e historial.
-- Rol: Killer o Superviviente. Killer muestra VICTORIAS; Superviviente muestra ESCAPES.
-- Tipo: acumulativa o consecutiva usando el control segmentado canónico.
-- Una meta activa se controla manualmente con +1 / -1. Las consecutivas añaden REINICIAR RACHA.
-- Alcanzar el objetivo no finaliza automáticamente; el streamer puede ampliar el objetivo con +1 OBJETIVO.
+- Una meta se configura con nombre, rol (Killer / Superviviente / Ambos) y objetivo numérico.
+- SanLean no distingue acumulativa/consecutiva: esa regla vive en el nombre y en la forma en que el streamer controla manualmente el progreso.
+- Una meta activa permite editar nombre, rol, progreso actual y objetivo, además de usar +1 / -1.
+- Alcanzar el objetivo no finaliza automáticamente; el streamer puede editar el objetivo o finalizar la meta.
 - La salida OBS usa el componente compartido de METAS con fondo transparente. Los assets visuales futuros no duplican la lógica.
 - La configuración pertenece al propietario del workspace; el control operativo respeta los permisos existentes del overlay.
 
