@@ -5,14 +5,17 @@
 
   function detectSpecial(title){
     const t=norm(title);
-    if(t.includes('de frente'))return'de-frente';
-    if(t.includes('escotilla')||t.includes('trampilla')||t.includes('hatch'))return'escotilla';
-    if(t.includes('me la pela')||t.includes('no mither'))return'me-la-pela';
-    if((t.includes('punto')&&t.includes('sangre'))||t.includes('bloodpoint')||t.includes('blood point')||/\bbp\b/.test(t))return'puntos-de-sangre';
-    if(t.includes('motor')||t.includes('generador')||/\bgens?\b/.test(t))return'motores';
-    if(t.includes('salvad')||t.includes('linterna')||t.includes('flashlight')||t.includes('pallet')||t.includes('palet'))return'salvada';
-    if(t.includes('random')||t.includes('aleatori')||t.includes('ruleta'))return'randoms';
-    if(t.includes('escape'))return'escapes';
+    const compact=t.replace(/[^a-z0-9]+/g,'');
+    const has=(...terms)=>terms.some(term=>t.includes(term)||compact.includes(term.replace(/[^a-z0-9]+/g,'')));
+
+    if(has('de frente','defrente','head on','headon'))return'de-frente';
+    if(has('escotilla','trampilla','trampiya','trampia','hatch'))return'escotilla';
+    if(has('me la pela','melapela','me-la-pela','me_la_pela','no mither','nomither'))return'me-la-pela';
+    if(has('puntos de sangre','punto de sangre','puntos sangre','bloodpoint','blood point','bloodpoints')||/(^|\s)bp(\s|$)/.test(t))return'puntos-de-sangre';
+    if(has('motor','motores','generador','generadores','generator','generators')||/(^|\s)gens?(\s|$)/.test(t))return'motores';
+    if(has('salvada','salvadas','salvar','rescate','rescates','linterna','flashlight','pallet','palet','palette'))return'salvada';
+    if(has('random','randoms','aleatorio','aleatoria','aleatorios','aleatorias','ruleta'))return'randoms';
+    if(has('escape','escapes','escapar','escaped'))return'escapes';
     return'';
   }
 
