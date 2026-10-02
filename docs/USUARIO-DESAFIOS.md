@@ -192,3 +192,51 @@ Las filas guardadas incluyen fecha de finalización.
 - El pulso CSS se aplica al bloque inferior completo y no genera tráfico de red.
 
 - Compactación Superviviente: fila inferior de 118 px (102 px en fuente angosta), desplazada 10/8 px hacia el título; preview de 56 px con ajuste de 5 px. Conserva el icono menor que Killer, ambas orientaciones y el pulso con movimiento reducido.
+
+
+## ALL KILLER CHALLENGE
+
+ALL KILLER CHALLENGE usa el catálogo real `data/killers.json`; la cantidad no se fija manualmente. Actualmente el catálogo contiene 44 Killers.
+
+### Estados
+- `pending`: carta normal.
+- `current`: Killer actual, borde/glow `#FF003C` y pulso CSS muy leve.
+- `completed`: carta en blanco y negro con tilde verde.
+- `failed`: carta en blanco y negro con cruz roja.
+- Un Killer `failed` puede volver a seleccionarse; si luego se marca GANADO cambia a `completed`.
+
+### USUARIO
+- Buscador tolerante por nombre, key y alias habituales.
+- Seleccionar una carta define el Killer actual.
+- Acciones: MARCAR GANADO, MARCAR PERDIDO y VOLVER A PENDIENTE.
+- Contadores: completados / total, fallidos y pendientes.
+- PAUSAR conserva progreso y detiene el tiempo acumulado.
+- CONTINUAR retoma el mismo challenge y reinicia únicamente el reloj de sesión.
+- OCULTAR / MOSTRAR EN OBS sólo controla visibilidad.
+- FINALIZAR guarda el resultado y duración en HISTORIAL.
+
+### Tiempo
+- `startedAt`: fecha/hora de inicio original.
+- `runningSince`: inicio del tramo activo actual.
+- `accumulatedMs`: tiempo acumulado de tramos anteriores.
+- Al pausar se suma el tramo activo a `accumulatedMs`.
+- Al continuar comienza un nuevo `runningSince`.
+- Al finalizar se guarda la duración total real; el tiempo no se muestra en OBS.
+
+### OBS
+- Overlay independiente `challenge_all_killers`.
+- Browser Source recomendada: **1920 × 360 px**.
+- El roster se divide dinámicamente en tres filas balanceadas. Con 44 Killers: **15 / 15 / 14**.
+- Todas las cartas mantienen el mismo tamaño; la última fila queda centrada.
+- El pulso del Killer actual es CSS local y no genera tráfico de red adicional.
+
+### Historial
+Cada registro guarda:
+- fecha de inicio;
+- fecha de finalización;
+- duración total real;
+- completados / total;
+- fallidos y pendientes.
+
+### Arquitectura reutilizable
+El renderer `challenge-roster-view.js` es compartido y se diseñó para reutilizarse en ALL SURVIVOR CHALLENGE cambiando catálogo, textos y reglas de resultado, sin duplicar la capa visual.
