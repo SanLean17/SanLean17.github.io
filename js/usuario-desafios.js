@@ -92,7 +92,7 @@
   }
 
   async function changeProgress(delta){
-    if(busy)return;const overlay=goalOverlay();if(!overlay||!isLive(overlay))return;const current=Math.max(0,(Number(overlay.state.current)||0)+delta);$('goalLiveCurrent').value=String(current);busy=true;try{await saveLive({silent:true})}catch(err){$('goalActiveStatus').textContent=err.message||'No se pudo actualizar el contador.'}finally{busy=false;refresh()}
+    if(busy)return;const overlay=goalOverlay();if(!overlay||!isLive(overlay))return;const base=Math.max(0,Number($('goalLiveCurrent')?.value)||0),current=Math.max(0,Math.min(999999999,base+delta));$('goalLiveCurrent').value=String(current);busy=true;try{await saveLive({silent:true})}catch(err){$('goalActiveStatus').textContent=err.message||'No se pudo actualizar el contador.'}finally{busy=false;refresh()}
   }
 
   async function finishGoal(){
