@@ -13,6 +13,9 @@
   const escape=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const roleLabel=role=>role==='both'?'KILLER + SUPERVIVIENTE':role==='survivor'?'SUPERVIVIENTE':'KILLER';
   const normalizeRole=value=>['killer','survivor','both'].includes(value)?value:'killer';
+  const killerAliases={trapper:'trampero evan macmillan',wraith:'espectro philip ojomo',hillbilly:'pueblerino max thompson',nurse:'enfermera sally smithson',myers:'michael myers shape forma',hag:'bruja lisa sherwood',doctor:'herman carter',huntress:'cazadora anna',leatherface:'cannibal canibal bubba sawyer',freddy:'nightmare pesadilla freddy krueger',pig:'cerda amanda young',clown:'payaso kenneth chase',spirit:'espiritu rin yamaoka',legion:'frank julie susie joey',plague:'plaga adiris',ghostface:'ghost face cara fantasma danny johnson',demogorgon:'demo',oni:'kazan yamaoka',deathslinger:'arponero caleb quinn',pyramidhead:'pyramid head executioner verdugo',blight:'deterioro talbot grimes',twins:'gemelos charlotte victor deshayes',trickster:'traicionero ji woon hak',nemesis:'t type',cenobite:'cenobita pinhead elliot spencer',artist:'artista carmina mora',onryo:'sadako yamamura',dredge:'draga',wesker:'mastermind mente maestra albert wesker',knight:'caballero tarhos kovacs',skullmerchant:'skull merchant comerciante calaveras adriana imai',singularity:'singularidad hux',xenomorph:'xenomorfo alien',chucky:'good guy charles lee ray',unknown:'desconocido',vecna:'lich liche',dracula:'dark lord señor oscuro',houndmaster:'adiestradora canina portia maye',ghoul:'kaneki ken kaneki',animatronic:'animatronico springtrap',krasue:'krasue',lich:'first primero',jason:'voorhees slasher destripador',judgment:'sentencia'};
+  const normalizeSearch=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[_-]+/g,' ').replace(/[^a-z0-9ñ ]/g,' ').replace(/\s+/g,' ').trim();
+
 
   function installPanel(){
     if(document.getElementById('streamChallengesPanel'))return;
@@ -163,8 +166,122 @@
     }catch(err){$('goalActiveStatus').textContent=err.message||'No se pudo finalizar la meta.'}finally{busy=false;refresh()}
   }
 
+
+  function formatHistoryDate(value){
+    if(!value)return'—';const d=new Date(value);if(Number.isNaN(d.getTime()))return'—';
+    return new Intl.DateTimeFormat('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'}).format(d);
+  }
+
+  function syncChallengeButtons(){
+    [['goal',$('goalConfigureOpen')],['streak',$('streakConfigureOpen')]].forEach(([key,button])=>{
+      if(!button)return;const open=activeChallenge===key;button.setAttribute('aria-expanded',String(open));const label=button.querySelector('span');if(label)label.textContent=open?'CERRAR':'ABRIR';
+    });
+    const history=$('goalHistoryToggle');if(history){history.setAttribute('aria-expanded',String(historyOpen));$('goalHistoryBody').hidden=!historyOpen}
+  }
+
+  function populateGoalConfig(){
+    const overlay=goalOverlay(),settings=overlay?.settings||{};$('goalConfigStatus').textContent='';$('goalActiveStatus').textContent='';
+    if(settings.title)$('goalTitle').value=settings.title;setSelect($('goalRole'),settings.role||'killer');$('goalTarget').value=String(Math.max(1,Number(settings.target)||10));
+  }
+
+  async function setChallengeOpen(key){
+    activeChallenge=activeChallenge===key?'':key;syncChallengeButtons();
+    if(activeChallenge==='goal'&&!isLive(goalOverlay()))populateGoalConfig();
+    if(activeChallenge==='streak'){await loadStreakKillers();refreshStreak()}
+    refresh();
+    if(activeChallenge){const target=activeChallenge==='goal'?(isLive(goalOverlay())?$('goalActiveBox'):$('goalConfigurator')):$('streakPanel');setTimeout(()=>target?.scrollIntoView({behavior:'smooth',block:'start'}),40)}
+  }
+
+  async function loadStreakKillers(){
+    if(streakKillers.length)return streakKillers;
+    try{
+      const response=await fetch('../data/killers.json',{cache:'no-store'});if(!response.ok)throw new Error('No se pudo cargar el catálogo de Killers.');
+      const raw=await response.json();
+      streakKillers=raw.filter(k=>k?.key&&k?.name&&k?.image).map(k=>({...k,image:'../'+String(k.image).replace(/^\.\.\//,'').replace(/^\//,''),search:normalizeSearch(`${k.key} ${k.name} ${killerAliases[k.key]||''}`)}));
+      return streakKillers;
+    }catch(err){$('streakStatus').textContent=err.message||'No se pudo cargar el catálogo de Killers.';return[]}
+  }
+
+  function renderStreakKillers(){
+    const list=$('streakKillerResults');if(!list)return;const words=normalizeSearch($('streakKillerSearch')?.value).split(' ').filter(Boolean);
+    const matches=streakKillers.filter(k=>words.every(w=>k.search.includes(w)));
+    list.innerHTML=matches.map(k=>`<button type="button" class="challenge-killer-option${selectedStreakKiller?.key===k.key?' is-selected':''}" data-killer="${escape(k.key)}"><img src="${escape(k.image)}" alt=""><span>${escape(k.name)}</span></button>`).join('');
+    list.querySelectorAll('[data-killer]').forEach(button=>button.addEventListener('click',()=>{
+      selectedStreakKiller=streakKillers.find(k=>k.key===button.dataset.killer)||null;renderStreakKillers();syncStreakSelection();refreshStreak();
+    }));
+  }
+
+  function syncStreakSelection(){
+    const role=$('streakRole')?.value||'survivor',picker=$('streakKillerPicker'),label=$('streakKillerSelected'),start=$('streakStart');
+    if(picker)picker.hidden=role!=='killer';
+    if(label)label.textContent=selectedStreakKiller?`SELECCIONADO: ${selectedStreakKiller.name}`:'Seleccioná un Killer para iniciar la racha.';
+    if(start)start.disabled=streakBusy||!tools()?.isOwner?.()||(role==='killer'&&!selectedStreakKiller);
+  }
+
+  async function writeStreakOverlay(patch){
+    const overlay=streakOverlay(),ws=workspace();if(!client||!overlay||!ws)throw new Error('WIN STREAK todavía no está disponible para este espacio.');
+    const update={updated_at:new Date().toISOString()};if(patch.settings)update.settings=patch.settings;if(patch.state)update.state=patch.state;
+    const {data,error}=await client.from('stream_overlays').update(update).eq('id',overlay.id).eq('workspace_id',ws.id).select('*').single();
+    if(error||!data)throw error||new Error('No se pudo guardar WIN STREAK.');
+    const current=streakOverlay();if(current){if(patch.settings)current.settings=data.settings;if(patch.state)current.state=data.state}
+    window.dispatchEvent(new CustomEvent('sanlean:challenge-streak',{detail:{id:overlay.id,state:data.state,settings:data.settings}}));window.dispatchEvent(new CustomEvent('sanlean:overlays-updated'));return data;
+  }
+
+  async function startStreak(){
+    if(streakBusy)return;const overlay=streakOverlay();if(!overlay)return;$('streakStatus').textContent='';
+    const role=$('streakRole')?.value==='killer'?'killer':'survivor';if(role==='killer'&&!selectedStreakKiller){$('streakStatus').textContent='Seleccioná un Killer antes de iniciar.';return}
+    streakBusy=true;refreshStreak();
+    try{
+      if(!tools()?.isOwner?.())throw new Error('La configuración de WIN STREAK pertenece al propietario del stream.');
+      const killer=role==='killer'?{key:selectedStreakKiller.key,name:selectedStreakKiller.name,image:selectedStreakKiller.image}:null,now=new Date().toISOString();
+      const settings={...(overlay.settings||{}),role,killer},state={visible:true,status:'active',current:0,role,killer,startedAt:now,updatedAt:now};
+      await writeStreakOverlay({settings,state});
+    }catch(err){$('streakStatus').textContent=err.message||'No se pudo iniciar WIN STREAK.'}finally{streakBusy=false;refreshStreak()}
+  }
+
+  function saveStreakCurrent(){
+    clearTimeout(streakSaveTimer);const overlay=streakOverlay();if(!overlay||!isStreakLive(overlay))return Promise.resolve(false);
+    const current=Math.max(0,Math.min(999999999,Math.floor(Number($('streakCurrent')?.value)||0))),state={...overlay.state,current,visible:true,status:'active',updatedAt:new Date().toISOString()};
+    return writeStreakOverlay({state}).then(()=>true);
+  }
+
+  async function changeStreak(delta){
+    if(streakBusy)return;const overlay=streakOverlay();if(!overlay||!isStreakLive(overlay))return;
+    const base=Math.max(0,Number($('streakCurrent')?.value)||0);$('streakCurrent').value=String(Math.max(0,Math.min(999999999,base+delta)));streakBusy=true;refreshStreak();
+    try{await saveStreakCurrent()}catch(err){$('streakStatus').textContent=err.message||'No se pudo actualizar la racha.'}finally{streakBusy=false;refreshStreak()}
+  }
+
+  async function resetStreak(){
+    if(streakBusy||!isStreakLive(streakOverlay()))return;$('streakCurrent').value='0';streakBusy=true;refreshStreak();
+    try{await saveStreakCurrent()}catch(err){$('streakStatus').textContent=err.message||'No se pudo reiniciar la racha.'}finally{streakBusy=false;refreshStreak()}
+  }
+
+  async function finishStreak(){
+    if(streakBusy)return;const overlay=streakOverlay();if(!overlay||!isStreakLive(overlay))return;streakBusy=true;refreshStreak();
+    try{await saveStreakCurrent();await writeStreakOverlay({state:{...streakOverlay().state,visible:false,status:'finished',finishedAt:new Date().toISOString(),updatedAt:new Date().toISOString()}})}catch(err){$('streakStatus').textContent=err.message||'No se pudo finalizar WIN STREAK.'}finally{streakBusy=false;refreshStreak()}
+  }
+
+  function refreshStreak(){
+    const panel=$('streakPanel');if(!panel)return;const open=activeChallenge==='streak',overlay=streakOverlay(),live=isStreakLive(overlay),state=overlay?.state||{},settings=overlay?.settings||{};
+    panel.hidden=!open;$('streakConfig').hidden=live;$('streakLive').hidden=!live;$('streakOutput').hidden=!open||!live;
+    if(!open)return;
+    if(!live){
+      const role=settings.role==='killer'?'killer':'survivor';setSelect($('streakRole'),role);selectedStreakKiller=settings.killer?streakKillers.find(k=>k.key===settings.killer.key)||settings.killer:selectedStreakKiller;
+      syncStreakSelection();renderStreakKillers();$('streakPreview').replaceChildren();$('streakObsUrl').value='';
+    }else{
+      const current=$('streakCurrent');if(current&&document.activeElement!==current)current.value=String(Math.max(0,Number(state.current)||0));
+      $('streakLiveName').textContent=state.role==='killer'?(state.killer?.name||'KILLER'):'SUPERVIVIENTE';
+      ['streakCurrent','streakMinus','streakPlus','streakReset','streakFinish'].forEach(id=>{if($(id))$(id).disabled=streakBusy});if($('streakMinus'))$('streakMinus').disabled=streakBusy||(Number(state.current)||0)<=0;
+      window.SanLeanChallengeStreakView?.render($('streakUserPreview'),overlay,{preview:true});window.SanLeanChallengeStreakView?.render($('streakPreview'),overlay,{preview:true});
+      $('streakObsUrl').value=`${location.origin}/Usuario/overlay.html?token=${encodeURIComponent(overlay.public_token||'')}`;
+    }
+    syncStreakSelection();
+  }
+
   function renderHistory(overlay){
-    const list=$('goalHistory'),empty=$('goalHistoryEmpty');if(!list||!empty)return;const history=Array.isArray(overlay?.settings?.history)?[...overlay.settings.history].reverse():[];empty.hidden=history.length>0;list.innerHTML=history.map(x=>`<div class="challenge-history-row"><strong>${escape(x.title||'META')}</strong><span>${escape(roleLabel(x.role))}</span><b>${Number(x.current)||0}/${Number(x.target)||0}</b></div>`).join('');
+    const list=$('goalHistory'),empty=$('goalHistoryEmpty');if(!list||!empty)return;
+    const history=Array.isArray(overlay?.settings?.history)?[...overlay.settings.history].reverse():[];empty.hidden=history.length>0;
+    list.innerHTML=history.map(x=>`<div class="challenge-history-row"><strong>${escape(x.title||'META')}</strong><span>${escape(roleLabel(x.role))}</span><b>${Number(x.current)||0}/${Number(x.target)||0}</b><time>${formatHistoryDate(x.finishedAt)}</time></div>`).join('');
   }
 
   function syncLiveFields(state,force=false){
@@ -177,13 +294,13 @@
 
   function refresh(){
     const key=contextKey(),changed=key!==activeKey;if(changed){cancelLiveTimer();dirty=false;editVersion++;activeKey=key;$('goalActiveStatus').textContent='';$('goalConfigStatus').textContent=''}
-    const overlay=goalOverlay(),owner=!!tools()?.isOwner?.(),live=isLive(overlay),settings=overlay?.settings||{},state=overlay?.state||{},selector=$('challengeSelector'),config=$('goalConfigurator');
-    if(selector)selector.hidden=live;if(config&&live)config.hidden=true;$('goalActiveBox').hidden=!live;$('goalOutput').hidden=!live||!overlay;
+    const overlay=goalOverlay(),owner=!!tools()?.isOwner?.(),live=isLive(overlay),state=overlay?.state||{},goalOpen=activeChallenge==='goal',config=$('goalConfigurator');
+    if(config)config.hidden=!goalOpen||live;$('goalActiveBox').hidden=!goalOpen||!live;$('goalOutput').hidden=!goalOpen||!live||!overlay;
     ['goalTitle','goalRole','goalTarget'].forEach(id=>{if($(id))$(id).disabled=busy||!owner});if($('goalStart'))$('goalStart').disabled=busy||!owner;
     if(live){if(!dirty)syncLiveFields(state,changed);['goalLiveTitle','goalLiveRole','goalLiveCurrent','goalLiveTarget','goalMinus','goalPlus','goalSaveLive','goalFinish'].forEach(id=>{if($(id))$(id).disabled=busy});if($('goalMinus'))$('goalMinus').disabled=busy||(Number(state.current)||0)<=0}
-    if(overlay&&live){const publicUrl=`${location.origin}/Usuario/overlay.html?token=${encodeURIComponent(overlay.public_token||'')}`;$('goalObsUrl').value=publicUrl;window.SanLeanChallengeGoalView?.render($('goalPreview'),dirty?{...overlay,state:{...state,...readLive()}}:overlay,{preview:true})}
-    if(!live){cancelLiveTimer();dirty=false;$('goalPreview')._goalResizeObserver?.disconnect();$('goalPreview').replaceChildren();$('goalObsUrl').value='';$('goalActiveStatus').textContent=''}
-    renderHistory(overlay);
+    if(overlay&&goalOpen&&live){const publicUrl=`${location.origin}/Usuario/overlay.html?token=${encodeURIComponent(overlay.public_token||'')}`;$('goalObsUrl').value=publicUrl;window.SanLeanChallengeGoalView?.render($('goalPreview'),dirty?{...overlay,state:{...state,...readLive()}}:overlay,{preview:true})}
+    if(!goalOpen||!live){if(!live){cancelLiveTimer();dirty=false}$('goalPreview')._goalResizeObserver?.disconnect();$('goalPreview').replaceChildren();$('goalObsUrl').value='';if(!live)$('goalActiveStatus').textContent=''}
+    renderHistory(overlay);refreshStreak();syncChallengeButtons();
   }
 
   function scheduleLiveSave(){
@@ -195,15 +312,22 @@
   }
 
   function bind(){
-    $('goalConfigureOpen')?.addEventListener('click',()=>{const box=$('goalConfigurator'),overlay=goalOverlay(),settings=overlay?.settings||{};$('goalConfigStatus').textContent='';$('goalActiveStatus').textContent='';box.hidden=false;if(settings.title)$('goalTitle').value=settings.title;setSelect($('goalRole'),settings.role||'killer');$('goalTarget').value=String(Math.max(1,Number(settings.target)||10));refresh();box.scrollIntoView({behavior:'smooth',block:'start'})});
+    $('goalConfigureOpen')?.addEventListener('click',()=>setChallengeOpen('goal'));
+    $('streakConfigureOpen')?.addEventListener('click',()=>setChallengeOpen('streak'));
+    $('goalHistoryToggle')?.addEventListener('click',()=>{historyOpen=!historyOpen;syncChallengeButtons()});
     $('goalStart')?.addEventListener('click',startGoal);
     $('goalMinus')?.addEventListener('click',()=>changeProgress(-1));$('goalPlus')?.addEventListener('click',()=>changeProgress(1));['goalLiveTitle','goalLiveCurrent','goalLiveTarget'].forEach(id=>$(id)?.addEventListener('input',scheduleLiveSave));$('goalLiveRole')?.addEventListener('change',scheduleLiveSave);
     $('goalSaveLive')?.addEventListener('click',async()=>{if(busy)return;busy=true;refresh();try{await saveLive()}catch(err){$('goalActiveStatus').textContent=err.message||'No se pudieron guardar los cambios.'}finally{busy=false;refresh()}});
     $('goalFinish')?.addEventListener('click',finishGoal);
     $('goalCopyUrl')?.addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('goalObsUrl').value);$('goalActiveStatus').textContent='URL de OBS copiada.'}catch{$('goalActiveStatus').textContent='No se pudo copiar la URL.'}});
-    window.addEventListener('sanlean:overlays-updated',refresh);window.addEventListener('sanlean:challenge-goal',refresh);window.addEventListener('sanlean:section',refresh);
+    $('streakRole')?.addEventListener('change',()=>{selectedStreakKiller=$('streakRole').value==='killer'?selectedStreakKiller:null;syncStreakSelection();renderStreakKillers()});
+    $('streakKillerSearch')?.addEventListener('input',renderStreakKillers);
+    $('streakStart')?.addEventListener('click',startStreak);$('streakMinus')?.addEventListener('click',()=>changeStreak(-1));$('streakPlus')?.addEventListener('click',()=>changeStreak(1));$('streakReset')?.addEventListener('click',resetStreak);$('streakFinish')?.addEventListener('click',finishStreak);
+    $('streakCurrent')?.addEventListener('input',()=>{clearTimeout(streakSaveTimer);streakSaveTimer=setTimeout(()=>saveStreakCurrent().catch(err=>$('streakStatus').textContent=err.message||'No se pudo actualizar la racha.'),320)});
+    $('streakCopyUrl')?.addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('streakObsUrl').value);$('streakStatus').textContent='URL de OBS copiada.'}catch{$('streakStatus').textContent='No se pudo copiar la URL.'}});
+    window.addEventListener('sanlean:overlays-updated',()=>{refresh();refreshStreak()});window.addEventListener('sanlean:challenge-goal',refresh);window.addEventListener('sanlean:challenge-streak',refreshStreak);window.addEventListener('sanlean:section',()=>{refresh();refreshStreak()});
   }
 
-  function install(){installPanel();bind();refresh();setTimeout(()=>{refresh();if(location.hash==='#challenges')window.SanLeanUsuarioNavigation?.show?.('challenges',{updateHash:false})},250)}
+  function install(){installPanel();bind();syncChallengeButtons();loadStreakKillers().then(()=>refreshStreak());refresh();setTimeout(()=>{refresh();refreshStreak();if(location.hash==='#challenges')window.SanLeanUsuarioNavigation?.show?.('challenges',{updateHash:false})},250)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(install,40),{once:true});else setTimeout(install,40);
 })();
