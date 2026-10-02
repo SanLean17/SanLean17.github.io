@@ -277,12 +277,14 @@ Orden canónico actual:
 1. INICIO
 2. OVERLAYS OBS
 3. VOTACIONES
-4. SORTEOS
-5. TWITCH / KICK
-6. KILLERS
-7. PERKS DE KILLERS
-8. PERKS DE SUPERVIVIENTES
-9. TORNEO 1VS1
+4. DESAFÍOS
+5. SORTEOS
+6. BITS / ALERTAS
+7. TWITCH / KICK
+8. KILLERS
+9. PERKS DE KILLERS
+10. PERKS DE SUPERVIVIENTES
+11. TORNEO 1VS1
 
 Al pulsar una opción:
 1. Se desactiva visualmente la anterior.
@@ -293,7 +295,18 @@ Al pulsar una opción:
 
 La implementación final del router de MI PANEL vive en `js/usuario-stream-tabs.js`.
 
-## 9. CARTAS / Votaciones
+## 9. DESAFÍOS / Metas
+
+- DESAFÍOS forma parte de USUARIO y nunca comparte estado con las ruletas de la WEB pública.
+- METAS usa el workspace del streamer como ámbito de configuración, progreso e historial.
+- Rol: Killer o Superviviente. Killer muestra VICTORIAS; Superviviente muestra ESCAPES.
+- Tipo: acumulativa o consecutiva usando el control segmentado canónico.
+- Una meta activa se controla manualmente con +1 / -1. Las consecutivas añaden REINICIAR RACHA.
+- Alcanzar el objetivo no finaliza automáticamente; el streamer puede ampliar el objetivo con +1 OBJETIVO.
+- La salida OBS usa el componente compartido de METAS con fondo transparente. Los assets visuales futuros no duplican la lógica.
+- La configuración pertenece al propietario del workspace; el control operativo respeta los permisos existentes del overlay.
+
+## 10. CARTAS / Votaciones
 
 ### Flujo CHAT
 1. El streamer pulsa `GENERAR CARTAS`.
@@ -332,7 +345,7 @@ Un empate NO produce ganador y NO continúa a una ruleta.
 
 Se conservan exactamente las mismas cinco cartas. Los votos se limpian y se prepara una nueva ronda; el streamer vuelve a pulsar `INICIAR VOTACIÓN` para abrir otros 30 segundos. Los votos de la ronda empatada no se arrastran.
 
-## 10. Checklist obligatorio antes de considerar terminado un módulo
+## 11. Checklist obligatorio antes de considerar terminado un módulo
 
 - Usa los tokens de `usuario-design-system.css`.
 - Reutiliza primero un componente existente.
@@ -352,7 +365,7 @@ Se conservan exactamente las mismas cinco cartas. Los votos se limpian y se prep
 - Responsive no rompe alineaciones ni jerarquía.
 - No modifica WEB pública si el cambio pertenece sólo a USUARIO.
 
-## 11. WEB pública vs USUARIO
+## 12. WEB pública vs USUARIO
 
 La WEB pública (`sanlean.com.ar`) y USUARIO (`sanlean.com.ar/usuario/`) son sistemas relacionados pero distintos.
 
