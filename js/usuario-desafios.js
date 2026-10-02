@@ -2,12 +2,14 @@
   const cfg=window.SANLEAN_SUPABASE;
   const client=cfg&&window.supabase?window.supabase.createClient(cfg.url,cfg.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}):null;
   const $=id=>document.getElementById(id),tools=()=>window.SanLeanStreamTools;
-  let busy=false,liveSaveTimer=null,syncing=false,dirty=false,editVersion=0,saveQueue=Promise.resolve(),activeKey='';
+  let busy=false,liveSaveTimer=null,syncing=false,dirty=false,editVersion=0,saveQueue=Promise.resolve(),activeKey='',activeChallenge='',historyOpen=false,streakBusy=false,streakSaveTimer=null,streakKillers=[],selectedStreakKiller=null;
   const contextKey=()=>[workspace()?.id,goalOverlay()?.id,goalOverlay()?.state?.startedAt].join(':');
   const cancelLiveTimer=()=>{clearTimeout(liveSaveTimer);liveSaveTimer=null};
   const goalOverlay=()=>tools()?.getOverlays?.().find(o=>o.kind==='challenge_goal')||null;
+  const streakOverlay=()=>tools()?.getOverlays?.().find(o=>o.kind==='challenge_streak')||null;
   const workspace=()=>tools()?.getWorkspace?.()||null;
   const isLive=o=>['active','reached'].includes(o?.state?.status);
+  const isStreakLive=o=>o?.state?.status==='active';
   const escape=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const roleLabel=role=>role==='both'?'KILLER + SUPERVIVIENTE':role==='survivor'?'SUPERVIVIENTE':'KILLER';
   const normalizeRole=value=>['killer','survivor','both'].includes(value)?value:'killer';
@@ -15,10 +17,11 @@
   function installPanel(){
     if(document.getElementById('streamChallengesPanel'))return;
     const panel=document.createElement('section');panel.id='streamChallengesPanel';panel.className='stream-module challenges-panel';panel.hidden=true;
+    const openButton=(id,label)=>`<button id="${id}" class="module-secondary challenge-open-btn" type="button" aria-expanded="false"><span>${label}</span><i class="challenge-open-chevron" aria-hidden="true"></i></button>`;
     panel.innerHTML=`<div class="stream-module-head"></div>
       <section id="challengeSelector" class="module-box challenge-selector">
-        <div class="challenge-row"><div class="challenge-copy"><h3>METAS</h3><p>Creá un contador manual para el objetivo que quieras mostrar durante el stream.</p></div><div class="module-actions"><button id="goalConfigureOpen" class="module-secondary" type="button">CONFIGURAR</button></div></div>
-        <div class="challenge-row"><div class="challenge-copy"><h3>WIN STREAK</h3><p>Buscá tu mejor racha con un Killer, Survivor o selección libre.</p></div><div class="module-actions"><button class="module-secondary" type="button" disabled>PRÓXIMAMENTE</button></div></div>
+        <div class="challenge-row"><div class="challenge-copy"><h3>METAS</h3><p>Creá un contador manual para el objetivo que quieras mostrar durante el stream.</p></div><div class="module-actions">${openButton('goalConfigureOpen','ABRIR')}</div></div>
+        <div class="challenge-row"><div class="challenge-copy"><h3>WIN STREAK</h3><p>Llevá una racha de escapes como Superviviente o victorias con un Killer específico.</p></div><div class="module-actions">${openButton('streakConfigureOpen','ABRIR')}</div></div>
         <div class="challenge-row"><div class="challenge-copy"><h3>ALL KILLER CHALLENGE</h3><p>Completá el roster de Killers y elegí el siguiente con la ruleta.</p></div><div class="module-actions"><button class="module-secondary" type="button" disabled>PRÓXIMAMENTE</button></div></div>
         <div class="challenge-row"><div class="challenge-copy"><h3>ALL SURVIVOR CHALLENGE</h3><p>Completá el roster de Survivors y registrá cada escape.</p></div><div class="module-actions"><button class="module-secondary" type="button" disabled>PRÓXIMAMENTE</button></div></div>
       </section>
@@ -54,7 +57,47 @@
         <div class="stream-output-grid"><div id="goalPreview" class="stream-preview-frame"></div><div class="stream-output-side"><div class="stream-output-field"><label>URL OBS · VISUALIZACIÓN</label><div class="stream-output-url"><input id="goalObsUrl" type="text" readonly><button id="goalCopyUrl" type="button">COPIAR</button></div></div><p class="stream-output-note">Fuente de navegador recomendada: 720 × 180, fondo transparente.</p></div></div>
       </section>
 
-      <section class="module-box challenge-library"><div class="challenge-section-head"><div><span>HISTORIAL</span><h3>MIS METAS</h3></div><small>Se guarda el nombre, rol y resultado final de cada meta de este espacio.</small></div><div id="goalHistory" class="challenge-history-list"></div><p id="goalHistoryEmpty" class="challenge-empty">TODAVÍA NO HAY METAS GUARDADAS.</p></section>`;
+      <section id="streakPanel" class="module-box challenge-streak-panel" hidden>
+        <div class="challenge-config-head"><div><span>WIN STREAK</span><h3>CONFIGURACIÓN</h3><p>Superviviente cuenta escapes. Killer permite elegir un personaje específico y llevar su racha de victorias.</p></div></div>
+        <div id="streakConfig">
+          <div class="challenge-streak-form">
+            <label>ROL<select id="streakRole"><option value="survivor">SUPERVIVIENTE</option><option value="killer">KILLER</option></select></label>
+            <div id="streakKillerPicker" class="challenge-killer-picker" hidden>
+              <label>BUSCAR KILLER<input id="streakKillerSearch" type="search" placeholder="EJ. ONI, CAZADORA, WESKER..." autocomplete="off"></label>
+              <div id="streakKillerResults" class="challenge-killer-results"></div>
+              <p id="streakKillerSelected" class="ui-field-help">Seleccioná un Killer para iniciar la racha.</p>
+            </div>
+          </div>
+          <div class="module-actions challenge-goal-actions"><button id="streakStart" class="module-primary" type="button">INICIAR WIN STREAK</button></div>
+        </div>
+        <div id="streakLive" hidden>
+          <div class="challenge-active-head"><div><span>WIN STREAK ACTIVA</span><h3 id="streakLiveName">SUPERVIVIENTE</h3></div></div>
+          <div class="challenge-streak-live-layout">
+            <div id="streakUserPreview" class="challenge-streak-user-preview"></div>
+            <div class="challenge-streak-controls">
+              <span class="challenge-live-label">RACHA ACTUAL</span>
+              <div class="challenge-progress-edit"><button id="streakMinus" class="ui-btn ui-btn-secondary challenge-step" type="button">−1</button><input id="streakCurrent" type="number" min="0" max="999999999" step="1"><button id="streakPlus" class="ui-btn ui-btn-primary challenge-step" type="button">+1</button></div>
+              <button id="streakReset" class="ui-btn ui-btn-secondary" type="button">REINICIAR RACHA</button>
+            </div>
+          </div>
+          <div class="module-actions challenge-active-actions"><button id="streakFinish" class="module-secondary challenge-danger" type="button">FINALIZAR WIN STREAK</button></div>
+        </div>
+        <p id="streakStatus" class="module-status" role="status"></p>
+      </section>
+
+      <section id="streakOutput" class="stream-output-box challenge-streak-output" hidden>
+        <div class="stream-output-head"><div><span>OBS</span><h3>WIN STREAK</h3><p>Overlay compacto para mostrar el personaje y la racha actual.</p></div></div>
+        <div class="stream-output-grid"><div id="streakPreview" class="stream-preview-frame"></div><div class="stream-output-side"><div class="stream-output-field"><label>URL OBS · VISUALIZACIÓN</label><div class="stream-output-url"><input id="streakObsUrl" type="text" readonly><button id="streakCopyUrl" type="button">COPIAR</button></div></div><p class="stream-output-note">Fuente de navegador recomendada: 520 × 260, fondo transparente.</p></div></div>
+      </section>
+
+      <section id="goalHistorySection" class="challenge-library challenge-library-collapsible">
+        <button id="goalHistoryToggle" class="challenge-library-toggle" type="button" aria-expanded="false">
+          <span><small>HISTORIAL</small><strong>MIS METAS</strong></span><i class="challenge-open-chevron" aria-hidden="true"></i>
+        </button>
+        <div id="goalHistoryBody" class="challenge-history-body" hidden>
+          <div id="goalHistory" class="challenge-history-list"></div><p id="goalHistoryEmpty" class="challenge-empty">TODAVÍA NO HAY METAS GUARDADAS.</p>
+        </div>
+      </section>`;
     const anchor=document.getElementById('streamGiveawaysPanel');anchor?.parentNode.insertBefore(panel,anchor);
   }
 
