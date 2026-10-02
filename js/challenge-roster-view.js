@@ -30,16 +30,18 @@
 
   // Match the approved 100px portraits on a 1920px stream. Fill each row
   // before starting the next; catalog additions must never drop a portrait.
-  function rowsForObs(items){
+  function rowsForObs(items,columns=19){
+    columns=columns===5?5:19;
     const rows=[];
-    for(let i=0;i<items.length;i+=19)rows.push(items.slice(i,i+19));
+    for(let i=0;i<items.length;i+=columns)rows.push(items.slice(i,i+columns));
     return rows;
   }
 
-  function renderNow(target,data,{preview=false}={}){
+  function renderNow(target,data,{preview=false,columns=19}={}){
+    columns=columns===5?5:19;
     const state=data?.state||{},catalog=catalogs[data?.kind==='challenge_all_survivors'?'survivors':'killers']||[];
     if(!preview&&(state.visible===false||!['active','paused'].includes(state.status))){target.innerHTML='';return}
-    const current=state.currentKey||'',rows=preview?rowsBalanced(catalog,3):rowsForObs(catalog),maxCols=preview?Math.max(1,...rows.map(r=>r.length)):19;
+    const current=state.currentKey||'',rows=preview?rowsBalanced(catalog,3):rowsForObs(catalog,columns),maxCols=preview?Math.max(1,...rows.map(r=>r.length)):columns;
     const alignment=['left','center','right'].includes(data?.settings?.lastRowAlignment)?data.settings.lastRowAlignment:'center';
     target.innerHTML=`<div class="sl-roster-view${preview?' is-preview':''}" data-last-row-alignment="${alignment}" style="--roster-cols:${maxCols};--roster-rows:${Math.max(1,rows.length)}">
       ${rows.map(row=>`<div class="sl-roster-row">${row.map(item=>{

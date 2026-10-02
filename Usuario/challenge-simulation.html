@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Simulación lateral · SanLean</title>
+  <link rel="stylesheet" href="../css/usuario-design-system.css">
+  <link rel="stylesheet" href="../css/usuario-segmented-control.css?v=20261002-1">
+  <link rel="stylesheet" href="../css/challenge-roster-view.css?v=20261002-7">
+  <link rel="stylesheet" href="../css/challenge-simulation.css?v=20261002-1">
+</head>
+<body class="user-page">
+<main>
+  <header class="stream-module-head"><p class="eyebrow">OVERLAYS OBS · SIMULACIÓN</p><h2>ALL KILLER CHALLENGE</h2><p>Probá la distribución con datos de ejemplo. Esta prueba no modifica tu challenge ni la fuente de OBS.</p></header>
+  <section class="module-box">
+    <div class="cards-choice-field"><span class="cards-choice-label" id="layoutLabel">UBICACIÓN EN EL STREAM</span><div class="cards-segmented" data-segments="3" role="group" aria-labelledby="layoutLabel"><button type="button" data-layout="left" aria-pressed="true">IZQUIERDA</button><button type="button" data-layout="top" aria-pressed="false">ARRIBA</button><button type="button" data-layout="right" aria-pressed="false">DERECHA</button></div></div>
+    <p id="layoutInfo" aria-live="polite"></p>
+    <p class="ui-field-help">Cartas iguales a las de OBS: ≈101,05 × 100 px. El stream de ejemplo de 1920 × 1080 se reduce proporcionalmente para entrar en esta ventana.</p>
+  </section>
+  <div class="simulation-viewport"><div class="simulation-scene obs-overlay-page" data-layout="left"><div class="simulation-backdrop"><strong>ÁREA DEL STREAM</strong><span>SIMULACIÓN · DATOS DE EJEMPLO</span></div><div class="simulation-roster"><div class="obs-stage" id="simulationRoster"></div></div></div></div>
+  <p id="simulationStatus" role="status">Cargando retratos…</p>
+</main>
+<script src="../js/challenge-roster-view.js?v=20261002-6"></script>
+<script src="../js/challenge-simulation.js?v=20261002-1"></script>
+</body></html>

@@ -35,7 +35,12 @@ const root=path.resolve(__dirname,'..');
   for(const [kind,label]of [['challenge_goal','META'],['challenge_streak','WIN STREAK'],['challenge_all_killers','ALL KILLER CHALLENGE'],['challenge_all_survivors','ALL SURVIVOR CHALLENGE']]){
    const card=panel.locator('.overlay-card').filter({has:panel.getByRole('heading',{name:label,exact:true})});
    assert.equal(await card.locator('input').first().inputValue(),'https://fixture.test/Usuario/overlay.html?token=public-'+kind);
+   if(kind.startsWith('challenge_all_'))assert.match(await card.locator('.roster-obs-recommendation').innerText(),/1920 × 300 px/);
   }
+  assert.equal(await panel.locator('.simulate-roster').count(),1);
+  await panel.evaluate(()=>{window.open=(...args)=>{window.simulationOpen=args}});
+  await panel.locator('.simulate-roster').click();
+  assert.deepEqual(await panel.evaluate(()=>window.simulationOpen),['https://fixture.test/Usuario/challenge-simulation.html','_blank','noopener']);
   assert.deepEqual(errors,[]);console.log('PASS: compact survivor, unchanged killer, both orientations at 720/520/320, transparency, META and WIN STREAK URLs in OVERLAYS OBS.');
  }finally{await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});
