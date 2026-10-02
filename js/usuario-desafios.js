@@ -90,7 +90,7 @@
 
       <section id="streakOutput" class="stream-output-box challenge-streak-output" hidden>
         <div class="stream-output-head"><div><span>OBS</span><h3>WIN STREAK</h3><p>Overlay compacto para mostrar el personaje y la racha actual.</p></div></div>
-        <div class="stream-output-grid"><div id="streakPreview" class="stream-preview-frame"></div><div class="stream-output-side"><div class="stream-output-field"><label>URL OBS · VISUALIZACIÓN</label><div class="stream-output-url"><input id="streakObsUrl" type="text" readonly><button id="streakCopyUrl" type="button">COPIAR</button></div></div><p class="stream-output-note">Fuente de navegador recomendada: 520 × 260, fondo transparente.</p></div></div>
+        <div class="stream-output-grid"><div id="streakPreview" class="stream-preview-frame"></div><div class="stream-output-side"><div class="stream-output-field"><label>URL OBS · VISUALIZACIÓN</label><div class="stream-output-url"><input id="streakObsUrl" type="text" readonly><button id="streakCopyUrl" type="button">COPIAR</button></div></div><p class="stream-output-note">Fuente de navegador recomendada: 520 × 220, fondo transparente.</p></div></div>
       </section>
 
       <section id="challengeHistorySection" class="challenge-history-shell">
