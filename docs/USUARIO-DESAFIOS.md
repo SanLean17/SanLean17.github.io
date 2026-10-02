@@ -147,3 +147,15 @@ Las filas guardadas incluyen fecha de finalización.
 - Superviviente usa el icono de escapes.
 - Killer utiliza el retrato seleccionado del catálogo oficial interno.
 - Browser Source recomendada: **520 × 220 px**.
+
+
+## WIN STREAK — distribución y movimiento OBS
+
+- WIN STREAK ya no repite su URL/vista OBS dentro de DESAFÍOS; la URL se obtiene desde **OVERLAYS OBS**.
+- El título visual se presenta como **WINSTREAK** sin separación: WIN en `#FF003C` y STREAK en blanco.
+- La composición inferior se centra como una unidad y admite rachas de 3 cifras o más sin desplazar el conjunto.
+- El streamer puede elegir **IMAGEN IZQUIERDA** o **IMAGEN DERECHA** mediante el control segmentado canónico.
+- La preferencia se guarda en `stream_overlays.settings.layout` por workspace y se aplica también a una sesión activa.
+- El pulso/latido es una animación CSS de `transform: scale()`, puramente local en el Browser Source; no realiza solicitudes de red adicionales.
+- `prefers-reduced-motion` desactiva el pulso automáticamente.
+- El selector de Killers usa 4 columnas desktop, tarjetas centradas y únicamente scroll vertical con scrollbar rojo.
