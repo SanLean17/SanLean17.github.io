@@ -225,8 +225,8 @@ ALL KILLER CHALLENGE usa el catálogo real `data/killers.json`; la cantidad no s
 
 ### OBS
 - Overlay independiente `challenge_all_killers`.
-- Browser Source recomendada: **1920 × 160 px**.
-- El roster OBS llena filas de hasta 24 Killers. Con 44 Killers: **24 / 20**, sin omitir personajes.
+- Browser Source recomendada: **1920 × 300 px**.
+- El roster OBS llena filas de hasta 19 Killers. Con 44 Killers: **19 / 19 / 6**, sin omitir personajes.
 - Todas las cartas mantienen el mismo tamaño; la última fila queda centrada.
 - El pulso del Killer actual es CSS local y no genera tráfico de red adicional.
 
@@ -247,12 +247,12 @@ El renderer `challenge-roster-view.js` es compartido y se diseñó para reutiliz
 - Las filas no usan gap horizontal ni vertical: las cartas quedan pegadas entre sí.
 - Fondo de carta restaurado a `rgba(8,8,10,.78)`; retratos a opacidad completa en todos los estados.
 - Completado y fallido mantienen B/N, pero sin transparencia excesiva para conservar legibilidad.
-- Medida recomendada actual: **1920 × 160 px**: dos filas de cartas de 80 × 80 px, sin margen exterior. La primera contiene 24 Killers y llega a ambos bordes; la segunda conserva sus 20 cartas centradas. Este tamaño reproduce la escala aprobada en las capturas del stream.
+- Medida recomendada actual: **1920 × 300 px**: tres filas de cartas de 100 × 100 px. Las dos primeras contienen 19 Killers, con 10 px libres a cada lado; la última conserva sus 6 cartas centradas.
 - El contenedor OBS ocupa el ancho y alto reales de la fuente; se elimina el límite heredado de 1200 px que cortaba las primeras columnas al centrar un roster de 1920 px.
-- El encuadre OBS usa los límites de transparencia de `data/challenge-roster-bounds.json`, medidos con `tests/build-roster-bounds.py`. Un SVG con `preserveAspectRatio="xMidYMid meet"` amplía el retrato completo hasta el límite interior de la carta (78 × 78 px a la medida recomendada). Sólo se excluye margen totalmente transparente: los archivos originales y todos sus píxeles visibles permanecen intactos.
+- El encuadre OBS usa los límites de transparencia de `data/challenge-roster-bounds.json`, medidos con `tests/build-roster-bounds.py`. Un SVG con `preserveAspectRatio="xMidYMid meet"` amplía el retrato completo hasta el límite interior de la carta (98 × 98 px a la medida recomendada). Sólo se excluye margen totalmente transparente: los archivos originales y todos sus píxeles visibles permanecen intactos.
 - Las nuevas imágenes sin límites medidos se muestran completas con `object-fit:contain` como respaldo. Al ampliar el catálogo, ejecutar el medidor para aprovechar también sus márgenes vacíos.
 - Trazo de separación entre cartas: borde de 1 px `rgba(255,255,255,.3)`. Las marcas ✓/× se ubican en el 28% inferior de la carta para despejar la cara, con sombra oscura para mantener contraste.
-- La altura se adapta si falta espacio. Una fuente más alta deja espacio transparente debajo sin agrandar las cartas. Cada nueva fila requiere 80 px adicionales; con 49 Killers usar 1920 × 240.
+- La altura se adapta si falta espacio. Una fuente más alta deja espacio transparente debajo sin agrandar las cartas. Cada nueva fila requiere 100 px adicionales; a partir de 58 Killers usar 1920 × 400.
 - El pulso rojo se dibuja dentro de la carta, por lo que sigue visible en los bordes de la fuente. La entrada/salida usa opacidad sin escalar el roster.
-- En OBS: actualizar la fuente de navegador y usar 1920 × 160. Usar escala 100% (1920 × 160 en el lienzo), eliminando la reducción manual anterior; conservar la posición superior deseada. No estirar esta barra a la altura total de la escena.
+- En OBS: actualizar la fuente de navegador y usar 1920 × 300. Usar escala 100% (1920 × 300 en el lienzo), eliminando la reducción manual anterior; conservar la posición superior deseada. No estirar esta barra a la altura total de la escena.
 - Validación: `node tests/challenge-roster-layout.cjs` comprueba los píxeles visibles de las 44 imágenes contra el encuadre, filas centradas hasta los bordes, marcas inferiores, estados, pausa/continuar, ocultar/mostrar y respaldo sin límites medidos. Usa datos aislados en siete tamaños entre 320 y 1920 px. No escribe datos reales.

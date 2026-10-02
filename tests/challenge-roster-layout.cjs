@@ -8,7 +8,7 @@ const catalog = JSON.parse(fs.readFileSync(path.join(root, 'data/killers.json'),
 (async () => {
   const browser = await chromium.launch({headless:true, ...(process.env.CHROME_PATH ? {executablePath:process.env.CHROME_PATH} : {})});
   try {
-    const page = await browser.newPage({viewport:{width:1920,height:160}});
+    const page = await browser.newPage({viewport:{width:1920,height:300}});
     const errors = [], writes = [];
     let missingBounds=false;
     page.on('pageerror', error => errors.push(error.message));
@@ -60,12 +60,12 @@ const catalog = JSON.parse(fs.readFileSync(path.join(root, 'data/killers.json'),
       if(process.env.QA_OUTPUT) {fs.mkdirSync(process.env.QA_OUTPUT,{recursive:true});await page.screenshot({path:path.join(process.env.QA_OUTPUT,'before.png'),omitBackground:true})}
       return;
     }
-    for (const [width,height] of [[1920,160],[1920,384],[1280,107],[960,80],[740,100],[390,80],[320,80]]) {
+    for (const [width,height] of [[1920,300],[1920,384],[1280,203],[960,152],[740,120],[390,80],[320,80]]) {
       await page.setViewportSize({width,height});
       const g = await geometry();
-      assert.deepEqual(g.rows.map(r=>r.length),[24,20]);
+      assert.deepEqual(g.rows.map(r=>r.length),[19,19,6]);
       assert.equal(g.portraits.length,44);
-      assert(Math.abs(g.rows[0][0].left)<1 && Math.abs(g.rows[0].at(-1).right-width)<1,'Full row reaches both source edges');
+      if(width===1920) assert(Math.abs(g.rows[0][0].left-10)<1 && Math.abs(g.rows[0].at(-1).right-1910)<1,'100px cards leave 10px on each side');
       assert(g.names);assert.equal(g.background,'rgba(0, 0, 0, 0)');
       for(const row of g.rows) {
         assert(Math.abs(row[0].left + row.at(-1).right - width)<1, 'Each row is centered');
@@ -77,18 +77,18 @@ const catalog = JSON.parse(fs.readFileSync(path.join(root, 'data/killers.json'),
         assert(Math.abs(img.width/img.height-img.ratio)<.02,'Portrait keeps natural aspect ratio');
         assert(Math.max(img.width/img.box.width,img.height/img.box.height)>.99,'Visible portrait fills its available bounds');
       }
-      if(width===1920 && height===160) assert(g.rows.flat().every(c=>Math.abs(c.width-80)<.1&&Math.abs(c.height-80)<.1),'Approved 80px cards');
+      if(width===1920 && height===300) assert(g.rows.flat().every(c=>Math.abs(c.width-100)<.1&&Math.abs(c.height-100)<.1),'Approved 100px cards');
       if(process.env.QA_OUTPUT) {
         fs.mkdirSync(process.env.QA_OUTPUT,{recursive:true});
         await page.screenshot({path:path.join(process.env.QA_OUTPUT,`roster-${width}x${height}.png`),omitBackground:true});
-        if((width===1920 && height===160)||width===960||width===390) {
+        if((width===1920 && height===300)||width===960||width===390) {
           const backdrop=await page.addStyleTag({content:'html{background:linear-gradient(125deg,#373841,#111217)}'});
           await page.screenshot({path:path.join(process.env.QA_OUTPUT,`roster-preview-background-${width}.png`)});
           await backdrop.evaluate(e=>e.remove());
         }
       }
     }
-    await page.setViewportSize({width:1920,height:160});
+    await page.setViewportSize({width:1920,height:300});
     assert.equal(await page.locator('.is-completed .sl-roster-mark').textContent(),'✓');
     assert.equal(await page.locator('.is-failed .sl-roster-mark').textContent(),'×');
     assert(await page.locator('.sl-roster-mark').evaluateAll(marks=>marks.every(mark=>{const m=mark.getBoundingClientRect(),c=mark.parentElement.getBoundingClientRect();return m.top>=c.top+c.height*.65 && m.bottom<=c.bottom})), 'Marks sit below the face');
@@ -97,7 +97,7 @@ const catalog = JSON.parse(fs.readFileSync(path.join(root, 'data/killers.json'),
       snapshot.state={...snapshot.state,currentKey:key};
       await page.waitForFunction(key=>document.querySelector('.is-current')?.dataset.key===key,key);
       await page.evaluate(()=>document.querySelector('.is-current').getAnimations().forEach(a=>{a.pause();a.currentTime=1400}));
-      const g=await geometry();for(const row of g.rows)for(const card of row)assert(card.left>=0&&card.right<=1920&&card.top>=0&&card.bottom<=160);
+      const g=await geometry();for(const row of g.rows)for(const card of row)assert(card.left>=0&&card.right<=1920&&card.top>=0&&card.bottom<=300);
     }
     // Existing paused/hidden behavior, progress restoration and results remain intact.
     for(const state of [{status:'paused',visible:true},{status:'active',visible:true},{status:'active',visible:false},{status:'active',visible:true}]) {
@@ -108,13 +108,13 @@ const catalog = JSON.parse(fs.readFileSync(path.join(root, 'data/killers.json'),
     assert.equal(await page.locator('.sl-roster-card').count(),catalog.length);
     await page.emulateMedia({reducedMotion:'reduce'});
     assert.equal(await page.locator('.is-current').evaluate(e=>getComputedStyle(e).animationName),'none');
-    assert.deepEqual(await page.evaluate(()=>window.SanLeanChallengeRosterView.rowsForObs(Array.from({length:49},(_,i)=>i)).map(r=>r.length)),[24,24,1],'Future catalog keeps every killer');
+    assert.deepEqual(await page.evaluate(()=>window.SanLeanChallengeRosterView.rowsForObs(Array.from({length:49},(_,i)=>i)).map(r=>r.length)),[19,19,11],'Future catalog keeps every killer');
     missingBounds=true;
     await page.reload();
     await page.waitForSelector('.sl-roster-image img');
     await page.waitForFunction(()=>document.images.length===44&&[...document.images].every(i=>i.complete&&i.naturalWidth));
     assert.equal(await page.locator('.sl-roster-card').count(),44,'New portraits without measured bounds fall back to full image');
     assert.deepEqual(writes,[]);assert.deepEqual(errors,[]);
-    console.log('PASS: all 44 portraits contained, 24/20 centered rows, seven viewport sizes, all states, hide/show and pause/resume, reduced motion, no live writes or JS errors.');
+    console.log('PASS: all 44 portraits contained, 19/19/6 centered rows, seven viewport sizes, all states, hide/show and pause/resume, reduced motion, no live writes or JS errors.');
   } finally { await browser.close(); }
 })().catch(error=>{console.error(error);process.exitCode=1});

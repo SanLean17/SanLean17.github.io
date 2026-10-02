@@ -147,16 +147,16 @@
   overflow:visible;
 }
 .obs-stage:has(.sl-roster-view) .sl-roster-view{
-  /* Approved stream size: 24 x 80px cards across 1920px, 160px for 44 killers. */
-  --roster-card-height:min(80px,calc(100vh/var(--roster-rows)),calc(100vw/var(--roster-cols)));
+  /* Approved stream size: 19 x 100px cards across 1920px, 300px for 44 killers. */
+  --roster-card-height:min(100px,calc(100vh/var(--roster-rows)),calc(100vw/var(--roster-cols)));
   width:100%;
   padding:0;
 }
-.obs-stage .sl-roster-card{height:var(--roster-card-height);border-color:rgba(255,255,255,.3)}
+.obs-stage .sl-roster-card{flex:0 0 var(--roster-card-height);height:var(--roster-card-height);border-color:rgba(255,255,255,.3)}
 .obs-stage .sl-roster-mark{
   inset:auto 0 1px;
   height:28%;
-  font-size:clamp(6px,calc(var(--roster-card-height)*.25),20px);
+  font-size:clamp(6px,calc(var(--roster-card-height)*.25),25px);
   background:radial-gradient(ellipse at bottom,rgba(0,0,0,.8),transparent 68%);
 }
 /* Keep the red pulse inside edge cards, where an outer glow would be clipped. */

@@ -312,7 +312,7 @@ La implementación final del router de MI PANEL vive en `js/usuario-stream-tabs.
 - WIN STREAK reutiliza el control segmentado canónico para IMAGEN IZQUIERDA / IMAGEN DERECHA. La orientación se persiste por workspace y el overlay usa un pulso CSS local muy leve, desactivado con prefers-reduced-motion.
 - WIN STREAK distingue PAUSAR/CONTINUAR de FINALIZAR: pausar conserva la sesión y la oculta; finalizar la envía al historial. Tanto WIN STREAK como METAS poseen OCULTAR/MOSTRAR EN OBS como control de visibilidad independiente del progreso.
 - ALL KILLER CHALLENGE reutiliza el patrón de sesión persistente: PAUSAR / CONTINUAR, OCULTAR / MOSTRAR EN OBS y FINALIZAR. El tiempo sólo se registra para historial.
-- El roster ALL KILLER CHALLENGE en OBS llena filas de 24 cartas de 80 × 80 px a 1920 px de ancho, según la escala aprobada en el stream. Con 44 Killers ocupa 1920 × 160 px (24 / 20, última fila centrada). Conserva los estados visuales canónicos: pendiente normal, actual rojo, completado B/N + tilde verde, fallido B/N + cruz roja. Las marcas van abajo y los retratos completos aprovechan sus límites de transparencia.
+- El roster ALL KILLER CHALLENGE en OBS llena filas de 19 cartas de 100 × 100 px a 1920 px de ancho, según la escala aprobada en el stream. Con 44 Killers ocupa 1920 × 300 px (19 / 19 / 6, última fila centrada y 10 px laterales en las filas completas). Conserva los estados visuales canónicos: pendiente normal, actual rojo, completado B/N + tilde verde, fallido B/N + cruz roja. Las marcas van abajo y los retratos completos aprovechan sus límites de transparencia.
 - El catálogo nunca se hardcodea: ALL KILLER lee `data/killers.json` y el renderer compartido queda preparado para ALL SURVIVOR.
 
 ## 10. CARTAS / Votaciones
