@@ -74,10 +74,12 @@ Ruta canónica: `assets/usuario/desafios/metas/`.
 - La detección ignora mayúsculas, tildes y separadores; reconoce expresiones juntas como MELAPELA, DEFRENTE y NOMITHER. BP y GEN/GENS se reconocen como palabras completas para evitar coincidencias dentro de otras palabras.
 - Cualquier rol, incluido AMBOS, muestra únicamente el icono detectado por el nombre. AMBOS sin coincidencia conserva KILLERS a la izquierda y ESCAPES a la derecha.
 - CONTROL incluye un vocabulario informativo de ocho iconos. Reutiliza la ayuda canónica (`.ui-field-help`), sin crear botones ni selectores nuevos.
-- La salida sigue siendo transparente, de 720 × 180. Título arriba, iconos sin recorte junto al contador, progreso y objetivo de idéntico tamaño/peso y slash menor. Los números largos reducen la fila completa para conservar la misma proporción.
+- La salida sigue siendo transparente, de 720 × 180. Título arriba, iconos sin recorte junto al contador, progreso y objetivo de idéntico tamaño/peso y slash de la misma altura tipográfica, con peso más fino. Los números largos reducen la fila completa para conservar la misma proporción.
 - Vista previa de hasta 300 × 68 dentro del marco canónico compacto de 106 px.
 - El autoguardado conserva el borrador durante respuestas demoradas o fallidas, ordena las escrituras y evita guardar al sincronizar un selector desde el servidor. Finalizar espera el guardado pendiente y limpia vista previa y URL; una nueva ronda comienza en cero. Los borradores se descartan al cambiar de espacio/meta.
 - Verificación: `tests/challenge-goals.cjs` prueba alias/roles, panel real en cuatro anchos, select canónico, guardado demorado/fallido, finalización/reinicio, separación por espacio y el documento OBS real con respuestas de prueba. No escribe datos reales. Configurar PLAYWRIGHT_MODULE y CHROME_PATH si el entorno no los resuelve por defecto.
 
 - Ajuste de stream: título de 24 px, números de 48 px e iconos de 64 px centrados verticalmente con el contador. La fuente OBS continúa en 720 × 180.
 - Al alcanzar o superar el objetivo, el conjunto usa el movimiento, brillo rojo y respiración de los resultados de las ruletas privadas. La animación continúa mientras el contador cumpla el objetivo, se detiene al quedar por debajo y respeta movimiento reducido. Refrescos con datos idénticos no la reinician.
+
+- Nitidez a tamaño chico: se conservan los PNG originales de 264 × 249, mostrados a 64 px (38 px en el panel), con sombras cortas. El icono anima brillo/contraste sin ampliar sus píxeles. El resplandor rojo de objetivo cumplido se dibuja en una capa de fondo separada para no filtrar ni difuminar los números. El slash comparte el tamaño de fuente de ambos números.

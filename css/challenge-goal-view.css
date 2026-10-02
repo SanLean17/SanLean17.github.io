@@ -1,14 +1,14 @@
 /* DESAFÍOS > METAS — salida compartida USUARIO / OBS, 720 × 180. */
 .sl-goal-view{--goal-number:48px;--goal-icon:64px;--roulette-accent:#FF003C;box-sizing:border-box;width:min(720px,100%);height:180px;padding:8px 12px;color:#fff;font-family:Montserrat,Arial,sans-serif;background:transparent;text-align:center}
 .sl-goal-title{display:block;width:100%;margin:0;color:#fff;font:900 24px/1 Montserrat,Arial,sans-serif;text-align:center;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 3px 9px #000,0 0 12px rgba(0,0,0,.82)}
-.sl-goal-main{display:inline-flex;width:max-content;max-width:none;justify-content:center;align-items:center;gap:0;vertical-align:top}
+.sl-goal-main{position:relative;isolation:isolate;display:inline-flex;width:max-content;max-width:none;justify-content:center;align-items:center;gap:0;vertical-align:top}
 .sl-goal-icon{position:relative;display:grid;place-items:center;flex:none;width:var(--goal-icon);height:var(--goal-icon)}
-.sl-goal-icon img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 4px 8px rgba(0,0,0,.78))}
+.sl-goal-icon img{display:block;width:100%;height:100%;object-fit:contain;image-rendering:auto;filter:drop-shadow(0 2px 3px rgba(0,0,0,.85))}
 .sl-goal-icon-left{margin-right:-2px}.sl-goal-icon-right{margin-left:-2px}
 .sl-goal-icon b{display:none}.sl-goal-icon.is-missing b{display:block;color:#FF003C;font:900 34px/1 Montserrat,Arial,sans-serif}
-.sl-goal-counter{align-self:center;margin-top:0;display:flex;flex:none;align-items:baseline;justify-content:center;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:900;line-height:1;text-shadow:0 4px 11px #000,0 0 14px rgba(0,0,0,.88);font-variant-numeric:tabular-nums}
+.sl-goal-counter{align-self:center;margin-top:0;display:flex;flex:none;align-items:baseline;justify-content:center;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:900;line-height:1;text-shadow:0 2px 4px #000,0 0 3px rgba(0,0,0,.88);font-variant-numeric:tabular-nums}
 .sl-goal-counter span,.sl-goal-counter b{font-size:var(--goal-number);font-weight:900;line-height:1}
-.sl-goal-counter i{margin:0 5px;color:#FF003C;font-size:calc(var(--goal-number)*.5);font-style:normal}
+.sl-goal-counter i{margin:0 5px;color:#FF003C;font-size:var(--goal-number);font-weight:500;line-height:1;font-style:normal}
 .user-page .sl-goal-view.is-preview{--goal-number:28px;--goal-icon:38px;width:min(300px,100%);height:68px;padding:6px 4px}
 .user-page .sl-goal-view.is-preview .sl-goal-title{font-size:14px}
 .user-page .sl-goal-view.is-preview .sl-goal-counter{margin-top:0}
@@ -17,8 +17,9 @@
 .obs-stage:has(.sl-goal-view){position:absolute;inset:0;width:100%;min-height:0;display:grid;place-items:start center;padding:0!important;box-sizing:border-box}
 .obs-stage:has(.sl-goal-view) .sl-goal-view{width:min(720px,100vw);height:min(180px,100vh)}
 
-/* Reuse the same private roulette winner movement, glow and icon breathing. */
+/* Keep the roulette movement; paint the red winner aura behind sharp foreground pixels. */
 .sl-goal-view.is-reached{animation:sl-result-float 2.4s ease-in-out infinite}
-.sl-goal-view.is-reached .sl-goal-main{animation:sl-result-glow 1.7s ease-in-out infinite}
-.sl-goal-view.is-reached .sl-goal-icon img{animation:sl-perk-breathe 1.7s ease-in-out infinite}
-@media(prefers-reduced-motion:reduce){.sl-goal-view.is-reached,.sl-goal-view.is-reached .sl-goal-main,.sl-goal-view.is-reached .sl-goal-icon img{animation:none}}
+.sl-goal-view.is-reached .sl-goal-main::before{content:"";position:absolute;z-index:-1;inset:18% 4%;border-radius:50%;pointer-events:none;background:rgba(255,0,60,.28);box-shadow:0 0 12px 4px #ff003ce6,0 0 22px 4px #ff003c;animation:sl-goal-aura 1.7s ease-in-out infinite}
+@keyframes sl-goal-aura{0%,100%{opacity:.65;box-shadow:0 0 12px 4px #ff003ce6,0 0 22px 4px #ff003c}50%{opacity:1;box-shadow:0 0 14px 5px #ff335fcc,0 0 28px 6px #ff003c}}
+.sl-goal-view.is-reached .sl-goal-icon img{animation:sl-killer-breathe 1.7s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){.sl-goal-view.is-reached,.sl-goal-view.is-reached .sl-goal-main::before,.sl-goal-view.is-reached .sl-goal-icon img{animation:none}}

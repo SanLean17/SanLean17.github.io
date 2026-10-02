@@ -115,7 +115,7 @@ assert.equal(view.detectSpecial('subproceso'),'');
    assert(await panel.locator('#goalPreview').evaluate(e=>e.getBoundingClientRect().height<=110));
    if(process.env.QA_OUTPUT)await panel.screenshot({path:path.join(process.env.QA_OUTPUT,`panel-${width}.png`),fullPage:true});
   }
-  assert(await panel.evaluate(()=>[...document.scripts].some(s=>s.src.includes('usuario-desafios.js?v=20261002-10'))));
+  assert(await panel.evaluate(()=>[...document.scripts].some(s=>s.src.includes('usuario-desafios.js?v=20261002-11'))));
 
   // Load the actual OBS document and exercise its polling/rendering with isolated RPC data.
   const obs=await browser.newPage({viewport:{width:720,height:180}});obs.on('pageerror',e=>errors.push(e.message));
@@ -132,18 +132,31 @@ assert.equal(view.detectSpecial('subproceso'),'');
   if(process.env.QA_OUTPUT)await obs.screenshot({path:path.join(process.env.QA_OUTPUT,'obs-720x180.png'),omitBackground:true});
   assert(await obs.locator('.sl-goal-main').evaluate(e=>{const icon=e.querySelector('.sl-goal-icon').getBoundingClientRect(),counter=e.querySelector('.sl-goal-counter').getBoundingClientRect();return Math.abs(icon.y+icon.height/2-counter.y-counter.height/2)<1}),'Icons centered on numbers');
   assert.equal(await obs.locator('.sl-goal-counter span').evaluate(e=>getComputedStyle(e).fontSize),'48px');
+  assert.equal(await obs.locator('.sl-goal-counter i').evaluate(e=>getComputedStyle(e).fontSize),'48px','Slash matches number height');
+  assert(await obs.locator('.sl-goal-icon img').evaluate(e=>e.naturalWidth>=e.width*2&&e.naturalHeight>=e.height*2),'Original icons have enough detail at small sizes');
   snapshot.state={...snapshot.state,current:15};await obs.waitForSelector('.sl-goal-view.is-reached');
   assert.equal(await obs.locator('.sl-goal-view').evaluate(e=>getComputedStyle(e).animationName),'sl-result-float');
   assert(await obs.locator('.sl-goal-view').evaluate(e=>e.getAnimations().length>0),'Existing roulette keyframes loaded');
   await obs.waitForTimeout(300);
   assert(await obs.locator('.sl-goal-view').evaluate(e=>e.getAnimations()[0].currentTime>0),'Reached animation moves');
+  assert.equal(await obs.locator('.sl-goal-main').evaluate(e=>getComputedStyle(e,'::before').animationName),'sl-goal-aura');
+  assert.equal(await obs.locator('.sl-goal-main').evaluate(e=>getComputedStyle(e).filter),'none','Glow does not filter the foreground');
+  assert.equal(await obs.locator('.sl-goal-icon img').first().evaluate(e=>getComputedStyle(e).transform),'none','No fractional image scaling during achievement');
+  if(process.env.QA_OUTPUT){
+   await obs.screenshot({path:path.join(process.env.QA_OUTPUT,'obs-reached.png'),omitBackground:true});
+   await obs.locator('#obsOverlayRoot').evaluate(e=>{e.style.transform='scale(.65)';e.style.transformOrigin='center top'});
+   await obs.screenshot({path:path.join(process.env.QA_OUTPUT,'obs-reached-small.png'),omitBackground:true});
+   await obs.locator('#obsOverlayRoot').evaluate(e=>{e.style.transform='';e.style.transformOrigin=''});
+  }
   snapshot.state={...snapshot.state,current:16};await obs.waitForFunction(()=>document.querySelector('.sl-goal-counter span').textContent==='16');
   assert.equal(await obs.locator('.sl-goal-view.is-reached').count(),1,'Above target continues animation');
   await obs.emulateMedia({reducedMotion:'reduce'});
   assert.equal(await obs.locator('.sl-goal-view').evaluate(e=>getComputedStyle(e).animationName),'none');
+  assert.equal(await obs.locator('.sl-goal-main').evaluate(e=>getComputedStyle(e,'::before').animationName),'none','Aura respects reduced motion');
   await obs.emulateMedia({reducedMotion:'no-preference'});
   snapshot.state={...snapshot.state,target:20};await obs.waitForFunction(()=>!document.querySelector('.sl-goal-view.is-reached'));
   assert.equal(await obs.locator('.sl-goal-view').evaluate(e=>getComputedStyle(e).animationName),'none','Raising target stops animation');
+  assert.equal(await obs.locator('.sl-goal-main').evaluate(e=>getComputedStyle(e,'::before').content),'none','Aura disappears below target');
   await page.evaluate(()=>{fixture.overlay.state.current=30;fixture.overlay.state.target=20;window.dispatchEvent(new Event('sanlean:overlays-updated'));window.qaGoalNode=document.querySelector('#goalPreview .sl-goal-view');window.dispatchEvent(new Event('sanlean:overlays-updated'))});
   assert(await page.evaluate(()=>qaGoalNode===document.querySelector('#goalPreview .sl-goal-view')),'Identical refresh preserves animation node');
   snapshot.state={...snapshot.state,current:999999999,target:999999999};await obs.waitForFunction(()=>document.querySelector('.sl-goal-counter span').textContent==='999999999');
