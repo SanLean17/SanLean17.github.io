@@ -13,7 +13,6 @@ La primera implementación permite definir:
 - Nombre de la meta.
 - Rol: **KILLER** o **SUPERVIVIENTE**.
 - Objetivo numérico (por ejemplo, 10).
-- Tipo: **ACUMULATIVA** o **CONSECUTIVA**.
 
 Killer usa la métrica **VICTORIAS**. Superviviente usa la métrica **ESCAPES**.
 
@@ -25,11 +24,10 @@ Controles manuales:
 
 - `+1`: suma una victoria/escape.
 - `-1`: corrige el progreso sin bajar de 0.
-- `REINICIAR RACHA`: sólo aparece en metas consecutivas y devuelve el progreso a 0.
-- `+1 OBJETIVO`: aumenta el objetivo durante la meta activa. Ejemplo: una meta 10/10 puede transformarse en 10/11 sin reiniciar el desafío.
+- El objetivo puede editarse directamente durante la meta activa.
 - `FINALIZAR META`: cierra la sesión, oculta el overlay y guarda el resultado en el historial del workspace.
 
-Llegar al objetivo NO finaliza automáticamente. El estado pasa a **OBJETIVO ALCANZADO**, pero la meta sigue activa para permitir extensiones del objetivo.
+SanLean no necesita distinguir entre acumulativa o consecutiva: esa regla la define el streamer en el nombre y controla el progreso manualmente. Llegar al objetivo NO finaliza automáticamente. El estado pasa a **OBJETIVO ALCANZADO**, pero la meta sigue activa para permitir editar el objetivo o finalizarla.
 
 ## OBS
 
@@ -47,8 +45,25 @@ USUARIO reutiliza exclusivamente el Design System canónico:
 - `.module-box` / caja funcional canónica;
 - inputs de 48px;
 - selects canónicos;
-- control segmentado canónico para ACUMULATIVA / CONSECUTIVA;
 - botones de acción de 44px;
 - acento `#FF003C`.
 
 La vista del panel no tiene que ser idéntica al overlay. El panel prioriza control y claridad; el overlay prioriza lectura durante el stream.
+
+## Iconos automáticos
+
+El overlay resuelve el icono por palabras del nombre antes de usar el rol como fallback.
+
+- DE FRENTE → `de-frente.png`
+- ESCOTILLA → `escotilla.png`
+- ME LA PELA / NO MITHER → `me-la-pela.png`
+- PUNTOS DE SANGRE → `puntos-de-sangre.png`
+- MOTORES / GENERADORES → `motores.png`
+- SALVADA / SALVADAS → `salvada.png`
+- RANDOM / ALEATORIO → `randoms.png`
+- ESCAPE / ESCAPES → `escapes.png`
+- KILLER → `killers.png`
+- SUPERVIVIENTE → `superviviente.png`
+- AMBOS → `killers.png` + `superviviente.png`
+
+Ruta canónica: `assets/usuario/desafios/metas/`.
