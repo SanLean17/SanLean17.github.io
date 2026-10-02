@@ -1,7 +1,7 @@
 /* SANLEAN — vista compartida de DESAFÍOS > METAS para USUARIO y OBS. */
 (()=>{
   const escape=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 
   function detectSpecial(title){
     const t=norm(title);
@@ -9,11 +9,11 @@
     const has=(...terms)=>terms.some(term=>t.includes(term)||compact.includes(term.replace(/[^a-z0-9]+/g,'')));
 
     if(has('de frente','defrente','head on','headon'))return'de-frente';
-    if(has('escotilla','trampilla','trampiya','trampia','hatch'))return'escotilla';
     if(has('me la pela','melapela','me-la-pela','me_la_pela','no mither','nomither'))return'me-la-pela';
+    if(has('escotilla','trampilla','trampiya','trampia','hatch'))return'escotilla';
+    if(has('salvada','salvadas','salvar','rescate','rescates','linterna','flashlight','pallet','palet','palette'))return'salvada';
     if(has('puntos de sangre','punto de sangre','puntos sangre','bloodpoint','blood point','bloodpoints')||/(^|\s)bp(\s|$)/.test(t))return'puntos-de-sangre';
     if(has('motor','motores','generador','generadores','generator','generators')||/(^|\s)gens?(\s|$)/.test(t))return'motores';
-    if(has('salvada','salvadas','salvar','rescate','rescates','linterna','flashlight','pallet','palet','palette'))return'salvada';
     if(has('random','randoms','aleatorio','aleatoria','aleatorios','aleatorias','ruleta'))return'randoms';
     if(has('escape','escapes','escapar','escaped'))return'escapes';
     return'';
@@ -44,6 +44,7 @@
 
   function render(target,data,{preview=false}={}){
     if(!target)return;
+    target._goalResizeObserver?.disconnect();
     const v=normalized(data);
     if(!preview&&(!v.visible||!['active','reached'].includes(v.status))){target.innerHTML='';return}
     const left=v.icons[0],right=v.icons[1]||'';
@@ -52,10 +53,14 @@
       <div class="sl-goal-main">
         ${icon(left,'left')}
         <div class="sl-goal-counter" aria-label="${v.current} de ${v.target}"><span>${v.current}</span><i>/</i><b>${v.target}</b></div>
-        ${right?icon(right,'right'):'<span class="sl-goal-icon-spacer" aria-hidden="true"></span>'}
+        ${right?icon(right,'right'):''}
       </div>
     </div>`;
     target.querySelectorAll('.sl-goal-icon img').forEach(img=>img.addEventListener('error',()=>{img.hidden=true;img.parentElement.classList.add('is-missing')},{once:true}));
+    // Scale the whole row only when needed; both numbers keep identical typography.
+    const view=target.querySelector('.sl-goal-view'),main=target.querySelector('.sl-goal-main');
+    const fit=()=>{if(!view.isConnected||!view.clientWidth)return;main.style.zoom='';const css=getComputedStyle(view),available=view.clientWidth-parseFloat(css.paddingLeft)-parseFloat(css.paddingRight);if(main.offsetWidth>available)main.style.zoom=String(available/main.offsetWidth)};
+    fit();target._goalResizeObserver=new ResizeObserver(fit);target._goalResizeObserver.observe(view);
   }
 
   window.SanLeanChallengeGoalView={render,normalized,iconKeys,detectSpecial};

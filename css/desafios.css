@@ -56,7 +56,12 @@
 .challenge-live-form .ui-field-help{margin-top:10px!important}
 
 /* METAS preview compacto: la Browser Source real se controla en OBS. */
-.challenge-goal-output .stream-output-grid{grid-template-columns:minmax(0,480px) minmax(280px,1fr)!important;justify-content:start}
-.challenge-goal-output .stream-preview-frame{min-height:138px!important;padding:14px!important}
+.challenge-goal-output .stream-output-grid{grid-template-columns:minmax(0,320px) minmax(0,1fr)!important;justify-content:start}
+.challenge-goal-output .stream-preview-frame{box-sizing:border-box;min-height:106px!important;height:106px;align-self:start;padding:8px!important}
 .challenge-goal-output .stream-output-head{margin-bottom:14px}
-@media(max-width:900px){.challenge-goal-output .stream-output-grid{grid-template-columns:1fr!important}.challenge-goal-output .stream-preview-frame{min-height:132px!important}}
+@media(max-width:900px){.challenge-goal-output .stream-output-grid{grid-template-columns:1fr!important}.challenge-goal-output .stream-preview-frame{min-height:104px!important}}
+
+/* Informative vocabulary: canonical help text, no interactive controls. */
+.challenge-icon-vocabulary{display:flex;flex-wrap:wrap;gap:6px 14px;list-style:none;padding:0;margin:6px 0 0}
+.challenge-icon-vocabulary li{display:flex;align-items:center;gap:4px;white-space:nowrap}
+.challenge-icon-vocabulary img{display:block;width:24px;height:24px;object-fit:contain}

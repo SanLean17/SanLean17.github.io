@@ -67,3 +67,14 @@ El overlay resuelve el icono por palabras del nombre antes de usar el rol como f
 - AMBOS → `killers.png` + `escapes.png`
 
 Ruta canónica: `assets/usuario/desafios/metas/`.
+
+### METAS: alias, control y composición OBS
+
+- Prioridad: DE FRENTE → ME LA PELA → ESCOTILLA → SALVADAS → PUNTOS DE SANGRE → GENERADORES → RANDOM → ESCAPES → rol.
+- La detección ignora mayúsculas, tildes y separadores; reconoce expresiones juntas como MELAPELA, DEFRENTE y NOMITHER. BP y GEN/GENS se reconocen como palabras completas para evitar coincidencias dentro de otras palabras.
+- AMBOS muestra KILLERS a la izquierda y el icono detectado a la derecha; sin coincidencia usa ESCAPES a la derecha. Un solo rol usa únicamente el icono especial, si existe.
+- CONTROL incluye un vocabulario informativo de ocho iconos. Reutiliza la ayuda canónica (`.ui-field-help`), sin crear botones ni selectores nuevos.
+- La salida sigue siendo transparente, de 720 × 180. Título arriba, iconos sin recorte junto al contador, progreso y objetivo de idéntico tamaño/peso y slash menor. Los números largos reducen la fila completa para conservar la misma proporción.
+- Vista previa de hasta 300 × 88 dentro del marco canónico compacto de 106 px.
+- El autoguardado conserva el borrador durante respuestas demoradas o fallidas, ordena las escrituras y evita guardar al sincronizar un selector desde el servidor. Finalizar espera el guardado pendiente y limpia vista previa y URL; una nueva ronda comienza en cero. Los borradores se descartan al cambiar de espacio/meta.
+- Verificación: `tests/challenge-goals.cjs` prueba alias/roles, panel real en cuatro anchos, select canónico, guardado demorado/fallido, finalización/reinicio, separación por espacio y el documento OBS real con respuestas de prueba. No escribe datos reales. Configurar PLAYWRIGHT_MODULE y CHROME_PATH si el entorno no los resuelve por defecto.

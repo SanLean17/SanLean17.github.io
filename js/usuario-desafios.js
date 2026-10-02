@@ -2,7 +2,9 @@
   const cfg=window.SANLEAN_SUPABASE;
   const client=cfg&&window.supabase?window.supabase.createClient(cfg.url,cfg.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}):null;
   const $=id=>document.getElementById(id),tools=()=>window.SanLeanStreamTools;
-  let busy=false,liveSaveTimer=null;
+  let busy=false,liveSaveTimer=null,syncing=false,dirty=false,editVersion=0,saveQueue=Promise.resolve(),activeKey='';
+  const contextKey=()=>[workspace()?.id,goalOverlay()?.id,goalOverlay()?.state?.startedAt].join(':');
+  const cancelLiveTimer=()=>{clearTimeout(liveSaveTimer);liveSaveTimer=null};
   const goalOverlay=()=>tools()?.getOverlays?.().find(o=>o.kind==='challenge_goal')||null;
   const workspace=()=>tools()?.getWorkspace?.()||null;
   const isLive=o=>['active','reached'].includes(o?.state?.status);
@@ -40,12 +42,15 @@
           <div class="challenge-live-progress"><span class="challenge-live-label">PROGRESO ACTUAL</span><div class="challenge-progress-edit"><button id="goalMinus" class="ui-btn ui-btn-secondary challenge-step" type="button">−1</button><input id="goalLiveCurrent" type="number" min="0" max="999999999" step="1"><button id="goalPlus" class="ui-btn ui-btn-primary challenge-step" type="button">+1</button></div></div>
           <label>OBJETIVO<input id="goalLiveTarget" type="number" min="1" max="999999999" step="1"><small class="ui-field-help">Podés modificar el número de tu objetivo en cualquier momento.</small></label>
         </div>
+        <div class="ui-field-help challenge-icon-help" aria-label="Palabras recomendadas para los iconos">
+          <span>ICONOS SEGÚN EL NOMBRE</span><ul class="challenge-icon-vocabulary">${[['escapes','ESCAPES'],['escotilla','TRAMPILLA / ESCOTILLA'],['me-la-pela','ME LA PELA'],['salvada','SALVADAS'],['de-frente','DE FRENTE'],['puntos-de-sangre','PUNTOS DE SANGRE'],['motores','GENERADORES'],['randoms','RANDOM']].map(([key,label])=>`<li><img src="../assets/usuario/desafios/metas/${key}.png" alt="" width="24" height="24"><span>${label}</span></li>`).join('')}</ul>
+        </div>
         <div class="module-actions challenge-active-actions"><button id="goalSaveLive" class="module-primary" type="button">GUARDAR CAMBIOS</button><button id="goalFinish" class="module-secondary challenge-danger" type="button">FINALIZAR META</button></div>
         <p id="goalActiveStatus" class="module-status" role="status"></p>
       </section>
 
       <section id="goalOutput" class="stream-output-box challenge-goal-output" hidden>
-        <div class="stream-output-head"><div><span>OBS</span><h3>VISTA DE LA META</h3><p>La vista se actualiza con cada cambio. Cuando subas los iconos finales se mostrarán automáticamente según el nombre y el rol.</p></div></div>
+        <div class="stream-output-head"><div><span>OBS</span><h3>VISTA DE LA META</h3><p>La vista se actualiza con cada cambio de nombre, rol, progreso u objetivo.</p></div></div>
         <div class="stream-output-grid"><div id="goalPreview" class="stream-preview-frame"></div><div class="stream-output-side"><div class="stream-output-field"><label>URL OBS · VISUALIZACIÓN</label><div class="stream-output-url"><input id="goalObsUrl" type="text" readonly><button id="goalCopyUrl" type="button">COPIAR</button></div></div><p class="stream-output-note">Fuente de navegador recomendada: 720 × 180, fondo transparente.</p></div></div>
       </section>
 
@@ -54,7 +59,7 @@
   }
 
   function setSelect(select,value){
-    if(!select)return;const next=normalizeRole(value);if(select.value===next)return;select.value=next;select.dispatchEvent(new Event('change',{bubbles:true}));
+    if(!select)return;const next=normalizeRole(value);if(select.value===next)return;syncing=true;try{select.value=next;select.dispatchEvent(new Event('change',{bubbles:true}))}finally{syncing=false}
   }
 
   function readConfig(){
@@ -74,7 +79,9 @@
     const update={updated_at:new Date().toISOString()};if(patch.settings)update.settings=patch.settings;if(patch.state)update.state=patch.state;
     const {data,error}=await client.from('stream_overlays').update(update).eq('id',overlay.id).eq('workspace_id',ws.id).select('*').single();
     if(error||!data)throw error||new Error('No se pudo guardar la META.');
-    if(patch.settings)overlay.settings=patch.settings;if(patch.state)overlay.state=patch.state;
+    if(workspace()?.id!==ws.id||goalOverlay()?.id!==overlay.id)return overlay;
+    const currentOverlay=goalOverlay();if(patch.settings)currentOverlay.settings=data.settings;if(patch.state)currentOverlay.state=data.state;
+    if(patch.settings)overlay.settings=data.settings;if(patch.state)overlay.state=data.state;
     window.dispatchEvent(new CustomEvent('sanlean:challenge-goal',{detail:{id:overlay.id,state:overlay.state,settings:overlay.settings}}));window.dispatchEvent(new CustomEvent('sanlean:overlays-updated'));return overlay;
   }
 
@@ -86,18 +93,29 @@
     }catch(err){$('goalConfigStatus').textContent=err.message||'No se pudo iniciar la meta.'}finally{busy=false;refresh()}
   }
 
-  async function saveLive({silent=false}={}){
-    const overlay=goalOverlay();if(!overlay||!isLive(overlay))return false;const form=readLive(),status=form.current>=form.target?'reached':'active',settings={...(overlay.settings||{}),title:form.title,role:form.role,target:form.target},state={...overlay.state,visible:true,title:form.title,role:form.role,current:form.current,target:form.target,status,updatedAt:new Date().toISOString()};
-    await writeOverlay({settings,state});if(!silent)$('goalActiveStatus').textContent='Cambios guardados.';return true;
+  function saveLive({silent=false}={}){
+    cancelLiveTimer();
+    const form=readLive(),version=editVersion,key=contextKey();
+    const save=async()=>{
+      const overlay=goalOverlay();if(key!==contextKey()||!overlay||!isLive(overlay))return false;
+      const status=form.current>=form.target?'reached':'active',settings={...(overlay.settings||{}),title:form.title,role:form.role,target:form.target},state={...overlay.state,...form,visible:true,status,updatedAt:new Date().toISOString()};
+      delete state.finishedAt;
+      await writeOverlay({settings,state});
+      if(key!==contextKey())return false;
+      if(version===editVersion)dirty=false;
+      if(!silent)$('goalActiveStatus').textContent='Cambios guardados.';
+      refresh();return true;
+    };
+    const result=saveQueue.then(save);saveQueue=result.catch(()=>{});return result;
   }
 
   async function changeProgress(delta){
-    if(busy)return;const overlay=goalOverlay();if(!overlay||!isLive(overlay))return;const base=Math.max(0,Number($('goalLiveCurrent')?.value)||0),current=Math.max(0,Math.min(999999999,base+delta));$('goalLiveCurrent').value=String(current);busy=true;try{await saveLive({silent:true})}catch(err){$('goalActiveStatus').textContent=err.message||'No se pudo actualizar el contador.'}finally{busy=false;refresh()}
+    if(busy)return;const overlay=goalOverlay();if(!overlay||!isLive(overlay))return;const base=Math.max(0,Number($('goalLiveCurrent')?.value)||0),current=Math.max(0,Math.min(999999999,base+delta));$('goalLiveCurrent').value=String(current);dirty=true;editVersion++;busy=true;refresh();try{await saveLive({silent:true})}catch(err){$('goalActiveStatus').textContent=err.message||'No se pudo actualizar el contador.'}finally{busy=false;refresh()}
   }
 
   async function finishGoal(){
-    if(busy)return;const overlay=goalOverlay();if(!overlay||!isLive(overlay))return;busy=true;try{
-      await saveLive({silent:true});const latest=goalOverlay(),finishedAt=new Date().toISOString(),record={title:latest.state.title,role:latest.state.role,current:Number(latest.state.current)||0,target:Number(latest.state.target)||1,startedAt:latest.state.startedAt||null,finishedAt,reached:(Number(latest.state.current)||0)>=(Number(latest.state.target)||1)},history=[...(Array.isArray(latest.settings?.history)?latest.settings.history:[]),record].slice(-20),settings={...(latest.settings||{}),history},state={...latest.state,visible:false,status:'finished',finishedAt,updatedAt:finishedAt};
+    if(busy)return;const overlay=goalOverlay();if(!overlay||!isLive(overlay))return;cancelLiveTimer();busy=true;refresh();try{
+      if(!await saveLive({silent:true}))return;const latest=goalOverlay(),finishedAt=new Date().toISOString(),record={title:latest.state.title,role:latest.state.role,current:Number(latest.state.current)||0,target:Number(latest.state.target)||1,startedAt:latest.state.startedAt||null,finishedAt,reached:(Number(latest.state.current)||0)>=(Number(latest.state.target)||1)},history=[...(Array.isArray(latest.settings?.history)?latest.settings.history:[]),record].slice(-20),settings={...(latest.settings||{}),history},state={...latest.state,visible:false,status:'finished',finishedAt,updatedAt:finishedAt};
       await writeOverlay({settings,state});$('goalActiveStatus').textContent='';$('goalConfigStatus').textContent='';
     }catch(err){$('goalActiveStatus').textContent=err.message||'No se pudo finalizar la meta.'}finally{busy=false;refresh()}
   }
@@ -106,30 +124,38 @@
     const list=$('goalHistory'),empty=$('goalHistoryEmpty');if(!list||!empty)return;const history=Array.isArray(overlay?.settings?.history)?[...overlay.settings.history].reverse():[];empty.hidden=history.length>0;list.innerHTML=history.map(x=>`<div class="challenge-history-row"><strong>${escape(x.title||'META')}</strong><span>${escape(roleLabel(x.role))}</span><b>${Number(x.current)||0}/${Number(x.target)||0}</b></div>`).join('');
   }
 
-  function syncLiveFields(state){
+  function syncLiveFields(state,force=false){
     const title=$('goalLiveTitle'),current=$('goalLiveCurrent'),target=$('goalLiveTarget');
-    if(title&&document.activeElement!==title)title.value=state.title||'META';
-    if(current&&document.activeElement!==current)current.value=String(Math.max(0,Number(state.current)||0));
-    if(target&&document.activeElement!==target)target.value=String(Math.max(1,Number(state.target)||1));
+    if(title&&(force||document.activeElement!==title))title.value=state.title||'META';
+    if(current&&(force||document.activeElement!==current))current.value=String(Math.max(0,Number(state.current)||0));
+    if(target&&(force||document.activeElement!==target))target.value=String(Math.max(1,Number(state.target)||1));
     setSelect($('goalLiveRole'),state.role||'killer');
   }
 
   function refresh(){
+    const key=contextKey(),changed=key!==activeKey;if(changed){cancelLiveTimer();dirty=false;editVersion++;activeKey=key;$('goalActiveStatus').textContent='';$('goalConfigStatus').textContent=''}
     const overlay=goalOverlay(),owner=!!tools()?.isOwner?.(),live=isLive(overlay),settings=overlay?.settings||{},state=overlay?.state||{},selector=$('challengeSelector'),config=$('goalConfigurator');
     if(selector)selector.hidden=live;if(config&&live)config.hidden=true;$('goalActiveBox').hidden=!live;$('goalOutput').hidden=!live||!overlay;
     ['goalTitle','goalRole','goalTarget'].forEach(id=>{if($(id))$(id).disabled=busy||!owner});if($('goalStart'))$('goalStart').disabled=busy||!owner;
-    if(live){syncLiveFields(state);['goalLiveTitle','goalLiveRole','goalLiveCurrent','goalLiveTarget','goalMinus','goalPlus','goalSaveLive','goalFinish'].forEach(id=>{if($(id))$(id).disabled=busy});if($('goalMinus'))$('goalMinus').disabled=busy||(Number(state.current)||0)<=0}
-    if(overlay&&live){const publicUrl=`${location.origin}/Usuario/overlay.html?token=${encodeURIComponent(overlay.public_token||'')}`;$('goalObsUrl').value=publicUrl;window.SanLeanChallengeGoalView?.render($('goalPreview'),overlay,{preview:true})}
-        renderHistory(overlay);
+    if(live){if(!dirty)syncLiveFields(state,changed);['goalLiveTitle','goalLiveRole','goalLiveCurrent','goalLiveTarget','goalMinus','goalPlus','goalSaveLive','goalFinish'].forEach(id=>{if($(id))$(id).disabled=busy});if($('goalMinus'))$('goalMinus').disabled=busy||(Number(state.current)||0)<=0}
+    if(overlay&&live){const publicUrl=`${location.origin}/Usuario/overlay.html?token=${encodeURIComponent(overlay.public_token||'')}`;$('goalObsUrl').value=publicUrl;window.SanLeanChallengeGoalView?.render($('goalPreview'),dirty?{...overlay,state:{...state,...readLive()}}:overlay,{preview:true})}
+    if(!live){cancelLiveTimer();dirty=false;$('goalPreview')._goalResizeObserver?.disconnect();$('goalPreview').replaceChildren();$('goalObsUrl').value='';$('goalActiveStatus').textContent=''}
+    renderHistory(overlay);
   }
 
-  function scheduleLiveSave(){clearTimeout(liveSaveTimer);liveSaveTimer=setTimeout(async()=>{const overlay=goalOverlay();if(!overlay||!isLive(overlay))return;try{await saveLive({silent:true});$('goalActiveStatus').textContent=''}catch(err){$('goalActiveStatus').textContent=err.message||'No se pudieron guardar los cambios.'}},320)}
+  function scheduleLiveSave(){
+    if(syncing||busy||!isLive(goalOverlay()))return;
+    dirty=true;editVersion++;cancelLiveTimer();$('goalActiveStatus').textContent='';
+    const draft=readLive();window.SanLeanChallengeGoalView?.render($('goalPreview'),{settings:goalOverlay().settings,state:{...goalOverlay().state,...draft}},{preview:true});
+    const key=contextKey();
+    liveSaveTimer=setTimeout(async()=>{liveSaveTimer=null;if(key!==contextKey()||busy||!isLive(goalOverlay()))return;try{await saveLive({silent:true})}catch(err){if(key===contextKey())$('goalActiveStatus').textContent=err.message||'No se pudieron guardar los cambios.'}},320);
+  }
 
   function bind(){
     $('goalConfigureOpen')?.addEventListener('click',()=>{const box=$('goalConfigurator'),overlay=goalOverlay(),settings=overlay?.settings||{};$('goalConfigStatus').textContent='';$('goalActiveStatus').textContent='';box.hidden=false;if(settings.title)$('goalTitle').value=settings.title;setSelect($('goalRole'),settings.role||'killer');$('goalTarget').value=String(Math.max(1,Number(settings.target)||10));refresh();box.scrollIntoView({behavior:'smooth',block:'start'})});
     $('goalStart')?.addEventListener('click',startGoal);
     $('goalMinus')?.addEventListener('click',()=>changeProgress(-1));$('goalPlus')?.addEventListener('click',()=>changeProgress(1));['goalLiveTitle','goalLiveCurrent','goalLiveTarget'].forEach(id=>$(id)?.addEventListener('input',scheduleLiveSave));$('goalLiveRole')?.addEventListener('change',scheduleLiveSave);
-    $('goalSaveLive')?.addEventListener('click',async()=>{if(busy)return;busy=true;try{await saveLive()}catch(err){$('goalActiveStatus').textContent=err.message||'No se pudieron guardar los cambios.'}finally{busy=false;refresh()}});
+    $('goalSaveLive')?.addEventListener('click',async()=>{if(busy)return;busy=true;refresh();try{await saveLive()}catch(err){$('goalActiveStatus').textContent=err.message||'No se pudieron guardar los cambios.'}finally{busy=false;refresh()}});
     $('goalFinish')?.addEventListener('click',finishGoal);
     $('goalCopyUrl')?.addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('goalObsUrl').value);$('goalActiveStatus').textContent='URL de OBS copiada.'}catch{$('goalActiveStatus').textContent='No se pudo copiar la URL.'}});
     window.addEventListener('sanlean:overlays-updated',refresh);window.addEventListener('sanlean:challenge-goal',refresh);window.addEventListener('sanlean:section',refresh);
