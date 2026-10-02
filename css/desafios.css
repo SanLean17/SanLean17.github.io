@@ -1,3 +1,4 @@
+@import url('usuario-segmented-control.css');
 .challenges-panel{--challenge-accent:var(--sl-accent,#FF003C)}
 .challenge-selector{margin-bottom:var(--sl-section-gap)!important;padding-top:10px!important;padding-bottom:10px!important}
 .challenge-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:28px;min-height:86px;padding:18px 0;border-bottom:1px solid var(--sl-border)}
@@ -177,4 +178,69 @@
  .challenge-history-row time{grid-column:1/-1}
  .challenge-history-master-toggle{min-height:68px;padding:14px 16px}
  .challenge-history-master-body{padding:12px}
+}
+
+
+/* WIN STREAK v4 — grilla sin overflow horizontal + selector de distribución. */
+.challenge-streak-layout{width:min(100%,460px);margin:0 0 20px}
+.challenge-streak-layout .cards-segmented{width:100%}
+.challenge-killer-picker{box-sizing:border-box;width:min(100%,940px)!important;min-width:0!important;overflow:hidden!important}
+.challenge-killer-results{
+  box-sizing:border-box!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:10px!important;
+  padding:4px 8px 4px 0!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  scrollbar-width:thin!important;
+  scrollbar-color:var(--sl-accent) transparent!important;
+}
+.challenge-killer-option{
+  box-sizing:border-box!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  justify-self:stretch!important;
+  align-self:stretch!important;
+  justify-items:center!important;
+  align-items:center!important;
+  text-align:center!important;
+  overflow:hidden!important;
+}
+.challenge-killer-option img{
+  display:block!important;
+  justify-self:center!important;
+  align-self:center!important;
+  margin:auto!important;
+  max-width:100%!important;
+  width:auto!important;
+}
+.challenge-killer-option span{
+  box-sizing:border-box!important;
+  width:100%!important;
+  max-width:100%!important;
+  justify-content:center!important;
+  text-align:center!important;
+  margin:0 auto!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+.challenge-killer-results::-webkit-scrollbar{width:6px!important;height:0!important}
+.challenge-killer-results::-webkit-scrollbar-track{background:transparent!important}
+.challenge-killer-results::-webkit-scrollbar-thumb{background:var(--sl-accent)!important;border-radius:999px!important}
+.challenge-killer-results::-webkit-scrollbar-corner{background:transparent!important}
+.challenge-streak-user-preview{min-height:132px!important;height:132px!important;padding:4px!important}
+.challenge-streak-live-layout{grid-template-columns:minmax(0,270px) minmax(280px,1fr)!important}
+.challenge-streak-output{display:none!important}
+
+@media(max-width:900px){
+  .challenge-killer-results{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(max-width:760px){
+  .challenge-killer-results{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .challenge-streak-layout{width:100%}
 }
