@@ -147,8 +147,8 @@
   overflow:visible;
 }
 .obs-stage:has(.sl-roster-view) .sl-roster-view{
-  /* Edge-to-edge at 1920 x 384: three rows of 128px, no outer gutter. */
-  --roster-card-height:min(128px,calc(100vh/3),calc(100vw/var(--roster-cols)));
+  /* Approved stream size: 24 x 80px cards across 1920px, 160px for 44 killers. */
+  --roster-card-height:min(80px,calc(100vh/var(--roster-rows)),calc(100vw/var(--roster-cols)));
   width:100%;
   padding:0;
 }
@@ -156,7 +156,7 @@
 .obs-stage .sl-roster-mark{
   inset:auto 0 1px;
   height:28%;
-  font-size:clamp(10px,1.8vw,32px);
+  font-size:clamp(6px,calc(var(--roster-card-height)*.25),20px);
   background:radial-gradient(ellipse at bottom,rgba(0,0,0,.8),transparent 68%);
 }
 /* Keep the red pulse inside edge cards, where an outer glow would be clipped. */

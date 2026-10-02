@@ -27,11 +27,19 @@
     return data?.state?.entries?.[key]||'pending';
   }
 
+  // Match the approved ~80px portraits on a 1920px stream. Fill each row
+  // before starting the next; catalog additions must never drop a portrait.
+  function rowsForObs(items){
+    const rows=[];
+    for(let i=0;i<items.length;i+=24)rows.push(items.slice(i,i+24));
+    return rows;
+  }
+
   function renderNow(target,data,{preview=false}={}){
     const state=data?.state||{},catalog=killerCatalog||[];
     if(!preview&&(state.visible===false||!['active','paused'].includes(state.status))){target.innerHTML='';return}
-    const current=state.currentKey||'',rows=rowsBalanced(catalog,3),maxCols=Math.max(1,...rows.map(r=>r.length));
-    target.innerHTML=`<div class="sl-roster-view${preview?' is-preview':''}" style="--roster-cols:${maxCols}">
+    const current=state.currentKey||'',rows=preview?rowsBalanced(catalog,3):rowsForObs(catalog),maxCols=preview?Math.max(1,...rows.map(r=>r.length)):24;
+    target.innerHTML=`<div class="sl-roster-view${preview?' is-preview':''}" style="--roster-cols:${maxCols};--roster-rows:${Math.max(1,rows.length)}">
       ${rows.map(row=>`<div class="sl-roster-row">${row.map(item=>{
         const status=stateFor(data,item.key),isCurrent=current===item.key;
         const cls=['sl-roster-card',`is-${status}`,isCurrent?'is-current':''].filter(Boolean).join(' ');
@@ -52,5 +60,5 @@
     loadKillers().then(()=>{if(lastTarget===target)renderNow(target,lastData,lastOptions||{})}).catch(()=>{target.innerHTML=''});
   }
 
-  window.SanLeanChallengeRosterView={render,loadKillers,rowsBalanced};
+  window.SanLeanChallengeRosterView={render,loadKillers,rowsBalanced,rowsForObs};
 })();
