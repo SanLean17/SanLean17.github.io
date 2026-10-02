@@ -1,0 +1,19 @@
+/* DESAFÍOS > WIN STREAK — salida compartida USUARIO / OBS. */
+.sl-streak-view{box-sizing:border-box;width:min(520px,100vw);height:260px;padding:14px 18px;background:transparent;color:#fff;font-family:Montserrat,Arial,sans-serif}
+.sl-streak-title{margin:0 0 8px;text-align:center;color:#fff;font:400 46px/.9 Impact,'Arial Black','Arial Narrow',sans-serif;letter-spacing:.01em;text-transform:uppercase;text-shadow:0 3px 10px #000}
+.sl-streak-title span{color:#FF003C}
+.sl-streak-main{display:grid;grid-template-columns:170px 120px;justify-content:center;align-items:center;gap:16px;height:188px}
+.sl-streak-image{display:grid;place-items:center;width:170px;height:180px;overflow:visible}
+.sl-streak-image img{display:block;max-width:170px;max-height:180px;object-fit:contain;filter:drop-shadow(0 5px 11px rgba(0,0,0,.8))}
+.sl-streak-number{display:grid;place-items:center;min-width:120px;color:#fff;font:900 92px/.85 Montserrat,Arial,sans-serif;text-align:center;text-shadow:0 4px 12px #000;animation:sl-streak-pop .24s ease-out}
+@keyframes sl-streak-pop{0%{transform:scale(.9);opacity:.7}100%{transform:scale(1);opacity:1}}
+.user-page .sl-streak-view.is-preview{width:360px;height:180px;padding:8px 10px}
+.user-page .sl-streak-view.is-preview .sl-streak-title{font-size:30px;margin-bottom:4px}
+.user-page .sl-streak-view.is-preview .sl-streak-main{grid-template-columns:110px 80px;gap:10px;height:132px}
+.user-page .sl-streak-view.is-preview .sl-streak-image{width:110px;height:125px}
+.user-page .sl-streak-view.is-preview .sl-streak-image img{max-width:110px;max-height:125px}
+.user-page .sl-streak-view.is-preview .sl-streak-number{min-width:80px;font-size:60px}
+.obs-stage:has(.sl-streak-view){position:absolute;inset:0;display:grid;place-items:center;padding:0!important;box-sizing:border-box}
+.obs-stage:has(.sl-streak-view) .sl-streak-view{width:min(520px,100vw);height:min(260px,100vh)}
+@media(max-width:520px){.sl-streak-view{padding:10px}.sl-streak-title{font-size:38px}.sl-streak-main{grid-template-columns:135px 95px;gap:10px}.sl-streak-image{width:135px;height:150px}.sl-streak-image img{max-width:135px;max-height:150px}.sl-streak-number{min-width:95px;font-size:72px}}
+@media(prefers-reduced-motion:reduce){.sl-streak-number{animation:none}}
