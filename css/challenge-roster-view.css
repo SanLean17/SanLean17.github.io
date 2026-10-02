@@ -1,14 +1,150 @@
 /* SANLEAN — ALL CHALLENGE roster OBS. */
-.sl-roster-view{box-sizing:border-box;width:min(1920px,100vw);height:min(360px,100vh);display:flex;flex-direction:column;justify-content:center;gap:7px;padding:9px 18px;background:transparent;font-family:Montserrat,Arial,sans-serif}
-.sl-roster-row{display:flex;justify-content:center;align-items:center;gap:6px;width:100%}
-.sl-roster-card{position:relative;box-sizing:border-box;flex:0 0 calc((100% - (var(--roster-cols) - 1)*6px)/var(--roster-cols));max-width:120px;height:105px;border:1px solid rgba(255,255,255,.18);border-radius:8px;background:rgba(8,8,10,.78);overflow:hidden;transform-origin:center;transition:filter 180ms ease,opacity 180ms ease,border-color 180ms ease}
-.sl-roster-image{position:absolute;inset:0 0 16px;display:grid;place-items:center;overflow:hidden}.sl-roster-image img{display:block;max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 3px 5px rgba(0,0,0,.65));transition:filter 180ms ease,opacity 180ms ease}
-.sl-roster-name{position:absolute;left:3px;right:3px;bottom:3px;color:#fff;font:800 8px/1 Montserrat,Arial,sans-serif;text-align:center;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 2px 4px #000}
-.sl-roster-card.is-completed img,.sl-roster-card.is-failed img{filter:grayscale(1) brightness(.62);opacity:.7}.sl-roster-card.is-completed .sl-roster-name,.sl-roster-card.is-failed .sl-roster-name{color:rgba(255,255,255,.58)}
-.sl-roster-mark{position:absolute;inset:0 0 14px;display:grid;place-items:center;font:1000 39px/1 Montserrat,Arial,sans-serif;text-shadow:0 3px 7px #000;z-index:3}.sl-roster-card.is-completed .sl-roster-mark{color:#45df7c}.sl-roster-card.is-failed .sl-roster-mark{color:#ff003c}
-.sl-roster-card.is-current{z-index:4;border-color:#ff003c;box-shadow:0 0 0 1px #ff003c inset,0 0 15px rgba(255,0,60,.72);animation:sl-roster-current 2.8s ease-in-out infinite}.sl-roster-card.is-current .sl-roster-mark{display:none}.sl-roster-card.is-current img{filter:none;opacity:1}
-@keyframes sl-roster-current{0%,100%{transform:scale(1);box-shadow:0 0 0 1px #ff003c inset,0 0 11px rgba(255,0,60,.5)}50%{transform:scale(1.025);box-shadow:0 0 0 1px #ff003c inset,0 0 19px rgba(255,0,60,.82)}}
-.user-page .sl-roster-view.is-preview{width:100%;height:auto;min-height:220px;padding:8px;gap:5px}.user-page .sl-roster-view.is-preview .sl-roster-row{gap:4px}.user-page .sl-roster-view.is-preview .sl-roster-card{height:68px;max-width:78px;flex-basis:calc((100% - (var(--roster-cols) - 1)*4px)/var(--roster-cols));border-radius:6px}.user-page .sl-roster-view.is-preview .sl-roster-image{inset:0 0 12px}.user-page .sl-roster-view.is-preview .sl-roster-name{font-size:6px;bottom:2px}.user-page .sl-roster-view.is-preview .sl-roster-mark{inset:0 0 10px;font-size:26px}
-.obs-stage:has(.sl-roster-view){position:absolute;inset:0;display:grid;place-items:center;padding:0!important;box-sizing:border-box}
-@media(max-width:1100px){.sl-roster-card{height:86px}.sl-roster-name{font-size:7px}.sl-roster-view{height:min(300px,100vh);padding:7px 10px}}
-@media(prefers-reduced-motion:reduce){.sl-roster-card.is-current{animation:none}}
+.sl-roster-view{
+  box-sizing:border-box;
+  width:min(1920px,100vw);
+  height:min(250px,100vh);
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  gap:0;
+  padding:0;
+  background:transparent;
+  font-family:Montserrat,Arial,sans-serif;
+}
+.sl-roster-row{
+  display:flex;
+  justify-content:center;
+  align-items:stretch;
+  gap:0;
+  width:100%;
+}
+.sl-roster-card{
+  position:relative;
+  box-sizing:border-box;
+  flex:0 0 calc(100% / var(--roster-cols));
+  max-width:none;
+  height:83px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:0;
+  background:#09090b;
+  overflow:hidden;
+  transform-origin:center;
+  transition:filter 180ms ease,opacity 180ms ease,border-color 180ms ease,box-shadow 180ms ease;
+}
+.sl-roster-image{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+}
+.sl-roster-image img{
+  display:block;
+  width:100%;
+  height:100%;
+  max-width:none;
+  max-height:none;
+  object-fit:contain;
+  opacity:1;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.68));
+  transition:filter 180ms ease,opacity 180ms ease;
+}
+.sl-roster-name{
+  position:absolute;
+  left:3px;
+  right:3px;
+  bottom:3px;
+  color:#fff;
+  font:800 8px/1 Montserrat,Arial,sans-serif;
+  text-align:center;
+  text-transform:uppercase;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  text-shadow:0 2px 4px #000;
+}
+.obs-overlay-page .sl-roster-name{display:none}
+.obs-overlay-page .sl-roster-image{inset:0}
+
+.sl-roster-card.is-completed img,
+.sl-roster-card.is-failed img{
+  filter:grayscale(1) brightness(.7) drop-shadow(0 2px 4px rgba(0,0,0,.68));
+  opacity:.95;
+}
+.sl-roster-card.is-completed .sl-roster-name,
+.sl-roster-card.is-failed .sl-roster-name{color:rgba(255,255,255,.62)}
+
+.sl-roster-mark{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  font:1000 32px/1 Montserrat,Arial,sans-serif;
+  text-shadow:0 3px 7px #000;
+  z-index:3;
+  pointer-events:none;
+}
+.sl-roster-card.is-completed .sl-roster-mark{color:#45df7c}
+.sl-roster-card.is-failed .sl-roster-mark{color:#ff003c}
+
+.sl-roster-card.is-current{
+  z-index:4;
+  border-color:#ff003c;
+  box-shadow:0 0 0 2px #ff003c inset,0 0 12px rgba(255,0,60,.46);
+  animation:sl-roster-current 2.8s ease-in-out infinite;
+}
+.sl-roster-card.is-current .sl-roster-mark{display:none}
+.sl-roster-card.is-current img{filter:none;opacity:1}
+
+@keyframes sl-roster-current{
+  0%,100%{
+    transform:scale(1);
+    box-shadow:0 0 0 2px #ff003c inset,0 0 9px rgba(255,0,60,.38);
+  }
+  50%{
+    transform:scale(1.018);
+    box-shadow:0 0 0 2px #ff003c inset,0 0 15px rgba(255,0,60,.62);
+  }
+}
+
+/* Vista previa interna: conserva nombre y separación mínima para administración. */
+.user-page .sl-roster-view.is-preview{
+  width:100%;
+  height:auto;
+  min-height:220px;
+  padding:8px;
+  gap:5px;
+}
+.user-page .sl-roster-view.is-preview .sl-roster-row{gap:4px}
+.user-page .sl-roster-view.is-preview .sl-roster-card{
+  height:68px;
+  max-width:78px;
+  flex-basis:calc((100% - (var(--roster-cols) - 1)*4px)/var(--roster-cols));
+  border-radius:6px;
+}
+.user-page .sl-roster-view.is-preview .sl-roster-image{inset:0 0 12px}
+.user-page .sl-roster-view.is-preview .sl-roster-name{display:block;font-size:6px;bottom:2px}
+.user-page .sl-roster-view.is-preview .sl-roster-mark{inset:0 0 10px;font-size:26px}
+
+.obs-stage:has(.sl-roster-view){
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:start center;
+  padding:0!important;
+  box-sizing:border-box;
+  overflow:hidden;
+}
+.obs-stage:has(.sl-roster-view) .sl-roster-view{
+  width:min(1920px,100vw);
+  height:min(250px,100vh);
+}
+
+@media(max-width:1100px){
+  .sl-roster-card{height:72px}
+  .sl-roster-view{height:min(216px,100vh)}
+  .sl-roster-mark{font-size:28px}
+}
+@media(prefers-reduced-motion:reduce){
+  .sl-roster-card.is-current{animation:none}
+}
