@@ -14,7 +14,7 @@ const aliases={
 };
 for(const [key,terms] of Object.entries(aliases))for(const term of terms)for(const role of ['killer','survivor','both']){
  for(const title of [term,`VICTORIAS CON ${term.toUpperCase()}`,`  ${term.replace(/ /g,'_')}!  `])
-  assert.deepEqual([...view.iconKeys(title,role)],role==='both'?['killers',key]:[key],`${title} / ${role}`);
+  assert.deepEqual([...view.iconKeys(title,role)],[key],`${title} / ${role}`);
 }
 for(const [title,key] of [['salvadas con de frente','de-frente'],['salvadas defrente','de-frente'],['escapes con mélápéla','me-la-pela'],['melapela por trampilla','me-la-pela'],['salvadas con bloodpoints','salvada'],['generadores con randoms','motores']])assert.equal(view.detectSpecial(title),key);
 assert.deepEqual([...view.iconKeys('OBJETIVO','both')],['killers','escapes']);
@@ -29,6 +29,7 @@ assert.equal(view.detectSpecial('subproceso'),'');
   const page=await browser.newPage();page.on('pageerror',e=>errors.push(e.message));
   await page.route('**/*',async route=>{
    const url=new URL(route.request().url());
+   if(url.hostname==='fonts.googleapis.com')return route.fulfill({contentType:'text/css',body:''});
    if(url.hostname!=='fixture.test')return route.abort();
    if(url.pathname==='/Usuario/test.html')return route.fulfill({contentType:'text/html',body:'<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body class="user-page"><main style="max-width:1100px;margin:auto"><section id="streamGiveawaysPanel"></section></main></body></html>'});
    const file=path.join(root,decodeURIComponent(url.pathname));
@@ -36,7 +37,7 @@ assert.equal(view.detectSpecial('subproceso'),'');
    return route.fulfill({path:file,contentType:({'.css':'text/css','.js':'text/javascript','.html':'text/html','.png':'image/png'})[path.extname(file)]});
   });
   await page.goto('https://fixture.test/Usuario/test.html');
-  for(const file of ['usuario.css','usuario-stream-modules.css','usuario-design-system.css','usuario-canonical-selects.css','desafios.css','challenge-goal-view.css'])await page.addStyleTag({url:'../css/'+file});
+  for(const file of ['roulette-view.css','usuario.css','usuario-stream-modules.css','usuario-design-system.css','usuario-canonical-selects.css','desafios.css','challenge-goal-view.css'])await page.addStyleTag({url:'../css/'+file});
   const setup=()=>{
    window.fixture={workspace:{id:'workspace-test'},overlay:{id:'goal-test',kind:'challenge_goal',public_token:'test-only',settings:{},state:{title:'ESCAPES',role:'survivor',current:2,target:15,status:'active',visible:true,startedAt:'test-round'}},writes:[],delay:0,fail:false,inflight:0,maxInflight:0};
    window.SANLEAN_SUPABASE={url:'https://fixture.test',publishableKey:'fixture'};
@@ -73,7 +74,7 @@ assert.equal(view.detectSpecial('subproceso'),'');
   await page.locator('#goalLiveRole + .custom-select > button').click();
   await page.locator('#goalLiveRole + .custom-select [data-value="both"]').click();
   await page.waitForFunction(()=>fixture.overlay.state.role==='both');
-  assert.deepEqual(await page.locator('#goalPreview [data-icon]').evaluateAll(es=>es.map(e=>e.dataset.icon)),['killers','me-la-pela']);
+  assert.deepEqual(await page.locator('#goalPreview [data-icon]').evaluateAll(es=>es.map(e=>e.dataset.icon)),['me-la-pela']);
   await page.evaluate(()=>fixture.delay=550);
   await page.locator('#goalLiveTitle').fill('salvadas');await page.waitForTimeout(360);
   await page.locator('#goalLiveTitle').fill('salvadas con de frente');await page.locator('#goalLiveCurrent').fill('4');
@@ -114,7 +115,7 @@ assert.equal(view.detectSpecial('subproceso'),'');
    assert(await panel.locator('#goalPreview').evaluate(e=>e.getBoundingClientRect().height<=110));
    if(process.env.QA_OUTPUT)await panel.screenshot({path:path.join(process.env.QA_OUTPUT,`panel-${width}.png`),fullPage:true});
   }
-  assert(await panel.evaluate(()=>[...document.scripts].some(s=>s.src.includes('usuario-desafios.js?v=20261002-9'))));
+  assert(await panel.evaluate(()=>[...document.scripts].some(s=>s.src.includes('usuario-desafios.js?v=20261002-10'))));
 
   // Load the actual OBS document and exercise its polling/rendering with isolated RPC data.
   const obs=await browser.newPage({viewport:{width:720,height:180}});obs.on('pageerror',e=>errors.push(e.message));
@@ -125,14 +126,30 @@ assert.equal(view.detectSpecial('subproceso'),'');
    snapshot.state={...snapshot.state,title:aliases[key][0],role};await obs.waitForFunction(key=>!!document.querySelector(`[data-icon="${key}"]`),key);
    await obs.waitForFunction(()=>[...document.images].every(i=>i.complete&&i.naturalWidth>0));
    const geometry=await obs.evaluate(()=>{const q=s=>document.querySelector(s),r=e=>e.getBoundingClientRect();return{a:getComputedStyle(q('.sl-goal-counter span')).fontSize,b:getComputedStyle(q('.sl-goal-counter b')).fontSize,bg:getComputedStyle(document.body).backgroundColor,gap:r(q('.sl-goal-counter')).left-r(q('.sl-goal-icon-left')).right,bottom:r(q('.sl-goal-main')).bottom,right:r(q('.sl-goal-main')).right,left:r(q('.sl-goal-main')).left}});
-   assert.equal(geometry.a,geometry.b);assert.equal(geometry.bg,'rgba(0, 0, 0, 0)');assert(Math.abs(geometry.gap+8)<1);assert(geometry.bottom<=180&&geometry.left>=0&&geometry.right<=720);
+   assert.equal(geometry.a,geometry.b);assert.equal(geometry.bg,'rgba(0, 0, 0, 0)');assert(Math.abs(geometry.gap+2)<1);assert(geometry.bottom<=180&&geometry.left>=0&&geometry.right<=720);
   }
   snapshot.state={...snapshot.state,title:'SALVADAS CON DE FRENTE',current:3,target:15,role:'both'};await obs.waitForFunction(()=>document.querySelector('.sl-goal-title').textContent==='SALVADAS CON DE FRENTE');
   if(process.env.QA_OUTPUT)await obs.screenshot({path:path.join(process.env.QA_OUTPUT,'obs-720x180.png'),omitBackground:true});
+  assert(await obs.locator('.sl-goal-main').evaluate(e=>{const icon=e.querySelector('.sl-goal-icon').getBoundingClientRect(),counter=e.querySelector('.sl-goal-counter').getBoundingClientRect();return Math.abs(icon.y+icon.height/2-counter.y-counter.height/2)<1}),'Icons centered on numbers');
+  assert.equal(await obs.locator('.sl-goal-counter span').evaluate(e=>getComputedStyle(e).fontSize),'48px');
+  snapshot.state={...snapshot.state,current:15};await obs.waitForSelector('.sl-goal-view.is-reached');
+  assert.equal(await obs.locator('.sl-goal-view').evaluate(e=>getComputedStyle(e).animationName),'sl-result-float');
+  assert(await obs.locator('.sl-goal-view').evaluate(e=>e.getAnimations().length>0),'Existing roulette keyframes loaded');
+  await obs.waitForTimeout(300);
+  assert(await obs.locator('.sl-goal-view').evaluate(e=>e.getAnimations()[0].currentTime>0),'Reached animation moves');
+  snapshot.state={...snapshot.state,current:16};await obs.waitForFunction(()=>document.querySelector('.sl-goal-counter span').textContent==='16');
+  assert.equal(await obs.locator('.sl-goal-view.is-reached').count(),1,'Above target continues animation');
+  await obs.emulateMedia({reducedMotion:'reduce'});
+  assert.equal(await obs.locator('.sl-goal-view').evaluate(e=>getComputedStyle(e).animationName),'none');
+  await obs.emulateMedia({reducedMotion:'no-preference'});
+  snapshot.state={...snapshot.state,target:20};await obs.waitForFunction(()=>!document.querySelector('.sl-goal-view.is-reached'));
+  assert.equal(await obs.locator('.sl-goal-view').evaluate(e=>getComputedStyle(e).animationName),'none','Raising target stops animation');
+  await page.evaluate(()=>{fixture.overlay.state.current=30;fixture.overlay.state.target=20;window.dispatchEvent(new Event('sanlean:overlays-updated'));window.qaGoalNode=document.querySelector('#goalPreview .sl-goal-view');window.dispatchEvent(new Event('sanlean:overlays-updated'))});
+  assert(await page.evaluate(()=>qaGoalNode===document.querySelector('#goalPreview .sl-goal-view')),'Identical refresh preserves animation node');
   snapshot.state={...snapshot.state,current:999999999,target:999999999};await obs.waitForFunction(()=>document.querySelector('.sl-goal-counter span').textContent==='999999999');
   assert(await obs.locator('.sl-goal-main').evaluate(e=>{const r=e.getBoundingClientRect();return r.left>=0&&r.right<=720}),'Large counters fit');
   snapshot.state={...snapshot.state,status:'finished',visible:false};await obs.waitForFunction(()=>document.getElementById('obsOverlayRoot').classList.contains('obs-hidden'));
   assert.deepEqual(errors,[]);assert.deepEqual(missing,[]);
-  console.log('PASS: aliases × roles, precedence, responsive panel, canonical select, delayed/failed autosave, finish/restart, workspace isolation, OBS polling/assets/layout/transparency.');
+  console.log('PASS: aliases × roles, precedence, responsive panel, canonical select, delayed/failed autosave, finish/restart, workspace isolation, OBS polling/assets/layout/transparency, reached animation and reduced motion.');
  }finally{await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

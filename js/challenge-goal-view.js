@@ -21,11 +21,8 @@
 
   function iconKeys(title,role){
     const special=detectSpecial(title);
-    if(role==='both'){
-      if(special&&special!=='killers')return['killers',special];
-      return['killers','escapes'];
-    }
     if(special)return[special];
+    if(role==='both')return['killers','escapes'];
     return[role==='survivor'?'escapes':'killers'];
   }
 
@@ -44,11 +41,15 @@
 
   function render(target,data,{preview=false}={}){
     if(!target)return;
-    target._goalResizeObserver?.disconnect();
     const v=normalized(data);
+    const signature=JSON.stringify([v,preview,data?.overlayId||data?.id,data?.state?.startedAt]);
+    // Repeated panel refreshes must not restart the reached animation.
+    if(target._goalRenderSignature===signature&&target.querySelector('.sl-goal-view'))return;
+    target._goalResizeObserver?.disconnect();target._goalRenderSignature=signature;
     if(!preview&&(!v.visible||!['active','reached'].includes(v.status))){target.innerHTML='';return}
+    const reached=v.current>=v.target&&['active','reached'].includes(v.status);
     const left=v.icons[0],right=v.icons[1]||'';
-    target.innerHTML=`<div class="sl-goal-view${preview?' is-preview':''}">
+    target.innerHTML=`<div class="sl-goal-view${preview?' is-preview':''}${reached?' is-reached':''}">
       <strong class="sl-goal-title">${escape(v.title)}</strong>
       <div class="sl-goal-main">
         ${icon(left,'left')}
