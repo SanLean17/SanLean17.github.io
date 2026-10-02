@@ -311,6 +311,9 @@ La implementación final del router de MI PANEL vive en `js/usuario-stream-tabs.
 - WIN STREAK no tiene objetivo máximo: sólo racha actual, edición manual, +1 / -1 y reinicio. CERRAR abandona la sesión sin guardarla en historial; FINALIZAR WIN STREAK sí guarda rol/Killer, racha y fecha.
 - WIN STREAK reutiliza el control segmentado canónico para IMAGEN IZQUIERDA / IMAGEN DERECHA. La orientación se persiste por workspace y el overlay usa un pulso CSS local muy leve, desactivado con prefers-reduced-motion.
 - WIN STREAK distingue PAUSAR/CONTINUAR de FINALIZAR: pausar conserva la sesión y la oculta; finalizar la envía al historial. Tanto WIN STREAK como METAS poseen OCULTAR/MOSTRAR EN OBS como control de visibilidad independiente del progreso.
+- ALL KILLER CHALLENGE reutiliza el patrón de sesión persistente: PAUSAR / CONTINUAR, OCULTAR / MOSTRAR EN OBS y FINALIZAR. El tiempo sólo se registra para historial.
+- El roster ALL CHALLENGE usa tres filas balanceadas dinámicamente en OBS y estados visuales canónicos: pendiente normal, actual rojo, completado B/N + tilde verde, fallido B/N + cruz roja.
+- El catálogo nunca se hardcodea: ALL KILLER lee `data/killers.json` y el renderer compartido queda preparado para ALL SURVIVOR.
 
 ## 10. CARTAS / Votaciones
 
