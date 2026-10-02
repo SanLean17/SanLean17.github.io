@@ -2,7 +2,7 @@
   const cfg=window.SANLEAN_SUPABASE;
   const client=cfg&&window.supabase?window.supabase.createClient(cfg.url,cfg.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}):null;
   const $=id=>document.getElementById(id),tools=()=>window.SanLeanStreamTools;
-  let busy=false,liveSaveTimer=null,syncing=false,dirty=false,editVersion=0,saveQueue=Promise.resolve(),activeKey='',activeChallenge='',historyOpen=false,streakBusy=false,streakSaveTimer=null,streakKillers=[],selectedStreakKiller=null;
+  let busy=false,liveSaveTimer=null,syncing=false,dirty=false,editVersion=0,saveQueue=Promise.resolve(),activeKey='',activeChallenge='',historyOpen=false,goalHistoryOpen=false,streakHistoryOpen=false,streakBusy=false,streakSaveTimer=null,streakKillers=[],selectedStreakKiller=null,streakConfigInitialized=false;
   const contextKey=()=>[workspace()?.id,goalOverlay()?.id,goalOverlay()?.state?.startedAt].join(':');
   const cancelLiveTimer=()=>{clearTimeout(liveSaveTimer);liveSaveTimer=null};
   const goalOverlay=()=>tools()?.getOverlays?.().find(o=>o.kind==='challenge_goal')||null;
@@ -83,7 +83,7 @@
               <button id="streakReset" class="ui-btn ui-btn-secondary" type="button">REINICIAR RACHA</button>
             </div>
           </div>
-          <div class="module-actions challenge-active-actions"><button id="streakFinish" class="module-secondary challenge-danger" type="button">FINALIZAR WIN STREAK</button></div>
+          <div class="module-actions challenge-active-actions"><button id="streakClose" class="module-secondary" type="button">CERRAR</button><button id="streakFinish" class="module-secondary challenge-danger" type="button">FINALIZAR WIN STREAK</button></div>
         </div>
         <p id="streakStatus" class="module-status" role="status"></p>
       </section>
@@ -93,15 +93,44 @@
         <div class="stream-output-grid"><div id="streakPreview" class="stream-preview-frame"></div><div class="stream-output-side"><div class="stream-output-field"><label>URL OBS · VISUALIZACIÓN</label><div class="stream-output-url"><input id="streakObsUrl" type="text" readonly><button id="streakCopyUrl" type="button">COPIAR</button></div></div><p class="stream-output-note">Fuente de navegador recomendada: 520 × 260, fondo transparente.</p></div></div>
       </section>
 
-      <section id="goalHistorySection" class="challenge-library challenge-library-collapsible">
-        <button id="goalHistoryToggle" class="challenge-library-toggle" type="button" aria-expanded="false">
-          <span><small>HISTORIAL</small><strong>MIS METAS</strong></span><i class="challenge-open-chevron" aria-hidden="true"></i>
+      <section id="challengeHistorySection" class="challenge-history-shell">
+        <button id="challengeHistoryToggle" class="challenge-history-master-toggle" type="button" aria-expanded="false">
+          <span><small>DESAFÍOS</small><strong>HISTORIAL</strong></span><i class="challenge-open-chevron" aria-hidden="true"></i>
         </button>
-        <div id="goalHistoryBody" class="challenge-history-body" hidden>
-          <div id="goalHistory" class="challenge-history-list"></div><p id="goalHistoryEmpty" class="challenge-empty">TODAVÍA NO HAY METAS GUARDADAS.</p>
+        <div id="challengeHistoryBody" class="challenge-history-master-body" hidden>
+          <section class="challenge-history-group">
+            <button id="goalHistoryToggle" class="challenge-library-toggle" type="button" aria-expanded="false">
+              <span><small>HISTORIAL</small><strong>MIS METAS</strong></span><i class="challenge-open-chevron" aria-hidden="true"></i>
+            </button>
+            <div id="goalHistoryBody" class="challenge-history-body" hidden>
+              <div id="goalHistory" class="challenge-history-list"></div><p id="goalHistoryEmpty" class="challenge-empty">TODAVÍA NO HAY METAS GUARDADAS.</p>
+            </div>
+          </section>
+          <section class="challenge-history-group">
+            <button id="streakHistoryToggle" class="challenge-library-toggle" type="button" aria-expanded="false">
+              <span><small>HISTORIAL</small><strong>WIN STREAK</strong></span><i class="challenge-open-chevron" aria-hidden="true"></i>
+            </button>
+            <div id="streakHistoryBody" class="challenge-history-body" hidden>
+              <div id="streakHistory" class="challenge-history-list"></div><p id="streakHistoryEmpty" class="challenge-empty">TODAVÍA NO HAY WIN STREAKS GUARDADAS.</p>
+            </div>
+          </section>
         </div>
       </section>`;
     const anchor=document.getElementById('streamGiveawaysPanel');anchor?.parentNode.insertBefore(panel,anchor);
+    arrangeChallengeInline();
+  }
+
+  function arrangeChallengeInline(){
+    const goalButton=$('goalConfigureOpen'),streakButton=$('streakConfigureOpen');
+    const goalRow=goalButton?.closest('.challenge-row'),streakRow=streakButton?.closest('.challenge-row');
+    if(goalRow&&!$('goalInlineArea')){
+      const wrap=document.createElement('div');wrap.id='goalInlineArea';wrap.className='challenge-inline-area';wrap.hidden=true;
+      goalRow.insertAdjacentElement('afterend',wrap);['goalConfigurator','goalActiveBox','goalOutput'].forEach(id=>{const el=$(id);if(el)wrap.appendChild(el)});
+    }
+    if(streakRow&&!$('streakInlineArea')){
+      const wrap=document.createElement('div');wrap.id='streakInlineArea';wrap.className='challenge-inline-area';wrap.hidden=true;
+      streakRow.insertAdjacentElement('afterend',wrap);['streakPanel','streakOutput'].forEach(id=>{const el=$(id);if(el)wrap.appendChild(el)});
+    }
   }
 
   function setSelect(select,value){
@@ -176,7 +205,11 @@
     [['goal',$('goalConfigureOpen')],['streak',$('streakConfigureOpen')]].forEach(([key,button])=>{
       if(!button)return;const open=activeChallenge===key;button.setAttribute('aria-expanded',String(open));const label=button.querySelector('span');if(label)label.textContent=open?'CERRAR':'ABRIR';
     });
-    const history=$('goalHistoryToggle');if(history){history.setAttribute('aria-expanded',String(historyOpen));$('goalHistoryBody').hidden=!historyOpen}
+    if($('goalInlineArea'))$('goalInlineArea').hidden=activeChallenge!=='goal';
+    if($('streakInlineArea'))$('streakInlineArea').hidden=activeChallenge!=='streak';
+    const master=$('challengeHistoryToggle');if(master){master.setAttribute('aria-expanded',String(historyOpen));$('challengeHistoryBody').hidden=!historyOpen}
+    const goalHistory=$('goalHistoryToggle');if(goalHistory){goalHistory.setAttribute('aria-expanded',String(goalHistoryOpen));$('goalHistoryBody').hidden=!goalHistoryOpen}
+    const streakHistory=$('streakHistoryToggle');if(streakHistory){streakHistory.setAttribute('aria-expanded',String(streakHistoryOpen));$('streakHistoryBody').hidden=!streakHistoryOpen}
   }
 
   function populateGoalConfig(){
@@ -185,11 +218,21 @@
   }
 
   async function setChallengeOpen(key){
-    activeChallenge=activeChallenge===key?'':key;syncChallengeButtons();
+    const closing=activeChallenge===key;activeChallenge=closing?'':key;
     if(activeChallenge==='goal'&&!isLive(goalOverlay()))populateGoalConfig();
-    if(activeChallenge==='streak'){await loadStreakKillers();refreshStreak()}
-    refresh();
-    if(activeChallenge){const target=activeChallenge==='goal'?(isLive(goalOverlay())?$('goalActiveBox'):$('goalConfigurator')):$('streakPanel');setTimeout(()=>target?.scrollIntoView({behavior:'smooth',block:'start'}),40)}
+    if(activeChallenge==='streak'){
+      await loadStreakKillers();streakConfigInitialized=false;initializeStreakConfig();refreshStreak();
+    }
+    syncChallengeButtons();refresh();
+    if(activeChallenge){const target=activeChallenge==='goal'?(isLive(goalOverlay())?$('goalActiveBox'):$('goalConfigurator')):$('streakPanel');setTimeout(()=>target?.scrollIntoView({behavior:'smooth',block:'nearest'}),40)}
+  }
+
+  function initializeStreakConfig(){
+    if(streakConfigInitialized||isStreakLive(streakOverlay()))return;
+    const settings=streakOverlay()?.settings||{},role=settings.role==='killer'?'killer':'survivor';
+    setSelect($('streakRole'),role);
+    selectedStreakKiller=settings.killer?streakKillers.find(k=>k.key===settings.killer.key)||settings.killer:null;
+    streakConfigInitialized=true;syncStreakSelection();renderStreakKillers();
   }
 
   async function loadStreakKillers(){
@@ -207,7 +250,7 @@
     const matches=streakKillers.filter(k=>words.every(w=>k.search.includes(w)));
     list.innerHTML=matches.map(k=>`<button type="button" class="challenge-killer-option${selectedStreakKiller?.key===k.key?' is-selected':''}" data-killer="${escape(k.key)}"><img src="${escape(k.image)}" alt=""><span>${escape(k.name)}</span></button>`).join('');
     list.querySelectorAll('[data-killer]').forEach(button=>button.addEventListener('click',()=>{
-      selectedStreakKiller=streakKillers.find(k=>k.key===button.dataset.killer)||null;renderStreakKillers();syncStreakSelection();refreshStreak();
+      selectedStreakKiller=streakKillers.find(k=>k.key===button.dataset.killer)||null;renderStreakKillers();syncStreakSelection();$('streakStatus').textContent='';
     }));
   }
 
@@ -239,43 +282,64 @@
     }catch(err){$('streakStatus').textContent=err.message||'No se pudo iniciar WIN STREAK.'}finally{streakBusy=false;refreshStreak()}
   }
 
-  function saveStreakCurrent(){
+  function saveStreakCurrent(value=null){
     clearTimeout(streakSaveTimer);const overlay=streakOverlay();if(!overlay||!isStreakLive(overlay))return Promise.resolve(false);
-    const current=Math.max(0,Math.min(999999999,Math.floor(Number($('streakCurrent')?.value)||0))),state={...overlay.state,current,visible:true,status:'active',updatedAt:new Date().toISOString()};
+    const source=value===null?$('streakCurrent')?.value:value,current=Math.max(0,Math.min(999999999,Math.floor(Number(source)||0))),state={...overlay.state,current,visible:true,status:'active',updatedAt:new Date().toISOString()};
+    if($('streakCurrent'))$('streakCurrent').value=String(current);
     return writeStreakOverlay({state}).then(()=>true);
   }
 
   async function changeStreak(delta){
     if(streakBusy)return;const overlay=streakOverlay();if(!overlay||!isStreakLive(overlay))return;
-    const base=Math.max(0,Number($('streakCurrent')?.value)||0);$('streakCurrent').value=String(Math.max(0,Math.min(999999999,base+delta)));streakBusy=true;refreshStreak();
-    try{await saveStreakCurrent()}catch(err){$('streakStatus').textContent=err.message||'No se pudo actualizar la racha.'}finally{streakBusy=false;refreshStreak()}
+    const base=Math.max(0,Number($('streakCurrent')?.value)||0),next=Math.max(0,Math.min(999999999,base+delta));$('streakCurrent').value=String(next);streakBusy=true;
+    try{await saveStreakCurrent(next)}catch(err){$('streakStatus').textContent=err.message||'No se pudo actualizar la racha.'}finally{streakBusy=false;refreshStreak()}
   }
 
   async function resetStreak(){
-    if(streakBusy||!isStreakLive(streakOverlay()))return;$('streakCurrent').value='0';streakBusy=true;refreshStreak();
-    try{await saveStreakCurrent()}catch(err){$('streakStatus').textContent=err.message||'No se pudo reiniciar la racha.'}finally{streakBusy=false;refreshStreak()}
+    if(streakBusy||!isStreakLive(streakOverlay()))return;streakBusy=true;$('streakCurrent').value='0';
+    try{await saveStreakCurrent(0)}catch(err){$('streakStatus').textContent=err.message||'No se pudo reiniciar la racha.'}finally{streakBusy=false;refreshStreak()}
+  }
+
+  async function closeStreak(){
+    if(streakBusy)return;const overlay=streakOverlay();if(!overlay||!isStreakLive(overlay))return;streakBusy=true;
+    try{
+      clearTimeout(streakSaveTimer);
+      await writeStreakOverlay({state:{...overlay.state,visible:false,status:'idle',current:0,closedAt:new Date().toISOString(),updatedAt:new Date().toISOString()}});
+      streakConfigInitialized=false;selectedStreakKiller=null;$('streakStatus').textContent='';
+    }catch(err){$('streakStatus').textContent=err.message||'No se pudo cerrar WIN STREAK.'}finally{streakBusy=false;initializeStreakConfig();refreshStreak()}
   }
 
   async function finishStreak(){
-    if(streakBusy)return;const overlay=streakOverlay();if(!overlay||!isStreakLive(overlay))return;streakBusy=true;refreshStreak();
-    try{await saveStreakCurrent();await writeStreakOverlay({state:{...streakOverlay().state,visible:false,status:'finished',finishedAt:new Date().toISOString(),updatedAt:new Date().toISOString()}})}catch(err){$('streakStatus').textContent=err.message||'No se pudo finalizar WIN STREAK.'}finally{streakBusy=false;refreshStreak()}
+    if(streakBusy)return;const overlay=streakOverlay();if(!overlay||!isStreakLive(overlay))return;streakBusy=true;
+    try{
+      clearTimeout(streakSaveTimer);const current=Math.max(0,Number($('streakCurrent')?.value)||0);await saveStreakCurrent(current);
+      const latest=streakOverlay(),finishedAt=new Date().toISOString(),record={role:latest.state.role||'survivor',killer:latest.state.killer||null,current:Number(latest.state.current)||0,startedAt:latest.state.startedAt||null,finishedAt};
+      const history=[...(Array.isArray(latest.settings?.history)?latest.settings.history:[]),record].slice(-30),settings={...(latest.settings||{}),history};
+      await writeStreakOverlay({settings,state:{...latest.state,visible:false,status:'finished',finishedAt,updatedAt:finishedAt}});
+      streakConfigInitialized=false;selectedStreakKiller=null;$('streakStatus').textContent='';
+    }catch(err){$('streakStatus').textContent=err.message||'No se pudo finalizar WIN STREAK.'}finally{streakBusy=false;initializeStreakConfig();refreshStreak();renderStreakHistory(streakOverlay())}
   }
 
   function refreshStreak(){
-    const panel=$('streakPanel');if(!panel)return;const open=activeChallenge==='streak',overlay=streakOverlay(),live=isStreakLive(overlay),state=overlay?.state||{},settings=overlay?.settings||{};
+    const panel=$('streakPanel');if(!panel)return;const open=activeChallenge==='streak',overlay=streakOverlay(),live=isStreakLive(overlay),state=overlay?.state||{};
     panel.hidden=!open;$('streakConfig').hidden=live;$('streakLive').hidden=!live;$('streakOutput').hidden=!open||!live;
     if(!open)return;
     if(!live){
-      const role=settings.role==='killer'?'killer':'survivor';setSelect($('streakRole'),role);selectedStreakKiller=settings.killer?streakKillers.find(k=>k.key===settings.killer.key)||settings.killer:selectedStreakKiller;
-      syncStreakSelection();renderStreakKillers();$('streakPreview').replaceChildren();$('streakObsUrl').value='';
+      initializeStreakConfig();syncStreakSelection();renderStreakKillers();$('streakPreview').replaceChildren();$('streakObsUrl').value='';
     }else{
-      const current=$('streakCurrent');if(current&&document.activeElement!==current)current.value=String(Math.max(0,Number(state.current)||0));
+      const current=$('streakCurrent');if(current&&document.activeElement!==current&&!streakBusy)current.value=String(Math.max(0,Number(state.current)||0));
       $('streakLiveName').textContent=state.role==='killer'?(state.killer?.name||'KILLER'):'SUPERVIVIENTE';
-      ['streakCurrent','streakMinus','streakPlus','streakReset','streakFinish'].forEach(id=>{if($(id))$(id).disabled=streakBusy});if($('streakMinus'))$('streakMinus').disabled=streakBusy||(Number(state.current)||0)<=0;
+      ['streakCurrent','streakMinus','streakPlus','streakReset','streakClose','streakFinish'].forEach(id=>{if($(id))$(id).disabled=streakBusy});if($('streakMinus'))$('streakMinus').disabled=streakBusy||(Number(state.current)||0)<=0;
       window.SanLeanChallengeStreakView?.render($('streakUserPreview'),overlay,{preview:true});window.SanLeanChallengeStreakView?.render($('streakPreview'),overlay,{preview:true});
       $('streakObsUrl').value=`${location.origin}/Usuario/overlay.html?token=${encodeURIComponent(overlay.public_token||'')}`;
     }
     syncStreakSelection();
+  }
+
+  function renderStreakHistory(overlay){
+    const list=$('streakHistory'),empty=$('streakHistoryEmpty');if(!list||!empty)return;
+    const history=Array.isArray(overlay?.settings?.history)?[...overlay.settings.history].reverse():[];empty.hidden=history.length>0;
+    list.innerHTML=history.map(x=>`<div class="challenge-history-row streak-history-row"><strong>${escape(x.role==='killer'?(x.killer?.name||'KILLER'):'SUPERVIVIENTE')}</strong><span>${x.role==='killer'?'KILLER':'ESCAPES'}</span><b>RACHA ${Number(x.current)||0}</b><time>${formatHistoryDate(x.finishedAt)}</time></div>`).join('');
   }
 
   function renderHistory(overlay){
@@ -300,7 +364,7 @@
     if(live){if(!dirty)syncLiveFields(state,changed);['goalLiveTitle','goalLiveRole','goalLiveCurrent','goalLiveTarget','goalMinus','goalPlus','goalSaveLive','goalFinish'].forEach(id=>{if($(id))$(id).disabled=busy});if($('goalMinus'))$('goalMinus').disabled=busy||(Number(state.current)||0)<=0}
     if(overlay&&goalOpen&&live){const publicUrl=`${location.origin}/Usuario/overlay.html?token=${encodeURIComponent(overlay.public_token||'')}`;$('goalObsUrl').value=publicUrl;window.SanLeanChallengeGoalView?.render($('goalPreview'),dirty?{...overlay,state:{...state,...readLive()}}:overlay,{preview:true})}
     if(!goalOpen||!live){if(!live){cancelLiveTimer();dirty=false}$('goalPreview')._goalResizeObserver?.disconnect();$('goalPreview').replaceChildren();$('goalObsUrl').value='';if(!live)$('goalActiveStatus').textContent=''}
-    renderHistory(overlay);refreshStreak();syncChallengeButtons();
+    renderHistory(overlay);renderStreakHistory(streakOverlay());refreshStreak();syncChallengeButtons();
   }
 
   function scheduleLiveSave(){
@@ -314,20 +378,20 @@
   function bind(){
     $('goalConfigureOpen')?.addEventListener('click',()=>setChallengeOpen('goal'));
     $('streakConfigureOpen')?.addEventListener('click',()=>setChallengeOpen('streak'));
-    $('goalHistoryToggle')?.addEventListener('click',()=>{historyOpen=!historyOpen;syncChallengeButtons()});
+    $('challengeHistoryToggle')?.addEventListener('click',()=>{historyOpen=!historyOpen;syncChallengeButtons()});$('goalHistoryToggle')?.addEventListener('click',()=>{goalHistoryOpen=!goalHistoryOpen;syncChallengeButtons()});$('streakHistoryToggle')?.addEventListener('click',()=>{streakHistoryOpen=!streakHistoryOpen;syncChallengeButtons()});
     $('goalStart')?.addEventListener('click',startGoal);
     $('goalMinus')?.addEventListener('click',()=>changeProgress(-1));$('goalPlus')?.addEventListener('click',()=>changeProgress(1));['goalLiveTitle','goalLiveCurrent','goalLiveTarget'].forEach(id=>$(id)?.addEventListener('input',scheduleLiveSave));$('goalLiveRole')?.addEventListener('change',scheduleLiveSave);
     $('goalSaveLive')?.addEventListener('click',async()=>{if(busy)return;busy=true;refresh();try{await saveLive()}catch(err){$('goalActiveStatus').textContent=err.message||'No se pudieron guardar los cambios.'}finally{busy=false;refresh()}});
     $('goalFinish')?.addEventListener('click',finishGoal);
     $('goalCopyUrl')?.addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('goalObsUrl').value);$('goalActiveStatus').textContent='URL de OBS copiada.'}catch{$('goalActiveStatus').textContent='No se pudo copiar la URL.'}});
-    $('streakRole')?.addEventListener('change',()=>{selectedStreakKiller=$('streakRole').value==='killer'?selectedStreakKiller:null;syncStreakSelection();renderStreakKillers()});
+    $('streakRole')?.addEventListener('change',()=>{if(syncing)return;if($('streakRole').value!=='killer')selectedStreakKiller=null;syncStreakSelection();renderStreakKillers();$('streakStatus').textContent=''});
     $('streakKillerSearch')?.addEventListener('input',renderStreakKillers);
-    $('streakStart')?.addEventListener('click',startStreak);$('streakMinus')?.addEventListener('click',()=>changeStreak(-1));$('streakPlus')?.addEventListener('click',()=>changeStreak(1));$('streakReset')?.addEventListener('click',resetStreak);$('streakFinish')?.addEventListener('click',finishStreak);
+    $('streakStart')?.addEventListener('click',startStreak);$('streakMinus')?.addEventListener('click',()=>changeStreak(-1));$('streakPlus')?.addEventListener('click',()=>changeStreak(1));$('streakReset')?.addEventListener('click',resetStreak);$('streakClose')?.addEventListener('click',closeStreak);$('streakFinish')?.addEventListener('click',finishStreak);
     $('streakCurrent')?.addEventListener('input',()=>{clearTimeout(streakSaveTimer);streakSaveTimer=setTimeout(()=>saveStreakCurrent().catch(err=>$('streakStatus').textContent=err.message||'No se pudo actualizar la racha.'),320)});
     $('streakCopyUrl')?.addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('streakObsUrl').value);$('streakStatus').textContent='URL de OBS copiada.'}catch{$('streakStatus').textContent='No se pudo copiar la URL.'}});
     window.addEventListener('sanlean:overlays-updated',()=>{refresh();refreshStreak()});window.addEventListener('sanlean:challenge-goal',refresh);window.addEventListener('sanlean:challenge-streak',refreshStreak);window.addEventListener('sanlean:section',()=>{refresh();refreshStreak()});
   }
 
-  function install(){installPanel();bind();syncChallengeButtons();loadStreakKillers().then(()=>refreshStreak());refresh();setTimeout(()=>{refresh();refreshStreak();if(location.hash==='#challenges')window.SanLeanUsuarioNavigation?.show?.('challenges',{updateHash:false})},250)}
+  function install(){installPanel();arrangeChallengeInline();bind();syncChallengeButtons();loadStreakKillers().then(()=>{initializeStreakConfig();refreshStreak()});refresh();setTimeout(()=>{renderStreakHistory(streakOverlay());refresh();refreshStreak();if(location.hash==='#challenges')window.SanLeanUsuarioNavigation?.show?.('challenges',{updateHash:false})},250)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(install,40),{once:true});else setTimeout(install,40);
 })();
