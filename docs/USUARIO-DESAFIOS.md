@@ -225,7 +225,7 @@ ALL KILLER CHALLENGE usa el catálogo real `data/killers.json`; la cantidad no s
 
 ### OBS
 - Overlay independiente `challenge_all_killers`.
-- Browser Source recomendada: **1920 × 250 px**.
+- Browser Source recomendada: **1920 × 384 px**.
 - El roster se divide dinámicamente en tres filas balanceadas. Con 44 Killers: **15 / 15 / 14**.
 - Todas las cartas mantienen el mismo tamaño; la última fila queda centrada.
 - El pulso del Killer actual es CSS local y no genera tráfico de red adicional.
@@ -245,6 +245,12 @@ El renderer `challenge-roster-view.js` es compartido y se diseñó para reutiliz
 ### Ajuste visual OBS ALL KILLER
 - En OBS los nombres se ocultan para priorizar el retrato a tamaño chico; USUARIO puede conservarlos.
 - Las tres filas no usan gap horizontal ni vertical: las cartas quedan pegadas entre sí.
-- Fondo de carta negro sólido y retrato a opacidad completa en estado pendiente/actual.
+- Fondo de carta restaurado a `rgba(8,8,10,.78)`; retratos a opacidad completa en todos los estados.
 - Completado y fallido mantienen B/N, pero sin transparencia excesiva para conservar legibilidad.
-- Altura recomendada actual: **1920 × 250 px**.
+- Medida recomendada actual: **1920 × 384 px**: tres filas de 120 px y margen exterior de 12 px por lado para el glow. Sin nombres, cada retrato dispone de hasta 112 px de alto, frente a los 81 px del ajuste compacto anterior.
+- El contenedor OBS ocupa el ancho y alto reales de la fuente; se elimina el límite heredado de 1200 px que cortaba las primeras columnas al centrar un roster de 1920 px.
+- Imágenes con dimensiones automáticas, límites interiores y `object-fit:contain`: se muestra el retrato original completo sin deformar ni ampliar por recorte.
+- Si la fuente es más pequeña, la altura se adapta al espacio disponible. 1920 × 250 sigue entrando, pero reduce el tamaño de los retratos; se recomienda 384 px para reconocerlos mejor.
+- El pulso modifica sólo el glow y la entrada/salida usa opacidad, sin escalar el roster fuera de la fuente.
+- En OBS: actualizar la fuente de navegador y usar 1920 × 384. Si la fuente tiene recorte manual previo, restablecer su transformación/recorte antes de ubicarla en la parte superior del stream.
+- Validación: `node tests/challenge-roster-layout.cjs` comprueba las 44 imágenes, filas centradas, límites del retrato, estados, pausa/continuar y ocultar/mostrar con datos aislados en siete tamaños entre 320 y 1920 px. No escribe datos reales.

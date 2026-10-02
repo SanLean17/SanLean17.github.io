@@ -24,7 +24,7 @@ const root=path.resolve(__dirname,'..');
   // Execute the unchanged OVERLAYS OBS renderer with isolated workspaces and tokens.
   const panel=await browser.newPage();await panel.route('**/*',r=>r.fulfill({contentType:'text/html',body:'<select id="workspaceSelect"></select><div id="overlayGrid"></div>'}));await panel.goto('https://fixture.test/Usuario/test.html');
   await panel.evaluate(()=>{
-   const kinds=['roulette_killers','roulette_killer_perks','roulette_survivor_perks','vote','challenge_goal','challenge_streak','giveaway'];
+   const kinds=['roulette_killers','roulette_killer_perks','roulette_survivor_perks','vote','challenge_goal','challenge_streak','challenge_all_killers','giveaway'];
    window.SANLEAN_SUPABASE={url:'fixture',publishableKey:'fixture'};
    window.supabase={createClient:()=>({auth:{getSession:async()=>({data:{session:{user:{id:'collaborator'}}}}),onAuthStateChange:()=>{}},from:table=>{
     const q={select:()=>q,eq:()=>q,order:()=>Promise.resolve({data:table==='streamer_workspaces'?[{id:'workspace-test',name:'TEST',owner_user_id:'owner'}]:kinds.map(kind=>({id:kind,kind,public_token:'public-'+kind,control_token:'private-'+kind,state:{status:'paused',visible:false},settings:{}}))}),maybeSingle:async()=>({data:null})};return q;

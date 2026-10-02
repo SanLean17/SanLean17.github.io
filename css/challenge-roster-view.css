@@ -1,8 +1,8 @@
 /* SANLEAN — ALL CHALLENGE roster OBS. */
 .sl-roster-view{
   box-sizing:border-box;
-  width:min(1920px,100vw);
-  height:min(250px,100vh);
+  width:100%;
+  height:auto;
   display:flex;
   flex-direction:column;
   justify-content:flex-start;
@@ -23,27 +23,29 @@
   box-sizing:border-box;
   flex:0 0 calc(100% / var(--roster-cols));
   max-width:none;
-  height:83px;
+  height:120px;
   border:1px solid rgba(255,255,255,.12);
   border-radius:0;
-  background:#09090b;
+  background:rgba(8,8,10,.78);
   overflow:hidden;
   transform-origin:center;
   transition:filter 180ms ease,opacity 180ms ease,border-color 180ms ease,box-shadow 180ms ease;
 }
 .sl-roster-image{
   position:absolute;
-  inset:0;
-  display:grid;
-  place-items:center;
-  overflow:hidden;
+  inset:3px 3px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-width:0;
+  min-height:0;
 }
 .sl-roster-image img{
   display:block;
-  width:100%;
-  height:100%;
-  max-width:none;
-  max-height:none;
+  width:auto;
+  height:auto;
+  max-width:100%;
+  max-height:100%;
   object-fit:contain;
   opacity:1;
   filter:drop-shadow(0 2px 4px rgba(0,0,0,.68));
@@ -64,12 +66,12 @@
   text-shadow:0 2px 4px #000;
 }
 .obs-overlay-page .sl-roster-name{display:none}
-.obs-overlay-page .sl-roster-image{inset:0}
+.obs-overlay-page .sl-roster-image{inset:3px}
 
 .sl-roster-card.is-completed img,
 .sl-roster-card.is-failed img{
-  filter:grayscale(1) brightness(.7) drop-shadow(0 2px 4px rgba(0,0,0,.68));
-  opacity:.95;
+  filter:grayscale(1) brightness(.85) drop-shadow(0 2px 4px rgba(0,0,0,.68));
+  opacity:1;
 }
 .sl-roster-card.is-completed .sl-roster-name,
 .sl-roster-card.is-failed .sl-roster-name{color:rgba(255,255,255,.62)}
@@ -90,7 +92,7 @@
 .sl-roster-card.is-current{
   z-index:4;
   border-color:#ff003c;
-  box-shadow:0 0 0 2px #ff003c inset,0 0 12px rgba(255,0,60,.46);
+  box-shadow:0 0 0 2px #ff003c inset,0 0 8px rgba(255,0,60,.4);
   animation:sl-roster-current 2.8s ease-in-out infinite;
 }
 .sl-roster-card.is-current .sl-roster-mark{display:none}
@@ -98,12 +100,10 @@
 
 @keyframes sl-roster-current{
   0%,100%{
-    transform:scale(1);
-    box-shadow:0 0 0 2px #ff003c inset,0 0 9px rgba(255,0,60,.38);
+    box-shadow:0 0 0 2px #ff003c inset,0 0 6px rgba(255,0,60,.32);
   }
   50%{
-    transform:scale(1.018);
-    box-shadow:0 0 0 2px #ff003c inset,0 0 15px rgba(255,0,60,.62);
+    box-shadow:0 0 0 2px #ff003c inset,0 0 10px rgba(255,0,60,.52);
   }
 }
 
@@ -126,24 +126,39 @@
 .user-page .sl-roster-view.is-preview .sl-roster-name{display:block;font-size:6px;bottom:2px}
 .user-page .sl-roster-view.is-preview .sl-roster-mark{inset:0 0 10px;font-size:26px}
 
+/* The shared stage has a 1200px width and 220px minimum height.
+   Reset both: centering a viewport-wide roster in it clips the first columns. */
+.obs-overlay-root:has(.sl-roster-view){padding:0}
 .obs-stage:has(.sl-roster-view){
   position:absolute;
   inset:0;
+  width:100%;
+  height:100%;
+  min-width:0;
+  min-height:0;
   display:grid;
   place-items:start center;
+  grid-template-columns:minmax(0,1fr);
   padding:0!important;
   box-sizing:border-box;
-  overflow:hidden;
+  overflow:visible;
 }
 .obs-stage:has(.sl-roster-view) .sl-roster-view{
-  width:min(1920px,100vw);
-  height:min(250px,100vh);
+  /* 3 x 120px cards + 12px of safe space above/below = 384px. */
+  --roster-card-height:min(120px,calc((100vh - 24px)/3),calc((100vw - 24px)/var(--roster-cols)));
+  width:min(1920px,100%);
+  padding:12px;
 }
-
-@media(max-width:1100px){
-  .sl-roster-card{height:72px}
-  .sl-roster-view{height:min(216px,100vh)}
-  .sl-roster-mark{font-size:28px}
+.obs-stage .sl-roster-card{height:var(--roster-card-height)}
+.obs-stage .sl-roster-mark{font-size:clamp(12px,3vw,36px)}
+/* Fade without scaling/translating the source outside its safe bounds. */
+.obs-overlay-root.obs-entering:has(.sl-roster-view){animation:sl-roster-in .4s ease both}
+.obs-overlay-root.obs-leaving:has(.sl-roster-view){animation:sl-roster-out .4s ease both}
+@keyframes sl-roster-in{from{opacity:0}to{opacity:1}}
+@keyframes sl-roster-out{from{opacity:1}to{opacity:0}}
+@media(prefers-reduced-motion:reduce){
+  .obs-overlay-root.obs-entering:has(.sl-roster-view),
+  .obs-overlay-root.obs-leaving:has(.sl-roster-view){animation:none}
 }
 @media(prefers-reduced-motion:reduce){
   .sl-roster-card.is-current{animation:none}
