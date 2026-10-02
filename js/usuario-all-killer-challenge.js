@@ -26,7 +26,7 @@
     if(installed)return;const selector=$('challengeSelector');if(!selector)return;
     const row=[...selector.querySelectorAll('.challenge-row')].find(r=>r.querySelector('h3')?.textContent.trim()==='ALL KILLER CHALLENGE');if(!row)return;
     installed=true;
-    const actions=row.querySelector('.module-actions');actions.innerHTML='<button id="allKillerOpen" class="module-secondary challenge-open-btn" type="button" aria-expanded="false"><span>ABRIR</span><i class="challenge-open-chevron" aria-hidden="true"></i></button>';
+    const copy=row.querySelector('.challenge-copy p');if(copy)copy.textContent='Completá todos los Killers, registrá victorias y derrotas y conservá el progreso entre streams.';const actions=row.querySelector('.module-actions');actions.innerHTML='<button id="allKillerOpen" class="module-secondary challenge-open-btn" type="button" aria-expanded="false"><span>ABRIR</span><i class="challenge-open-chevron" aria-hidden="true"></i></button>';
     const inline=document.createElement('div');inline.id='allKillerInline';inline.className='challenge-inline-area';inline.hidden=true;row.insertAdjacentElement('afterend',inline);
     inline.innerHTML=`<section id="allKillerPanel" class="module-box all-challenge-panel">
       <div class="challenge-config-head"><div><span>ALL KILLER CHALLENGE</span><h3>CONFIGURACIÓN</h3><p>Completá el roster de Killers. Seleccioná el personaje que estás jugando y registrá cada victoria o derrota.</p></div></div>
