@@ -79,9 +79,9 @@
   }
 
   async function startGoal(){
-    if(busy)return;const overlay=goalOverlay();if(!overlay)return;$('goalConfigStatus').textContent='';busy=true;refresh();try{
+    if(busy)return;const overlay=goalOverlay();if(!overlay)return;$('goalConfigStatus').textContent='';const form=readConfig();busy=true;try{
       if(!tools()?.isOwner?.())throw new Error('La configuración de la META pertenece al propietario del stream.');
-      const form=readConfig(),now=new Date().toISOString(),settings={...(overlay.settings||{}),title:form.title,role:form.role,target:form.target},state={visible:true,status:'active',current:0,target:form.target,title:form.title,role:form.role,startedAt:now,updatedAt:now};
+      const now=new Date().toISOString(),settings={...(overlay.settings||{}),title:form.title,role:form.role,target:form.target},state={visible:true,status:'active',current:0,target:form.target,title:form.title,role:form.role,startedAt:now,updatedAt:now};
       await writeOverlay({settings,state});$('goalConfigStatus').textContent='Meta iniciada y visible en OBS.';
     }catch(err){$('goalConfigStatus').textContent=err.message||'No se pudo iniciar la meta.'}finally{busy=false;refresh()}
   }
@@ -92,11 +92,11 @@
   }
 
   async function changeProgress(delta){
-    if(busy)return;const overlay=goalOverlay();if(!overlay||!isLive(overlay))return;const current=Math.max(0,(Number(overlay.state.current)||0)+delta);$('goalLiveCurrent').value=String(current);busy=true;refresh();try{await saveLive({silent:true})}catch(err){$('goalActiveStatus').textContent=err.message||'No se pudo actualizar el contador.'}finally{busy=false;refresh()}
+    if(busy)return;const overlay=goalOverlay();if(!overlay||!isLive(overlay))return;const current=Math.max(0,(Number(overlay.state.current)||0)+delta);$('goalLiveCurrent').value=String(current);busy=true;try{await saveLive({silent:true})}catch(err){$('goalActiveStatus').textContent=err.message||'No se pudo actualizar el contador.'}finally{busy=false;refresh()}
   }
 
   async function finishGoal(){
-    if(busy)return;const overlay=goalOverlay();if(!overlay||!isLive(overlay))return;busy=true;refresh();try{
+    if(busy)return;const overlay=goalOverlay();if(!overlay||!isLive(overlay))return;busy=true;try{
       await saveLive({silent:true});const latest=goalOverlay(),finishedAt=new Date().toISOString(),record={title:latest.state.title,role:latest.state.role,current:Number(latest.state.current)||0,target:Number(latest.state.target)||1,startedAt:latest.state.startedAt||null,finishedAt,reached:(Number(latest.state.current)||0)>=(Number(latest.state.target)||1)},history=[...(Array.isArray(latest.settings?.history)?latest.settings.history:[]),record].slice(-20),settings={...(latest.settings||{}),history},state={...latest.state,visible:false,status:'finished',finishedAt,updatedAt:finishedAt};
       await writeOverlay({settings,state});$('goalActiveStatus').textContent='Meta finalizada.';
     }catch(err){$('goalActiveStatus').textContent=err.message||'No se pudo finalizar la meta.'}finally{busy=false;refresh()}
@@ -120,15 +120,14 @@
     ['goalTitle','goalRole','goalTarget'].forEach(id=>{if($(id))$(id).disabled=busy||!owner});if($('goalStart'))$('goalStart').disabled=busy||!owner;
     if(live){const reached=(Number(state.current)||0)>=(Number(state.target)||1);syncLiveFields(state);$('goalState').textContent=reached?'OBJETIVO ALCANZADO':'ACTIVA';$('goalState').className='challenge-state '+(reached?'is-reached':'is-active');['goalLiveTitle','goalLiveRole','goalLiveCurrent','goalLiveTarget','goalMinus','goalPlus','goalSaveLive','goalFinish'].forEach(id=>{if($(id))$(id).disabled=busy});if($('goalMinus'))$('goalMinus').disabled=busy||(Number(state.current)||0)<=0}
     if(overlay&&live){const publicUrl=`${location.origin}/Usuario/overlay.html?token=${encodeURIComponent(overlay.public_token||'')}`;$('goalObsUrl').value=publicUrl;window.SanLeanChallengeGoalView?.render($('goalPreview'),overlay,{preview:true})}
-    if(!live&&config&&!config.hidden){if(document.activeElement!==$('goalTitle')&&settings.title)$('goalTitle').value=settings.title;if(document.activeElement!==$('goalTarget'))$('goalTarget').value=String(Math.max(1,Number(settings.target)||10));setSelect($('goalRole'),settings.role||'killer')}
-    renderHistory(overlay);
+        renderHistory(overlay);
   }
 
   function bind(){
     $('goalConfigureOpen')?.addEventListener('click',()=>{const box=$('goalConfigurator'),overlay=goalOverlay(),settings=overlay?.settings||{};box.hidden=false;if(settings.title)$('goalTitle').value=settings.title;setSelect($('goalRole'),settings.role||'killer');$('goalTarget').value=String(Math.max(1,Number(settings.target)||10));refresh();box.scrollIntoView({behavior:'smooth',block:'start'})});
     $('goalStart')?.addEventListener('click',startGoal);
     $('goalMinus')?.addEventListener('click',()=>changeProgress(-1));$('goalPlus')?.addEventListener('click',()=>changeProgress(1));
-    $('goalSaveLive')?.addEventListener('click',async()=>{if(busy)return;busy=true;refresh();try{await saveLive()}catch(err){$('goalActiveStatus').textContent=err.message||'No se pudieron guardar los cambios.'}finally{busy=false;refresh()}});
+    $('goalSaveLive')?.addEventListener('click',async()=>{if(busy)return;busy=true;try{await saveLive()}catch(err){$('goalActiveStatus').textContent=err.message||'No se pudieron guardar los cambios.'}finally{busy=false;refresh()}});
     $('goalFinish')?.addEventListener('click',finishGoal);
     $('goalCopyUrl')?.addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('goalObsUrl').value);$('goalActiveStatus').textContent='URL de OBS copiada.'}catch{$('goalActiveStatus').textContent='No se pudo copiar la URL.'}});
     window.addEventListener('sanlean:overlays-updated',refresh);window.addEventListener('sanlean:challenge-goal',refresh);window.addEventListener('sanlean:section',refresh);
