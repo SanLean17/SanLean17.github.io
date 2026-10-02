@@ -14,14 +14,14 @@
     const panel=document.createElement('section');panel.id='streamChallengesPanel';panel.className='stream-module challenges-panel';panel.hidden=true;
     panel.innerHTML=`<div class="stream-module-head"></div>
       <section class="module-box challenge-selector">
-        <div class="challenge-row"><div class="challenge-copy"><h3>META</h3><p>Definí una cantidad de victorias o escapes, acumulativos o consecutivos.</p></div><div class="module-actions"><button id="goalConfigureOpen" class="module-secondary" type="button">CONFIGURAR</button></div></div>
+        <div class="challenge-row"><div class="challenge-copy"><h3>METAS</h3><p>Definí una cantidad de victorias o escapes, acumulativos o consecutivos.</p></div><div class="module-actions"><button id="goalConfigureOpen" class="module-secondary" type="button">CONFIGURAR</button></div></div>
         <div class="challenge-row"><div class="challenge-copy"><h3>WIN STREAK</h3><p>Buscá tu mejor racha con un Killer, Survivor o selección libre.</p></div><div class="module-actions"><button class="module-secondary" type="button" disabled>PRÓXIMAMENTE</button></div></div>
         <div class="challenge-row"><div class="challenge-copy"><h3>ALL KILLER CHALLENGE</h3><p>Completá el roster de Killers y elegí el siguiente con la ruleta.</p></div><div class="module-actions"><button class="module-secondary" type="button" disabled>PRÓXIMAMENTE</button></div></div>
         <div class="challenge-row"><div class="challenge-copy"><h3>ALL SURVIVOR CHALLENGE</h3><p>Completá el roster de Survivors y registrá cada escape.</p></div><div class="module-actions"><button class="module-secondary" type="button" disabled>PRÓXIMAMENTE</button></div></div>
       </section>
 
       <section id="goalConfigurator" class="module-box challenge-goal-config" hidden>
-        <div class="challenge-config-head"><div><span>META</span><h3>CONFIGURACIÓN</h3><p>Prepará el contador antes de iniciar. La configuración pertenece al streamer de este espacio.</p></div></div>
+        <div class="challenge-config-head"><div><span>METAS</span><h3>CONFIGURACIÓN</h3><p>Prepará el contador antes de iniciar. La configuración pertenece al streamer de este espacio.</p></div></div>
         <div class="challenge-goal-form">
           <label>NOMBRE DE LA META<input id="goalTitle" type="text" maxlength="42" value="VICTORIAS SEGUIDAS" placeholder="EJ. 10 VICTORIAS SEGUIDAS"></label>
           <label>ROL<select id="goalRole"><option value="killer">KILLER</option><option value="survivor">SUPERVIVIENTE</option></select></label>
@@ -57,7 +57,7 @@
     return{title,role,target,consecutive};
   }
 
-  function setMode(consecutive){
+  function setSelectValue(select,value){if(!select)return;select.value=value;select.dispatchEvent(new Event('change',{bubbles:true}))}\n\n  function setMode(consecutive){
     $('goalModeConsecutive')?.setAttribute('aria-pressed',String(!!consecutive));
     $('goalModeTotal')?.setAttribute('aria-pressed',String(!consecutive));
   }
@@ -123,7 +123,7 @@
     const overlay=goalOverlay(),owner=!!tools()?.isOwner?.(),live=isLive(overlay),settings=overlay?.settings||{},state=overlay?.state||{};
     if($('goalSave'))$('goalSave').disabled=busy||!owner||live;if($('goalStart'))$('goalStart').disabled=busy||!owner||live;
     ['goalTitle','goalRole','goalTarget'].forEach(id=>{if($(id))$(id).disabled=busy||!owner||live});['goalModeTotal','goalModeConsecutive'].forEach(id=>{if($(id))$(id).disabled=busy||!owner||live});
-    if(overlay&&$('goalConfigurator')&&!$('goalConfigurator').hidden&&!live){$('goalTitle').value=settings.title||$('goalTitle').value;$('goalRole').value=settings.role||'killer';$('goalTarget').value=String(Math.max(1,Number(settings.target)||10));setMode(settings.consecutive!==false)}
+    
     $('goalActiveBox').hidden=!live;
     if(live){const current=Math.max(0,Number(state.current)||0),target=Math.max(1,Number(state.target)||10),reached=current>=target;$('goalActiveTitle').textContent=state.title||'META';$('goalState').textContent=reached?'OBJETIVO ALCANZADO':'ACTIVA';$('goalState').className='challenge-state '+(reached?'is-reached':'is-active');$('goalMetricLabel').textContent=roleMetric(state.role);$('goalCurrent').textContent=String(current);$('goalActiveTarget').textContent=String(target);$('goalActiveMeta').textContent=`${state.role==='survivor'?'SUPERVIVIENTE':'KILLER'} · ${state.consecutive?'CONSECUTIVA':'ACUMULATIVA'}`;$('goalMinus').disabled=busy||current<=0;$('goalPlus').disabled=busy;$('goalExtend').disabled=busy||target>=999;$('goalResetStreak').hidden=!state.consecutive;$('goalResetStreak').disabled=busy||current===0;$('goalFinish').disabled=busy}
     $('goalOutput').hidden=!overlay;
@@ -132,7 +132,7 @@
   }
 
   function bind(){
-    $('goalConfigureOpen')?.addEventListener('click',()=>{const box=$('goalConfigurator');box.hidden=false;refresh();box.scrollIntoView({behavior:'smooth',block:'start'})});
+    $('goalConfigureOpen')?.addEventListener('click',()=>{const box=$('goalConfigurator'),overlay=goalOverlay(),settings=overlay?.settings||{};box.hidden=false;if(!isLive(overlay)){if(settings.title)$('goalTitle').value=settings.title;setSelectValue($('goalRole'),settings.role||'killer');$('goalTarget').value=String(Math.max(1,Number(settings.target)||10));setMode(settings.consecutive!==false)}refresh();box.scrollIntoView({behavior:'smooth',block:'start'})});
     $('goalModeTotal')?.addEventListener('click',()=>setMode(false));$('goalModeConsecutive')?.addEventListener('click',()=>setMode(true));
     $('goalRole')?.addEventListener('change',()=>{const current=$('goalTitle')?.value.trim().toUpperCase();if(!current||['VICTORIAS SEGUIDAS','ESCAPES SEGUIDOS','META DE VICTORIAS','META DE ESCAPES'].includes(current))$('goalTitle').value=$('goalRole').value==='survivor'?'ESCAPES SEGUIDOS':'VICTORIAS SEGUIDAS'});
     $('goalSave')?.addEventListener('click',async()=>{if(busy)return;busy=true;refresh();try{await saveConfig()}catch(err){$('goalConfigStatus').textContent=err.message||'No se pudo guardar la configuración.'}finally{busy=false;refresh()}});
@@ -141,6 +141,6 @@
     window.addEventListener('sanlean:overlays-updated',refresh);window.addEventListener('sanlean:challenge-goal',refresh);window.addEventListener('sanlean:section',refresh);
   }
 
-  function install(){installPanel();bind();setMode(true);refresh();setTimeout(refresh,250)}
+  function install(){installPanel();bind();setMode(true);refresh();setTimeout(()=>{refresh();if(location.hash==='#challenges')window.SanLeanUsuarioNavigation?.show?.('challenges',{updateHash:false})},250)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(install,40),{once:true});else setTimeout(install,40);
 })();
