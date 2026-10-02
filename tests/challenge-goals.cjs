@@ -115,7 +115,7 @@ assert.equal(view.detectSpecial('subproceso'),'');
    assert(await panel.locator('#goalPreview').evaluate(e=>e.getBoundingClientRect().height<=110));
    if(process.env.QA_OUTPUT)await panel.screenshot({path:path.join(process.env.QA_OUTPUT,`panel-${width}.png`),fullPage:true});
   }
-  assert(await panel.evaluate(()=>[...document.scripts].some(s=>s.src.includes('usuario-desafios.js?v=20261002-11'))));
+  assert(await panel.evaluate(()=>[...document.scripts].some(s=>s.src.includes('usuario-desafios.js?v=20261002-12'))));
 
   // Load the actual OBS document and exercise its polling/rendering with isolated RPC data.
   const obs=await browser.newPage({viewport:{width:720,height:180}});obs.on('pageerror',e=>errors.push(e.message));
@@ -132,14 +132,17 @@ assert.equal(view.detectSpecial('subproceso'),'');
   if(process.env.QA_OUTPUT)await obs.screenshot({path:path.join(process.env.QA_OUTPUT,'obs-720x180.png'),omitBackground:true});
   assert(await obs.locator('.sl-goal-main').evaluate(e=>{const icon=e.querySelector('.sl-goal-icon').getBoundingClientRect(),counter=e.querySelector('.sl-goal-counter').getBoundingClientRect();return Math.abs(icon.y+icon.height/2-counter.y-counter.height/2)<1}),'Icons centered on numbers');
   assert.equal(await obs.locator('.sl-goal-counter span').evaluate(e=>getComputedStyle(e).fontSize),'48px');
-  assert.equal(await obs.locator('.sl-goal-counter i').evaluate(e=>getComputedStyle(e).fontSize),'48px','Slash matches number height');
+  assert.equal(await obs.locator('.sl-goal-counter i').evaluate(e=>getComputedStyle(e).fontSize),'27.84px','Slash is only slightly taller than the original 24 px');
   assert(await obs.locator('.sl-goal-icon img').evaluate(e=>e.naturalWidth>=e.width*2&&e.naturalHeight>=e.height*2),'Original icons have enough detail at small sizes');
   snapshot.state={...snapshot.state,current:15};await obs.waitForSelector('.sl-goal-view.is-reached');
-  assert.equal(await obs.locator('.sl-goal-view').evaluate(e=>getComputedStyle(e).animationName),'sl-result-float');
+  assert.equal(await obs.locator('.sl-goal-view').evaluate(e=>getComputedStyle(e).animationName),'sl-goal-pulse');
   assert(await obs.locator('.sl-goal-view').evaluate(e=>e.getAnimations().length>0),'Existing roulette keyframes loaded');
   await obs.waitForTimeout(300);
   assert(await obs.locator('.sl-goal-view').evaluate(e=>e.getAnimations()[0].currentTime>0),'Reached animation moves');
-  assert.equal(await obs.locator('.sl-goal-main').evaluate(e=>getComputedStyle(e,'::before').animationName),'sl-goal-aura');
+  const peak=await obs.locator('.sl-goal-view').evaluate(e=>{const a=e.getAnimations()[0];a.pause();a.currentTime=1000;const m=new DOMMatrix(getComputedStyle(e).transform);return {scale:m.a,y:m.f}});
+  assert(Math.abs(peak.scale-1.018)<.001&&peak.y===0,'Achievement pulses only 1.8%, without floating');
+  await obs.locator('.sl-goal-view').evaluate(e=>e.getAnimations()[0].play());
+  assert.equal(await obs.locator('.sl-goal-main').evaluate(e=>getComputedStyle(e,'::before').animationName),'none');
   assert.equal(await obs.locator('.sl-goal-main').evaluate(e=>getComputedStyle(e).filter),'none','Glow does not filter the foreground');
   assert.equal(await obs.locator('.sl-goal-icon img').first().evaluate(e=>getComputedStyle(e).transform),'none','No fractional image scaling during achievement');
   if(process.env.QA_OUTPUT){
