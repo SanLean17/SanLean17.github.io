@@ -57,7 +57,9 @@
     return{title,role,target,consecutive};
   }
 
-  function setSelectValue(select,value){if(!select)return;select.value=value;select.dispatchEvent(new Event('change',{bubbles:true}))}\n\n  function setMode(consecutive){
+  function setSelectValue(select,value){if(!select)return;select.value=value;select.dispatchEvent(new Event('change',{bubbles:true}))}
+
+  function setMode(consecutive){
     $('goalModeConsecutive')?.setAttribute('aria-pressed',String(!!consecutive));
     $('goalModeTotal')?.setAttribute('aria-pressed',String(!consecutive));
   }
