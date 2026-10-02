@@ -23,3 +23,8 @@
 .obs-stage:has(.sl-streak-view) .sl-streak-view{width:min(520px,100vw);height:min(206px,100vh)}
 @media(max-width:520px){.sl-streak-view{padding:5px 7px}.sl-streak-title{font-size:40px}.sl-streak-main{gap:5px}.sl-streak-image{width:136px;height:134px}.sl-streak-image img{max-width:136px;max-height:134px}.sl-streak-view[data-role="survivor"] .sl-streak-image{width:102px;height:102px}.sl-streak-view[data-role="survivor"] .sl-streak-image img{max-width:98px;max-height:98px}.sl-streak-number{font-size:58px}}
 @media(prefers-reduced-motion:reduce){.sl-streak-main{animation:none}}
+
+/* Survivor uses its own content height so the small icon stays beside the title. */
+.sl-streak-view[data-role="survivor"] .sl-streak-main{height:118px;margin-top:-10px;gap:3px}
+.user-page .sl-streak-view.is-preview[data-role="survivor"] .sl-streak-main{height:56px;margin-top:-5px;gap:2px}
+@media(max-width:520px){.sl-streak-view[data-role="survivor"] .sl-streak-main{height:102px;margin-top:-8px}}

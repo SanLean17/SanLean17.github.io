@@ -376,3 +376,13 @@ Se conservan exactamente las mismas cinco cartas. Los votos se limpian y se prep
 La WEB pública (`sanlean.com.ar`) y USUARIO (`sanlean.com.ar/usuario/`) son sistemas relacionados pero distintos.
 
 Una solicitud referida únicamente a USUARIO no debe modificar la WEB pública salvo pedido expreso.
+
+
+### DESAFÍOS: sesiones, visibilidad y guardado
+
+- METAS y WIN STREAK usan PAUSAR / CONTINUAR y FINALIZAR como acciones de sesión, con botones secundarios canónicos y finalización diferenciada al final.
+- PAUSAR conserva la sesión y oculta OBS; CONTINUAR retoma sus valores. Sólo FINALIZAR agrega un registro al historial. CERRAR pliega la herramienta sin cambiar la sesión.
+- METAS muestra META PAUSADA, conserva los campos editables y autoguarda sin salir de pausa. No agrega GUARDAR CAMBIOS redundante.
+- OCULTAR EN OBS / MOSTRAR EN OBS controla sólo visibilidad durante una sesión activa; en pausa muestra OCULTO EN PAUSA deshabilitado.
+- Los enlaces de META y WIN STREAK viven en OVERLAYS OBS. DESAFÍOS no duplica el bloque OBS / VISTA DE LA META.
+- Se reutilizan encabezados, ayudas, campos, selectores y botones canónicos en desktop y mobile. La compactación del overlay Superviviente es específica de la composición OBS y su preview compartido; no cambia tokens del panel ni el retrato Killer.

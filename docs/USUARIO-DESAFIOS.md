@@ -75,8 +75,8 @@ Ruta canónica: `assets/usuario/desafios/metas/`.
 - Cualquier rol, incluido AMBOS, muestra únicamente el icono detectado por el nombre. AMBOS sin coincidencia conserva KILLERS a la izquierda y ESCAPES a la derecha.
 - CONTROL incluye un vocabulario informativo de ocho iconos. Reutiliza la ayuda canónica (`.ui-field-help`), sin crear botones ni selectores nuevos.
 - La salida sigue siendo transparente, de 720 × 180. Título arriba, iconos sin recorte junto al contador, progreso y objetivo de idéntico tamaño/peso y slash fino al 58 % de la altura tipográfica. Los números largos reducen la fila completa para conservar la misma proporción.
-- Vista previa de hasta 300 × 68 dentro del marco canónico compacto de 106 px.
-- El autoguardado conserva el borrador durante respuestas demoradas o fallidas, ordena las escrituras y evita guardar al sincronizar un selector desde el servidor. Finalizar espera el guardado pendiente y limpia vista previa y URL; una nueva ronda comienza en cero. Los borradores se descartan al cambiar de espacio/meta.
+- DESAFÍOS no incluye preview ni URL de METAS. La URL está exclusivamente en OVERLAYS OBS.
+- El autoguardado conserva el borrador durante respuestas demoradas o fallidas, ordena las escrituras y evita guardar al sincronizar un selector desde el servidor. Finalizar espera el guardado pendiente y oculta el overlay; una nueva ronda comienza en cero. Los borradores se descartan al cambiar de espacio/meta.
 - Verificación: `tests/challenge-goals.cjs` prueba alias/roles, panel real en cuatro anchos, select canónico, guardado demorado/fallido, finalización/reinicio, separación por espacio y el documento OBS real con respuestas de prueba. No escribe datos reales. Configurar PLAYWRIGHT_MODULE y CHROME_PATH si el entorno no los resuelve por defecto.
 
 - Ajuste de stream: título de 24 px, números de 48 px e iconos de 64 px centrados verticalmente con el contador. La fuente OBS continúa en 720 × 180.
@@ -118,7 +118,7 @@ WIN STREAK es independiente de METAS y usa su propio overlay `challenge_streak` 
 - Título fijo: **WIN** en `#FF003C` + **STREAK** en blanco, usando la tipografía display del sistema.
 - Debajo se muestra el retrato del Killer seleccionado o el icono de escapes para Superviviente.
 - El número de la racha aparece al costado.
-- Browser Source recomendada: **520 × 260** con fondo transparente.
+- Browser Source recomendada: **520 × 220** con fondo transparente.
 - La actualización del número usa una animación breve y no reinicia ni modifica la racha por sí sola.
 
 
@@ -142,7 +142,7 @@ Las filas guardadas incluyen fecha de finalización.
 
 ## WIN STREAK — cierre y finalización
 
-- CERRAR termina la sesión activa sin agregarla al historial y devuelve a la configuración para iniciar otra racha/rol.
+- CERRAR sólo pliega la herramienta. No modifica ni finaliza la sesión.
 - FINALIZAR WIN STREAK guarda rol, Killer cuando corresponda, racha alcanzada y fecha en el historial de WIN STREAK.
 - Superviviente usa el icono de escapes.
 - Killer utiliza el retrato seleccionado del catálogo oficial interno.
@@ -173,10 +173,20 @@ Las filas guardadas incluyen fecha de finalización.
 ### METAS
 - **OCULTAR EN OBS / MOSTRAR EN OBS** sólo modifica la visibilidad del overlay.
 - Editar nombre, rol, progreso u objetivo mientras la meta está oculta no vuelve a mostrarla automáticamente.
-- FINALIZAR META conserva el comportamiento existente de historial.
+- **PAUSAR** guarda las ediciones pendientes y conserva título, rol, progreso, objetivo, configuración y fecha de inicio. Persiste como `status: paused` y `visible: false`.
+- La misma sesión vuelve al abrir USUARIO, incluso otro día: **META PAUSADA**, campos editables y botón **CONTINUAR**. El autoguardado y +1/-1 siguen disponibles para corregir valores sin reactivar OBS.
+- **CONTINUAR** guarda las ediciones pendientes y retoma la sesión con el mismo progreso. Muestra OBS y recalcula ACTIVA / OBJETIVO ALCANZADO según el objetivo actual.
+- **FINALIZAR META** es la única acción que agrega la sesión al historial, tanto activa como pausada. Alcanzar el objetivo, pausar, ocultar o plegar nunca crean registros.
+- No hay GUARDAR CAMBIOS: se usa el autoguardado existente. Pausar, continuar, ocultar y finalizar esperan la cola de guardado. Un fallo conserva el borrador y muestra el error; editar o volver a ejecutar la acción permite reintentar.
+- Mientras está pausada, el botón de visibilidad indica **OCULTO EN PAUSA** y queda deshabilitado. Las ediciones no cambian `paused` ni vuelven a mostrarla.
+- OVERLAYS OBS conserva las tarjetas META y WIN STREAK con sus URLs independientes del estado de sesión.
+- Todas las escrituras de METAS filtran por overlay y workspace. Cambiar de espacio cancela borradores y descarta respuestas de otra sesión.
+- Pruebas: pausa/reapertura, edición pausada, continuar con objetivo alcanzado, visibilidad con guardado demorado, finalización desde pausa, fallos y cambio de workspace; panel a 1440/740/390/320 px y OBS real con datos aislados.
 
 ### Visual WINSTREAK
 - Título, imagen y número se componen como una sola unidad centrada.
 - WIN y STREAK comparten exactamente línea base, tamaño y ritmo tipográfico; sólo cambia el color.
 - El icono de Superviviente se renderiza deliberadamente más pequeño que un retrato de Killer.
 - El pulso CSS se aplica al bloque inferior completo y no genera tráfico de red.
+
+- Compactación Superviviente: fila inferior de 118 px (102 px en fuente angosta), desplazada 10/8 px hacia el título; preview de 56 px con ajuste de 5 px. Conserva el icono menor que Killer, ambas orientaciones y el pulso con movimiento reducido.
