@@ -309,6 +309,7 @@ La implementación final del router de MI PANEL vive en `js/usuario-stream-tabs.
 - HISTORIAL ocupa todo el ancho de la columna funcional y es plegable. Dentro contiene grupos plegables independientes (MIS METAS, WIN STREAK y futuras herramientas). Cada fila muestra también la fecha de finalización.
 - WIN STREAK usa un overlay independiente por workspace. Superviviente registra escapes; Killer requiere seleccionar un Killer del catálogo real y muestra su retrato en OBS.
 - WIN STREAK no tiene objetivo máximo: sólo racha actual, edición manual, +1 / -1 y reinicio. CERRAR abandona la sesión sin guardarla en historial; FINALIZAR WIN STREAK sí guarda rol/Killer, racha y fecha.
+- WIN STREAK reutiliza el control segmentado canónico para IMAGEN IZQUIERDA / IMAGEN DERECHA. La orientación se persiste por workspace y el overlay usa un pulso CSS local muy leve, desactivado con prefers-reduced-motion.
 
 ## 10. CARTAS / Votaciones
 
