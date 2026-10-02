@@ -83,3 +83,40 @@ Ruta canónica: `assets/usuario/desafios/metas/`.
 - Al alcanzar o superar el objetivo, el conjunto pulsa suavemente entre escala 1 y 1.018 cada 2 segundos, con un fondo rojo difuso detrás del título, los iconos y el contador, sin borde, que sobresale ligeramente del conjunto. La animación continúa mientras el contador cumpla el objetivo, se detiene al quedar por debajo y respeta movimiento reducido. Refrescos con datos idénticos no la reinician.
 
 - Nitidez a tamaño chico: se conservan los PNG originales de 264 × 249, mostrados a 64 px (38 px en el panel), con sombras cortas. Los iconos acompañan el pulso leve del conjunto, sin una animación adicional. El resplandor rojo de objetivo cumplido se dibuja en una capa de fondo separada para no filtrar ni difuminar los números. El slash mide aproximadamente 28 px frente a números de 48 px.
+
+
+## Navegación interna de DESAFÍOS
+
+- Cada herramienta se abre desde la lista principal con **ABRIR**.
+- Volver a pulsar el mismo control la cierra.
+- Abrir otra herramienta cierra la anterior para evitar bloques largos apilados.
+- Los controles usan el mismo chevron canónico de KILLERS / PERKS.
+- **MIS METAS** es un historial plegable independiente y compacto.
+- Cada registro de META muestra nombre, rol, resultado y fecha de finalización.
+
+## WIN STREAK
+
+WIN STREAK es independiente de METAS y usa su propio overlay `challenge_streak` por workspace.
+
+### Superviviente
+
+- La métrica es siempre escapes consecutivos.
+- No existe objetivo máximo.
+- La racha comienza en 0.
+- El streamer puede usar `+1`, `-1`, escribir el valor manualmente o pulsar `REINICIAR RACHA`.
+- OBS usa el icono `assets/usuario/desafios/metas/escapes.png`.
+
+### Killer
+
+- Antes de iniciar se selecciona un Killer del catálogo real de `data/killers.json`.
+- El buscador acepta nombre visible, key y alias habituales en español/inglés.
+- La selección queda asociada a esa sesión de WIN STREAK.
+- La racha usa los mismos controles manuales que Superviviente.
+
+### OBS WIN STREAK
+
+- Título fijo: **WIN** en `#FF003C` + **STREAK** en blanco, usando la tipografía display del sistema.
+- Debajo se muestra el retrato del Killer seleccionado o el icono de escapes para Superviviente.
+- El número de la racha aparece al costado.
+- Browser Source recomendada: **520 × 260** con fondo transparente.
+- La actualización del número usa una animación breve y no reinicia ni modifica la racha por sí sola.
