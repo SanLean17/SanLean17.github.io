@@ -310,6 +310,7 @@ La implementación final del router de MI PANEL vive en `js/usuario-stream-tabs.
 - WIN STREAK usa un overlay independiente por workspace. Superviviente registra escapes; Killer requiere seleccionar un Killer del catálogo real y muestra su retrato en OBS.
 - WIN STREAK no tiene objetivo máximo: sólo racha actual, edición manual, +1 / -1 y reinicio. CERRAR abandona la sesión sin guardarla en historial; FINALIZAR WIN STREAK sí guarda rol/Killer, racha y fecha.
 - WIN STREAK reutiliza el control segmentado canónico para IMAGEN IZQUIERDA / IMAGEN DERECHA. La orientación se persiste por workspace y el overlay usa un pulso CSS local muy leve, desactivado con prefers-reduced-motion.
+- WIN STREAK distingue PAUSAR/CONTINUAR de FINALIZAR: pausar conserva la sesión y la oculta; finalizar la envía al historial. Tanto WIN STREAK como METAS poseen OCULTAR/MOSTRAR EN OBS como control de visibilidad independiente del progreso.
 
 ## 10. CARTAS / Votaciones
 
