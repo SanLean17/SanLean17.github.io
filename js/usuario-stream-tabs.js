@@ -13,4 +13,4 @@ document.write('<link rel="stylesheet" href="../css/usuario-kickers.css?v=202609
 document.write('<link rel="stylesheet" href="../css/usuario-roulette-tools.css?v=20260928-3">');
 document.write('<script src="../js/usuario-roulette-tools.js?v=20260928-3"><\/script>');
 document.write('<link rel="stylesheet" href="../css/usuario-all-challenge.css?v=20261002-1">');
-document.write('<script src="../js/usuario-all-killer-challenge.js?v=20261002-1"><\/script>');
+document.write('<script src="../js/usuario-all-killer-challenge.js?v=20261002-2"><\/script>');
