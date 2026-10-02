@@ -54,3 +54,9 @@
 .challenge-goal-form input[type="number"],.challenge-live-form input[type="number"]{-moz-appearance:textfield;appearance:textfield}
 .challenge-goal-form input[type="number"]::-webkit-outer-spin-button,.challenge-goal-form input[type="number"]::-webkit-inner-spin-button,.challenge-live-form input[type="number"]::-webkit-outer-spin-button,.challenge-live-form input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .challenge-live-form .ui-field-help{margin-top:10px!important}
+
+/* METAS preview compacto: la Browser Source real se controla en OBS. */
+.challenge-goal-output .stream-output-grid{grid-template-columns:minmax(0,480px) minmax(280px,1fr)!important;justify-content:start}
+.challenge-goal-output .stream-preview-frame{min-height:138px!important;padding:14px!important}
+.challenge-goal-output .stream-output-head{margin-bottom:14px}
+@media(max-width:900px){.challenge-goal-output .stream-output-grid{grid-template-columns:1fr!important}.challenge-goal-output .stream-preview-frame{min-height:132px!important}}
