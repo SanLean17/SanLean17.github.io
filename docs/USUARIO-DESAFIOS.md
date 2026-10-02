@@ -159,3 +159,24 @@ Las filas guardadas incluyen fecha de finalización.
 - El pulso/latido es una animación CSS de `transform: scale()`, puramente local en el Browser Source; no realiza solicitudes de red adicionales.
 - `prefers-reduced-motion` desactiva el pulso automáticamente.
 - El selector de Killers usa 4 columnas desktop, tarjetas centradas y únicamente scroll vertical con scrollbar rojo.
+
+
+## Persistencia y visibilidad de desafíos
+
+### WIN STREAK
+- **PAUSAR** conserva rol, Killer, racha actual, orientación y configuración. Cambia la sesión a `paused` y la oculta de OBS.
+- **CONTINUAR** reactiva exactamente la misma sesión, sin reiniciar el contador.
+- **FINALIZAR WIN STREAK** es la única acción que cierra definitivamente la sesión y la agrega al historial.
+- **OCULTAR EN OBS / MOSTRAR EN OBS** sólo cambia `state.visible`; no altera racha ni configuración.
+- Una WIN STREAK pausada permanece oculta hasta pulsar CONTINUAR.
+
+### METAS
+- **OCULTAR EN OBS / MOSTRAR EN OBS** sólo modifica la visibilidad del overlay.
+- Editar nombre, rol, progreso u objetivo mientras la meta está oculta no vuelve a mostrarla automáticamente.
+- FINALIZAR META conserva el comportamiento existente de historial.
+
+### Visual WINSTREAK
+- Título, imagen y número se componen como una sola unidad centrada.
+- WIN y STREAK comparten exactamente línea base, tamaño y ritmo tipográfico; sólo cambia el color.
+- El icono de Superviviente se renderiza deliberadamente más pequeño que un retrato de Killer.
+- El pulso CSS se aplica al bloque inferior completo y no genera tráfico de red.
