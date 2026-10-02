@@ -55,7 +55,7 @@ La vista del panel no tiene que ser idéntica al overlay. El panel prioriza cont
 El overlay resuelve el icono por palabras del nombre antes de usar el rol como fallback.
 
 - DE FRENTE → `de-frente.png`
-- ESCOTILLA → `escotilla.png`
+- ESCOTILLA / TRAMPILLA / HATCH → `escotilla.png`
 - ME LA PELA / NO MITHER → `me-la-pela.png`
 - PUNTOS DE SANGRE → `puntos-de-sangre.png`
 - MOTORES / GENERADORES → `motores.png`
@@ -63,7 +63,7 @@ El overlay resuelve el icono por palabras del nombre antes de usar el rol como f
 - RANDOM / ALEATORIO → `randoms.png`
 - ESCAPE / ESCAPES → `escapes.png`
 - KILLER → `killers.png`
-- SUPERVIVIENTE → `superviviente.png`
-- AMBOS → `killers.png` + `superviviente.png`
+- SUPERVIVIENTE → `escapes.png`
+- AMBOS → `killers.png` + `escapes.png`
 
 Ruta canónica: `assets/usuario/desafios/metas/`.
