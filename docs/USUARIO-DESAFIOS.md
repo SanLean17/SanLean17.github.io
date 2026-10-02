@@ -166,7 +166,9 @@ Las filas guardadas incluyen fecha de finalización.
 ### WIN STREAK
 - **PAUSAR** conserva rol, Killer, racha actual, orientación y configuración. Cambia la sesión a `paused` y la oculta de OBS.
 - **CONTINUAR** reactiva exactamente la misma sesión, sin reiniciar el contador.
-- **FINALIZAR WIN STREAK** es la única acción que cierra definitivamente la sesión y la agrega al historial.
+- **FINALIZAR WIN STREAK** cierra la sesión y es la única acción que la agrega al historial.
+- **CANCELAR WIN STREAK** descarta la sesión activa o pausada, tanto de Killer como de Superviviente, oculta OBS y vuelve a la configuración sin agregar ni borrar registros del historial. Permite corregir la selección e iniciar una racha nueva desde cero.
+- Cancelar conserva las preferencias de configuración y espera cualquier autoguardado en curso antes de limpiar la sesión. Un fallo conserva la sesión y permite reintentar; una respuesta de otro workspace no modifica el espacio actual.
 - **OCULTAR EN OBS / MOSTRAR EN OBS** sólo cambia `state.visible`; no altera racha ni configuración.
 - Una WIN STREAK pausada permanece oculta hasta pulsar CONTINUAR.
 

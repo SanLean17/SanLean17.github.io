@@ -382,6 +382,7 @@ Una solicitud referida únicamente a USUARIO no debe modificar la WEB pública s
 
 - METAS y WIN STREAK usan PAUSAR / CONTINUAR y FINALIZAR como acciones de sesión, con botones secundarios canónicos y finalización diferenciada al final.
 - PAUSAR conserva la sesión y oculta OBS; CONTINUAR retoma sus valores. Sólo FINALIZAR agrega un registro al historial. CERRAR pliega la herramienta sin cambiar la sesión.
+- WIN STREAK agrega CANCELAR WIN STREAK al final de las acciones, con el botón secundario destructivo existente y una ayuda explícita: descarta la sesión sin historial y vuelve a la configuración. Disponible para Killer y Superviviente, en actividad y pausa; mantiene el mismo comportamiento en desktop y mobile.
 - METAS muestra META PAUSADA, conserva los campos editables y autoguarda sin salir de pausa. No agrega GUARDAR CAMBIOS redundante.
 - OCULTAR EN OBS / MOSTRAR EN OBS controla sólo visibilidad durante una sesión activa; en pausa muestra OCULTO EN PAUSA deshabilitado.
 - Los enlaces de META y WIN STREAK viven en OVERLAYS OBS. DESAFÍOS no duplica el bloque OBS / VISTA DE LA META.

@@ -150,7 +150,7 @@ assert.equal(view.detectSpecial('subproceso'),'');
    assert.equal(await panel.locator('#goalOutput, #goalSaveLive').count(),0);
    if(process.env.QA_OUTPUT)await panel.screenshot({path:path.join(process.env.QA_OUTPUT,`panel-${width}.png`),fullPage:true});
   }
-  assert(await panel.evaluate(()=>[...document.scripts].some(s=>s.src.includes('usuario-desafios.js?v=20261002-18'))));
+  assert(await panel.evaluate(()=>[...document.scripts].some(s=>s.src.includes('usuario-desafios.js?v=20261002-19'))));
 
   // Load the actual OBS document and exercise its polling/rendering with isolated RPC data.
   const obs=await browser.newPage({viewport:{width:720,height:180}});obs.on('pageerror',e=>errors.push(e.message));

@@ -14,6 +14,8 @@
   const isStreakLive=o=>o?.state?.status==='active';
   const isStreakPaused=o=>o?.state?.status==='paused';
   const isStreakSession=o=>['active','paused'].includes(o?.state?.status);
+  const streakContextKey=()=>[workspace()?.id,streakOverlay()?.id,streakOverlay()?.state?.startedAt].join(':');
+  let streakSaveQueue=Promise.resolve();
   const escape=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const roleLabel=role=>role==='both'?'KILLER + SUPERVIVIENTE':role==='survivor'?'SUPERVIVIENTE':'KILLER';
   const normalizeRole=value=>['killer','survivor','both'].includes(value)?value:'killer';
@@ -90,7 +92,8 @@
               <button id="streakReset" class="ui-btn ui-btn-secondary" type="button">REINICIAR RACHA</button>
             </div>
           </div>
-          <div class="module-actions challenge-active-actions"><button id="streakPause" class="module-secondary" type="button">PAUSAR</button><button id="streakObsToggle" class="module-secondary" type="button">OCULTAR EN OBS</button><button id="streakFinish" class="module-secondary challenge-danger" type="button">FINALIZAR WIN STREAK</button></div>
+          <div class="module-actions challenge-active-actions"><button id="streakPause" class="module-secondary" type="button">PAUSAR</button><button id="streakObsToggle" class="module-secondary" type="button">OCULTAR EN OBS</button><button id="streakFinish" class="module-secondary challenge-danger" type="button">FINALIZAR WIN STREAK</button><button id="streakCancel" class="module-secondary challenge-danger" type="button">CANCELAR WIN STREAK</button></div>
+          <p class="ui-field-help">Cancelar descarta esta racha sin guardarla en el historial y vuelve a la configuración.</p>
         </div>
         <p id="streakStatus" class="module-status" role="status"></p>
       </section>
@@ -310,10 +313,11 @@
   }
 
   async function writeStreakOverlay(patch){
-    const overlay=streakOverlay(),ws=workspace();if(!client||!overlay||!ws)throw new Error('WIN STREAK todavía no está disponible para este espacio.');
+    const overlay=streakOverlay(),ws=workspace(),key=streakContextKey();if(!client||!overlay||!ws)throw new Error('WIN STREAK todavía no está disponible para este espacio.');
     const update={updated_at:new Date().toISOString()};if(patch.settings)update.settings=patch.settings;if(patch.state)update.state=patch.state;
     const {data,error}=await client.from('stream_overlays').update(update).eq('id',overlay.id).eq('workspace_id',ws.id).select('*').single();
     if(error||!data)throw error||new Error('No se pudo guardar WIN STREAK.');
+    if(key!==streakContextKey())return data;
     const current=streakOverlay();if(current){if(patch.settings)current.settings=data.settings;if(patch.state)current.state=data.state}
     window.dispatchEvent(new CustomEvent('sanlean:challenge-streak',{detail:{id:overlay.id,state:data.state,settings:data.settings}}));window.dispatchEvent(new CustomEvent('sanlean:overlays-updated'));return data;
   }
@@ -332,9 +336,28 @@
 
   function saveStreakCurrent(value=null){
     clearTimeout(streakSaveTimer);const overlay=streakOverlay();if(!overlay||!isStreakSession(overlay))return Promise.resolve(false);
-    const source=value===null?$('streakCurrent')?.value:value,current=Math.max(0,Math.min(999999999,Math.floor(Number(source)||0))),state={...overlay.state,current,visible:overlay.state?.visible!==false,status:overlay.state?.status||'active',updatedAt:new Date().toISOString()};
+    const key=streakContextKey(),source=value===null?$('streakCurrent')?.value:value,current=Math.max(0,Math.min(999999999,Math.floor(Number(source)||0)));
     if($('streakCurrent'))$('streakCurrent').value=String(current);
-    return writeStreakOverlay({state}).then(()=>true);
+    const result=streakSaveQueue.then(async()=>{
+      if(key!==streakContextKey()||!isStreakSession(streakOverlay()))return false;
+      const latest=streakOverlay();
+      await writeStreakOverlay({state:{...latest.state,current,updatedAt:new Date().toISOString()}});return key===streakContextKey();
+    });
+    streakSaveQueue=result.catch(()=>{});return result;
+  }
+
+  async function cancelStreak(){
+    if(streakBusy||!isStreakSession(streakOverlay()))return;
+    const key=streakContextKey(),overlayId=streakOverlay().id,workspaceId=workspace()?.id;streakBusy=true;clearTimeout(streakSaveTimer);refreshStreak();
+    try{
+      // Let an in-flight autosave settle before clearing the session, so it cannot restore it.
+      await streakSaveQueue;
+      if(key!==streakContextKey()||!isStreakSession(streakOverlay()))return;
+      await writeStreakOverlay({state:{visible:false,status:'idle',current:0,updatedAt:new Date().toISOString()}});
+      if(streakOverlay()?.id!==overlayId||workspace()?.id!==workspaceId)return;
+      streakConfigInitialized=false;selectedStreakKiller=null;
+      $('streakStatus').textContent='WIN STREAK cancelada. No se guardó en el historial.';
+    }catch(err){if(key===streakContextKey())$('streakStatus').textContent=err.message||'No se pudo cancelar WIN STREAK.'}finally{streakBusy=false;refreshStreak()}
   }
 
   async function changeStreak(delta){
@@ -394,7 +417,7 @@
     }else{
       const current=$('streakCurrent');if(current&&document.activeElement!==current&&!streakBusy)current.value=String(Math.max(0,Number(state.current)||0));
       $('streakLiveName').textContent=state.role==='killer'?(state.killer?.name||'KILLER'):'SUPERVIVIENTE';
-      ['streakCurrent','streakMinus','streakPlus','streakReset','streakPause','streakObsToggle','streakFinish','streakLayoutLeft','streakLayoutRight'].forEach(id=>{if($(id))$(id).disabled=streakBusy});
+      ['streakCurrent','streakMinus','streakPlus','streakReset','streakPause','streakObsToggle','streakFinish','streakCancel','streakLayoutLeft','streakLayoutRight'].forEach(id=>{if($(id))$(id).disabled=streakBusy});
       if($('streakMinus'))$('streakMinus').disabled=streakBusy||paused||(Number(state.current)||0)<=0;
       if($('streakPlus'))$('streakPlus').disabled=streakBusy||paused;
       if($('streakReset'))$('streakReset').disabled=streakBusy||paused;
@@ -452,6 +475,7 @@
   }
 
   function bind(){
+    $('streakCancel')?.addEventListener('click',cancelStreak);
     $('goalConfigureOpen')?.addEventListener('click',()=>setChallengeOpen('goal'));
     $('streakConfigureOpen')?.addEventListener('click',()=>setChallengeOpen('streak'));
     $('challengeHistoryToggle')?.addEventListener('click',()=>{historyOpen=!historyOpen;syncChallengeButtons()});$('goalHistoryToggle')?.addEventListener('click',()=>{goalHistoryOpen=!goalHistoryOpen;syncChallengeButtons()});$('streakHistoryToggle')?.addEventListener('click',()=>{streakHistoryOpen=!streakHistoryOpen;syncChallengeButtons()});
