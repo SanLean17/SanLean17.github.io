@@ -37,10 +37,7 @@ const root=path.resolve(__dirname,'..');
    assert.equal(await card.locator('input').first().inputValue(),'https://fixture.test/Usuario/overlay.html?token=public-'+kind);
    if(kind.startsWith('challenge_all_'))assert.match(await card.locator('.roster-obs-recommendation').innerText(),/1920 × 300 px/);
   }
-  assert.equal(await panel.locator('.simulate-roster').count(),1);
-  await panel.evaluate(()=>{window.open=(...args)=>{window.simulationOpen=args}});
-  await panel.locator('.simulate-roster').click();
-  assert.deepEqual(await panel.evaluate(()=>window.simulationOpen),['https://fixture.test/Usuario/challenge-simulation.html','_blank','noopener']);
+  assert.equal(await panel.locator('.simulate-roster').count(),0);
   assert.deepEqual(errors,[]);console.log('PASS: compact survivor, unchanged killer, both orientations at 720/520/320, transparency, META and WIN STREAK URLs in OVERLAYS OBS.');
  }finally{await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});
