@@ -115,7 +115,7 @@ assert.equal(view.detectSpecial('subproceso'),'');
    assert(await panel.locator('#goalPreview').evaluate(e=>e.getBoundingClientRect().height<=110));
    if(process.env.QA_OUTPUT)await panel.screenshot({path:path.join(process.env.QA_OUTPUT,`panel-${width}.png`),fullPage:true});
   }
-  assert(await panel.evaluate(()=>[...document.scripts].some(s=>s.src.includes('usuario-desafios.js?v=20261002-12'))));
+  assert(await panel.evaluate(()=>[...document.scripts].some(s=>s.src.includes('usuario-desafios.js?v=20261002-13'))));
 
   // Load the actual OBS document and exercise its polling/rendering with isolated RPC data.
   const obs=await browser.newPage({viewport:{width:720,height:180}});obs.on('pageerror',e=>errors.push(e.message));
@@ -142,7 +142,8 @@ assert.equal(view.detectSpecial('subproceso'),'');
   const peak=await obs.locator('.sl-goal-view').evaluate(e=>{const a=e.getAnimations()[0];a.pause();a.currentTime=1000;const m=new DOMMatrix(getComputedStyle(e).transform);return {scale:m.a,y:m.f}});
   assert(Math.abs(peak.scale-1.018)<.001&&peak.y===0,'Achievement pulses only 1.8%, without floating');
   await obs.locator('.sl-goal-view').evaluate(e=>e.getAnimations()[0].play());
-  assert.equal(await obs.locator('.sl-goal-main').evaluate(e=>getComputedStyle(e,'::before').animationName),'none');
+  assert.equal(await obs.locator('.sl-goal-view').evaluate(e=>getComputedStyle(e,'::before').animationName),'none');
+  assert(await obs.locator('.sl-goal-view').evaluate(e=>{const glow=getComputedStyle(e,'::before'),title=e.querySelector('.sl-goal-title'),range=document.createRange();range.selectNodeContents(title);const scale=e.getBoundingClientRect().width/e.offsetWidth;return glow.backgroundImage.includes('radial-gradient')&&glow.boxShadow==='none'&&glow.borderWidth==='0px'&&parseFloat(glow.width)>=range.getBoundingClientRect().width/scale&&parseFloat(glow.height)>title.offsetHeight+e.querySelector('.sl-goal-main').offsetHeight}),'Diffuse background covers title, icons and counter without a border');
   assert.equal(await obs.locator('.sl-goal-main').evaluate(e=>getComputedStyle(e).filter),'none','Glow does not filter the foreground');
   assert.equal(await obs.locator('.sl-goal-icon img').first().evaluate(e=>getComputedStyle(e).transform),'none','No fractional image scaling during achievement');
   if(process.env.QA_OUTPUT){
@@ -155,11 +156,11 @@ assert.equal(view.detectSpecial('subproceso'),'');
   assert.equal(await obs.locator('.sl-goal-view.is-reached').count(),1,'Above target continues animation');
   await obs.emulateMedia({reducedMotion:'reduce'});
   assert.equal(await obs.locator('.sl-goal-view').evaluate(e=>getComputedStyle(e).animationName),'none');
-  assert.equal(await obs.locator('.sl-goal-main').evaluate(e=>getComputedStyle(e,'::before').animationName),'none','Aura respects reduced motion');
+  assert.equal(await obs.locator('.sl-goal-view').evaluate(e=>getComputedStyle(e,'::before').animationName),'none','Aura respects reduced motion');
   await obs.emulateMedia({reducedMotion:'no-preference'});
   snapshot.state={...snapshot.state,target:20};await obs.waitForFunction(()=>!document.querySelector('.sl-goal-view.is-reached'));
   assert.equal(await obs.locator('.sl-goal-view').evaluate(e=>getComputedStyle(e).animationName),'none','Raising target stops animation');
-  assert.equal(await obs.locator('.sl-goal-main').evaluate(e=>getComputedStyle(e,'::before').content),'none','Aura disappears below target');
+  assert.equal(await obs.locator('.sl-goal-view').evaluate(e=>getComputedStyle(e,'::before').content),'none','Aura disappears below target');
   await page.evaluate(()=>{fixture.overlay.state.current=30;fixture.overlay.state.target=20;window.dispatchEvent(new Event('sanlean:overlays-updated'));window.qaGoalNode=document.querySelector('#goalPreview .sl-goal-view');window.dispatchEvent(new Event('sanlean:overlays-updated'))});
   assert(await page.evaluate(()=>qaGoalNode===document.querySelector('#goalPreview .sl-goal-view')),'Identical refresh preserves animation node');
   snapshot.state={...snapshot.state,current:999999999,target:999999999};await obs.waitForFunction(()=>document.querySelector('.sl-goal-counter span').textContent==='999999999');

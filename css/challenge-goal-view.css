@@ -18,7 +18,7 @@
 .obs-stage:has(.sl-goal-view) .sl-goal-view{width:min(720px,100vw);height:min(180px,100vh)}
 
 /* A subtle size pulse and a stronger, soft red/black halo only on achieved goals. */
-.sl-goal-view.is-reached{transform-origin:center 52px;animation:sl-goal-pulse 2s ease-in-out infinite}
+.sl-goal-view.is-reached{position:relative;isolation:isolate;transform-origin:center 52px;animation:sl-goal-pulse 2s ease-in-out infinite}
 @keyframes sl-goal-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.018)}}
-.sl-goal-view.is-reached .sl-goal-main::before{content:"";position:absolute;z-index:-1;inset:22% 9%;border-radius:50%;pointer-events:none;background:rgba(255,0,60,.5);filter:blur(4px);box-shadow:0 0 10px 5px #ff003c,0 0 20px 8px rgba(255,0,60,.9),0 3px 16px 4px rgba(0,0,0,.55)}
+.sl-goal-view.is-reached::before{content:"";position:absolute;z-index:-1;left:50%;top:-6px;transform:translateX(-50%);width:min(calc(100% - 12px),calc(var(--goal-aura-width,300px) + 36px));height:calc(var(--goal-aura-height,96px) + 12px);pointer-events:none;background:radial-gradient(ellipse at center,rgba(255,0,60,.88) 0%,rgba(255,0,60,.65) 38%,rgba(255,0,60,.28) 62%,rgba(255,0,60,0) 78%);filter:blur(7px)}
 @media(prefers-reduced-motion:reduce){.sl-goal-view.is-reached{animation:none}}

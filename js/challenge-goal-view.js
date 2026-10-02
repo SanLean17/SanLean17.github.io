@@ -60,8 +60,14 @@
     target.querySelectorAll('.sl-goal-icon img').forEach(img=>img.addEventListener('error',()=>{img.hidden=true;img.parentElement.classList.add('is-missing')},{once:true}));
     // Scale the whole row only when needed; both numbers keep identical typography.
     const view=target.querySelector('.sl-goal-view'),main=target.querySelector('.sl-goal-main');
-    const fit=()=>{if(!view.isConnected||!view.clientWidth)return;main.style.zoom='';const css=getComputedStyle(view),available=view.clientWidth-parseFloat(css.paddingLeft)-parseFloat(css.paddingRight);if(main.offsetWidth>available)main.style.zoom=String(available/main.offsetWidth)};
-    fit();target._goalResizeObserver=new ResizeObserver(fit);target._goalResizeObserver.observe(view);
+    const fit=()=>{if(!view.isConnected||!view.clientWidth)return;main.style.zoom='';const css=getComputedStyle(view),available=view.clientWidth-parseFloat(css.paddingLeft)-parseFloat(css.paddingRight);if(main.offsetWidth>available)main.style.zoom=String(available/main.offsetWidth);
+      // Size the background to all visible content, including the title, not just the counter.
+      const title=view.querySelector('.sl-goal-title'),range=document.createRange();range.selectNodeContents(title);
+      const scale=view.getBoundingClientRect().width/view.offsetWidth||1,zoom=Number(main.style.zoom)||1;
+      view.style.setProperty('--goal-aura-width',Math.min(available,Math.max(range.getBoundingClientRect().width/scale,main.offsetWidth*zoom))+'px');
+      view.style.setProperty('--goal-aura-height',title.offsetHeight+main.offsetHeight*zoom+parseFloat(css.paddingTop)*2+'px');
+    };
+    fit();document.fonts?.ready.then(fit);target._goalResizeObserver=new ResizeObserver(fit);target._goalResizeObserver.observe(view);
   }
 
   window.SanLeanChallengeGoalView={render,normalized,iconKeys,detectSpecial};
