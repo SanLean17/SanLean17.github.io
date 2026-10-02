@@ -305,6 +305,10 @@ La implementación final del router de MI PANEL vive en `js/usuario-stream-tabs.
 - Alcanzar el objetivo no finaliza automáticamente; el streamer puede editar el objetivo o finalizar la meta.
 - La salida OBS usa el componente compartido de METAS con fondo transparente. Los assets visuales futuros no duplican la lógica.
 - La configuración pertenece al propietario del workspace; el control operativo respeta los permisos existentes del overlay.
+- Las herramientas de DESAFÍOS se abren/cierra una por vez mediante el chevron canónico reutilizado de KILLERS/PERKS; volver a pulsar el mismo control la pliega.
+- El historial de METAS es un bloque compacto y plegable; cada fila muestra también la fecha de finalización.
+- WIN STREAK usa un overlay independiente por workspace. Superviviente registra escapes; Killer requiere seleccionar un Killer del catálogo real y muestra su retrato en OBS.
+- WIN STREAK no tiene objetivo máximo: sólo racha actual, edición manual, +1 / -1, reinicio y finalización.
 
 ## 10. CARTAS / Votaciones
 
