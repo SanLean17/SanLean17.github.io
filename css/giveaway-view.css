@@ -409,3 +409,9 @@
   .obs-giveaway-participant-track.is-looping,
   .obs-giveaway-live.participation-open .obs-giveaway-participant-track>div:first-child{animation:none!important}
 }
+
+.obs-giveaway-participant-list>.obs-giveaway-participant-track{
+  display:block!important;
+  min-height:0!important;
+  border:0!important;
+}
