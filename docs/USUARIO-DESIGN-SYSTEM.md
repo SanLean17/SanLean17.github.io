@@ -409,6 +409,9 @@ Una solicitud referida únicamente a USUARIO no debe modificar la WEB pública s
 - Fuente navegador recomendada para SORTEOS en OBS: **1920 × 1080 px**. El overlay está compuesto para esa referencia y debe escalarse desde OBS como una sola fuente, evitando redimensionados intermedios innecesarios.
 - La composición de SORTEOS queda **centrada dentro del lienzo 1920 × 1080**. El streamer puede reposicionar la fuente completa en OBS; el componente no se ancla al borde inferior del lienzo.
 - En estado normal se usan tres superficies hermanas, sin una caja exterior adicional: PARTICIPANTES, SORTEO (palabra clave + reel) y GANADOR. Las tres comparten la misma línea de base inferior.
+- La superficie central de OBS es continua: palabra clave y reel comparten un solo fondo, sin separador ni máscaras oscuras superpuestas. La palabra clave conserva su desplazamiento de 3 px hacia abajo.
+- Las tres cajas de SORTEOS usan borde neutro canónico; el rojo se conserva en acentos y en el visor del reel. El texto del reel se dibuja por encima del visor para mantener el blanco nítido durante giro, celebración y resultado.
+- El reel muestra tres nombres completos. Durante giro y celebración la caja central se ajusta al reel, sin espacio vacío inferior.
 - En la configuración previa, PALABRA CLAVE / PLATAFORMA / ANTIGÜEDAD forman una columna y FILTROS / CHANCES EXTRA una segunda columna equilibrada. FILTROS y CHANCES EXTRA comparten exactamente el mismo fondo y geometría.
 - Los mensajes del ganador pueden ocultarse de la salida OBS desde USUARIO sin borrar el mensaje real de Twitch/Kick.
 - `OCULTAR EN OBS / MOSTRAR EN OBS` cambia sólo la visibilidad. `FINALIZAR SORTEO` termina la sesión.
