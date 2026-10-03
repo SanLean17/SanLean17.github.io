@@ -10,11 +10,11 @@ document.write('<script src="../js/usuario-votacion-nav.js?v=20260928-2"><\/scri
 document.write('<link rel="stylesheet" href="../css/usuario-confirmations.css?v=20261003-1">');
 document.write('<script src="../js/usuario-confirmations.js?v=20261003-1"><\/script>');
 document.write('<link rel="stylesheet" href="../css/desafios.css?v=20261002-19">');
-document.write('<script src="../js/usuario-desafios.js?v=20261002-19"><\/script>');
+document.write('<script src="../js/usuario-desafios.js?v=20261003-1"><\/script>');
 document.write('<link rel="stylesheet" href="../css/usuario-kickers.css?v=20260928-1">');
 document.write('<link rel="stylesheet" href="../css/usuario-roulette-tools.css?v=20260928-3">');
 document.write('<script src="../js/usuario-roulette-tools.js?v=20260928-3"><\/script>');
 document.write('<link rel="stylesheet" href="../css/usuario-all-challenge.css?v=20261002-2">');
-document.write('<script src="../js/usuario-all-killer-challenge.js?v=20261002-3"><\/script>');
-document.write('<link rel="stylesheet" href="../css/usuario-sorteos.css?v=20261003-5">');
-document.write('<script src="../js/usuario-sorteos.js?v=20261003-5"><\/script>');
+document.write('<script src="../js/usuario-all-killer-challenge.js?v=20261003-1"><\/script>');
+document.write('<link rel="stylesheet" href="../css/usuario-sorteos.css?v=20261003-6">');
+document.write('<script src="../js/usuario-sorteos.js?v=20261003-6"><\/script>');
