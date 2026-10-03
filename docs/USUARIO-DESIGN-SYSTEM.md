@@ -393,3 +393,31 @@ Una solicitud referida únicamente a USUARIO no debe modificar la WEB pública s
 
 ### Control segmentado con tres opciones
 - Reutilizar `.cards-segmented` con `data-segments="3"` para tres opciones mutuamente excluyentes (por ejemplo alineación izquierda/centro/derecha). Mantiene la geometría y estados canónicos. A 480 px o menos se apila en una columna para conservar las etiquetas completas. Dos opciones conservan su distribución existente.
+
+## 13. SORTEOS — sesión, chances y salida OBS
+
+- Cada participante válido tiene **una sola participación base por sesión**, aunque escriba la palabra clave varias veces.
+- `CERRAR PARTICIPACIÓN` y `REABRIR PARTICIPACIÓN` son dos estados del **mismo botón**. Cerrada la participación, los mensajes nuevos con la palabra clave no agregan participantes. Al reabrir, pueden volver a sumarse nuevos usuarios conservando los anteriores.
+- El ganador de una sesión queda fuera del pool de los sorteos siguientes de esa misma sesión.
+- Pueden habilitarse bonificaciones independientes `SUSCRIPTORES ×2` y `VIPS ×2`. Si un usuario cumple una o ambas bonificaciones activas, su chance total es x2; las bonificaciones no se acumulan a x4.
+- La doble chance aumenta el peso real del usuario en el sorteo, pero el reel evita repetir el mismo nombre en posiciones consecutivas. El ganador nunca puede repetirse inmediatamente arriba o abajo del visor final.
+- Durante el giro en OBS desaparecen los paneles laterales y el reel ocupa el protagonismo.
+- Al detenerse, el ganador permanece aproximadamente 5 segundos en estado de celebración con el tratamiento rojo/negro del sistema. Después vuelve la composición completa.
+- En la composición normal posterior, el ganador central mantiene una animación suave hasta iniciar el siguiente sorteo.
+- En sorteos de una sola plataforma no se repite TWITCH/KICK junto a cada participante. Esa identificación sólo se muestra cuando participan ambas plataformas.
+- Los acentos rojos del overlay deben conservar `#FF003C`, pero usar contraste/sombra oscura suficiente para mantenerse nítidos en una fuente OBS reducida dentro de un stream.
+- Los mensajes del ganador pueden ocultarse de la salida OBS desde USUARIO sin borrar el mensaje real de Twitch/Kick.
+- `OCULTAR EN OBS / MOSTRAR EN OBS` cambia sólo la visibilidad. `FINALIZAR SORTEO` termina la sesión.
+- La configuración inicial se oculta mientras existe una sesión activa y vuelve a mostrarse cuando el sorteo finaliza.
+
+### Confirmación obligatoria al finalizar
+
+Toda acción `FINALIZAR` que cierre una sesión persistente o la envíe al historial debe abrir antes el modal canónico específico de la acción.
+
+Ejemplos: `FINALIZAR SORTEO`, `FINALIZAR META`, `FINALIZAR WIN STREAK`, `FINALIZAR CHALLENGE` y `FINALIZAR TORNEO`.
+
+- El título del modal debe nombrar la acción concreta.
+- El texto debe explicar que la sesión se guardará/cerrará y que no podrá volver a editarse cuando corresponda.
+- `CANCELAR` queda a la izquierda y recibe el foco inicial.
+- La confirmación queda a la derecha.
+- `Esc` y backdrop cancelan de forma segura.
