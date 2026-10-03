@@ -1,0 +1,34 @@
+/* SANLEAN — SORTEOS / overlay OBS */
+.obs-stage:has(.obs-giveaway-live){width:min(1540px,96vw);min-height:0;display:block}
+.obs-giveaway-live{width:100%;font-family:Montserrat,Arial,sans-serif;color:#fff}
+.obs-giveaway-keyword{display:flex;justify-content:center;align-items:baseline;gap:12px;margin-bottom:18px;text-shadow:0 3px 14px #000}
+.obs-giveaway-keyword span{font:800 16px/1.2 Montserrat,Arial,sans-serif;letter-spacing:.08em;color:#fff}
+.obs-giveaway-keyword strong{font:900 24px/1 Montserrat,Arial,sans-serif;color:#ff003c}
+.obs-giveaway-layout{display:grid;grid-template-columns:minmax(250px,.78fr) minmax(420px,1.35fr) minmax(300px,.95fr);gap:22px;align-items:stretch}
+.obs-giveaway-participants,.obs-giveaway-winner{box-sizing:border-box;min-height:390px;padding:20px;border:1px solid rgba(255,255,255,.12);border-radius:16px;background:rgba(8,8,10,.76);backdrop-filter:blur(8px);box-shadow:0 18px 48px rgba(0,0,0,.28)}
+.obs-giveaway-side-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding-bottom:13px;border-bottom:1px solid rgba(255,255,255,.10)}
+.obs-giveaway-side-head span,.obs-giveaway-kicker{color:#ff003c;font:800 12px/1.2 Montserrat,Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase}
+.obs-giveaway-side-head strong{font:900 28px/1 Montserrat,Arial,sans-serif;color:#fff}
+.obs-giveaway-participant-list{margin-top:10px;max-height:310px;overflow:hidden}
+.obs-giveaway-participant-list>div{display:flex;justify-content:space-between;gap:10px;align-items:center;min-height:27px;border-bottom:1px solid rgba(255,255,255,.05)}
+.obs-giveaway-participant-list span{max-width:80%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 12px/1.2 Montserrat,Arial,sans-serif}
+.obs-giveaway-participant-list small{color:rgba(255,255,255,.42);font:800 8px/1 Montserrat,Arial,sans-serif}
+.obs-giveaway-participant-list p{margin:18px 0 0;color:rgba(255,255,255,.45);font:600 11px/1.5 Montserrat,Arial,sans-serif;text-align:center}
+.obs-giveaway-reel{position:relative;align-self:center;height:228px;overflow:hidden;border:1px solid rgba(255,255,255,.12);border-radius:16px;background:rgba(8,8,10,.78);box-shadow:0 18px 48px rgba(0,0,0,.25)}
+.obs-giveaway-track{position:absolute;left:0;right:0;top:0;will-change:transform}
+.obs-giveaway-row{box-sizing:border-box;height:76px;display:flex;align-items:center;justify-content:center;padding:0 24px;color:rgba(255,255,255,.48);font:800 24px/1 Montserrat,Arial,sans-serif;text-shadow:0 2px 10px rgba(0,0,0,.75)}
+.obs-giveaway-row.is-winner{color:#fff;font-size:38px;text-shadow:0 0 18px rgba(255,0,60,.35),0 3px 14px #000}
+.obs-giveaway-band{position:absolute;z-index:3;left:12px;right:12px;top:76px;height:74px;border:1px solid rgba(255,0,60,.75);border-radius:12px;background:rgba(255,0,60,.055);pointer-events:none;box-shadow:0 0 30px rgba(255,0,60,.15)}
+.obs-giveaway-mask{position:absolute;z-index:2;left:0;right:0;height:58px;pointer-events:none}
+.obs-giveaway-mask.top{top:0;background:linear-gradient(to bottom,rgba(8,8,10,.98),rgba(8,8,10,0))}
+.obs-giveaway-mask.bottom{bottom:0;background:linear-gradient(to top,rgba(8,8,10,.98),rgba(8,8,10,0))}
+.obs-giveaway-winner{display:flex;flex-direction:column}
+.obs-giveaway-winner h2{margin:18px 0 0;color:#fff;font:900 clamp(30px,3vw,52px)/.94 Montserrat,Arial,sans-serif;overflow-wrap:anywhere;text-shadow:0 3px 16px #000}
+.obs-giveaway-winner>small{min-height:16px;margin-top:8px;color:#ff003c;font:800 10px/1 Montserrat,Arial,sans-serif;letter-spacing:.12em}
+.obs-giveaway-winner-chat{margin-top:24px;padding-top:17px;border-top:1px solid rgba(255,255,255,.10);max-height:205px;overflow:hidden}
+.obs-giveaway-winner-chat p{margin:0 0 10px;color:rgba(255,255,255,.82);font:600 13px/1.4 Montserrat,Arial,sans-serif}
+.obs-giveaway-winner-chat p strong{color:#ff003c}
+.obs-giveaway-winner-chat p.muted{color:rgba(255,255,255,.42);font-size:10px;letter-spacing:.04em}
+@media(max-width:1100px){.obs-giveaway-layout{grid-template-columns:1fr 1.35fr}.obs-giveaway-winner{grid-column:1/-1;min-height:180px}.obs-giveaway-participants{min-height:340px}}
+@media(max-width:760px){.obs-giveaway-layout{grid-template-columns:1fr}.obs-giveaway-participants,.obs-giveaway-winner{min-height:0}.obs-giveaway-reel{height:210px}.obs-giveaway-row{height:70px;font-size:18px}.obs-giveaway-band{top:70px;height:68px}.obs-giveaway-row.is-winner{font-size:28px}}
+@media(prefers-reduced-motion:reduce){.obs-giveaway-track{animation:none!important}}
