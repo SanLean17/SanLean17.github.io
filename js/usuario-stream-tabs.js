@@ -17,4 +17,4 @@ document.write('<script src="../js/usuario-roulette-tools.js?v=20260928-3"><\/sc
 document.write('<link rel="stylesheet" href="../css/usuario-all-challenge.css?v=20261002-2">');
 document.write('<script src="../js/usuario-all-killer-challenge.js?v=20261003-1"><\/script>');
 document.write('<link rel="stylesheet" href="../css/usuario-sorteos.css?v=20261003-9">');
-document.write('<script src="../js/usuario-sorteos.js?v=20261003-9"><\/script>');
+document.write('<script src="../js/usuario-sorteos.js?v=20261003-10"><\/script>');
