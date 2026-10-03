@@ -162,7 +162,7 @@
     $('slSimulateGiveaway')?.addEventListener('click',simulateParticipants);
     $('slToggleGiveawayObs')?.addEventListener('click',toggleObs);
     $('slFinalizeGiveaway')?.addEventListener('click',finalizeGiveaway);
-    $('startGiveaway')?.addEventListener('click',()=>setTimeout(()=>{sessionStarted=true;participationOpen=true;overlayVisible=true;syncVisibilityButton();syncPanelState();syncOverlay({visible:true,statusLabel:'ABIERTO'})},300));
+    $('startGiveaway')?.addEventListener('click',()=>setTimeout(()=>{if(!$('startGiveaway')?.disabled)return;sessionStarted=true;participationOpen=true;overlayVisible=true;syncVisibilityButton();syncPanelState();syncOverlay({visible:true,statusLabel:'ABIERTO'})},450));
   }
 
   function restoreOverlayState(){
