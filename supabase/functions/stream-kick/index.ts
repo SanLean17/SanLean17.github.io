@@ -1,4 +1,5 @@
 import {createClient} from 'npm:@supabase/supabase-js@2.57.4';
+import {chatMetadata} from '../_shared/chat-metadata.mjs';
 import {verifyKick} from './verify.mjs';
 import {SCOPES,pkce,validState,scopesOf} from './oauth.mjs';
 const url=Deno.env.get('SUPABASE_URL')||'',db=createClient(url,Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')||'',{auth:{persistSession:false,autoRefreshToken:false}});
@@ -26,7 +27,7 @@ Deno.serve(async(req:Request)=>{if(req.method==='OPTIONS')return new Response('o
   if(req.headers.get('Kick-Event-Type')!=='chat.message.sent'||req.headers.get('Kick-Event-Version')!=='1')return json({error:'unsupported_event'},400);
   const e=JSON.parse(raw);if(!e.message_id||!e.sender?.user_id||!e.broadcaster?.user_id||typeof e.content!=='string'||!Number.isFinite(Date.parse(e.created_at)))return json({error:'invalid_chat'},400);
   const channel=await checked(db.from('stream_chat_subscriptions').select('workspace_id').eq('platform','kick').eq('broadcaster_id',String(e.broadcaster.user_id)).eq('subscription_id',req.headers.get('Kick-Event-Subscription-Id')).eq('connected',true).maybeSingle());if(!channel)return json({error:'unknown_subscription'},403);
-  await checked(db.rpc('stream_chat_ingest',{p_workspace:channel.workspace_id,p_platform:'kick',p_message_id:e.message_id,p_user_id:String(e.sender.user_id),p_username:String(e.sender.username||e.sender.user_id).slice(0,100),p_message:e.content.slice(0,4000),p_sent_at:e.created_at}));return new Response(null,{status:204});
+  await checked(db.rpc('stream_chat_ingest',{p_workspace:channel.workspace_id,p_platform:'kick',p_message_id:e.message_id,p_user_id:String(e.sender.user_id),p_username:String(e.sender.username||e.sender.user_id).slice(0,100),p_message:e.content.slice(0,4000),p_sent_at:e.created_at,p_metadata:chatMetadata('kick',e)}));return new Response(null,{status:204});
  }
  if(route==='callback'&&req.method==='GET'){
   const state=u.searchParams.get('state')||'';if(!validState(state))return json({error:'invalid_state'},400);

@@ -3,11 +3,12 @@
   const $=id=>document.getElementById(id);
   const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
   let participants=[],simulatedParticipants=[],winner=null,winners=[],winnerMessages=[],spinning=false,lastSequence=[],spinId='',sessionStarted=false,participationOpen=false,overlayVisible=true,testMode=false;
+  let currentWorkspaceId='',currentSessionId='',overlayWrite=Promise.resolve();
   const rowHeight=56;
   const demoNames=['Pedro_33','Agusneta','MikaDBD','FengMain','NeaRunner','TotemHunter','MaxiGG','SableWard','YuiPower','DwightPro','ClaudetteX','JakeParkARG','LaurieStrode','BillMain','AdaWong','LeonRPD','MikaelaMoon','Vittorio77','NicolasCageFan','RipleyMain','LaraCroft','TrevorB','TaurieCain','RickGrimes','Michonne','Eleven011','DustinH','AuroraLive','PyramidFan','FreddyARG','UnknownMain','GhostFaceTV','OniRush','HuntressAxe','TrapperKing','NurseBlink','PlagueMain','KnightGuard','ChuckyGG','VecnaLich','Wesker7','ArtistCrow','DredgeNight','SadakoTV','NemesisRPD'];
 
   function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-  const winnerKey=w=>w?norm(w.name)+'|'+norm(w.platform):'';
+  const winnerKey=w=>w?String(w.userId||norm(w.name))+'|'+norm(w.platform):'';
   const wonKeys=()=>new Set(winners.map(winnerKey));
   const platformMode=()=>String($('giveawayPlatform')?.value||'both').toLowerCase();
   const subscriberBoost=()=>!!$('subscriberDoubleChance')?.checked;
@@ -18,6 +19,7 @@
     return [...source.querySelectorAll('.participant-row')].map(row=>{
       const spans=row.querySelectorAll('span');
       return {
+        userId:row.dataset.userId||'',
         name:(spans[0]?.textContent||'').trim(),
         platform:(spans[1]?.textContent||'').trim().toLowerCase(),
         isSubscriber:row.dataset.subscriber==='true',
@@ -26,7 +28,7 @@
     }).filter(x=>x.name);
   }
   function mergedParticipants(){
-    const map=new Map();[...dbParticipantRows(),...simulatedParticipants].forEach(p=>map.set(winnerKey(p),p));return [...map.values()]
+    const map=new Map();(testMode?simulatedParticipants:dbParticipantRows()).forEach(p=>map.set(winnerKey(p),p));return [...map.values()]
   }
   function remainingParticipants(){const won=wonKeys();return participants.filter(x=>!won.has(winnerKey(x)))}
   function chanceMultiplier(p){return ((subscriberBoost()&&p.isSubscriber)||(vipBoost()&&p.isVip))?2:1}
@@ -55,14 +57,18 @@
       toggle.textContent=participationOpen?'CERRAR PARTICIPACIÓN':'REABRIR PARTICIPACIÓN';
     }
     const state=$('slGiveawaySessionState');
-    if(state)state.textContent=!sessionStarted?'SIN INICIAR':participationOpen?'PARTICIPACIÓN ABIERTA':'PARTICIPACIÓN CERRADA';
+    if($('slSimulateGiveaway'))$('slSimulateGiveaway').disabled=!testMode;
+    if($('slStartGiveawaySimulation'))$('slStartGiveawaySimulation').disabled=sessionStarted&&!testMode;
+    if(state)state.textContent=testMode?'SIMULACIÓN · SIN GUARDADO':!sessionStarted?'SIN INICIAR':participationOpen?'PARTICIPACIÓN ABIERTA':'PARTICIPACIÓN CERRADA';
   }
 
   async function syncOverlay(extra={}){
+    if(testMode)return true;
     const db=window.sanleanSupabase,overlay=window.SanLeanStreamTools?.getOverlays?.().find(o=>o.kind==='giveaway');
     if(!db||!overlay||!sessionStarted)return false;
     const keyword=$('giveawayKeyword')?.value.trim().toUpperCase()||'PEDRO',remaining=remainingParticipants();
     const state={
+      sessionId:currentSessionId,
       visible:overlayVisible,
       phase:spinning?'spinning':winner?'winner':'open',
       statusLabel:participationOpen?'ABIERTO':'CERRADO',
@@ -72,7 +78,8 @@
       subscriberDoubleChance:subscriberBoost(),vipDoubleChance:vipBoost(),
       ...extra
     };
-    try{const {error}=await db.from('stream_overlays').update({state,updated_at:new Date().toISOString()}).eq('id',overlay.id);return !error}catch{return false}
+    const write=async()=>{try{const {data,error}=await db.from('stream_overlays').update({state,updated_at:new Date().toISOString()}).eq('id',overlay.id).select('id').single();if(error||!data)return false;overlay.state=state;return true}catch{return false}};
+    overlayWrite=overlayWrite.then(write,write);return overlayWrite;
   }
 
   function syncParticipants({push=true}={}){
@@ -81,7 +88,7 @@
     const list=$('slGiveawayLiveParticipants');
     if(list)list.innerHTML=remaining.length?remaining.slice(-120).reverse().map(p=>'<div class="sl-giveaway-person"><span>'+escapeHtml(p.name)+'</span><small>'+escapeHtml((p.platform||'chat').toUpperCase())+'</small></div>').join(''):'<p class="sl-giveaway-empty">No quedan participantes disponibles.</p>';
     if($('slDrawWinner'))$('slDrawWinner').disabled=spinning||participationOpen||remaining.length<2;
-    syncPanelState(); if(push&&sessionStarted)syncOverlay();
+    syncPanelState(); if(push&&sessionStarted&&!spinning)syncOverlay();
   }
 
   function buildSequence(pool,selected){
@@ -94,18 +101,20 @@
     const before=pickDifferent(pool,selectedKey)||selected;
     const afterCandidates=pool.filter(x=>winnerKey(x)!==selectedKey&&winnerKey(x)!==winnerKey(before));
     const after=pick(afterCandidates)||pickDifferent(pool,selectedKey)||before;
+    if(winnerKey(seq.at(-1))===winnerKey(before))seq.pop();
     seq.push(before,selected,after);
     return seq;
   }
 
   async function drawWinner(){
     if(spinning||participationOpen)return;const weighted=chancePool();if(remainingParticipants().length<2||!weighted.length)return;
+    const drawWorkspace=currentWorkspaceId,drawSession=currentSessionId;
     sessionStarted=true;overlayVisible=true;spinning=true;winner=null;winnerMessages=[];syncVisibilityButton();syncPanelState();
     const selected=pick(weighted),track=$('slGiveawayReelTrack'),shell=$('slGiveawayReel');
     if($('slDrawWinner'))$('slDrawWinner').disabled=true;
     shell?.classList.add('is-spinning');$('slGiveawayWinnerName').textContent='BUSCANDO...';$('slGiveawayWinnerPlatform').textContent='';renderWinnerMessages();
     lastSequence=buildSequence(weighted,selected);spinId=crypto.randomUUID();
-    await syncOverlay({visible:true,phase:'spinning',winner:null,winnerMessages:[],sequence:lastSequence,spinId});
+    if(!await syncOverlay({visible:true,phase:'spinning',winner:null,winnerMessages:[],sequence:lastSequence,spinId})){spinning=false;shell?.classList.remove('is-spinning');syncParticipants({push:false});showSessionError('No se pudo sincronizar OBS. Reintentá el sorteo.');return;}
 
     if(track){
       track.innerHTML=lastSequence.map((p,i)=>'<div class="sl-giveaway-reel-row'+(i===lastSequence.length-2?' is-target':'')+'">'+escapeHtml(p.name)+'</div>').join('');
@@ -115,11 +124,13 @@
       try{await anim.finished}catch{} track.style.transform='translate3d(0,'+end+'px,0)';anim.cancel();
     }
 
-    winner=selected;winners.push(selected);spinning=false;shell?.classList.remove('is-spinning');shell?.classList.add('has-winner');
+    if(currentWorkspaceId!==drawWorkspace||currentSessionId!==drawSession)return;
+    winner=selected;winners.push(selected);shell?.classList.remove('is-spinning');shell?.classList.add('has-winner');
     $('slGiveawayWinnerName').textContent=selected.name;$('slGiveawayWinnerPlatform').textContent=(selected.platform||'CHAT').toUpperCase();
     renderWinnerHistory();syncParticipants({push:false});
     await syncOverlay({visible:overlayVisible,phase:'celebrating',winner,sequence:lastSequence,spinId});
     await new Promise(r=>setTimeout(r,5000));
+    if(currentWorkspaceId!==drawWorkspace||currentSessionId!==drawSession)return;
     if(sessionStarted&&winnerKey(winner)===winnerKey(selected)){
       if(simulatedParticipants.length){
         const demoBadges=[...(selected.isVip?['VIP']:[]),...(selected.isSubscriber?['SUB']:[])];
@@ -133,6 +144,7 @@
       }
       await syncOverlay({visible:overlayVisible,phase:'winner',winner,sequence:lastSequence,spinId,winnerMessages:[...winnerMessages]});
     }
+    spinning=false;
     if($('slDrawWinner')){$('slDrawWinner').disabled=participationOpen||remainingParticipants().length<2;$('slDrawWinner').textContent='SORTEAR OTRO GANADOR'}
     syncPanelState();
   }
@@ -156,9 +168,9 @@
     });host.scrollTop=host.scrollHeight;
   }
   function receiveWinnerMessage(detail){
-    if(!winner||!detail||norm(detail.username)!==norm(winner.name)||(winner.platform&&norm(detail.platform)!==norm(winner.platform)))return;
+    if(!winner||!detail||(winner.userId?String(detail.userId)!==String(winner.userId):norm(detail.username)!==norm(winner.name))||(winner.platform&&norm(detail.platform)!==norm(winner.platform)))return;
     winnerMessages.push({id:crypto.randomUUID(),username:detail.username,message:detail.message||'',platform:detail.platform||'',color:detail.color||'',badges:Array.isArray(detail.badges)?detail.badges:[]});
-    if(winnerMessages.length>12)winnerMessages.shift();renderWinnerMessages();syncOverlay({winnerMessages:[...winnerMessages]});
+    if(winnerMessages.length>12)winnerMessages.shift();renderWinnerMessages();if(!spinning)syncOverlay({winnerMessages:[...winnerMessages]});
   }
 
   function enhanceFilters(){
@@ -207,24 +219,26 @@
   }
 
   async function saveGiveawayHistory(){
+    if(testMode)return true;
     const db=window.sanleanSupabase,overlay=window.SanLeanStreamTools?.getOverlays?.().find(o=>o.kind==='giveaway');
-    if(!db||!overlay)return;
+    if(!db||!overlay)return false;
     const record={
-      id:crypto.randomUUID(),
+      id:currentSessionId||crypto.randomUUID(),
       keyword:$('giveawayKeyword')?.value.trim().toUpperCase()||'SORTEO',
       platform:platformMode(),
       participantCount:participants.length,
       winners:winners.map(w=>({name:w.name,platform:w.platform||''})),
       finishedAt:new Date().toISOString()
     };
-    const history=[...(Array.isArray(overlay.settings?.history)?overlay.settings.history:[]),record].slice(-30);
+    const history=[...(Array.isArray(overlay.settings?.history)?overlay.settings.history.filter(item=>item.id!==record.id):[]),record].slice(-30);
     const settings={...(overlay.settings||{}),history};
     const {data,error}=await db.from('stream_overlays').update({settings,updated_at:new Date().toISOString()}).eq('id',overlay.id).select('settings').single();
-    if(!error){overlay.settings=data?.settings||settings;renderGiveawayHistory()}
+    if(!error){overlay.settings=data?.settings||settings;renderGiveawayHistory()}return !error;
   }
 
   function simulateParticipants(){
-    const mode=platformMode();
+    if(sessionStarted&&!testMode)return;
+    const mode=platformMode();winner=null;winners=[];winnerMessages=[];lastSequence=[];currentSessionId='';
     simulatedParticipants=demoNames.map((name,i)=>({name,platform:mode==='both'?(i%4===0?'kick':'twitch'):mode,isSubscriber:i%5===0||i%9===0,isVip:i%7===0}));
     if(!$('giveawayKeyword').value.trim())$('giveawayKeyword').value='TULIPÁN';
     testMode=true;sessionStarted=true;participationOpen=true;overlayVisible=true;
@@ -260,8 +274,8 @@
       confirmLabel:'DESCARTAR SORTEO'
     }):true;
     if(!confirm)return;
-    if(sessionStarted&&!testMode)await window.SanLeanStreamTools?.finishGiveaway?.();
-    await syncOverlay({visible:false,phase:'finished',statusLabel:'CANCELADO'});
+    if(sessionStarted&&!testMode&&!await window.SanLeanStreamTools?.finishGiveaway?.('cancelled'))return;
+    if(!await syncOverlay({visible:false,phase:'finished',statusLabel:'CANCELADO'})){showSessionError('No se pudo ocultar OBS. Reintentá DESCARTAR SORTEO.');return;}
     sessionStarted=false;participationOpen=false;overlayVisible=false;testMode=false;simulatedParticipants=[];participants=[];winner=null;winners=[];winnerMessages=[];lastSequence=[];spinId='';
     if($('giveawayState'))$('giveawayState').textContent='SIN INICIAR';
     if($('slDrawWinner')){$('slDrawWinner').disabled=true;$('slDrawWinner').textContent='SORTEAR GANADOR'}
@@ -278,9 +292,9 @@
       confirmLabel:'FINALIZAR SORTEO'
     }):true;
     if(!confirm)return;
-    await saveGiveawayHistory();
-    if(sessionStarted&&!testMode)await window.SanLeanStreamTools?.finishGiveaway?.();
-    await syncOverlay({visible:false,phase:'finished',statusLabel:'FINALIZADO'});
+    if(!await saveGiveawayHistory()){showSessionError('No se pudo guardar el historial. El sorteo sigue abierto para reintentar.');return;}
+    if(sessionStarted&&!testMode&&!await window.SanLeanStreamTools?.finishGiveaway?.('finished'))return;
+    if(!await syncOverlay({visible:false,phase:'finished',statusLabel:'FINALIZADO'})){showSessionError('No se pudo ocultar OBS. Reintentá FINALIZAR SORTEO.');return;}
     sessionStarted=false;participationOpen=false;overlayVisible=false;testMode=false;simulatedParticipants=[];participants=[];winner=null;winners=[];winnerMessages=[];lastSequence=[];spinId='';
     if($('giveawayState'))$('giveawayState').textContent='SIN INICIAR';
     if($('slDrawWinner')){$('slDrawWinner').disabled=true;$('slDrawWinner').textContent='SORTEAR GANADOR'}
@@ -294,28 +308,28 @@
     $('slToggleGiveawayObs')?.addEventListener('click',toggleObs);
     $('slCancelGiveaway')?.addEventListener('click',cancelGiveaway);
     $('slFinalizeGiveaway')?.addEventListener('click',finalizeGiveaway);
-    $('startGiveaway')?.addEventListener('click',()=>setTimeout(()=>{
-      const start=$('startGiveaway'),status=$('giveawayStatus');
-      if(start?.disabled){
-        testMode=false;sessionStarted=true;participationOpen=true;overlayVisible=true;syncVisibilityButton();syncPanelState();syncOverlay({visible:true,statusLabel:'ABIERTO'});return;
-      }
-      if(String(status?.textContent||'').includes('metadatos')){
-        testMode=true;sessionStarted=true;participationOpen=true;overlayVisible=true;
-        if($('giveawayState'))$('giveawayState').textContent='ABIERTO · MODO PRUEBA';
-        status.textContent='Modo de prueba activo: podés simular participantes mientras terminamos la validación real de filtros de Twitch/Kick.';
-        status.className='module-status';
-        syncVisibilityButton();syncPanelState();syncOverlay({visible:true,statusLabel:'ABIERTO · MODO PRUEBA'});
-      }
-    },500));
   }
 
+  function showSessionError(message){const el=$('slGiveawaySessionError');if(el){el.textContent=message;el.hidden=false;}}
   function restoreOverlayState(){
-    const overlay=window.SanLeanStreamTools?.getOverlays?.().find(o=>o.kind==='giveaway'),s=overlay?.state||{};
-    if(!overlay||s.phase==='finished'||!s.phase)return;
-    sessionStarted=true;testMode=String(s.statusLabel||'').includes('PRUEBA')||String(s.statusLabel||'').includes('SIMULACIÓN');participationOpen=String(s.statusLabel||'').includes('ABIERTO');overlayVisible=s.visible!==false;winner=s.winner||null;winners=Array.isArray(s.winners)?s.winners:[];winnerMessages=Array.isArray(s.winnerMessages)?s.winnerMessages:[];lastSequence=Array.isArray(s.sequence)?s.sequence:[];spinId=s.spinId||'';
-    if($('subscriberDoubleChance'))$('subscriberDoubleChance').checked=!!s.subscriberDoubleChance;
-    if($('vipDoubleChance'))$('vipDoubleChance').checked=!!s.vipDoubleChance;
-    renderWinnerHistory();renderWinnerMessages();syncVisibilityButton();syncPanelState();
+    const tools=window.SanLeanStreamTools,workspaceId=tools?.getWorkspace?.()?.id||'',active=tools?.getGiveaway?.();
+    if(currentWorkspaceId&&currentWorkspaceId!==workspaceId){sessionStarted=false;testMode=false;spinning=false;simulatedParticipants=[];participants=[];winner=null;winners=[];winnerMessages=[];lastSequence=[];currentSessionId='';}
+    currentWorkspaceId=workspaceId;
+    if(testMode||spinning)return;
+    if(!active){sessionStarted=false;syncPanelState();return}
+    const overlay=tools.getOverlays?.().find(o=>o.kind==='giveaway'),saved=overlay?.state||{},s=saved.sessionId===active.id?saved:{};
+    currentSessionId=active.id;sessionStarted=true;participationOpen=active.status==='active';overlayVisible=s.visible!==false;winner=s.winner||null;winners=Array.isArray(s.winners)?s.winners:[];winnerMessages=Array.isArray(s.winnerMessages)?s.winnerMessages:[];lastSequence=Array.isArray(s.sequence)?s.sequence:[];spinId=s.spinId||'';
+    if($('giveawayKeyword'))$('giveawayKeyword').value=String(active.keyword).toUpperCase();
+    if($('giveawayPlatform')){$('giveawayPlatform').value=active.platform;$('giveawayPlatform').dispatchEvent(new Event('change',{bubbles:true}))}
+    for(const [id,key] of [['followerOnly','follower_only'],['subscriberOnly','subscriber_only'],['vipOnly','vip_only'],['moderatorOnly','moderator_only']])if($(id))$(id).checked=!!active[key];
+    if($('followerDays')){$('followerDays').disabled=!active.follower_only;$('followerDays').value=String(active.min_follower_months||0)}
+    if($('subscriberDoubleChance')&&saved.sessionId===active.id)$('subscriberDoubleChance').checked=!!s.subscriberDoubleChance;
+    if($('vipDoubleChance')&&saved.sessionId===active.id)$('vipDoubleChance').checked=!!s.vipDoubleChance;
+    $('slGiveawayWinnerName').textContent=winner?.name||'—';$('slGiveawayWinnerPlatform').textContent=winner?.platform?.toUpperCase()||'';
+    const track=$('slGiveawayReelTrack');if(track&&lastSequence.length){track.style.transform='none';track.innerHTML=lastSequence.slice(-3).map((p,i)=>'<div class="sl-giveaway-reel-row'+(i===1?' is-target':'')+'">'+escapeHtml(p.name)+'</div>').join('')}
+    if(s.phase==='spinning'&&lastSequence.length>=3){winner=lastSequence.at(-2);if(!winners.some(w=>winnerKey(w)===winnerKey(winner)))winners.push(winner);$('slGiveawayWinnerName').textContent=winner.name;$('slGiveawayWinnerPlatform').textContent=winner.platform?.toUpperCase()||'';}
+    renderWinnerHistory();renderWinnerMessages();syncParticipants({push:false});syncVisibilityButton();syncPanelState();
+    if(!s.sessionId||['spinning','celebrating'].includes(s.phase))syncOverlay();
   }
 
   function mount(){
@@ -334,6 +348,8 @@
       uppercaseKeyword();
     }
     enhanceFilters();arrangeConfig();
+    const simulate=document.createElement('button');simulate.type='button';simulate.id='slStartGiveawaySimulation';simulate.className='module-secondary';simulate.textContent='SIMULAR SORTEO';simulate.onclick=simulateParticipants;
+    const start=$('startGiveaway');start?.insertAdjacentElement('afterend',simulate);
     const live=document.createElement('section');live.id='slGiveawayLive';live.className='sl-giveaway-live ui-content-box';live.hidden=true;
     live.innerHTML=
       '<div class="sl-giveaway-live-head"><div><span class="sl-giveaway-kicker">SORTEO EN VIVO</span><h3>SELECCIÓN DE GANADOR</h3><p>Los participantes validados aparecen a la izquierda. Al sortear, el visor ocupa el protagonismo hasta detenerse en el ganador.</p></div><button id="slSimulateGiveaway" type="button" class="module-secondary">SIMULAR 45 PARTICIPANTES</button></div>'+
@@ -342,7 +358,7 @@
       '<div class="sl-giveaway-center"><div id="slGiveawayReel" class="sl-giveaway-reel"><div class="sl-giveaway-selection-band"></div><div class="sl-giveaway-reel-mask top"></div><div class="sl-giveaway-reel-mask bottom"></div><div id="slGiveawayReelTrack" class="sl-giveaway-reel-track"><div class="sl-giveaway-reel-row is-placeholder">ESPERANDO SORTEO</div></div></div><div class="sl-giveaway-draw-actions"><button id="slParticipationToggle" type="button" class="module-secondary" disabled>CERRAR PARTICIPACIÓN</button><button id="slDrawWinner" type="button" class="module-primary" disabled>SORTEAR GANADOR</button></div></div>'+
       '<aside class="sl-giveaway-column sl-giveaway-winner"><span class="sl-giveaway-kicker">GANADOR ACTUAL</span><div class="sl-giveaway-winner-name" id="slGiveawayWinnerName">—</div><div class="sl-giveaway-winner-platform" id="slGiveawayWinnerPlatform"></div><div class="sl-giveaway-chat-title">MENSAJES DEL GANADOR</div><div id="slWinnerMessages" class="sl-giveaway-winner-chat"><p class="sl-giveaway-empty">Cuando haya ganador, sus mensajes nuevos aparecerán acá.</p></div></aside></div>'+
       '<div class="sl-giveaway-session-history"><span>GANADORES DE ESTA SESIÓN</span><div id="slGiveawayWinners"><p class="sl-giveaway-empty">Todavía no hay ganadores en esta sesión.</p></div></div>'+
-      '<div class="sl-giveaway-session-actions"><div class="sl-giveaway-session-actions-left"><button id="slToggleGiveawayObs" type="button" class="module-secondary">OCULTAR EN OBS</button></div><div class="sl-giveaway-session-actions-right"><button id="slCancelGiveaway" type="button" class="module-secondary">CANCELAR SORTEO</button><button id="slFinalizeGiveaway" type="button" class="module-secondary sl-giveaway-finalize">FINALIZAR SORTEO</button></div></div>';
+      '<p id="slGiveawaySessionError" class="module-status error" role="alert" hidden></p><div class="sl-giveaway-session-actions"><div class="sl-giveaway-session-actions-left"><button id="slToggleGiveawayObs" type="button" class="module-secondary">OCULTAR EN OBS</button></div><div class="sl-giveaway-session-actions-right"><button id="slCancelGiveaway" type="button" class="module-secondary">CANCELAR SORTEO</button><button id="slFinalizeGiveaway" type="button" class="module-secondary sl-giveaway-finalize">FINALIZAR SORTEO</button></div></div>';
     config.insertAdjacentElement('afterend',live);
     const history=document.createElement('section');history.id='slGiveawayHistory';history.className='sl-giveaway-history ui-content-box';history.innerHTML='<div class="sl-giveaway-history-head"><span>SORTEOS</span><h3>HISTORIAL DE SORTEOS</h3></div><div id="slGiveawayHistoryList" class="sl-giveaway-history-list"></div><p id="slGiveawayHistoryEmpty" class="sl-giveaway-empty">TODAVÍA NO HAY SORTEOS GUARDADOS.</p>';
     live.insertAdjacentElement('afterend',history);
@@ -352,6 +368,7 @@
     restoreOverlayState();syncParticipants({push:false});renderGiveawayHistory();syncPanelState();
   }
 
+  window.addEventListener('sanlean:giveaway-session',restoreOverlayState);
   window.addEventListener('sanlean:chat-message',e=>receiveWinnerMessage(e.detail));
   window.addEventListener('DOMContentLoaded',mount,{once:true});
   window.addEventListener('sanlean:overlays-updated',()=>{mount();restoreOverlayState();syncParticipants({push:false});renderGiveawayHistory()});

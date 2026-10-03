@@ -4,7 +4,7 @@
   function receive(row){
     if(row.workspace_id!==workspaceId||seen.has(row.platform+':'+row.message_id))return;
     seen.add(row.platform+':'+row.message_id);if(seen.size>2000)seen.delete(seen.values().next().value);
-    const detail={platform:row.platform,userId:row.user_id,username:row.username,message:row.message,sentAt:row.sent_at,workspaceId};
+    const detail={platform:row.platform,userId:row.user_id,username:row.username,message:row.message,sentAt:row.sent_at,color:row.metadata?.color||'',badges:row.metadata?.badges||[],workspaceId};
     const round=window.SanLeanCards?.getState();
     if(round?.workspaceId===workspaceId&&Date.parse(row.sent_at)>=round.startedAt&&(round.platform==='both'||round.platform===row.platform))window.SanLeanCards.receiveChatMessage({username:row.platform+':'+row.user_id,message:row.message,sentAt:row.sent_at});
     const vote=window.SanLeanPoll?.getState();if(vote?.workspaceId===workspaceId&&Date.parse(row.sent_at)>=vote.startedAt)window.SanLeanPoll.ingestVote(row.platform+':'+row.user_id,row.message);
@@ -18,7 +18,7 @@
     if(id!==workspaceId){workspaceId=id;cursor=null;seen.clear();generation++;document.getElementById('streamChatMessages')?.replaceChildren();if(id)startRealtime(id);else stopRealtime()}
     if(!db||!id||busy)return;busy=true;const version=generation;
     try{
-      let q=db.from('stream_chat_messages').select('id,workspace_id,platform,message_id,user_id,username,message,sent_at').eq('workspace_id',id);
+      let q=db.from('stream_chat_messages').select('id,workspace_id,platform,message_id,user_id,username,message,sent_at,metadata').eq('workspace_id',id);
       if(cursor===null){const {data,error}=await q.order('id',{ascending:false}).limit(1);if(error)throw error;if(version!==generation)return;cursor=data?.[0]?.id||0;return}
       const {data,error}=await q.gt('id',cursor).gt('created_at',new Date(Date.now()-60000).toISOString()).order('id').limit(200);if(error)throw error;
       if(version!==generation||window.SanLeanStreamTools?.getWorkspace()?.id!==id)return;

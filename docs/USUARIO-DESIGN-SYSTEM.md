@@ -397,6 +397,9 @@ Una solicitud referida únicamente a USUARIO no debe modificar la WEB pública s
 ## 13. SORTEOS — sesión, chances y salida OBS
 
 - La palabra clave se muestra y guarda en mayúsculas. El chat acepta la misma palabra sin distinguir mayúsculas, minúsculas ni acentos, incluso si el acento llega separado en Unicode.
+- `SIMULAR SORTEO` inicia una prueba explícita y separada. Muestra `SIMULACIÓN · SIN GUARDADO`: no publica en OBS, no agrega participantes reales ni guarda historial. Un error al iniciar un sorteo real nunca activa la simulación.
+- Los filtros y las chances extra usan datos verificados de Twitch/Kick. SÓLO SEGUIDORES y la antigüedad en meses requieren Twitch y el permiso de lectura de seguidores; Kick no ofrece consulta de seguidores históricos. Si se selecciona Kick junto con ese filtro, se explica la limitación antes de iniciar.
+- Recargar conserva la sesión, configuración y ganadores. Cerrar/reabrir modifica esa misma sesión; finalizar y cancelar tienen estados terminales independientes. Las escrituras de OBS se envían en orden.
 
 - Cada participante válido tiene **una sola participación base por sesión**, aunque escriba la palabra clave varias veces.
 - `CERRAR PARTICIPACIÓN` y `REABRIR PARTICIPACIÓN` son dos estados del **mismo botón**. Cerrada la participación, los mensajes nuevos con la palabra clave no agregan participantes. Al reabrir, pueden volver a sumarse nuevos usuarios conservando los anteriores.

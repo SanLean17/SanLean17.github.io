@@ -81,9 +81,9 @@ async function browserTests(){
   const browser=await chromium.launch({headless:true,channel:process.env.CARTAS_BROWSER||'msedge'});
   try{
     const page=await browser.newPage({viewport:{width:1280,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
-    await page.clock.install();await page.goto(base+'/Usuario/test.html');await page.waitForFunction(()=>window.SanLeanCards);
+    await page.clock.install();await page.goto(base+'/Usuario/test.html');await page.waitForFunction(()=>window.SanLeanCards&&document.getElementById('cardsPlatform'));
     assert.equal(await page.evaluate(()=>SanLeanCards.chaosProbability),0.15);assert.equal(await page.locator('#cardsEvent').count(),0);
-    await page.evaluate(()=>{SanLeanCards.startTestRound({mode:'chat',special:false});SanLeanCards.receiveChatMessage({username:'a',message:'A'});SanLeanCards.receiveChatMessage({username:'a',message:'B'})});
+    await page.evaluate(()=>{SanLeanCards.startTestRound({mode:'chat',special:false});document.getElementById('cardsStart').click();SanLeanCards.receiveChatMessage({username:'a',message:'A'});SanLeanCards.receiveChatMessage({username:'a',message:'B'})});
     assert.equal(await page.evaluate(()=>SanLeanCards.getState().totalVotes),1);
     assert(await page.evaluate(()=>SanLeanCards.getState().cards.every(c=>!c.revealed&&!c.image&&!c.label&&!c.resultId)));
     await page.evaluate(()=>SanLeanCards.finishVoting());
@@ -99,7 +99,7 @@ async function browserTests(){
         if(new Set(ids).size!==5||!ids.some(id=>id?.startsWith(role))||r.role!==role)return false;
       }return true;
     }),true);
-    await page.evaluate(()=>{SanLeanCards.startTestRound({mode:'chat',special:true});SanLeanCards.receiveChatMessage({username:'a',message:'A'});SanLeanCards.receiveChatMessage({username:'a',message:'A'})});
+    await page.evaluate(()=>{SanLeanCards.startTestRound({mode:'chat',special:true});document.getElementById('cardsStart').click();SanLeanCards.receiveChatMessage({username:'a',message:'A'});SanLeanCards.receiveChatMessage({username:'a',message:'A'})});
     assert.equal(await page.evaluate(()=>SanLeanCards.getState().totalVotes),2);
     assert.deepEqual(errors,[]);console.log('PASS: current CARTAS API, normal single-vote replacement, hidden results, manual reveal, 400 unique role-correct chaotic rounds, cumulative chaotic votes');
   }finally{await browser.close();server.close()}
