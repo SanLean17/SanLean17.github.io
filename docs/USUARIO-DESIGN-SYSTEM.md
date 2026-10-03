@@ -428,5 +428,6 @@ Ejemplos: `FINALIZAR SORTEO`, `FINALIZAR META`, `FINALIZAR WIN STREAK`, `FINALIZ
 - El texto debe explicar que la sesión se guardará/cerrará y que no podrá volver a editarse cuando corresponda.
 - `CANCELAR` queda a la izquierda y recibe el foco inicial.
 - El grupo de botones se centra respecto de la **ventana/modal**, no respecto de la longitud del texto. La acción segura queda siempre a la izquierda y la confirmación/finalización a la derecha.
+- El texto descriptivo del modal debe mantener aire antes de las acciones: separación visual aproximada de `38px` entre el párrafo y la fila de botones.
 - La confirmación queda a la derecha.
 - `Esc` y backdrop cancelan de forma segura.
