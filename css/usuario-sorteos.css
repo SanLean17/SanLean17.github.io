@@ -106,3 +106,18 @@
   .user-page .sl-giveaway-session-actions{flex-direction:column}
   .user-page .sl-giveaway-session-actions button{width:100%}
 }
+
+/* SORTEOS — estado activo: configuración fuera de vista, control en vivo como única superficie operativa. */
+.user-page #streamGiveawaysPanel.is-session-active > .module-box{display:none!important}
+.user-page #streamGiveawaysPanel.is-session-active > .sl-giveaway-live{margin-top:0!important}
+.user-page .sl-giveaway-session-strip{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  margin:0 0 20px;padding:14px 16px;border:1px solid rgba(255,255,255,.10);
+  border-radius:14px;background:rgba(8,8,10,.70)
+}
+.user-page .sl-giveaway-session-strip span{
+  color:rgba(255,255,255,.55);font:800 11px/1.2 Montserrat,Arial,sans-serif;letter-spacing:.08em
+}
+.user-page .sl-giveaway-session-strip strong{
+  color:#ff003c;font:800 13px/1.2 Montserrat,Arial,sans-serif
+}
