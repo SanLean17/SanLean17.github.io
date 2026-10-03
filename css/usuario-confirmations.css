@@ -41,3 +41,12 @@
     grid-template-columns:1fr!important;
   }
 }
+
+.user-page .confirm-dialog .reset-warning,
+.user-page .sl-system-confirm .reset-warning{
+  margin-bottom:28px!important;
+}
+.user-page .confirm-dialog .confirm-actions,
+.user-page .sl-system-confirm-actions{
+  margin-top:0!important;
+}
