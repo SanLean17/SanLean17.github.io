@@ -278,6 +278,7 @@
       confirmLabel:'FINALIZAR SORTEO'
     }):true;
     if(!confirm)return;
+    await saveGiveawayHistory();
     if(sessionStarted&&!testMode)await window.SanLeanStreamTools?.finishGiveaway?.();
     await syncOverlay({visible:false,phase:'finished',statusLabel:'FINALIZADO'});
     sessionStarted=false;participationOpen=false;overlayVisible=false;testMode=false;simulatedParticipants=[];participants=[];winner=null;winners=[];winnerMessages=[];lastSequence=[];spinId='';
