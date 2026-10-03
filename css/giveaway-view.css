@@ -1,64 +1,136 @@
 /* SANLEAN — SORTEOS / overlay OBS */
-.obs-stage:has(.obs-giveaway-live){width:min(1660px,97vw);min-height:0;display:block}
-.obs-giveaway-live{width:100%;font-family:Montserrat,Arial,sans-serif;color:#fff}
-.obs-giveaway-keyword{display:flex;justify-content:center;align-items:baseline;gap:16px;margin-bottom:22px;text-shadow:0 4px 18px #000}
-.obs-giveaway-keyword span{font:800 26px/1.15 Montserrat,Arial,sans-serif;letter-spacing:.06em;color:#fff}
-.obs-giveaway-keyword strong{font:900 34px/1 Montserrat,Arial,sans-serif;color:#ff003c}
-.obs-giveaway-layout{display:grid;grid-template-columns:minmax(290px,.8fr) minmax(520px,1.45fr) minmax(340px,.95fr);gap:26px;align-items:stretch}
-.obs-giveaway-participants,.obs-giveaway-winner{box-sizing:border-box;min-height:430px;padding:26px;border:1px solid rgba(255,255,255,.14);border-radius:16px;background:rgba(8,8,10,.76);backdrop-filter:blur(8px);box-shadow:0 18px 48px rgba(0,0,0,.28)}
-.obs-giveaway-side-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,.10)}
-.obs-giveaway-side-head span,.obs-giveaway-kicker{color:#ff003c;font:800 17px/1.2 Montserrat,Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase}
-.obs-giveaway-side-head strong{font:900 38px/1 Montserrat,Arial,sans-serif;color:#fff}
-.obs-giveaway-participant-list{margin-top:14px;max-height:334px;overflow:hidden}
-.obs-giveaway-participant-list>div{display:flex;justify-content:space-between;gap:12px;align-items:center;min-height:33px;border-bottom:1px solid rgba(255,255,255,.05)}
-.obs-giveaway-participant-list span{max-width:80%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 16px/1.2 Montserrat,Arial,sans-serif}
-.obs-giveaway-participant-list small{color:rgba(255,255,255,.46);font:800 10px/1 Montserrat,Arial,sans-serif}
-.obs-giveaway-participant-list p{margin:26px 0 0;color:rgba(255,255,255,.50);font:700 16px/1.5 Montserrat,Arial,sans-serif;text-align:center}
-.obs-giveaway-reel{position:relative;align-self:center;height:300px;overflow:hidden;border:1px solid rgba(255,255,255,.14);border-radius:16px;background:rgba(8,8,10,.80);box-shadow:0 18px 48px rgba(0,0,0,.25)}
-.obs-giveaway-track{position:absolute;left:0;right:0;top:0;will-change:transform}
-.obs-giveaway-row{box-sizing:border-box;height:100px;display:flex;align-items:center;justify-content:center;padding:0 28px;color:rgba(255,255,255,.48);font:800 34px/1 Montserrat,Arial,sans-serif;text-shadow:0 2px 12px rgba(0,0,0,.8)}
-.obs-giveaway-row.is-winner{color:#fff;font-size:54px;text-shadow:0 0 22px rgba(255,0,60,.35),0 4px 18px #000}
-.obs-giveaway-band{position:absolute;z-index:3;left:14px;right:14px;top:100px;height:98px;border:1px solid rgba(255,0,60,.78);border-radius:12px;background:rgba(255,0,60,.055);pointer-events:none;box-shadow:0 0 34px rgba(255,0,60,.16)}
-.obs-giveaway-mask{position:absolute;z-index:2;left:0;right:0;height:72px;pointer-events:none}
-.obs-giveaway-mask.top{top:0;background:linear-gradient(to bottom,rgba(8,8,10,.99),rgba(8,8,10,0))}
-.obs-giveaway-mask.bottom{bottom:0;background:linear-gradient(to top,rgba(8,8,10,.99),rgba(8,8,10,0))}
-.obs-giveaway-winner{display:flex;flex-direction:column}
-.obs-giveaway-winner h2{margin:22px 0 0;color:#fff;font:900 clamp(38px,3.4vw,62px)/.94 Montserrat,Arial,sans-serif;overflow-wrap:anywhere;text-shadow:0 4px 18px #000}
-.obs-giveaway-winner>small{min-height:18px;margin-top:10px;color:#ff003c;font:800 13px/1 Montserrat,Arial,sans-serif;letter-spacing:.12em}
-.obs-giveaway-winner-chat{margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255,255,.10);max-height:228px;overflow:hidden}
-.obs-giveaway-winner-chat p{margin:0 0 12px;color:rgba(255,255,255,.86);font:600 16px/1.45 Montserrat,Arial,sans-serif}
-.obs-giveaway-winner-chat p strong{color:#ff003c}
-.obs-giveaway-winner-chat p.muted{color:rgba(255,255,255,.46);font-size:13px;letter-spacing:.03em}
+.obs-stage:has(.obs-giveaway-live){width:min(1700px,97vw);min-height:0;display:block}
+.obs-giveaway-live{
+  width:100%;font-family:Montserrat,Arial,sans-serif;color:#fff;
+  -webkit-font-smoothing:antialiased;text-rendering:geometricPrecision
+}
+.obs-giveaway-keyword{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  margin:0 0 18px;text-align:center;text-shadow:0 4px 18px #000
+}
+.obs-giveaway-keyword span{font:800 24px/1.1 Montserrat,Arial,sans-serif;letter-spacing:.07em;color:#fff}
+.obs-giveaway-keyword strong{font:900 42px/.95 Montserrat,Arial,sans-serif;color:#ff003c}
+.obs-giveaway-layout{
+  display:grid;grid-template-columns:minmax(310px,.82fr) minmax(560px,1.45fr) minmax(340px,.9fr);
+  gap:24px;align-items:stretch
+}
+.obs-giveaway-participants,.obs-giveaway-winner{
+  box-sizing:border-box;min-height:420px;padding:24px;border:1px solid rgba(255,255,255,.16);
+  border-radius:16px;background:rgba(5,5,7,.90);box-shadow:0 20px 56px rgba(0,0,0,.42)
+}
+.obs-giveaway-side-head{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  min-height:48px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.12)
+}
+.obs-giveaway-side-head span,.obs-giveaway-kicker{
+  color:#ff003c;font:800 18px/1.15 Montserrat,Arial,sans-serif;letter-spacing:.11em;text-transform:uppercase
+}
+.obs-giveaway-side-head strong{font:900 40px/1 Montserrat,Arial,sans-serif;color:#fff}
+.obs-giveaway-participant-list{margin-top:12px;max-height:324px;overflow:hidden}
+.obs-giveaway-participant-list>div{
+  display:flex;justify-content:space-between;gap:12px;align-items:center;
+  min-height:32px;border-bottom:1px solid rgba(255,255,255,.055)
+}
+.obs-giveaway-participant-list span{
+  max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  font:800 17px/1.2 Montserrat,Arial,sans-serif;color:#fff
+}
+.obs-giveaway-participant-list small{color:rgba(255,255,255,.48);font:800 11px/1 Montserrat,Arial,sans-serif}
+.obs-giveaway-participant-list p{margin:28px 0 0;color:rgba(255,255,255,.58);font:800 17px/1.45 Montserrat,Arial,sans-serif;text-align:center}
 
-/* Etapa de giro: el reel toma todo el protagonismo. */
+.obs-giveaway-reel{
+  position:relative;align-self:stretch;height:300px;margin:auto 0;overflow:hidden;
+  border:1px solid rgba(255,255,255,.16);border-radius:16px;background:rgba(5,5,7,.93);
+  box-shadow:0 20px 56px rgba(0,0,0,.38)
+}
+.obs-giveaway-track{position:absolute;left:0;right:0;top:0;will-change:transform}
+.obs-giveaway-row{
+  box-sizing:border-box;height:100px;display:flex;align-items:center;justify-content:center;padding:0 28px;
+  color:rgba(255,255,255,.58);font:800 34px/1 Montserrat,Arial,sans-serif;
+  text-shadow:0 3px 12px #000
+}
+.obs-giveaway-row.is-winner{
+  color:#fff;font-size:50px;text-shadow:0 0 18px rgba(255,0,60,.42),0 4px 16px #000
+}
+.obs-giveaway-band{
+  position:absolute;z-index:3;left:14px;right:14px;top:100px;height:98px;
+  border:1px solid rgba(255,0,60,.82);border-radius:12px;background:rgba(255,0,60,.07);
+  pointer-events:none;box-shadow:0 0 30px rgba(255,0,60,.14)
+}
+.obs-giveaway-mask{position:absolute;z-index:2;left:0;right:0;height:70px;pointer-events:none}
+.obs-giveaway-mask.top{top:0;background:linear-gradient(to bottom,rgba(5,5,7,.995),rgba(5,5,7,0))}
+.obs-giveaway-mask.bottom{bottom:0;background:linear-gradient(to top,rgba(5,5,7,.995),rgba(5,5,7,0))}
+
+.obs-giveaway-winner{display:flex;flex-direction:column}
+.obs-giveaway-winner h2{
+  margin:18px 0 0;max-width:100%;color:#fff;
+  font:900 clamp(28px,2.2vw,42px)/1 Montserrat,Arial,sans-serif;
+  overflow-wrap:anywhere;text-shadow:0 4px 16px #000
+}
+.obs-giveaway-winner>small{min-height:16px;margin-top:9px;color:#ff003c;font:800 12px/1 Montserrat,Arial,sans-serif;letter-spacing:.11em}
+.obs-giveaway-winner-chat{margin-top:24px;padding-top:18px;border-top:1px solid rgba(255,255,255,.12);max-height:226px;overflow:hidden}
+.obs-giveaway-winner-chat p{margin:0 0 11px;color:rgba(255,255,255,.90);font:700 16px/1.4 Montserrat,Arial,sans-serif}
+.obs-giveaway-winner-chat p strong{color:#ff003c}
+.obs-giveaway-winner-chat p.muted{color:rgba(255,255,255,.54);font-size:14px;letter-spacing:.02em}
+
+/* GIRO: únicamente el reel, grande y limpio. */
 .obs-giveaway-live.is-spinning .obs-giveaway-keyword,
 .obs-giveaway-live.is-spinning .obs-giveaway-participants,
 .obs-giveaway-live.is-spinning .obs-giveaway-winner{display:none!important}
 .obs-giveaway-live.is-spinning .obs-giveaway-layout{display:block}
 .obs-giveaway-live.is-spinning .obs-giveaway-reel{
-  width:min(1500px,94vw);height:354px;margin:0 auto;border-radius:20px;
-  box-shadow:0 0 0 1px rgba(255,255,255,.06),0 0 54px rgba(255,0,60,.18),0 28px 80px rgba(0,0,0,.42)
+  width:min(1540px,95vw);height:354px;margin:0 auto;border-radius:20px;
+  background:rgba(4,4,6,.96);
+  box-shadow:0 0 0 1px rgba(255,255,255,.07),0 0 58px rgba(255,0,60,.20),0 30px 90px rgba(0,0,0,.55)
 }
-.obs-giveaway-live.is-spinning .obs-giveaway-row{height:118px;font-size:54px;color:rgba(255,255,255,.50)}
+.obs-giveaway-live.is-spinning .obs-giveaway-row{height:118px;font-size:56px;color:rgba(255,255,255,.56)}
 .obs-giveaway-live.is-spinning .obs-giveaway-band{top:118px;height:116px;left:24px;right:24px;border-width:2px}
-.obs-giveaway-live.is-spinning .obs-giveaway-mask{height:92px}
-.obs-giveaway-live.is-spinning .obs-giveaway-row:nth-last-child(2){font-size:68px;color:#fff}
+.obs-giveaway-live.is-spinning .obs-giveaway-mask{height:94px}
+
+/* IMPACTO DEL GANADOR: 5 segundos antes de volver a la composición completa. */
+.obs-giveaway-live.is-celebrating .obs-giveaway-keyword,
+.obs-giveaway-live.is-celebrating .obs-giveaway-participants,
+.obs-giveaway-live.is-celebrating .obs-giveaway-winner{display:none!important}
+.obs-giveaway-live.is-celebrating .obs-giveaway-layout{display:block}
+.obs-giveaway-live.is-celebrating .obs-giveaway-reel{
+  width:min(1540px,95vw);height:354px;margin:0 auto;border-radius:20px;background:rgba(4,4,6,.97);
+  box-shadow:0 0 0 1px rgba(255,255,255,.08),0 0 76px rgba(255,0,60,.30),0 30px 90px rgba(0,0,0,.58)
+}
+.obs-giveaway-live.is-celebrating .obs-giveaway-row{height:118px;font-size:50px;color:rgba(255,255,255,.42)}
+.obs-giveaway-live.is-celebrating .obs-giveaway-row.is-winner{
+  font-size:72px;color:#fff;animation:sl-giveaway-winner-pulse 1.15s ease-in-out infinite;
+  text-shadow:0 0 16px rgba(255,255,255,.30),0 0 34px #ff003c,0 5px 20px #000
+}
+.obs-giveaway-live.is-celebrating .obs-giveaway-band{
+  top:118px;height:116px;left:24px;right:24px;border-width:2px;
+  background:radial-gradient(circle at center,rgba(255,0,60,.22),rgba(12,4,7,.78) 66%);
+  box-shadow:0 0 46px rgba(255,0,60,.34),inset 0 0 34px rgba(255,0,60,.12)
+}
+.obs-giveaway-live.is-celebrating .obs-giveaway-mask{height:94px}
+@keyframes sl-giveaway-winner-pulse{
+  0%,100%{transform:scale(1);filter:brightness(1)}
+  50%{transform:scale(1.07);filter:brightness(1.14)}
+}
 
 @media(max-width:1100px){
   .obs-giveaway-layout{grid-template-columns:1fr 1.35fr}
-  .obs-giveaway-winner{grid-column:1/-1;min-height:210px}
+  .obs-giveaway-winner{grid-column:1/-1;min-height:200px}
   .obs-giveaway-participants{min-height:360px}
-  .obs-giveaway-keyword span{font-size:21px}.obs-giveaway-keyword strong{font-size:28px}
+  .obs-giveaway-keyword span{font-size:21px}.obs-giveaway-keyword strong{font-size:36px}
 }
 @media(max-width:760px){
   .obs-giveaway-layout{grid-template-columns:1fr}
   .obs-giveaway-participants,.obs-giveaway-winner{min-height:0}
-  .obs-giveaway-reel{height:240px}
-  .obs-giveaway-row{height:80px;font-size:24px}
-  .obs-giveaway-band{top:80px;height:78px}
-  .obs-giveaway-row.is-winner{font-size:34px}
-  .obs-giveaway-live.is-spinning .obs-giveaway-reel{height:300px}
-  .obs-giveaway-live.is-spinning .obs-giveaway-row{height:100px;font-size:38px}
-  .obs-giveaway-live.is-spinning .obs-giveaway-band{top:100px;height:98px}
+  .obs-giveaway-reel{height:240px}.obs-giveaway-row{height:80px;font-size:24px}
+  .obs-giveaway-band{top:80px;height:78px}.obs-giveaway-row.is-winner{font-size:34px}
+  .obs-giveaway-live.is-spinning .obs-giveaway-reel,
+  .obs-giveaway-live.is-celebrating .obs-giveaway-reel{height:300px}
+  .obs-giveaway-live.is-spinning .obs-giveaway-row,
+  .obs-giveaway-live.is-celebrating .obs-giveaway-row{height:100px;font-size:38px}
+  .obs-giveaway-live.is-spinning .obs-giveaway-band,
+  .obs-giveaway-live.is-celebrating .obs-giveaway-band{top:100px;height:98px}
+  .obs-giveaway-live.is-celebrating .obs-giveaway-row.is-winner{font-size:50px}
 }
-@media(prefers-reduced-motion:reduce){.obs-giveaway-track{animation:none!important}}
+@media(prefers-reduced-motion:reduce){
+  .obs-giveaway-track,.obs-giveaway-live.is-celebrating .obs-giveaway-row.is-winner{animation:none!important}
+}
