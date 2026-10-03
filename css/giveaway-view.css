@@ -134,3 +134,39 @@
 @media(prefers-reduced-motion:reduce){
   .obs-giveaway-track,.obs-giveaway-live.is-celebrating .obs-giveaway-row.is-winner{animation:none!important}
 }
+
+/* Nitidez de los acentos rojos en composiciones reducidas de stream. */
+.obs-giveaway-keyword strong,
+.obs-giveaway-side-head span,
+.obs-giveaway-kicker,
+.obs-giveaway-winner>small,
+.obs-giveaway-winner-chat p strong{
+  color:#ff003c;
+  text-shadow:
+    0 1px 0 #000,
+    0 -1px 0 #000,
+    1px 0 0 #000,
+    -1px 0 0 #000,
+    0 2px 6px rgba(0,0,0,.95);
+}
+.obs-giveaway-keyword strong{
+  padding:5px 12px;
+  border-radius:10px;
+  background:rgba(0,0,0,.34)
+}
+
+/* Tras la celebración de 5 s, el ganador central sigue vivo hasta el próximo sorteo. */
+.obs-giveaway-live.has-winner .obs-giveaway-row.is-winner{
+  animation:sl-giveaway-winner-idle 1.8s ease-in-out infinite;
+  text-shadow:0 0 12px rgba(255,255,255,.18),0 0 24px rgba(255,0,60,.58),0 4px 16px #000
+}
+.obs-giveaway-live.has-winner .obs-giveaway-band{
+  box-shadow:0 0 34px rgba(255,0,60,.24),inset 0 0 22px rgba(255,0,60,.08)
+}
+@keyframes sl-giveaway-winner-idle{
+  0%,100%{transform:scale(1);filter:brightness(1)}
+  50%{transform:scale(1.025);filter:brightness(1.07)}
+}
+@media(prefers-reduced-motion:reduce){
+  .obs-giveaway-live.has-winner .obs-giveaway-row.is-winner{animation:none!important}
+}
