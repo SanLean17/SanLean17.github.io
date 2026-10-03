@@ -3,7 +3,7 @@
   const $=id=>document.getElementById(id);
   const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
   let participants=[],simulatedParticipants=[],winner=null,winners=[],winnerMessages=[],spinning=false,lastSequence=[],spinId='',sessionStarted=false,participationOpen=false,overlayVisible=true,testMode=false;
-  let currentWorkspaceId='',currentSessionId='',overlayWrite=Promise.resolve();
+  let currentWorkspaceId='',currentSessionId='',overlayWrite=Promise.resolve(),moderating=false;
   const rowHeight=56;
   const demoNames=['Pedro_33','Agusneta','MikaDBD','FengMain','NeaRunner','TotemHunter','MaxiGG','SableWard','YuiPower','DwightPro','ClaudetteX','JakeParkARG','LaurieStrode','BillMain','AdaWong','LeonRPD','MikaelaMoon','Vittorio77','NicolasCageFan','RipleyMain','LaraCroft','TrevorB','TaurieCain','RickGrimes','Michonne','Eleven011','DustinH','AuroraLive','PyramidFan','FreddyARG','UnknownMain','GhostFaceTV','OniRush','HuntressAxe','TrapperKing','NurseBlink','PlagueMain','KnightGuard','ChuckyGG','VecnaLich','Wesker7','ArtistCrow','DredgeNight','SadakoTV','NemesisRPD'];
 
@@ -20,6 +20,7 @@
       const spans=row.querySelectorAll('span');
       return {
         userId:row.dataset.userId||'',
+        excluded:row.dataset.excluded==='true',
         name:(spans[0]?.textContent||'').trim(),
         platform:(spans[1]?.textContent||'').trim().toLowerCase(),
         isSubscriber:row.dataset.subscriber==='true',
@@ -30,7 +31,7 @@
   function mergedParticipants(){
     const map=new Map();(testMode?simulatedParticipants:dbParticipantRows()).forEach(p=>map.set(winnerKey(p),p));return [...map.values()]
   }
-  function remainingParticipants(){const won=wonKeys();return participants.filter(x=>!won.has(winnerKey(x))&&!winners.some(w=>!w.userId&&norm(w.name)===norm(x.name)&&norm(w.platform)===norm(x.platform)))}
+  function remainingParticipants(){const won=wonKeys();return participants.filter(x=>!x.excluded&&!won.has(winnerKey(x))&&!winners.some(w=>!w.userId&&norm(w.name)===norm(x.name)&&norm(w.platform)===norm(x.platform)))}
   function chanceMultiplier(p){return ((subscriberBoost()&&p.isSubscriber)||(vipBoost()&&p.isVip))?2:1}
   function chancePool(){
     const pool=[];
@@ -53,10 +54,11 @@
     const history=$('slGiveawayHistory');if(history)history.hidden=sessionStarted;
     const toggle=$('slParticipationToggle');
     if(toggle){
-      toggle.disabled=!sessionStarted||spinning;
+      toggle.disabled=!sessionStarted||spinning||moderating;
       toggle.textContent=participationOpen?'CERRAR PARTICIPACIÓN':'REABRIR PARTICIPACIÓN';
     }
     const state=$('slGiveawaySessionState');
+    document.querySelectorAll('#slGiveawayLiveParticipants button,#slGiveawayExcludedList button').forEach(button=>button.disabled=spinning||moderating);
     if($('slSimulateGiveaway'))$('slSimulateGiveaway').disabled=!testMode;
     if($('slStartGiveawaySimulation'))$('slStartGiveawaySimulation').disabled=sessionStarted&&!testMode;
     if(state)state.textContent=testMode?'SIMULACIÓN · SIN GUARDADO':!sessionStarted?'SIN INICIAR':participationOpen?'PARTICIPACIÓN ABIERTA':'PARTICIPACIÓN CERRADA';
@@ -86,9 +88,37 @@
     participants=mergedParticipants(); const remaining=remainingParticipants();
     if($('slGiveawayLiveCount'))$('slGiveawayLiveCount').textContent=String(remaining.length);
     const list=$('slGiveawayLiveParticipants');
-    if(list)list.innerHTML=remaining.length?remaining.slice(-120).reverse().map(p=>'<div class="sl-giveaway-person"><span>'+escapeHtml(p.name)+'</span><small>'+escapeHtml((p.platform||'chat').toUpperCase())+'</small></div>').join(''):'<p class="sl-giveaway-empty">No quedan participantes disponibles.</p>';
-    if($('slDrawWinner'))$('slDrawWinner').disabled=spinning||participationOpen||remaining.length<2;
+    renderParticipantList(list,[...remaining].reverse(),false);
+    const excluded=participants.filter(p=>p.excluded);if($('slGiveawayExcluded'))$('slGiveawayExcluded').hidden=!excluded.length;
+    if($('slGiveawayExcludedCount'))$('slGiveawayExcludedCount').textContent=String(excluded.length);
+    renderParticipantList($('slGiveawayExcludedList'),excluded,true);
+    if($('slDrawWinner'))$('slDrawWinner').disabled=spinning||moderating||participationOpen||remaining.length<2;
     syncPanelState(); if(push&&sessionStarted&&!spinning)syncOverlay();
+  }
+
+  function renderParticipantList(host,people,excluded){
+    if(!host)return;const key=JSON.stringify(people.map(p=>[winnerKey(p),p.name,p.excluded]));if(host.dataset.renderKey===key)return;host.dataset.renderKey=key;host.replaceChildren();
+    if(!people.length){host.innerHTML='<p class="sl-giveaway-empty">No quedan participantes disponibles.</p>';return;}
+    for(const person of people){
+      const row=document.createElement('div');row.className='sl-giveaway-person';
+      const name=document.createElement('span');name.textContent=person.name;name.title=person.name;
+      const platform=document.createElement('small');platform.textContent=(person.platform||'chat').toUpperCase();
+      const button=document.createElement('button');button.type='button';button.className=excluded?'ui-btn ui-btn-secondary sl-giveaway-allow':'sl-giveaway-message-remove';button.textContent=excluded?'AUTORIZAR':'×';
+      button.setAttribute('aria-label',(excluded?'Volver a autorizar a ':'Excluir a ')+person.name+' de '+person.platform);button.title=excluded?'Volver a autorizar en este sorteo':'Excluir de este sorteo';button.disabled=spinning||moderating;
+      button.onclick=()=>moderateParticipant(person,!excluded);row.append(name,platform,button);host.append(row);
+    }
+  }
+  async function moderateParticipant(person,excluded){
+    if(spinning||moderating||!sessionStarted)return;
+    if($('slGiveawaySessionError'))$('slGiveawaySessionError').hidden=true;
+    const sessionId=currentSessionId,workspaceId=currentWorkspaceId;moderating=true;syncParticipants({push:false});
+    try{
+      if(testMode){person.excluded=excluded;}
+      else if(!await window.SanLeanStreamTools?.setGiveawayExcluded(person,excluded))throw new Error('No se pudo guardar el cambio. Reintentá.');
+      if(currentSessionId!==sessionId||currentWorkspaceId!==workspaceId)return;
+      syncParticipants({push:false});if(!await syncOverlay())throw new Error('El cambio se guardó, pero OBS no se pudo actualizar. Reintentá la conexión.');
+    }catch(error){showSessionError(error.message||'No se pudo actualizar la participación.');}
+    finally{moderating=false;syncParticipants({push:false});}
   }
 
   function buildSequence(pool,selected){
@@ -107,7 +137,7 @@
   }
 
   async function drawWinner(){
-    if(spinning||participationOpen)return;const weighted=chancePool();if(remainingParticipants().length<2||!weighted.length)return;
+    if(spinning||moderating||participationOpen)return;const weighted=chancePool();if(remainingParticipants().length<2||!weighted.length)return;
     const drawWorkspace=currentWorkspaceId,drawSession=currentSessionId;
     sessionStarted=true;overlayVisible=true;spinning=true;winner=null;winnerMessages=[];syncVisibilityButton();syncPanelState();
     const selected=pick(weighted),track=$('slGiveawayReelTrack'),shell=$('slGiveawayReel');
@@ -265,7 +295,7 @@
   async function toggleObs(){if(!sessionStarted)return;overlayVisible=!overlayVisible;syncVisibilityButton();await syncOverlay({visible:overlayVisible})}
 
   async function cancelGiveaway(){
-    if(spinning||!sessionStarted)return;
+    if(spinning||moderating||!sessionStarted)return;
     const confirm=window.SanLeanConfirm?.open?await window.SanLeanConfirm.open({
       eyebrow:'SORTEOS',
       title:'DESCARTAR SORTEO',
@@ -284,7 +314,7 @@
   }
 
   async function finalizeGiveaway(){
-    if(spinning||!sessionStarted)return;
+    if(spinning||moderating||!sessionStarted)return;
     const confirm=window.SanLeanConfirm?.open?await window.SanLeanConfirm.open({
       eyebrow:'SORTEOS',
       title:'FINALIZAR SORTEO',
@@ -357,6 +387,7 @@
       '<div class="sl-giveaway-layout"><aside class="sl-giveaway-column sl-giveaway-participants"><div class="sl-giveaway-column-head"><span>PARTICIPANTES DISPONIBLES</span><strong id="slGiveawayLiveCount">0</strong></div><div id="slGiveawayLiveParticipants" class="sl-giveaway-scroll"></div></aside>'+
       '<div class="sl-giveaway-center"><div id="slGiveawayReel" class="sl-giveaway-reel"><div class="sl-giveaway-selection-band"></div><div class="sl-giveaway-reel-mask top"></div><div class="sl-giveaway-reel-mask bottom"></div><div id="slGiveawayReelTrack" class="sl-giveaway-reel-track"><div class="sl-giveaway-reel-row is-placeholder">ESPERANDO SORTEO</div></div></div><div class="sl-giveaway-draw-actions"><button id="slParticipationToggle" type="button" class="module-secondary" disabled>CERRAR PARTICIPACIÓN</button><button id="slDrawWinner" type="button" class="module-primary" disabled>SORTEAR GANADOR</button></div></div>'+
       '<aside class="sl-giveaway-column sl-giveaway-winner"><span class="sl-giveaway-kicker">GANADOR ACTUAL</span><div class="sl-giveaway-winner-name" id="slGiveawayWinnerName">—</div><div class="sl-giveaway-winner-platform" id="slGiveawayWinnerPlatform"></div><div class="sl-giveaway-chat-title">MENSAJES DEL GANADOR</div><div id="slWinnerMessages" class="sl-giveaway-winner-chat"><p class="sl-giveaway-empty">Cuando haya ganador, sus mensajes nuevos aparecerán acá.</p></div></aside></div>'+
+      '<details id="slGiveawayExcluded" class="sl-giveaway-session-history" hidden><summary>EXCLUIDOS DE ESTE SORTEO (<span id="slGiveawayExcludedCount">0</span>)</summary><p class="ui-field-help">No pueden volver a entrar aunque repitan la palabra clave. AUTORIZAR los devuelve a la lista. Esta exclusión sólo vale para el sorteo actual.</p><div id="slGiveawayExcludedList" class="sl-giveaway-scroll"></div></details>'+
       '<div class="sl-giveaway-session-history"><span>GANADORES DE ESTA SESIÓN</span><div id="slGiveawayWinners"><p class="sl-giveaway-empty">Todavía no hay ganadores en esta sesión.</p></div></div>'+
       '<p id="slGiveawaySessionError" class="module-status error" role="alert" hidden></p><div class="sl-giveaway-session-actions"><div class="sl-giveaway-session-actions-left"><button id="slToggleGiveawayObs" type="button" class="module-secondary">OCULTAR EN OBS</button></div><div class="sl-giveaway-session-actions-right"><button id="slCancelGiveaway" type="button" class="module-secondary">CANCELAR SORTEO</button><button id="slFinalizeGiveaway" type="button" class="module-secondary sl-giveaway-finalize">FINALIZAR SORTEO</button></div></div>';
     config.insertAdjacentElement('afterend',live);

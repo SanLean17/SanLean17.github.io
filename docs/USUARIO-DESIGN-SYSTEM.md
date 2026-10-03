@@ -402,6 +402,7 @@ Una solicitud referida únicamente a USUARIO no debe modificar la WEB pública s
 - Recargar conserva la sesión, configuración y ganadores. Cerrar/reabrir modifica esa misma sesión; finalizar y cancelar tienen estados terminales independientes. Las escrituras de OBS se envían en orden.
 
 - Cada participante válido tiene **una sola participación base por sesión**, aunque escriba la palabra clave varias veces.
+- En la lista privada de participantes, `×` excluye al usuario sólo de ese sorteo. El bloqueo se guarda por sesión, plataforma e ID, persiste al recargar/reabrir y no se elimina al repetir la palabra clave o cambiar el nombre. `EXCLUIDOS DE ESTE SORTEO` permite `AUTORIZAR` para devolverlo a la lista. Al iniciar otro sorteo no se heredan exclusiones. Se reutiliza el botón de quitar de los mensajes y el botón secundario canónico para autorizar; durante giro/celebración estas acciones quedan deshabilitadas.
 - `CERRAR PARTICIPACIÓN` y `REABRIR PARTICIPACIÓN` son dos estados del **mismo botón**. Cerrada la participación, los mensajes nuevos con la palabra clave no agregan participantes. Al reabrir, pueden volver a sumarse nuevos usuarios conservando los anteriores.
 - El ganador de una sesión queda fuera del pool de los sorteos siguientes de esa misma sesión.
 - Pueden habilitarse bonificaciones independientes `SUSCRIPTORES ×2` y `VIPS ×2`. Si un usuario cumple una o ambas bonificaciones activas, su chance total es x2; las bonificaciones no se acumulan a x4.

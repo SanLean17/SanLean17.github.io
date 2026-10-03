@@ -16,6 +16,16 @@
 .user-page .sl-giveaway-person,.user-page .sl-giveaway-winner-row{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:40px;padding:0 10px;border-bottom:1px solid rgba(255,255,255,.06)}
 .user-page .sl-giveaway-person span,.user-page .sl-giveaway-winner-row span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#fff;font:700 12px/1.2 Montserrat,Arial,sans-serif}
 .user-page .sl-giveaway-person small,.user-page .sl-giveaway-winner-row small{color:rgba(255,255,255,.45);font:800 9px/1 Montserrat,Arial,sans-serif}
+.user-page .sl-giveaway-person>span{flex:1}
+.user-page .sl-giveaway-person>button{flex-shrink:0}
+.user-page .sl-giveaway-participants{display:flex;flex-direction:column;min-width:0}
+.user-page .sl-giveaway-participants .sl-giveaway-scroll{min-height:0}
+.user-page .sl-giveaway-person .sl-giveaway-message-remove{position:static;min-width:32px;min-height:32px}
+.user-page #slGiveawayExcluded summary{cursor:pointer;color:#fff;font:800 12px/1.5 Montserrat,Arial,sans-serif}
+.user-page #slGiveawayExcluded .sl-giveaway-person{display:grid;grid-template-columns:minmax(0,1fr) auto;padding:12px 0}
+.user-page #slGiveawayExcluded .sl-giveaway-person>span{white-space:normal;overflow-wrap:anywhere}
+.user-page #slGiveawayExcluded .sl-giveaway-person>button{grid-column:1/-1;justify-self:end}
+.user-page #slGiveawayExcluded .ui-field-help{margin:12px 0 16px}
 .user-page .sl-giveaway-center{display:flex;min-width:0;flex-direction:column;justify-content:center;align-items:center;gap:20px}
 .user-page .sl-giveaway-reel{position:relative;width:100%;height:168px;overflow:hidden;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(8,8,10,.78)}
 .user-page .sl-giveaway-reel-track{position:absolute;left:0;right:0;top:0;will-change:transform}
