@@ -50,3 +50,22 @@
 .user-page .sl-system-confirm-actions{
   margin-top:0!important;
 }
+
+/* Confirmaciones — ritmo canónico con aire entre texto y acciones. */
+.user-page .confirm-dialog{
+  padding:42px 40px 40px!important;
+}
+.user-page .confirm-dialog h2{
+  margin-bottom:22px!important;
+}
+.user-page .confirm-dialog .reset-warning,
+.user-page .sl-system-confirm .reset-warning{
+  width:min(100%,460px)!important;
+  margin:0 auto 38px!important;
+  line-height:1.55!important;
+}
+.user-page .confirm-dialog .confirm-actions,
+.user-page .sl-system-confirm-actions{
+  width:min(420px,100%)!important;
+  margin:0 auto!important;
+}
