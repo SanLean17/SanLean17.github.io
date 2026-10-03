@@ -415,3 +415,76 @@
   min-height:0!important;
   border:0!important;
 }
+
+/* SORTEOS — ajuste de geometría final del estado normal. */
+.obs-giveaway-participants,
+.obs-giveaway-center,
+.obs-giveaway-winner{
+  height:500px!important;
+  border-color:rgba(255,0,60,.48)!important;
+  background:rgba(4,4,6,.96)!important;
+}
+.obs-giveaway-keyword{
+  box-sizing:border-box!important;
+  min-height:158px!important;
+  height:158px!important;
+  gap:18px!important;
+  padding:22px 24px 14px!important;
+}
+.obs-giveaway-keyword span{
+  font-size:26px!important;
+}
+.obs-giveaway-keyword strong{
+  font-size:45px!important;
+  transform:translateY(3px);
+}
+.obs-giveaway-side-head span,
+.obs-giveaway-kicker{
+  font-size:21px!important;
+  letter-spacing:.085em!important;
+}
+.obs-giveaway-reel{
+  flex:none!important;
+  min-height:0!important;
+  height:340px!important;
+}
+.obs-giveaway-row{
+  height:112px!important;
+}
+.obs-giveaway-band{
+  top:112px!important;
+  height:110px!important;
+}
+.obs-giveaway-mask{height:78px!important}
+
+/* Durante giro/celebración no heredar la altura del panel normal: evita el rectángulo vacío inferior. */
+.obs-giveaway-live.is-spinning .obs-giveaway-center,
+.obs-giveaway-live.is-celebrating .obs-giveaway-center{
+  height:354px!important;
+  min-height:354px!important;
+  border-color:rgba(255,0,60,.56)!important;
+}
+.obs-giveaway-live.is-spinning .obs-giveaway-reel,
+.obs-giveaway-live.is-celebrating .obs-giveaway-reel{
+  height:354px!important;
+  min-height:354px!important;
+}
+.obs-giveaway-live.is-spinning .obs-giveaway-row,
+.obs-giveaway-live.is-celebrating .obs-giveaway-row{
+  height:118px!important;
+}
+.obs-giveaway-live.is-spinning .obs-giveaway-band,
+.obs-giveaway-live.is-celebrating .obs-giveaway-band{
+  top:118px!important;
+  height:116px!important;
+}
+
+/* Ganador con blanco más limpio en todos los estados de resultado. */
+.obs-giveaway-row.is-winner{
+  color:#fff!important;
+  filter:brightness(1.16);
+}
+.obs-giveaway-live.has-winner .obs-giveaway-row.is-winner{
+  color:#fff!important;
+  text-shadow:0 0 8px rgba(255,255,255,.78),0 0 22px rgba(255,0,60,.58),0 4px 16px #000!important;
+}
