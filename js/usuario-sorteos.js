@@ -30,7 +30,7 @@
   function mergedParticipants(){
     const map=new Map();(testMode?simulatedParticipants:dbParticipantRows()).forEach(p=>map.set(winnerKey(p),p));return [...map.values()]
   }
-  function remainingParticipants(){const won=wonKeys();return participants.filter(x=>!won.has(winnerKey(x)))}
+  function remainingParticipants(){const won=wonKeys();return participants.filter(x=>!won.has(winnerKey(x))&&!winners.some(w=>!w.userId&&norm(w.name)===norm(x.name)&&norm(w.platform)===norm(x.platform)))}
   function chanceMultiplier(p){return ((subscriberBoost()&&p.isSubscriber)||(vipBoost()&&p.isVip))?2:1}
   function chancePool(){
     const pool=[];
@@ -261,7 +261,7 @@
   }
   async function toggleParticipation(){if(participationOpen)await closeParticipation();else await reopenParticipation()}
 
-  function syncVisibilityButton(){const btn=$('slToggleGiveawayObs');if(btn)btn.textContent=overlayVisible?'OCULTAR EN OBS':'MOSTRAR EN OBS'}
+  function syncVisibilityButton(){const btn=$('slToggleGiveawayObs');if(btn){btn.hidden=testMode;btn.textContent=overlayVisible?'OCULTAR EN OBS':'MOSTRAR EN OBS'}}
   async function toggleObs(){if(!sessionStarted)return;overlayVisible=!overlayVisible;syncVisibilityButton();await syncOverlay({visible:overlayVisible})}
 
   async function cancelGiveaway(){
@@ -317,14 +317,14 @@
     currentWorkspaceId=workspaceId;
     if(testMode||spinning)return;
     if(!active){sessionStarted=false;syncPanelState();return}
-    const overlay=tools.getOverlays?.().find(o=>o.kind==='giveaway'),saved=overlay?.state||{},s=saved.sessionId===active.id?saved:{};
+    const overlay=tools.getOverlays?.().find(o=>o.kind==='giveaway'),saved=overlay?.state||{},legacy=!saved.sessionId&&saved.phase!=='finished'&&norm(saved.keyword)===norm(active.keyword)&&saved.platformMode===active.platform,s=saved.sessionId===active.id||legacy?saved:{};
     currentSessionId=active.id;sessionStarted=true;participationOpen=active.status==='active';overlayVisible=s.visible!==false;winner=s.winner||null;winners=Array.isArray(s.winners)?s.winners:[];winnerMessages=Array.isArray(s.winnerMessages)?s.winnerMessages:[];lastSequence=Array.isArray(s.sequence)?s.sequence:[];spinId=s.spinId||'';
     if($('giveawayKeyword'))$('giveawayKeyword').value=String(active.keyword).toUpperCase();
     if($('giveawayPlatform')){$('giveawayPlatform').value=active.platform;$('giveawayPlatform').dispatchEvent(new Event('change',{bubbles:true}))}
     for(const [id,key] of [['followerOnly','follower_only'],['subscriberOnly','subscriber_only'],['vipOnly','vip_only'],['moderatorOnly','moderator_only']])if($(id))$(id).checked=!!active[key];
     if($('followerDays')){$('followerDays').disabled=!active.follower_only;$('followerDays').value=String(active.min_follower_months||0)}
-    if($('subscriberDoubleChance')&&saved.sessionId===active.id)$('subscriberDoubleChance').checked=!!s.subscriberDoubleChance;
-    if($('vipDoubleChance')&&saved.sessionId===active.id)$('vipDoubleChance').checked=!!s.vipDoubleChance;
+    if($('subscriberDoubleChance')&&(saved.sessionId===active.id||legacy))$('subscriberDoubleChance').checked=!!s.subscriberDoubleChance;
+    if($('vipDoubleChance')&&(saved.sessionId===active.id||legacy))$('vipDoubleChance').checked=!!s.vipDoubleChance;
     $('slGiveawayWinnerName').textContent=winner?.name||'—';$('slGiveawayWinnerPlatform').textContent=winner?.platform?.toUpperCase()||'';
     const track=$('slGiveawayReelTrack');if(track&&lastSequence.length){track.style.transform='none';track.innerHTML=lastSequence.slice(-3).map((p,i)=>'<div class="sl-giveaway-reel-row'+(i===1?' is-target':'')+'">'+escapeHtml(p.name)+'</div>').join('')}
     if(s.phase==='spinning'&&lastSequence.length>=3){winner=lastSequence.at(-2);if(!winners.some(w=>winnerKey(w)===winnerKey(winner)))winners.push(winner);$('slGiveawayWinnerName').textContent=winner.name;$('slGiveawayWinnerPlatform').textContent=winner.platform?.toUpperCase()||'';}
