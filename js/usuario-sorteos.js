@@ -78,7 +78,7 @@
     if($('slGiveawayLiveCount'))$('slGiveawayLiveCount').textContent=String(remaining.length);
     const list=$('slGiveawayLiveParticipants');
     if(list)list.innerHTML=remaining.length?remaining.slice(-120).reverse().map(p=>'<div class="sl-giveaway-person"><span>'+escapeHtml(p.name)+'</span><small>'+escapeHtml((p.platform||'chat').toUpperCase())+'</small></div>').join(''):'<p class="sl-giveaway-empty">No quedan participantes disponibles.</p>';
-    if($('slDrawWinner'))$('slDrawWinner').disabled=spinning||remaining.length<2;
+    if($('slDrawWinner'))$('slDrawWinner').disabled=spinning||participationOpen||remaining.length<2;
     syncPanelState(); if(push&&sessionStarted)syncOverlay();
   }
 
@@ -97,7 +97,7 @@
   }
 
   async function drawWinner(){
-    if(spinning)return;const weighted=chancePool();if(remainingParticipants().length<2||!weighted.length)return;
+    if(spinning||participationOpen)return;const weighted=chancePool();if(remainingParticipants().length<2||!weighted.length)return;
     sessionStarted=true;overlayVisible=true;spinning=true;winner=null;winnerMessages=[];syncVisibilityButton();syncPanelState();
     const selected=pick(weighted),track=$('slGiveawayReelTrack'),shell=$('slGiveawayReel');
     if($('slDrawWinner'))$('slDrawWinner').disabled=true;
@@ -118,8 +118,18 @@
     renderWinnerHistory();syncParticipants({push:false});
     await syncOverlay({visible:overlayVisible,phase:'celebrating',winner,sequence:lastSequence,spinId});
     await new Promise(r=>setTimeout(r,5000));
-    if(sessionStarted&&winnerKey(winner)===winnerKey(selected))await syncOverlay({visible:overlayVisible,phase:'winner',winner,sequence:lastSequence,spinId});
-    if($('slDrawWinner')){$('slDrawWinner').disabled=remainingParticipants().length<2;$('slDrawWinner').textContent='SORTEAR OTRO GANADOR'}
+    if(sessionStarted&&winnerKey(winner)===winnerKey(selected)){
+      if(simulatedParticipants.length){
+        winnerMessages=[
+          {id:crypto.randomUUID(),username:selected.name,message:'¡Hola! Sí, gané 😄',platform:selected.platform||''},
+          {id:crypto.randomUUID(),username:selected.name,message:'Qué suerte, muchas gracias por el sorteo.',platform:selected.platform||''},
+          {id:crypto.randomUUID(),username:selected.name,message:'Mi Instagram es @'+norm(selected.name).replace(/[^a-z0-9]/g,'')+'.',platform:selected.platform||''}
+        ];
+        renderWinnerMessages();
+      }
+      await syncOverlay({visible:overlayVisible,phase:'winner',winner,sequence:lastSequence,spinId,winnerMessages:[...winnerMessages]});
+    }
+    if($('slDrawWinner')){$('slDrawWinner').disabled=participationOpen||remainingParticipants().length<2;$('slDrawWinner').textContent='SORTEAR OTRO GANADOR'}
     syncPanelState();
   }
 
@@ -174,13 +184,13 @@
     if(!sessionStarted||!participationOpen||spinning)return;
     if(simulatedParticipants.length)participationOpen=false;
     else {const ok=await window.SanLeanStreamTools?.closeGiveaway?.();if(!ok)return;participationOpen=false}
-    if($('giveawayState'))$('giveawayState').textContent='CERRADO';syncPanelState();syncOverlay({visible:overlayVisible,statusLabel:'CERRADO'});
+    if($('giveawayState'))$('giveawayState').textContent='CERRADO';syncPanelState();syncParticipants({push:false});syncOverlay({visible:overlayVisible,statusLabel:'CERRADO'});
   }
   async function reopenParticipation(){
     if(!sessionStarted||participationOpen||spinning)return;
     const ok=simulatedParticipants.length?true:await window.SanLeanStreamTools?.reopenGiveaway?.();if(!ok)return;
     participationOpen=true;if($('giveawayState'))$('giveawayState').textContent=simulatedParticipants.length?'ABIERTO · SIMULACIÓN':'ABIERTO';
-    syncPanelState();syncOverlay({visible:overlayVisible,statusLabel:$('giveawayState')?.textContent||'ABIERTO',phase:winner?'winner':'open'});
+    syncPanelState();syncParticipants({push:false});syncOverlay({visible:overlayVisible,statusLabel:$('giveawayState')?.textContent||'ABIERTO',phase:winner?'winner':'open'});
   }
   async function toggleParticipation(){if(participationOpen)await closeParticipation();else await reopenParticipation()}
 
@@ -231,7 +241,7 @@
       '<div class="sl-giveaway-live-head"><div><span class="sl-giveaway-kicker">SORTEO EN VIVO</span><h3>SELECCIÓN DE GANADOR</h3><p>Los participantes validados aparecen a la izquierda. Al sortear, el visor ocupa el protagonismo hasta detenerse en el ganador.</p></div><button id="slSimulateGiveaway" type="button" class="module-secondary">SIMULAR 45 PARTICIPANTES</button></div>'+
       '<div class="sl-giveaway-session-strip"><span>ESTADO</span><strong id="slGiveawaySessionState">SIN INICIAR</strong></div>'+
       '<div class="sl-giveaway-layout"><aside class="sl-giveaway-column sl-giveaway-participants"><div class="sl-giveaway-column-head"><span>PARTICIPANTES DISPONIBLES</span><strong id="slGiveawayLiveCount">0</strong></div><div id="slGiveawayLiveParticipants" class="sl-giveaway-scroll"></div></aside>'+
-      '<div class="sl-giveaway-center"><div id="slGiveawayReel" class="sl-giveaway-reel"><div class="sl-giveaway-selection-band"></div><div class="sl-giveaway-reel-mask top"></div><div class="sl-giveaway-reel-mask bottom"></div><div id="slGiveawayReelTrack" class="sl-giveaway-reel-track"><div class="sl-giveaway-reel-row is-placeholder">ESPERANDO SORTEO</div></div></div><div class="sl-giveaway-draw-actions"><button id="slDrawWinner" type="button" class="module-primary" disabled>SORTEAR GANADOR</button><button id="slParticipationToggle" type="button" class="module-secondary" disabled>CERRAR PARTICIPACIÓN</button></div></div>'+
+      '<div class="sl-giveaway-center"><div id="slGiveawayReel" class="sl-giveaway-reel"><div class="sl-giveaway-selection-band"></div><div class="sl-giveaway-reel-mask top"></div><div class="sl-giveaway-reel-mask bottom"></div><div id="slGiveawayReelTrack" class="sl-giveaway-reel-track"><div class="sl-giveaway-reel-row is-placeholder">ESPERANDO SORTEO</div></div></div><div class="sl-giveaway-draw-actions"><button id="slParticipationToggle" type="button" class="module-secondary" disabled>CERRAR PARTICIPACIÓN</button><button id="slDrawWinner" type="button" class="module-primary" disabled>SORTEAR GANADOR</button></div></div>'+
       '<aside class="sl-giveaway-column sl-giveaway-winner"><span class="sl-giveaway-kicker">GANADOR ACTUAL</span><div class="sl-giveaway-winner-name" id="slGiveawayWinnerName">—</div><div class="sl-giveaway-winner-platform" id="slGiveawayWinnerPlatform"></div><div class="sl-giveaway-chat-title">MENSAJES DEL GANADOR</div><div id="slWinnerMessages" class="sl-giveaway-winner-chat"><p class="sl-giveaway-empty">Cuando haya ganador, sus mensajes nuevos aparecerán acá.</p></div></aside></div>'+
       '<div class="sl-giveaway-session-history"><span>GANADORES DE ESTA SESIÓN</span><div id="slGiveawayWinners"><p class="sl-giveaway-empty">Todavía no hay ganadores en esta sesión.</p></div></div>'+
       '<div class="sl-giveaway-session-actions"><button id="slToggleGiveawayObs" type="button" class="module-secondary">OCULTAR EN OBS</button><button id="slFinalizeGiveaway" type="button" class="module-secondary sl-giveaway-finalize">FINALIZAR SORTEO</button></div>';
