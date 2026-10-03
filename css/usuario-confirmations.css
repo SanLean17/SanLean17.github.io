@@ -1,0 +1,18 @@
+/* SANLEAN — confirmación canónica: acción segura izquierda, finalización/destructiva derecha. */
+.user-page .sl-system-confirm .confirm-dialog{width:min(560px,100%)}
+.user-page .sl-system-confirm-actions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:12px!important}
+.user-page .sl-system-confirm-actions button{
+  height:44px!important;padding:0 20px!important;border-radius:999px!important;
+  font:800 13px/1 Montserrat,Arial,sans-serif!important
+}
+.user-page .sl-system-confirm-actions #slSystemConfirmCancel{
+  border:1px solid #ff003c!important;background:transparent!important;color:#fff!important
+}
+.user-page .sl-system-confirm-actions #slSystemConfirmCancel:hover,
+.user-page .sl-system-confirm-actions #slSystemConfirmCancel:focus-visible{
+  background:#ff003c!important;color:#fff!important;outline:none
+}
+.user-page .sl-system-confirm-actions #slSystemConfirmAccept{
+  border:1px solid #ff003c!important;background:#ff003c!important;color:#fff!important
+}
+@media(max-width:560px){.user-page .sl-system-confirm-actions{grid-template-columns:1fr!important}}
