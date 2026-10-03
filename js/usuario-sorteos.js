@@ -120,10 +120,12 @@
     await new Promise(r=>setTimeout(r,5000));
     if(sessionStarted&&winnerKey(winner)===winnerKey(selected)){
       if(simulatedParticipants.length){
+        const demoBadges=[...(selected.isVip?['VIP']:[]),...(selected.isSubscriber?['SUB']:[])];
+        const demoColor=selected.isVip?'#8f6cff':selected.isSubscriber?'#58a6ff':'#ffffff';
         winnerMessages=[
-          {id:crypto.randomUUID(),username:selected.name,message:'¡Hola! Sí, gané 😄',platform:selected.platform||''},
-          {id:crypto.randomUUID(),username:selected.name,message:'Qué suerte, muchas gracias por el sorteo.',platform:selected.platform||''},
-          {id:crypto.randomUUID(),username:selected.name,message:'Mi Instagram es @'+norm(selected.name).replace(/[^a-z0-9]/g,'')+'.',platform:selected.platform||''}
+          {id:crypto.randomUUID(),username:selected.name,message:'¡Hola! Sí, gané 😄',platform:selected.platform||'',color:demoColor,badges:demoBadges},
+          {id:crypto.randomUUID(),username:selected.name,message:'Qué suerte, muchas gracias por el sorteo.',platform:selected.platform||'',color:demoColor,badges:demoBadges},
+          {id:crypto.randomUUID(),username:selected.name,message:'Mi Instagram es @'+norm(selected.name).replace(/[^a-z0-9]/g,'')+'.',platform:selected.platform||'',color:demoColor,badges:demoBadges}
         ];
         renderWinnerMessages();
       }
@@ -143,7 +145,9 @@
     host.innerHTML='';
     winnerMessages.forEach(msg=>{
       const row=document.createElement('div');row.className='sl-giveaway-winner-message';
-      const p=document.createElement('p'),strong=document.createElement('strong');strong.textContent=msg.username+': ';p.append(strong,document.createTextNode(msg.message||''));
+      const p=document.createElement('p'),identity=document.createElement('span');identity.className='sl-giveaway-chat-identity';
+      (Array.isArray(msg.badges)?msg.badges:[]).forEach(label=>{const badge=document.createElement('i');badge.className='sl-giveaway-chat-badge';badge.textContent=label;identity.appendChild(badge)});
+      const strong=document.createElement('strong');strong.textContent=msg.username+': ';if(msg.color)strong.style.color=msg.color;identity.appendChild(strong);p.append(identity,document.createTextNode(msg.message||''));
       const remove=document.createElement('button');remove.type='button';remove.className='sl-giveaway-message-remove';remove.setAttribute('aria-label','Ocultar mensaje del overlay');remove.textContent='×';
       remove.onclick=()=>{winnerMessages=winnerMessages.filter(x=>x.id!==msg.id);renderWinnerMessages();syncOverlay({winnerMessages:[...winnerMessages]})};
       row.append(p,remove);host.append(row);
@@ -151,7 +155,7 @@
   }
   function receiveWinnerMessage(detail){
     if(!winner||!detail||norm(detail.username)!==norm(winner.name)||(winner.platform&&norm(detail.platform)!==norm(winner.platform)))return;
-    winnerMessages.push({id:crypto.randomUUID(),username:detail.username,message:detail.message||'',platform:detail.platform||''});
+    winnerMessages.push({id:crypto.randomUUID(),username:detail.username,message:detail.message||'',platform:detail.platform||'',color:detail.color||'',badges:Array.isArray(detail.badges)?detail.badges:[]});
     if(winnerMessages.length>12)winnerMessages.shift();renderWinnerMessages();syncOverlay({winnerMessages:[...winnerMessages]});
   }
 
@@ -168,6 +172,20 @@
       box.insertAdjacentElement('afterend',chance);
       ['subscriberDoubleChance','vipDoubleChance'].forEach(id=>$(id)?.addEventListener('change',()=>{if(sessionStarted)syncOverlay()}));
     }
+  }
+
+  function arrangeConfig(){
+    const panel=$('streamGiveawaysPanel'),box=panel?.querySelector(':scope > .module-box');
+    if(!box||box.querySelector('.sl-giveaway-config-grid'))return;
+    const keyword=$('giveawayKeyword')?.closest('label'),platform=$('giveawayPlatform')?.closest('label'),follower=$('followerDays')?.closest('label'),filters=box.querySelector('.eligibility-box'),chance=$('giveawayChanceBox');
+    if(!keyword||!platform||!follower||!filters||!chance)return;
+    const grid=document.createElement('div');grid.className='sl-giveaway-config-grid';
+    const fields=document.createElement('div');fields.className='sl-giveaway-config-fields';
+    const options=document.createElement('div');options.className='sl-giveaway-config-options';
+    fields.append(keyword,platform,follower);options.append(filters,chance);grid.append(fields,options);
+    const firstFields=box.querySelector('.module-fields');if(firstFields)firstFields.insertAdjacentElement('beforebegin',grid);else box.prepend(grid);
+    [...box.querySelectorAll('.module-fields')].forEach(row=>{if(!row.children.length)row.remove()});
+    box.querySelector('.giveaway-live')?.remove();
   }
 
   function simulateParticipants(){
@@ -197,6 +215,24 @@
   function syncVisibilityButton(){const btn=$('slToggleGiveawayObs');if(btn)btn.textContent=overlayVisible?'OCULTAR EN OBS':'MOSTRAR EN OBS'}
   async function toggleObs(){if(!sessionStarted)return;overlayVisible=!overlayVisible;syncVisibilityButton();await syncOverlay({visible:overlayVisible})}
 
+  async function cancelGiveaway(){
+    if(spinning||!sessionStarted)return;
+    const confirm=window.SanLeanConfirm?.open?await window.SanLeanConfirm.open({
+      eyebrow:'SORTEOS',
+      title:'CANCELAR SORTEO',
+      text:'¿Querés cancelar esta sesión? Se descartarán participantes y ganadores de esta sesión para volver a la configuración.',
+      confirmLabel:'CANCELAR SORTEO'
+    }):true;
+    if(!confirm)return;
+    if(sessionStarted&&!simulatedParticipants.length)await window.SanLeanStreamTools?.finishGiveaway?.();
+    await syncOverlay({visible:false,phase:'finished',statusLabel:'CANCELADO'});
+    sessionStarted=false;participationOpen=false;overlayVisible=false;simulatedParticipants=[];participants=[];winner=null;winners=[];winnerMessages=[];lastSequence=[];spinId='';
+    if($('giveawayState'))$('giveawayState').textContent='SIN INICIAR';
+    if($('slDrawWinner')){$('slDrawWinner').disabled=true;$('slDrawWinner').textContent='SORTEAR GANADOR'}
+    $('slGiveawayWinnerName').textContent='—';$('slGiveawayWinnerPlatform').textContent='';$('slGiveawayReelTrack').innerHTML='<div class="sl-giveaway-reel-row is-placeholder">ESPERANDO SORTEO</div>';
+    renderWinnerHistory();renderWinnerMessages();syncParticipants({push:false});syncVisibilityButton();syncPanelState();
+  }
+
   async function finalizeGiveaway(){
     if(spinning||!sessionStarted)return;
     const confirm=window.SanLeanConfirm?.open?await window.SanLeanConfirm.open({
@@ -219,6 +255,7 @@
     $('slParticipationToggle')?.addEventListener('click',toggleParticipation);
     $('slSimulateGiveaway')?.addEventListener('click',simulateParticipants);
     $('slToggleGiveawayObs')?.addEventListener('click',toggleObs);
+    $('slCancelGiveaway')?.addEventListener('click',cancelGiveaway);
     $('slFinalizeGiveaway')?.addEventListener('click',finalizeGiveaway);
     $('startGiveaway')?.addEventListener('click',()=>setTimeout(()=>{if(!$('startGiveaway')?.disabled)return;sessionStarted=true;participationOpen=true;overlayVisible=true;syncVisibilityButton();syncPanelState();syncOverlay({visible:true,statusLabel:'ABIERTO'})},450));
   }
@@ -235,7 +272,7 @@
   function mount(){
     const panel=$('streamGiveawaysPanel'),nativeList=$('giveawayParticipants'),config=panel?.querySelector(':scope > .module-box');
     if(!panel||!nativeList||!config||$('slGiveawayLive'))return;
-    enhanceFilters();
+    enhanceFilters();arrangeConfig();
     const live=document.createElement('section');live.id='slGiveawayLive';live.className='sl-giveaway-live ui-content-box';
     live.innerHTML=
       '<div class="sl-giveaway-live-head"><div><span class="sl-giveaway-kicker">SORTEO EN VIVO</span><h3>SELECCIÓN DE GANADOR</h3><p>Los participantes validados aparecen a la izquierda. Al sortear, el visor ocupa el protagonismo hasta detenerse en el ganador.</p></div><button id="slSimulateGiveaway" type="button" class="module-secondary">SIMULAR 45 PARTICIPANTES</button></div>'+
@@ -244,7 +281,7 @@
       '<div class="sl-giveaway-center"><div id="slGiveawayReel" class="sl-giveaway-reel"><div class="sl-giveaway-selection-band"></div><div class="sl-giveaway-reel-mask top"></div><div class="sl-giveaway-reel-mask bottom"></div><div id="slGiveawayReelTrack" class="sl-giveaway-reel-track"><div class="sl-giveaway-reel-row is-placeholder">ESPERANDO SORTEO</div></div></div><div class="sl-giveaway-draw-actions"><button id="slParticipationToggle" type="button" class="module-secondary" disabled>CERRAR PARTICIPACIÓN</button><button id="slDrawWinner" type="button" class="module-primary" disabled>SORTEAR GANADOR</button></div></div>'+
       '<aside class="sl-giveaway-column sl-giveaway-winner"><span class="sl-giveaway-kicker">GANADOR ACTUAL</span><div class="sl-giveaway-winner-name" id="slGiveawayWinnerName">—</div><div class="sl-giveaway-winner-platform" id="slGiveawayWinnerPlatform"></div><div class="sl-giveaway-chat-title">MENSAJES DEL GANADOR</div><div id="slWinnerMessages" class="sl-giveaway-winner-chat"><p class="sl-giveaway-empty">Cuando haya ganador, sus mensajes nuevos aparecerán acá.</p></div></aside></div>'+
       '<div class="sl-giveaway-session-history"><span>GANADORES DE ESTA SESIÓN</span><div id="slGiveawayWinners"><p class="sl-giveaway-empty">Todavía no hay ganadores en esta sesión.</p></div></div>'+
-      '<div class="sl-giveaway-session-actions"><button id="slToggleGiveawayObs" type="button" class="module-secondary">OCULTAR EN OBS</button><button id="slFinalizeGiveaway" type="button" class="module-secondary sl-giveaway-finalize">FINALIZAR SORTEO</button></div>';
+      '<div class="sl-giveaway-session-actions"><div class="sl-giveaway-session-actions-left"><button id="slToggleGiveawayObs" type="button" class="module-secondary">OCULTAR EN OBS</button></div><div class="sl-giveaway-session-actions-right"><button id="slCancelGiveaway" type="button" class="module-secondary">CANCELAR SORTEO</button><button id="slFinalizeGiveaway" type="button" class="module-secondary sl-giveaway-finalize">FINALIZAR SORTEO</button></div></div>';
     config.insertAdjacentElement('afterend',live);nativeList.classList.add('sl-giveaway-native-list');
     $('slDrawWinner')?.addEventListener('click',drawWinner);bindSessionButtons();
     new MutationObserver(()=>{if(participationOpen)syncParticipants()}).observe(nativeList,{childList:true,subtree:true});
