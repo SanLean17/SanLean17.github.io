@@ -413,6 +413,10 @@ Una solicitud referida únicamente a USUARIO no debe modificar la WEB pública s
 - Los mensajes del ganador pueden ocultarse de la salida OBS desde USUARIO sin borrar el mensaje real de Twitch/Kick.
 - `OCULTAR EN OBS / MOSTRAR EN OBS` cambia sólo la visibilidad. `FINALIZAR SORTEO` termina la sesión.
 - La configuración inicial se oculta mientras existe una sesión activa y vuelve a mostrarse cuando el sorteo finaliza.
+- La vista `SORTEO EN VIVO` no se muestra antes de iniciar una sesión. En estado inicial sólo aparecen la creación/configuración y el historial.
+- `ANTIGÜEDAD MÍNIMA COMO SEGUIDOR` se expresa en meses en la interfaz y los inputs numéricos no muestran spinners/flechas nativas.
+- Al cerrar la participación, la lista de participantes del overlay recorre lentamente los nombres disponibles; mientras está abierta, los nuevos participantes aparecen en vivo.
+- `CANCELAR/DESCARTAR` una sesión no la guarda en historial; `FINALIZAR` sí la guarda cuando corresponde.
 
 ### Confirmación obligatoria al finalizar
 
