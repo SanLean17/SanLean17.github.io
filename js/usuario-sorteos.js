@@ -2,7 +2,7 @@
 (()=>{
   const $=id=>document.getElementById(id);
   const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
-  let participants=[],simulatedParticipants=[],winner=null,winners=[],winnerMessages=[],spinning=false,lastSequence=[],spinId='',sessionStarted=false,participationOpen=false,overlayVisible=true;
+  let participants=[],simulatedParticipants=[],winner=null,winners=[],winnerMessages=[],spinning=false,lastSequence=[],spinId='',sessionStarted=false,participationOpen=false,overlayVisible=true,testMode=false;
   const rowHeight=56;
   const demoNames=['Pedro_33','Agusneta','MikaDBD','FengMain','NeaRunner','TotemHunter','MaxiGG','SableWard','YuiPower','DwightPro','ClaudetteX','JakeParkARG','LaurieStrode','BillMain','AdaWong','LeonRPD','MikaelaMoon','Vittorio77','NicolasCageFan','RipleyMain','LaraCroft','TrevorB','TaurieCain','RickGrimes','Michonne','Eleven011','DustinH','AuroraLive','PyramidFan','FreddyARG','UnknownMain','GhostFaceTV','OniRush','HuntressAxe','TrapperKing','NurseBlink','PlagueMain','KnightGuard','ChuckyGG','VecnaLich','Wesker7','ArtistCrow','DredgeNight','SadakoTV','NemesisRPD'];
 
@@ -227,7 +227,7 @@
     const mode=platformMode();
     simulatedParticipants=demoNames.map((name,i)=>({name,platform:mode==='both'?(i%4===0?'kick':'twitch'):mode,isSubscriber:i%5===0||i%9===0,isVip:i%7===0}));
     if(!$('giveawayKeyword').value.trim())$('giveawayKeyword').value='TULIPÁN';
-    sessionStarted=true;participationOpen=true;overlayVisible=true;
+    testMode=true;sessionStarted=true;participationOpen=true;overlayVisible=true;
     if($('giveawayState'))$('giveawayState').textContent='ABIERTO · SIMULACIÓN';
     syncVisibilityButton();syncParticipants({push:false});syncPanelState();
     syncOverlay({visible:true,phase:winner?'winner':'open',statusLabel:'ABIERTO · SIMULACIÓN'});
@@ -235,13 +235,13 @@
 
   async function closeParticipation(){
     if(!sessionStarted||!participationOpen||spinning)return;
-    if(simulatedParticipants.length)participationOpen=false;
+    if(testMode||simulatedParticipants.length)participationOpen=false;
     else {const ok=await window.SanLeanStreamTools?.closeGiveaway?.();if(!ok)return;participationOpen=false}
     if($('giveawayState'))$('giveawayState').textContent='CERRADO';syncPanelState();syncParticipants({push:false});syncOverlay({visible:overlayVisible,statusLabel:'CERRADO'});
   }
   async function reopenParticipation(){
     if(!sessionStarted||participationOpen||spinning)return;
-    const ok=simulatedParticipants.length?true:await window.SanLeanStreamTools?.reopenGiveaway?.();if(!ok)return;
+    const ok=(testMode||simulatedParticipants.length)?true:await window.SanLeanStreamTools?.reopenGiveaway?.();if(!ok)return;
     participationOpen=true;if($('giveawayState'))$('giveawayState').textContent=simulatedParticipants.length?'ABIERTO · SIMULACIÓN':'ABIERTO';
     syncPanelState();syncParticipants({push:false});syncOverlay({visible:overlayVisible,statusLabel:$('giveawayState')?.textContent||'ABIERTO',phase:winner?'winner':'open'});
   }
@@ -260,9 +260,9 @@
       confirmLabel:'DESCARTAR SORTEO'
     }):true;
     if(!confirm)return;
-    if(sessionStarted&&!simulatedParticipants.length)await window.SanLeanStreamTools?.finishGiveaway?.();
+    if(sessionStarted&&!testMode)await window.SanLeanStreamTools?.finishGiveaway?.();
     await syncOverlay({visible:false,phase:'finished',statusLabel:'CANCELADO'});
-    sessionStarted=false;participationOpen=false;overlayVisible=false;simulatedParticipants=[];participants=[];winner=null;winners=[];winnerMessages=[];lastSequence=[];spinId='';
+    sessionStarted=false;participationOpen=false;overlayVisible=false;testMode=false;simulatedParticipants=[];participants=[];winner=null;winners=[];winnerMessages=[];lastSequence=[];spinId='';
     if($('giveawayState'))$('giveawayState').textContent='SIN INICIAR';
     if($('slDrawWinner')){$('slDrawWinner').disabled=true;$('slDrawWinner').textContent='SORTEAR GANADOR'}
     $('slGiveawayWinnerName').textContent='—';$('slGiveawayWinnerPlatform').textContent='';$('slGiveawayReelTrack').innerHTML='<div class="sl-giveaway-reel-row is-placeholder">ESPERANDO SORTEO</div>';
@@ -278,9 +278,9 @@
       confirmLabel:'FINALIZAR SORTEO'
     }):true;
     if(!confirm)return;
-    if(sessionStarted&&!simulatedParticipants.length)await window.SanLeanStreamTools?.finishGiveaway?.();
+    if(sessionStarted&&!testMode)await window.SanLeanStreamTools?.finishGiveaway?.();
     await syncOverlay({visible:false,phase:'finished',statusLabel:'FINALIZADO'});
-    sessionStarted=false;participationOpen=false;overlayVisible=false;simulatedParticipants=[];participants=[];winner=null;winners=[];winnerMessages=[];lastSequence=[];spinId='';
+    sessionStarted=false;participationOpen=false;overlayVisible=false;testMode=false;simulatedParticipants=[];participants=[];winner=null;winners=[];winnerMessages=[];lastSequence=[];spinId='';
     if($('giveawayState'))$('giveawayState').textContent='SIN INICIAR';
     if($('slDrawWinner')){$('slDrawWinner').disabled=true;$('slDrawWinner').textContent='SORTEAR GANADOR'}
     $('slGiveawayWinnerName').textContent='—';$('slGiveawayWinnerPlatform').textContent='';$('slGiveawayReelTrack').innerHTML='<div class="sl-giveaway-reel-row is-placeholder">ESPERANDO SORTEO</div>';
@@ -293,13 +293,25 @@
     $('slToggleGiveawayObs')?.addEventListener('click',toggleObs);
     $('slCancelGiveaway')?.addEventListener('click',cancelGiveaway);
     $('slFinalizeGiveaway')?.addEventListener('click',finalizeGiveaway);
-    $('startGiveaway')?.addEventListener('click',()=>setTimeout(()=>{if(!$('startGiveaway')?.disabled)return;sessionStarted=true;participationOpen=true;overlayVisible=true;syncVisibilityButton();syncPanelState();syncOverlay({visible:true,statusLabel:'ABIERTO'})},450));
+    $('startGiveaway')?.addEventListener('click',()=>setTimeout(()=>{
+      const start=$('startGiveaway'),status=$('giveawayStatus');
+      if(start?.disabled){
+        testMode=false;sessionStarted=true;participationOpen=true;overlayVisible=true;syncVisibilityButton();syncPanelState();syncOverlay({visible:true,statusLabel:'ABIERTO'});return;
+      }
+      if(String(status?.textContent||'').includes('metadatos')){
+        testMode=true;sessionStarted=true;participationOpen=true;overlayVisible=true;
+        if($('giveawayState'))$('giveawayState').textContent='ABIERTO · MODO PRUEBA';
+        status.textContent='Modo de prueba activo: podés simular participantes mientras terminamos la validación real de filtros de Twitch/Kick.';
+        status.className='module-status';
+        syncVisibilityButton();syncPanelState();syncOverlay({visible:true,statusLabel:'ABIERTO · MODO PRUEBA'});
+      }
+    },500));
   }
 
   function restoreOverlayState(){
     const overlay=window.SanLeanStreamTools?.getOverlays?.().find(o=>o.kind==='giveaway'),s=overlay?.state||{};
     if(!overlay||s.phase==='finished'||!s.phase)return;
-    sessionStarted=true;participationOpen=String(s.statusLabel||'').includes('ABIERTO');overlayVisible=s.visible!==false;winner=s.winner||null;winners=Array.isArray(s.winners)?s.winners:[];winnerMessages=Array.isArray(s.winnerMessages)?s.winnerMessages:[];lastSequence=Array.isArray(s.sequence)?s.sequence:[];spinId=s.spinId||'';
+    sessionStarted=true;testMode=String(s.statusLabel||'').includes('PRUEBA')||String(s.statusLabel||'').includes('SIMULACIÓN');participationOpen=String(s.statusLabel||'').includes('ABIERTO');overlayVisible=s.visible!==false;winner=s.winner||null;winners=Array.isArray(s.winners)?s.winners:[];winnerMessages=Array.isArray(s.winnerMessages)?s.winnerMessages:[];lastSequence=Array.isArray(s.sequence)?s.sequence:[];spinId=s.spinId||'';
     if($('subscriberDoubleChance'))$('subscriberDoubleChance').checked=!!s.subscriberDoubleChance;
     if($('vipDoubleChance'))$('vipDoubleChance').checked=!!s.vipDoubleChance;
     renderWinnerHistory();renderWinnerMessages();syncVisibilityButton();syncPanelState();
