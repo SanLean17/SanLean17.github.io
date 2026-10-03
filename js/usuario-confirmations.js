@@ -34,13 +34,14 @@
     return modal;
   }
   window.SanLeanConfirm={
-    open({eyebrow='CONFIRMACIÓN',title='CONFIRMAR ACCIÓN',text='',confirmLabel='CONFIRMAR'}={}){
+    open({eyebrow='CONFIRMACIÓN',title='CONFIRMAR ACCIÓN',text='',confirmLabel='CONFIRMAR',cancelLabel='CANCELAR'}={}){
       const modal=ensure();
       if(resolver)resolver(false);
       lastFocus=document.activeElement;
       modal.querySelector('#slSystemConfirmEyebrow').textContent=eyebrow;
       modal.querySelector('#slSystemConfirmTitle').textContent=title;
       modal.querySelector('#slSystemConfirmText').textContent=text;
+      modal.querySelector('#slSystemConfirmCancel').textContent=cancelLabel;
       modal.querySelector('#slSystemConfirmAccept').textContent=confirmLabel;
       modal.hidden=false;
       requestAnimationFrame(()=>modal.querySelector('#slSystemConfirmCancel')?.focus());
