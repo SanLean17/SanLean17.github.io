@@ -47,6 +47,8 @@
 
   function syncPanelState(){
     const panel=$('streamGiveawaysPanel'); if(panel)panel.classList.toggle('is-session-active',sessionStarted);
+    const live=$('slGiveawayLive');if(live)live.hidden=!sessionStarted;
+    const history=$('slGiveawayHistory');if(history)history.hidden=sessionStarted;
     const toggle=$('slParticipationToggle');
     if(toggle){
       toggle.disabled=!sessionStarted||spinning;
@@ -179,6 +181,9 @@
     if(!box||box.querySelector('.sl-giveaway-config-grid'))return;
     const keyword=$('giveawayKeyword')?.closest('label'),platform=$('giveawayPlatform')?.closest('label'),follower=$('followerDays')?.closest('label'),filters=box.querySelector('.eligibility-box'),chance=$('giveawayChanceBox');
     if(!keyword||!platform||!follower||!filters||!chance)return;
+    if(follower.firstChild&&follower.firstChild.nodeType===Node.TEXT_NODE)follower.firstChild.nodeValue='ANTIGÜEDAD MÍNIMA COMO SEGUIDOR (MESES)';
+    const title=document.createElement('div');title.className='sl-giveaway-config-head';title.innerHTML='<span>SORTEOS</span><h3>CREACIÓN DEL SORTEO</h3><p>Definí la palabra clave, la plataforma y los requisitos antes de abrir la participación.</p>';
+    box.prepend(title);
     const grid=document.createElement('div');grid.className='sl-giveaway-config-grid';
     const fields=document.createElement('div');fields.className='sl-giveaway-config-fields';
     const options=document.createElement('div');options.className='sl-giveaway-config-options';
@@ -186,6 +191,36 @@
     const firstFields=box.querySelector('.module-fields');if(firstFields)firstFields.insertAdjacentElement('beforebegin',grid);else box.prepend(grid);
     [...box.querySelectorAll('.module-fields')].forEach(row=>{if(!row.children.length)row.remove()});
     box.querySelector('.giveaway-live')?.remove();
+  }
+
+  function renderGiveawayHistory(){
+    const host=$('slGiveawayHistoryList'),empty=$('slGiveawayHistoryEmpty'),overlay=window.SanLeanStreamTools?.getOverlays?.().find(o=>o.kind==='giveaway');
+    if(!host||!empty)return;
+    const history=Array.isArray(overlay?.settings?.history)?[...overlay.settings.history].reverse():[];
+    empty.hidden=history.length>0;
+    host.innerHTML=history.map(item=>{
+      const date=new Date(item.finishedAt||item.createdAt||Date.now());
+      const label=Number.isNaN(date.getTime())?'—':new Intl.DateTimeFormat('es-AR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(date);
+      const names=(Array.isArray(item.winners)?item.winners:[]).map(w=>w.name).filter(Boolean);
+      return '<div class="sl-giveaway-history-row"><div><strong>'+escapeHtml(item.keyword||'SORTEO')+'</strong><span>'+escapeHtml(label)+'</span></div><b>'+Number(item.participantCount||0)+' participantes</b><p>'+(names.length?'Ganadores: '+escapeHtml(names.join(', ')):'Sin ganadores registrados')+'</p></div>';
+    }).join('');
+  }
+
+  async function saveGiveawayHistory(){
+    const db=window.sanleanSupabase,overlay=window.SanLeanStreamTools?.getOverlays?.().find(o=>o.kind==='giveaway');
+    if(!db||!overlay)return;
+    const record={
+      id:crypto.randomUUID(),
+      keyword:$('giveawayKeyword')?.value.trim()||'SORTEO',
+      platform:platformMode(),
+      participantCount:participants.length,
+      winners:winners.map(w=>({name:w.name,platform:w.platform||''})),
+      finishedAt:new Date().toISOString()
+    };
+    const history=[...(Array.isArray(overlay.settings?.history)?overlay.settings.history:[]),record].slice(-30);
+    const settings={...(overlay.settings||{}),history};
+    const {data,error}=await db.from('stream_overlays').update({settings,updated_at:new Date().toISOString()}).eq('id',overlay.id).select('settings').single();
+    if(!error){overlay.settings=data?.settings||settings;renderGiveawayHistory()}
   }
 
   function simulateParticipants(){
@@ -219,9 +254,10 @@
     if(spinning||!sessionStarted)return;
     const confirm=window.SanLeanConfirm?.open?await window.SanLeanConfirm.open({
       eyebrow:'SORTEOS',
-      title:'CANCELAR SORTEO',
-      text:'¿Querés cancelar esta sesión? Se descartarán participantes y ganadores de esta sesión para volver a la configuración.',
-      confirmLabel:'CANCELAR SORTEO'
+      title:'DESCARTAR SORTEO',
+      text:'Se descartará la sesión actual y volverás a la configuración sin guardarla en el historial.',
+      cancelLabel:'VOLVER',
+      confirmLabel:'DESCARTAR SORTEO'
     }):true;
     if(!confirm)return;
     if(sessionStarted&&!simulatedParticipants.length)await window.SanLeanStreamTools?.finishGiveaway?.();
@@ -273,7 +309,7 @@
     const panel=$('streamGiveawaysPanel'),nativeList=$('giveawayParticipants'),config=panel?.querySelector(':scope > .module-box');
     if(!panel||!nativeList||!config||$('slGiveawayLive'))return;
     enhanceFilters();arrangeConfig();
-    const live=document.createElement('section');live.id='slGiveawayLive';live.className='sl-giveaway-live ui-content-box';
+    const live=document.createElement('section');live.id='slGiveawayLive';live.className='sl-giveaway-live ui-content-box';live.hidden=true;
     live.innerHTML=
       '<div class="sl-giveaway-live-head"><div><span class="sl-giveaway-kicker">SORTEO EN VIVO</span><h3>SELECCIÓN DE GANADOR</h3><p>Los participantes validados aparecen a la izquierda. Al sortear, el visor ocupa el protagonismo hasta detenerse en el ganador.</p></div><button id="slSimulateGiveaway" type="button" class="module-secondary">SIMULAR 45 PARTICIPANTES</button></div>'+
       '<div class="sl-giveaway-session-strip"><span>ESTADO</span><strong id="slGiveawaySessionState">SIN INICIAR</strong></div>'+
@@ -282,13 +318,16 @@
       '<aside class="sl-giveaway-column sl-giveaway-winner"><span class="sl-giveaway-kicker">GANADOR ACTUAL</span><div class="sl-giveaway-winner-name" id="slGiveawayWinnerName">—</div><div class="sl-giveaway-winner-platform" id="slGiveawayWinnerPlatform"></div><div class="sl-giveaway-chat-title">MENSAJES DEL GANADOR</div><div id="slWinnerMessages" class="sl-giveaway-winner-chat"><p class="sl-giveaway-empty">Cuando haya ganador, sus mensajes nuevos aparecerán acá.</p></div></aside></div>'+
       '<div class="sl-giveaway-session-history"><span>GANADORES DE ESTA SESIÓN</span><div id="slGiveawayWinners"><p class="sl-giveaway-empty">Todavía no hay ganadores en esta sesión.</p></div></div>'+
       '<div class="sl-giveaway-session-actions"><div class="sl-giveaway-session-actions-left"><button id="slToggleGiveawayObs" type="button" class="module-secondary">OCULTAR EN OBS</button></div><div class="sl-giveaway-session-actions-right"><button id="slCancelGiveaway" type="button" class="module-secondary">CANCELAR SORTEO</button><button id="slFinalizeGiveaway" type="button" class="module-secondary sl-giveaway-finalize">FINALIZAR SORTEO</button></div></div>';
-    config.insertAdjacentElement('afterend',live);nativeList.classList.add('sl-giveaway-native-list');
+    config.insertAdjacentElement('afterend',live);
+    const history=document.createElement('section');history.id='slGiveawayHistory';history.className='sl-giveaway-history ui-content-box';history.innerHTML='<div class="sl-giveaway-history-head"><span>SORTEOS</span><h3>HISTORIAL DE SORTEOS</h3></div><div id="slGiveawayHistoryList" class="sl-giveaway-history-list"></div><p id="slGiveawayHistoryEmpty" class="sl-giveaway-empty">TODAVÍA NO HAY SORTEOS GUARDADOS.</p>';
+    live.insertAdjacentElement('afterend',history);
+    nativeList.classList.add('sl-giveaway-native-list');
     $('slDrawWinner')?.addEventListener('click',drawWinner);bindSessionButtons();
     new MutationObserver(()=>{if(participationOpen)syncParticipants()}).observe(nativeList,{childList:true,subtree:true});
-    restoreOverlayState();syncParticipants({push:false});syncPanelState();
+    restoreOverlayState();syncParticipants({push:false});renderGiveawayHistory();syncPanelState();
   }
 
   window.addEventListener('sanlean:chat-message',e=>receiveWinnerMessage(e.detail));
   window.addEventListener('DOMContentLoaded',mount,{once:true});
-  window.addEventListener('sanlean:overlays-updated',()=>{mount();restoreOverlayState();syncParticipants({push:false})});
+  window.addEventListener('sanlean:overlays-updated',()=>{mount();restoreOverlayState();syncParticipants({push:false});renderGiveawayHistory()});
 })();
