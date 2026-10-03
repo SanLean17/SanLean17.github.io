@@ -8,7 +8,7 @@ const root=path.resolve(__dirname,'..');
   page.on('pageerror',e=>errors.push(e.message));
   const participants=['TaeKojima','SanLean17','LunaGaming','LeoStream','NicoPlay','SofiLive','AlexDBD','Vale','Mati','Juli','Fer'].map(name=>({name,platform:'twitch'}));
   const finalThree=participants.slice(0,3);
-  let snapshot={kind:'giveaway',settings:{},state:{visible:true,phase:'open',keyword:'TULIPÁN',count:participants.length,participants,sequence:[],winner:null,platformMode:'both'}};
+  let snapshot={kind:'giveaway',settings:{},state:{visible:true,phase:'open',keyword:'tulipán',count:participants.length,participants,sequence:[],winner:null,platformMode:'both'}};
   await page.route('**/*',r=>{
    const u=new URL(r.request().url());
    if(u.hostname==='fixture.test')return r.fulfill({path:path.join(root,u.pathname),contentType:({'.css':'text/css','.js':'text/javascript','.html':'text/html'})[path.extname(u.pathname)]});
@@ -34,7 +34,7 @@ const root=path.resolve(__dirname,'..');
      return {center:center.toJSON(),reel:reel.toJSON(),textBounds,border:style('.obs-giveaway-center').borderTopColor,keywordBorder:style('.obs-giveaway-keyword').borderBottomWidth,reelBackground:style('.obs-giveaway-reel').backgroundColor,trackZ:+style('.obs-giveaway-track').zIndex,bandZ:+style('.obs-giveaway-band').zIndex,keywordTransform:style('.obs-giveaway-keyword strong').transform,sideVisible:style('.obs-giveaway-participants').display!=='none',winnerColor:phase==='open'?null:getComputedStyle(rows[1]).color,bodyBackground:style('body').backgroundColor,panels:[...document.querySelectorAll('.obs-giveaway-layout> *')].filter(e=>getComputedStyle(e).display!=='none').map(e=>e.getBoundingClientRect().toJSON())};
     },{phase});
     assert.equal(result.border,'rgba(255, 255, 255, 0.12)');
-    assert.equal(result.keywordBorder,'0px');assert.equal(result.reelBackground,'rgba(0, 0, 0, 0)');
+    assert.equal(result.keywordBorder,'1px');assert.equal(await page.locator('.obs-giveaway-keyword strong').textContent(),'TULIPÁN');assert.equal(result.reelBackground,'rgba(0, 0, 0, 0)');
     assert(result.trackZ>result.bandZ,'Text must render above the red band');
     if(result.sideVisible)assert.equal(result.keywordTransform,'matrix(1, 0, 0, 1, 0, 3)');
     assert.equal(result.bodyBackground,'rgba(0, 0, 0, 0)');

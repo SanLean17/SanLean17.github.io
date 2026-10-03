@@ -43,7 +43,7 @@ begin
  jsonb_build_object('source','verified_chat','restrictions_pending',coalesce(s.min_follower_days,0)>0 or coalesce(s.subscriber_only,false) or coalesce(s.vip_only,false) or coalesce(s.moderator_only,false))
  from public.stream_giveaway_sessions s
  where s.workspace_id=p_workspace and s.status='active' and s.platform in (p_platform,'both')
- and p_sent_at>=s.starts_at and lower(trim(p_message))=lower(trim(s.keyword))
+ and p_sent_at>=s.starts_at and lower(regexp_replace(normalize(trim(p_message),NFD),U&'[\0300-\036f]','','g'))=lower(regexp_replace(normalize(trim(s.keyword),NFD),U&'[\0300-\036f]','','g'))
  on conflict(session_id,platform,participant_external_id) do nothing;
 end $$;
 revoke all on function public.stream_chat_ingest(uuid,text,text,text,text,text,timestamptz) from public,anon,authenticated;

@@ -61,7 +61,7 @@
   async function syncOverlay(extra={}){
     const db=window.sanleanSupabase,overlay=window.SanLeanStreamTools?.getOverlays?.().find(o=>o.kind==='giveaway');
     if(!db||!overlay||!sessionStarted)return false;
-    const keyword=$('giveawayKeyword')?.value.trim()||'PEDRO',remaining=remainingParticipants();
+    const keyword=$('giveawayKeyword')?.value.trim().toUpperCase()||'PEDRO',remaining=remainingParticipants();
     const state={
       visible:overlayVisible,
       phase:spinning?'spinning':winner?'winner':'open',
@@ -202,7 +202,7 @@
       const date=new Date(item.finishedAt||item.createdAt||Date.now());
       const label=Number.isNaN(date.getTime())?'—':new Intl.DateTimeFormat('es-AR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(date);
       const names=(Array.isArray(item.winners)?item.winners:[]).map(w=>w.name).filter(Boolean);
-      return '<div class="sl-giveaway-history-row"><div><strong>'+escapeHtml(item.keyword||'SORTEO')+'</strong><span>'+escapeHtml(label)+'</span></div><b>'+Number(item.participantCount||0)+' participantes</b><p>'+(names.length?'Ganadores: '+escapeHtml(names.join(', ')):'Sin ganadores registrados')+'</p></div>';
+      return '<div class="sl-giveaway-history-row"><div><strong>'+escapeHtml(String(item.keyword||'SORTEO').toUpperCase())+'</strong><span>'+escapeHtml(label)+'</span></div><b>'+Number(item.participantCount||0)+' participantes</b><p>'+(names.length?'Ganadores: '+escapeHtml(names.join(', ')):'Sin ganadores registrados')+'</p></div>';
     }).join('');
   }
 
@@ -211,7 +211,7 @@
     if(!db||!overlay)return;
     const record={
       id:crypto.randomUUID(),
-      keyword:$('giveawayKeyword')?.value.trim()||'SORTEO',
+      keyword:$('giveawayKeyword')?.value.trim().toUpperCase()||'SORTEO',
       platform:platformMode(),
       participantCount:participants.length,
       winners:winners.map(w=>({name:w.name,platform:w.platform||''})),
@@ -321,6 +321,18 @@
   function mount(){
     const panel=$('streamGiveawaysPanel'),nativeList=$('giveawayParticipants'),config=panel?.querySelector(':scope > .module-box');
     if(!panel||!nativeList||!config||$('slGiveawayLive'))return;
+    const keywordInput=$('giveawayKeyword');
+    if(keywordInput){
+      const uppercaseKeyword=event=>{
+        if(event?.isComposing)return;
+        const start=keywordInput.selectionStart,end=keywordInput.selectionEnd;
+        keywordInput.value=keywordInput.value.toUpperCase();
+        if(start!==null)keywordInput.setSelectionRange(start,end);
+      };
+      keywordInput.addEventListener('input',uppercaseKeyword);
+      keywordInput.addEventListener('compositionend',uppercaseKeyword);
+      uppercaseKeyword();
+    }
     enhanceFilters();arrangeConfig();
     const live=document.createElement('section');live.id='slGiveawayLive';live.className='sl-giveaway-live ui-content-box';live.hidden=true;
     live.innerHTML=

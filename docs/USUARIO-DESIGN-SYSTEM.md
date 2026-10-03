@@ -396,6 +396,8 @@ Una solicitud referida únicamente a USUARIO no debe modificar la WEB pública s
 
 ## 13. SORTEOS — sesión, chances y salida OBS
 
+- La palabra clave se muestra y guarda en mayúsculas. El chat acepta la misma palabra sin distinguir mayúsculas, minúsculas ni acentos, incluso si el acento llega separado en Unicode.
+
 - Cada participante válido tiene **una sola participación base por sesión**, aunque escriba la palabra clave varias veces.
 - `CERRAR PARTICIPACIÓN` y `REABRIR PARTICIPACIÓN` son dos estados del **mismo botón**. Cerrada la participación, los mensajes nuevos con la palabra clave no agregan participantes. Al reabrir, pueden volver a sumarse nuevos usuarios conservando los anteriores.
 - El ganador de una sesión queda fuera del pool de los sorteos siguientes de esa misma sesión.
@@ -409,7 +411,7 @@ Una solicitud referida únicamente a USUARIO no debe modificar la WEB pública s
 - Fuente navegador recomendada para SORTEOS en OBS: **1920 × 1080 px**. El overlay está compuesto para esa referencia y debe escalarse desde OBS como una sola fuente, evitando redimensionados intermedios innecesarios.
 - La composición de SORTEOS queda **centrada dentro del lienzo 1920 × 1080**. El streamer puede reposicionar la fuente completa en OBS; el componente no se ancla al borde inferior del lienzo.
 - En estado normal se usan tres superficies hermanas, sin una caja exterior adicional: PARTICIPANTES, SORTEO (palabra clave + reel) y GANADOR. Las tres comparten la misma línea de base inferior.
-- La superficie central de OBS es continua: palabra clave y reel comparten un solo fondo, sin separador ni máscaras oscuras superpuestas. La palabra clave conserva su desplazamiento de 3 px hacia abajo.
+- La superficie central de OBS es continua: palabra clave y reel comparten un solo fondo, con un separador fino neutro entre palabra clave y reel, sin máscaras oscuras superpuestas. La palabra clave conserva su desplazamiento de 3 px hacia abajo.
 - Las tres cajas de SORTEOS usan borde neutro canónico; el rojo se conserva en acentos y en el visor del reel. El texto del reel se dibuja por encima del visor para mantener el blanco nítido durante giro, celebración y resultado.
 - El reel muestra tres nombres completos. Durante giro y celebración la caja central se ajusta al reel, sin espacio vacío inferior.
 - En la configuración previa, PALABRA CLAVE / PLATAFORMA / ANTIGÜEDAD forman una columna y FILTROS / CHANCES EXTRA una segunda columna equilibrada. FILTROS y CHANCES EXTRA comparten exactamente el mismo fondo y geometría.
@@ -427,10 +429,10 @@ Toda acción `FINALIZAR` que cierre una sesión persistente o la envíe al histo
 
 Ejemplos: `FINALIZAR SORTEO`, `FINALIZAR META`, `FINALIZAR WIN STREAK`, `FINALIZAR CHALLENGE` y `FINALIZAR TORNEO`.
 
-- El título del modal debe nombrar la acción concreta.
+- El título del modal debe nombrar la acción concreta. CANCELAR TORNEO usa ese título, VOLVER como acción segura y CANCELAR TORNEO como confirmación.
 - El texto debe explicar que la sesión se guardará/cerrará y que no podrá volver a editarse cuando corresponda.
 - `CANCELAR` queda a la izquierda y recibe el foco inicial.
 - El grupo de botones se centra respecto de la **ventana/modal**, no respecto de la longitud del texto. La acción segura queda siempre a la izquierda y la confirmación/finalización a la derecha.
-- El texto descriptivo del modal debe mantener aire antes de las acciones: separación visual aproximada de `38px` entre el párrafo y la fila de botones.
+- El texto descriptivo del modal debe mantener aire antes de las acciones: separación visual aproximada de `48px` entre el párrafo y la fila de botones.
 - La confirmación queda a la derecha.
 - `Esc` y backdrop cancelan de forma segura.
