@@ -332,3 +332,80 @@
   .obs-giveaway-live.is-celebrating .obs-giveaway-row.is-winner,
   .obs-giveaway-live.has-winner .obs-giveaway-row.is-winner{animation:none!important}
 }
+
+/* SORTEOS — refinamiento de legibilidad y movimiento de participantes. */
+.obs-giveaway-participants,
+.obs-giveaway-center,
+.obs-giveaway-winner{
+  height:470px!important;
+  background:rgba(5,5,7,.95)!important;
+}
+.obs-giveaway-keyword{
+  min-height:150px!important;
+  gap:14px!important;
+  padding:20px 24px 22px!important;
+}
+.obs-giveaway-reel{
+  min-height:320px!important;
+}
+.obs-giveaway-row{
+  height:106px!important;
+}
+.obs-giveaway-band{
+  top:106px!important;
+  height:104px!important;
+}
+.obs-giveaway-mask{height:76px!important}
+
+.obs-giveaway-participant-list{
+  position:relative;
+  max-height:354px!important;
+  overflow:hidden!important;
+}
+.obs-giveaway-participant-track{will-change:transform}
+.obs-giveaway-participant-track>div{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  min-height:31px;
+  border-bottom:1px solid rgba(255,255,255,.055);
+}
+.obs-giveaway-participant-track>div span{
+  max-width:100%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#fff;
+  font:800 17px/1.2 Montserrat,Arial,sans-serif;
+}
+.obs-giveaway-participant-track>div small{
+  color:rgba(255,255,255,.74);
+  font:800 12px/1 Montserrat,Arial,sans-serif;
+  letter-spacing:.04em;
+}
+.obs-giveaway-live.participation-open .obs-giveaway-participant-track>div:first-child{
+  animation:sl-giveaway-participant-in .28s ease-out both;
+}
+.obs-giveaway-participant-track.is-looping{
+  animation:sl-giveaway-participants-scroll 34s linear infinite;
+}
+@keyframes sl-giveaway-participant-in{
+  from{opacity:0;transform:translateY(-8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes sl-giveaway-participants-scroll{
+  from{transform:translateY(0)}
+  to{transform:translateY(-50%)}
+}
+
+/* En celebración, el ganador gana blanco y contraste sin perder el rojo ambiental. */
+.obs-giveaway-live.is-celebrating .obs-giveaway-row.is-winner{
+  color:#fff!important;
+  filter:brightness(1.18)!important;
+  text-shadow:0 0 8px rgba(255,255,255,.85),0 0 26px rgba(255,0,60,.75),0 5px 20px #000!important;
+}
+@media(prefers-reduced-motion:reduce){
+  .obs-giveaway-participant-track.is-looping,
+  .obs-giveaway-live.participation-open .obs-giveaway-participant-track>div:first-child{animation:none!important}
+}
