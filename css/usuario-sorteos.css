@@ -278,3 +278,84 @@
   .user-page .sl-giveaway-session-actions-right{margin-left:0!important}
   .user-page .sl-giveaway-session-actions button{width:100%!important}
 }
+
+/* SORTEOS — creación, historial y ritmo canónico. */
+.user-page #streamGiveawaysPanel .sl-giveaway-live[hidden],
+.user-page #streamGiveawaysPanel .sl-giveaway-history[hidden]{display:none!important}
+.user-page #streamGiveawaysPanel .sl-giveaway-config-head{
+  margin-bottom:22px;
+}
+.user-page #streamGiveawaysPanel .sl-giveaway-config-head>span,
+.user-page .sl-giveaway-history-head>span{
+  display:block;
+  color:#ff003c;
+  font:800 13px/1.2 Montserrat,Arial,sans-serif;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+.user-page #streamGiveawaysPanel .sl-giveaway-config-head h3,
+.user-page .sl-giveaway-history-head h3{
+  margin:7px 0 0;
+  color:#fff;
+  font:800 29px/1 Montserrat,Arial,sans-serif;
+}
+.user-page #streamGiveawaysPanel .sl-giveaway-config-head p{
+  max-width:760px;
+  margin:10px 0 0;
+  color:rgba(255,255,255,.72);
+  font:500 13px/1.5 Montserrat,Arial,sans-serif;
+}
+.user-page #streamGiveawaysPanel .sl-giveaway-config-fields>label{
+  gap:9px!important;
+}
+.user-page #streamGiveawaysPanel .sl-giveaway-config-fields>label>input,
+.user-page #streamGiveawaysPanel .sl-giveaway-config-fields>label>select{
+  margin-top:0!important;
+}
+.user-page #streamGiveawaysPanel #followerDays{
+  appearance:textfield!important;
+  -moz-appearance:textfield!important;
+}
+.user-page #streamGiveawaysPanel #followerDays::-webkit-inner-spin-button,
+.user-page #streamGiveawaysPanel #followerDays::-webkit-outer-spin-button{
+  -webkit-appearance:none!important;
+  margin:0!important;
+}
+.user-page .sl-giveaway-history{
+  margin-top:22px!important;
+  padding:28px!important;
+}
+.user-page .sl-giveaway-history-head{margin-bottom:18px}
+.user-page .sl-giveaway-history-list{display:grid;gap:10px}
+.user-page .sl-giveaway-history-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:7px 18px;
+  align-items:center;
+  padding:14px 16px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:14px;
+  background:rgba(8,8,10,.70);
+}
+.user-page .sl-giveaway-history-row>div strong,
+.user-page .sl-giveaway-history-row>div span{display:block}
+.user-page .sl-giveaway-history-row>div strong{
+  color:#fff;font:800 13px/1.2 Montserrat,Arial,sans-serif
+}
+.user-page .sl-giveaway-history-row>div span{
+  margin-top:5px;color:rgba(255,255,255,.48);font:500 10px/1.4 Montserrat,Arial,sans-serif
+}
+.user-page .sl-giveaway-history-row>b{
+  color:#ff003c;font:800 11px/1.2 Montserrat,Arial,sans-serif
+}
+.user-page .sl-giveaway-history-row>p{
+  grid-column:1/-1;
+  margin:0;
+  color:rgba(255,255,255,.66);
+  font:500 11px/1.45 Montserrat,Arial,sans-serif
+}
+@media(max-width:760px){
+  .user-page .sl-giveaway-history{padding:20px!important}
+  .user-page .sl-giveaway-history-row{grid-template-columns:1fr}
+  .user-page .sl-giveaway-history-row>p{grid-column:auto}
+}
