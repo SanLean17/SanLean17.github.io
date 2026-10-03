@@ -29,7 +29,7 @@
     const keyword=$('giveawayKeyword')?.value.trim()||'';
     const remaining=remainingParticipants();
     const state={
-      visible:true,
+      visible:(($('giveawayState')?.textContent||'SIN INICIAR')!=='SIN INICIAR'||!!winner||participants.length>0),
       phase:spinning?'spinning':winner?'winner':'open',
       statusLabel:$('giveawayState')?.textContent||'SIN INICIAR',
       keyword,
@@ -167,13 +167,13 @@
     const btn=$('slReopenGiveaway');if(btn)btn.disabled=true;
     const ok=await window.SanLeanStreamTools?.reopenGiveaway?.();
     if(btn)btn.disabled=false;
-    if(ok){btn.textContent='PARTICIPACIÓN ABIERTA';setTimeout(()=>{btn.textContent='REABRIR PARTICIPACIÓN'},1400);syncOverlay({phase:winner?'winner':'open'})}
+    if(ok&&btn){btn.textContent='PARTICIPACIÓN ABIERTA';setTimeout(()=>{if(btn)btn.textContent='REABRIR PARTICIPACIÓN'},1400);syncOverlay({visible:true,statusLabel:'ABIERTO',phase:winner?'winner':'open'})}
   }
 
   function bindSessionButtons(){
     $('slReopenGiveaway')?.addEventListener('click',reopenParticipation);
-    $('closeGiveaway')?.addEventListener('click',()=>setTimeout(()=>{$('slReopenGiveaway').disabled=false;syncOverlay({statusLabel:'CERRADO'})},250));
-    $('startGiveaway')?.addEventListener('click',()=>setTimeout(()=>{$('slReopenGiveaway').disabled=true;syncOverlay({statusLabel:'ABIERTO'})},250));
+    $('closeGiveaway')?.addEventListener('click',()=>setTimeout(()=>{$('slReopenGiveaway').disabled=false;syncOverlay({visible:true,statusLabel:'CERRADO'})},250));
+    $('startGiveaway')?.addEventListener('click',()=>setTimeout(()=>{$('slReopenGiveaway').disabled=true;syncOverlay({visible:true,statusLabel:'ABIERTO'})},250));
   }
 
   function mount(){
