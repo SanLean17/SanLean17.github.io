@@ -10,24 +10,48 @@
   const winnerKey=w=>w?norm(w.name)+'|'+norm(w.platform):'';
   const wonKeys=()=>new Set(winners.map(winnerKey));
   const platformMode=()=>String($('giveawayPlatform')?.value||'both').toLowerCase();
+  const subscriberBoost=()=>!!$('subscriberDoubleChance')?.checked;
+  const vipBoost=()=>!!$('vipDoubleChance')?.checked;
 
   function dbParticipantRows(){
     const source=$('giveawayParticipants'); if(!source)return [];
     return [...source.querySelectorAll('.participant-row')].map(row=>{
       const spans=row.querySelectorAll('span');
-      return {name:(spans[0]?.textContent||'').trim(),platform:(spans[1]?.textContent||'').trim().toLowerCase()};
+      return {
+        name:(spans[0]?.textContent||'').trim(),
+        platform:(spans[1]?.textContent||'').trim().toLowerCase(),
+        isSubscriber:row.dataset.subscriber==='true',
+        isVip:row.dataset.vip==='true'
+      };
     }).filter(x=>x.name);
   }
   function mergedParticipants(){
     const map=new Map();[...dbParticipantRows(),...simulatedParticipants].forEach(p=>map.set(winnerKey(p),p));return [...map.values()]
   }
   function remainingParticipants(){const won=wonKeys();return participants.filter(x=>!won.has(winnerKey(x)))}
+  function chanceMultiplier(p){return ((subscriberBoost()&&p.isSubscriber)||(vipBoost()&&p.isVip))?2:1}
+  function chancePool(){
+    const pool=[];
+    remainingParticipants().forEach(p=>{for(let i=0;i<chanceMultiplier(p);i++)pool.push(p)});
+    return pool;
+  }
+  function pick(pool){
+    if(!pool.length)return null;
+    const bytes=new Uint32Array(1);crypto.getRandomValues(bytes);
+    return pool[Math.floor(bytes[0]/0x100000000*pool.length)];
+  }
+  function pickDifferent(pool,avoid){
+    const filtered=pool.filter(x=>winnerKey(x)!==avoid);
+    return pick(filtered.length?filtered:pool);
+  }
 
   function syncPanelState(){
     const panel=$('streamGiveawaysPanel'); if(panel)panel.classList.toggle('is-session-active',sessionStarted);
-    const close=$('slCloseParticipation'),reopen=$('slReopenGiveaway');
-    if(close)close.disabled=!sessionStarted||!participationOpen||spinning;
-    if(reopen)reopen.disabled=!sessionStarted||participationOpen||spinning;
+    const toggle=$('slParticipationToggle');
+    if(toggle){
+      toggle.disabled=!sessionStarted||spinning;
+      toggle.textContent=participationOpen?'CERRAR PARTICIPACIÓN':'REABRIR PARTICIPACIÓN';
+    }
     const state=$('slGiveawaySessionState');
     if(state)state.textContent=!sessionStarted?'SIN INICIAR':participationOpen?'PARTICIPACIÓN ABIERTA':'PARTICIPACIÓN CERRADA';
   }
@@ -42,7 +66,9 @@
       statusLabel:participationOpen?'ABIERTO':'CERRADO',
       keyword,platformMode:platformMode(),count:remaining.length,
       participants:remaining.slice(-120),winner,winners:[...winners],
-      winnerMessages:[...winnerMessages],sequence:lastSequence,spinId,...extra
+      winnerMessages:[...winnerMessages],sequence:lastSequence,spinId,
+      subscriberDoubleChance:subscriberBoost(),vipDoubleChance:vipBoost(),
+      ...extra
     };
     try{const {error}=await db.from('stream_overlays').update({state,updated_at:new Date().toISOString()}).eq('id',overlay.id);return !error}catch{return false}
   }
@@ -56,21 +82,27 @@
     syncPanelState(); if(push&&sessionStarted)syncOverlay();
   }
 
-  function pick(pool){if(!pool.length)return null;const bytes=new Uint32Array(1);crypto.getRandomValues(bytes);return pool[Math.floor(bytes[0]/0x100000000*pool.length)]}
   function buildSequence(pool,selected){
-    const seq=[];for(let i=0;i<64;i++)seq.push(pick(pool)||selected);
-    const previous=pick(pool.filter(x=>winnerKey(x)!==winnerKey(selected)))||selected;
-    const next=pick(pool.filter(x=>winnerKey(x)!==winnerKey(selected)&&winnerKey(x)!==winnerKey(previous)))||previous;
-    seq.push(previous,selected,next);return seq;
+    const seq=[];let previousKey='';
+    for(let i=0;i<64;i++){
+      const next=pickDifferent(pool,previousKey)||selected;
+      seq.push(next);previousKey=winnerKey(next);
+    }
+    const selectedKey=winnerKey(selected);
+    const before=pickDifferent(pool,selectedKey)||selected;
+    const afterCandidates=pool.filter(x=>winnerKey(x)!==selectedKey&&winnerKey(x)!==winnerKey(before));
+    const after=pick(afterCandidates)||pickDifferent(pool,selectedKey)||before;
+    seq.push(before,selected,after);
+    return seq;
   }
 
   async function drawWinner(){
-    if(spinning)return;const pool=remainingParticipants();if(pool.length<2)return;
+    if(spinning)return;const weighted=chancePool();if(remainingParticipants().length<2||!weighted.length)return;
     sessionStarted=true;overlayVisible=true;spinning=true;winner=null;winnerMessages=[];syncVisibilityButton();syncPanelState();
-    const selected=pick(pool),track=$('slGiveawayReelTrack'),shell=$('slGiveawayReel');
+    const selected=pick(weighted),track=$('slGiveawayReelTrack'),shell=$('slGiveawayReel');
     if($('slDrawWinner'))$('slDrawWinner').disabled=true;
     shell?.classList.add('is-spinning');$('slGiveawayWinnerName').textContent='BUSCANDO...';$('slGiveawayWinnerPlatform').textContent='';renderWinnerMessages();
-    lastSequence=buildSequence(pool,selected);spinId=crypto.randomUUID();
+    lastSequence=buildSequence(weighted,selected);spinId=crypto.randomUUID();
     await syncOverlay({visible:true,phase:'spinning',winner:null,winnerMessages:[],sequence:lastSequence,spinId});
 
     if(track){
@@ -114,15 +146,24 @@
   }
 
   function enhanceFilters(){
-    const box=document.querySelector('#streamGiveawaysPanel .eligibility-box');if(!box||$('followerOnly'))return;
-    const label=document.createElement('label');label.innerHTML='<input id="followerOnly" type="checkbox"> SÓLO SEGUIDORES';
-    const first=box.querySelector('label');box.insertBefore(label,first||null);
-    const days=$('followerDays');if(days){const sync=()=>{days.disabled=!$('followerOnly').checked;if(days.disabled)days.value='0'};$('followerOnly').addEventListener('change',sync);sync()}
+    const box=document.querySelector('#streamGiveawaysPanel .eligibility-box');if(!box)return;
+    if(!$('followerOnly')){
+      const label=document.createElement('label');label.innerHTML='<input id="followerOnly" type="checkbox"> SÓLO SEGUIDORES';
+      const first=box.querySelector('label');box.insertBefore(label,first||null);
+      const days=$('followerDays');if(days){const sync=()=>{days.disabled=!$('followerOnly').checked;if(days.disabled)days.value='0'};$('followerOnly').addEventListener('change',sync);sync()}
+    }
+    if(!$('giveawayChanceBox')){
+      const chance=document.createElement('div');chance.id='giveawayChanceBox';chance.className='sl-giveaway-chance-box';
+      chance.innerHTML='<span>CHANCES EXTRA</span><label><input id="subscriberDoubleChance" type="checkbox"> SUSCRIPTORES ×2</label><label><input id="vipDoubleChance" type="checkbox"> VIPS ×2</label><small>La bonificación duplica la chance una sola vez aunque una persona sea VIP y suscriptora.</small>';
+      box.insertAdjacentElement('afterend',chance);
+      ['subscriberDoubleChance','vipDoubleChance'].forEach(id=>$(id)?.addEventListener('change',()=>{if(sessionStarted)syncOverlay()}));
+    }
   }
 
   function simulateParticipants(){
-    const mode=platformMode();simulatedParticipants=demoNames.map((name,i)=>({name,platform:mode==='both'?(i%4===0?'kick':'twitch'):mode}));
-    if(!$('giveawayKeyword').value.trim())$('giveawayKeyword').value='PEDRO';
+    const mode=platformMode();
+    simulatedParticipants=demoNames.map((name,i)=>({name,platform:mode==='both'?(i%4===0?'kick':'twitch'):mode,isSubscriber:i%5===0||i%9===0,isVip:i%7===0}));
+    if(!$('giveawayKeyword').value.trim())$('giveawayKeyword').value='TULIPÁN';
     sessionStarted=true;participationOpen=true;overlayVisible=true;
     if($('giveawayState'))$('giveawayState').textContent='ABIERTO · SIMULACIÓN';
     syncVisibilityButton();syncParticipants({push:false});syncPanelState();
@@ -131,7 +172,7 @@
 
   async function closeParticipation(){
     if(!sessionStarted||!participationOpen||spinning)return;
-    if(simulatedParticipants.length){participationOpen=false}
+    if(simulatedParticipants.length)participationOpen=false;
     else {const ok=await window.SanLeanStreamTools?.closeGiveaway?.();if(!ok)return;participationOpen=false}
     if($('giveawayState'))$('giveawayState').textContent='CERRADO';syncPanelState();syncOverlay({visible:overlayVisible,statusLabel:'CERRADO'});
   }
@@ -141,12 +182,20 @@
     participationOpen=true;if($('giveawayState'))$('giveawayState').textContent=simulatedParticipants.length?'ABIERTO · SIMULACIÓN':'ABIERTO';
     syncPanelState();syncOverlay({visible:overlayVisible,statusLabel:$('giveawayState')?.textContent||'ABIERTO',phase:winner?'winner':'open'});
   }
+  async function toggleParticipation(){if(participationOpen)await closeParticipation();else await reopenParticipation()}
 
   function syncVisibilityButton(){const btn=$('slToggleGiveawayObs');if(btn)btn.textContent=overlayVisible?'OCULTAR EN OBS':'MOSTRAR EN OBS'}
   async function toggleObs(){if(!sessionStarted)return;overlayVisible=!overlayVisible;syncVisibilityButton();await syncOverlay({visible:overlayVisible})}
 
   async function finalizeGiveaway(){
-    if(spinning)return;
+    if(spinning||!sessionStarted)return;
+    const confirm=window.SanLeanConfirm?.open?await window.SanLeanConfirm.open({
+      eyebrow:'SORTEOS',
+      title:'FINALIZAR SORTEO',
+      text:'¿Estás seguro de finalizar este sorteo? Se cerrará la sesión y no se podrá volver a editar.',
+      confirmLabel:'FINALIZAR SORTEO'
+    }):true;
+    if(!confirm)return;
     if(sessionStarted&&!simulatedParticipants.length)await window.SanLeanStreamTools?.finishGiveaway?.();
     await syncOverlay({visible:false,phase:'finished',statusLabel:'FINALIZADO'});
     sessionStarted=false;participationOpen=false;overlayVisible=false;simulatedParticipants=[];participants=[];winner=null;winners=[];winnerMessages=[];lastSequence=[];spinId='';
@@ -157,8 +206,7 @@
   }
 
   function bindSessionButtons(){
-    $('slCloseParticipation')?.addEventListener('click',closeParticipation);
-    $('slReopenGiveaway')?.addEventListener('click',reopenParticipation);
+    $('slParticipationToggle')?.addEventListener('click',toggleParticipation);
     $('slSimulateGiveaway')?.addEventListener('click',simulateParticipants);
     $('slToggleGiveawayObs')?.addEventListener('click',toggleObs);
     $('slFinalizeGiveaway')?.addEventListener('click',finalizeGiveaway);
@@ -169,6 +217,8 @@
     const overlay=window.SanLeanStreamTools?.getOverlays?.().find(o=>o.kind==='giveaway'),s=overlay?.state||{};
     if(!overlay||s.phase==='finished'||!s.phase)return;
     sessionStarted=true;participationOpen=String(s.statusLabel||'').includes('ABIERTO');overlayVisible=s.visible!==false;winner=s.winner||null;winners=Array.isArray(s.winners)?s.winners:[];winnerMessages=Array.isArray(s.winnerMessages)?s.winnerMessages:[];lastSequence=Array.isArray(s.sequence)?s.sequence:[];spinId=s.spinId||'';
+    if($('subscriberDoubleChance'))$('subscriberDoubleChance').checked=!!s.subscriberDoubleChance;
+    if($('vipDoubleChance'))$('vipDoubleChance').checked=!!s.vipDoubleChance;
     renderWinnerHistory();renderWinnerMessages();syncVisibilityButton();syncPanelState();
   }
 
@@ -181,13 +231,13 @@
       '<div class="sl-giveaway-live-head"><div><span class="sl-giveaway-kicker">SORTEO EN VIVO</span><h3>SELECCIÓN DE GANADOR</h3><p>Los participantes validados aparecen a la izquierda. Al sortear, el visor ocupa el protagonismo hasta detenerse en el ganador.</p></div><button id="slSimulateGiveaway" type="button" class="module-secondary">SIMULAR 45 PARTICIPANTES</button></div>'+
       '<div class="sl-giveaway-session-strip"><span>ESTADO</span><strong id="slGiveawaySessionState">SIN INICIAR</strong></div>'+
       '<div class="sl-giveaway-layout"><aside class="sl-giveaway-column sl-giveaway-participants"><div class="sl-giveaway-column-head"><span>PARTICIPANTES DISPONIBLES</span><strong id="slGiveawayLiveCount">0</strong></div><div id="slGiveawayLiveParticipants" class="sl-giveaway-scroll"></div></aside>'+
-      '<div class="sl-giveaway-center"><div id="slGiveawayReel" class="sl-giveaway-reel"><div class="sl-giveaway-selection-band"></div><div class="sl-giveaway-reel-mask top"></div><div class="sl-giveaway-reel-mask bottom"></div><div id="slGiveawayReelTrack" class="sl-giveaway-reel-track"><div class="sl-giveaway-reel-row is-placeholder">ESPERANDO SORTEO</div></div></div><div class="sl-giveaway-draw-actions"><button id="slDrawWinner" type="button" class="module-primary" disabled>SORTEAR GANADOR</button><button id="slCloseParticipation" type="button" class="module-secondary" disabled>CERRAR PARTICIPACIÓN</button><button id="slReopenGiveaway" type="button" class="module-secondary" disabled>REABRIR PARTICIPACIÓN</button></div></div>'+
+      '<div class="sl-giveaway-center"><div id="slGiveawayReel" class="sl-giveaway-reel"><div class="sl-giveaway-selection-band"></div><div class="sl-giveaway-reel-mask top"></div><div class="sl-giveaway-reel-mask bottom"></div><div id="slGiveawayReelTrack" class="sl-giveaway-reel-track"><div class="sl-giveaway-reel-row is-placeholder">ESPERANDO SORTEO</div></div></div><div class="sl-giveaway-draw-actions"><button id="slDrawWinner" type="button" class="module-primary" disabled>SORTEAR GANADOR</button><button id="slParticipationToggle" type="button" class="module-secondary" disabled>CERRAR PARTICIPACIÓN</button></div></div>'+
       '<aside class="sl-giveaway-column sl-giveaway-winner"><span class="sl-giveaway-kicker">GANADOR ACTUAL</span><div class="sl-giveaway-winner-name" id="slGiveawayWinnerName">—</div><div class="sl-giveaway-winner-platform" id="slGiveawayWinnerPlatform"></div><div class="sl-giveaway-chat-title">MENSAJES DEL GANADOR</div><div id="slWinnerMessages" class="sl-giveaway-winner-chat"><p class="sl-giveaway-empty">Cuando haya ganador, sus mensajes nuevos aparecerán acá.</p></div></aside></div>'+
       '<div class="sl-giveaway-session-history"><span>GANADORES DE ESTA SESIÓN</span><div id="slGiveawayWinners"><p class="sl-giveaway-empty">Todavía no hay ganadores en esta sesión.</p></div></div>'+
       '<div class="sl-giveaway-session-actions"><button id="slToggleGiveawayObs" type="button" class="module-secondary">OCULTAR EN OBS</button><button id="slFinalizeGiveaway" type="button" class="module-secondary sl-giveaway-finalize">FINALIZAR SORTEO</button></div>';
     config.insertAdjacentElement('afterend',live);nativeList.classList.add('sl-giveaway-native-list');
     $('slDrawWinner')?.addEventListener('click',drawWinner);bindSessionButtons();
-    new MutationObserver(()=>syncParticipants()).observe(nativeList,{childList:true,subtree:true});
+    new MutationObserver(()=>{if(participationOpen)syncParticipants()}).observe(nativeList,{childList:true,subtree:true});
     restoreOverlayState();syncParticipants({push:false});syncPanelState();
   }
 
