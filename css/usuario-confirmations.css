@@ -16,3 +16,28 @@
   border:1px solid #ff003c!important;background:#ff003c!important;color:#fff!important
 }
 @media(max-width:560px){.user-page .sl-system-confirm-actions{grid-template-columns:1fr!important}}
+
+/* Regla global de confirmaciones: segura izquierda, confirmación derecha, grupo centrado en la ventana. */
+.user-page .confirm-dialog .confirm-actions,
+.user-page .sl-system-confirm-actions{
+  width:min(420px,100%)!important;
+  margin:0 auto!important;
+  grid-template-columns:repeat(2,minmax(0,180px))!important;
+  justify-content:center!important;
+  justify-items:stretch!important;
+}
+.user-page #tournamentConfirmCancel,
+.user-page #cancelReset,
+.user-page #cancelAdminEdit,
+.user-page #slSystemConfirmCancel{order:1!important}
+.user-page #tournamentConfirmAccept,
+.user-page #confirmReset,
+.user-page #confirmAdminEdit,
+.user-page #slSystemConfirmAccept{order:2!important}
+@media(max-width:560px){
+  .user-page .confirm-dialog .confirm-actions,
+  .user-page .sl-system-confirm-actions{
+    width:100%!important;
+    grid-template-columns:1fr!important;
+  }
+}
