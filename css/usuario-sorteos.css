@@ -182,3 +182,99 @@
 }
 .user-page #slParticipationToggle{order:1}
 .user-page #slDrawWinner{order:2}
+
+/* SORTEOS — configuración en dos columnas equilibradas. */
+.user-page #streamGiveawaysPanel .sl-giveaway-config-grid{
+  display:grid!important;
+  grid-template-columns:minmax(0,460px) minmax(0,460px)!important;
+  gap:35px!important;
+  align-items:stretch!important;
+  justify-content:start!important;
+}
+.user-page #streamGiveawaysPanel .sl-giveaway-config-fields{
+  display:grid!important;
+  gap:19px!important;
+  align-content:start!important;
+}
+.user-page #streamGiveawaysPanel .sl-giveaway-config-fields>label{
+  width:100%!important;
+  max-width:460px!important;
+  margin:0!important;
+}
+.user-page #streamGiveawaysPanel .sl-giveaway-config-options{
+  display:grid!important;
+  grid-template-rows:1fr 1fr!important;
+  gap:19px!important;
+  min-width:0!important;
+}
+.user-page #streamGiveawaysPanel .eligibility-box,
+.user-page #streamGiveawaysPanel .sl-giveaway-chance-box{
+  box-sizing:border-box!important;
+  width:100%!important;
+  min-height:0!important;
+  height:100%!important;
+  margin:0!important;
+  padding:15px 16px!important;
+  border:1px solid rgba(255,255,255,.12)!important;
+  border-radius:14px!important;
+  background:#111114!important;
+}
+.user-page #streamGiveawaysPanel .sl-giveaway-chance-box{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  align-content:center!important;
+  column-gap:28px!important;
+  row-gap:12px!important;
+}
+.user-page #streamGiveawaysPanel .sl-giveaway-chance-box>span,
+.user-page #streamGiveawaysPanel .eligibility-box>span{
+  color:rgba(255,255,255,.78)!important;
+}
+.user-page #streamGiveawaysPanel .module-box>.giveaway-live{display:none!important}
+
+/* Acciones de sesión: OBS a la izquierda; cancelar/finalizar a la derecha. */
+.user-page .sl-giveaway-session-actions{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:20px!important;
+}
+.user-page .sl-giveaway-session-actions-left,
+.user-page .sl-giveaway-session-actions-right{
+  display:flex!important;
+  align-items:center!important;
+  gap:12px!important;
+}
+.user-page .sl-giveaway-session-actions-right{margin-left:auto!important}
+
+/* Identidad simulada del ganador / preparada para metadatos reales de chat. */
+.user-page .sl-giveaway-chat-identity{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  margin-right:3px;
+}
+.user-page .sl-giveaway-chat-badge{
+  display:inline-grid;
+  place-items:center;
+  min-width:22px;
+  height:16px;
+  padding:0 4px;
+  border-radius:4px;
+  background:rgba(255,255,255,.12);
+  color:#fff;
+  font:800 8px/1 Montserrat,Arial,sans-serif;
+  font-style:normal;
+}
+.user-page .sl-giveaway-chat-identity strong{font-weight:800!important}
+
+@media(max-width:900px){
+  .user-page #streamGiveawaysPanel .sl-giveaway-config-grid{grid-template-columns:1fr!important}
+}
+@media(max-width:760px){
+  .user-page .sl-giveaway-session-actions{align-items:stretch!important;flex-direction:column!important}
+  .user-page .sl-giveaway-session-actions-left,
+  .user-page .sl-giveaway-session-actions-right{width:100%!important;flex-direction:column!important}
+  .user-page .sl-giveaway-session-actions-right{margin-left:0!important}
+  .user-page .sl-giveaway-session-actions button{width:100%!important}
+}
