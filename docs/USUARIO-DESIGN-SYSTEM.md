@@ -406,6 +406,7 @@ Una solicitud referida únicamente a USUARIO no debe modificar la WEB pública s
 - En la composición normal posterior, el ganador central mantiene una animación suave hasta iniciar el siguiente sorteo.
 - En sorteos de una sola plataforma no se repite TWITCH/KICK junto a cada participante. Esa identificación sólo se muestra cuando participan ambas plataformas.
 - Los acentos rojos del overlay deben conservar `#FF003C`, pero usar contraste/sombra oscura suficiente para mantenerse nítidos en una fuente OBS reducida dentro de un stream.
+- Fuente navegador recomendada para SORTEOS en OBS: **1920 × 1080 px**. El overlay está compuesto para esa referencia y debe escalarse desde OBS como una sola fuente, evitando redimensionados intermedios innecesarios.
 - Los mensajes del ganador pueden ocultarse de la salida OBS desde USUARIO sin borrar el mensaje real de Twitch/Kick.
 - `OCULTAR EN OBS / MOSTRAR EN OBS` cambia sólo la visibilidad. `FINALIZAR SORTEO` termina la sesión.
 - La configuración inicial se oculta mientras existe una sesión activa y vuelve a mostrarse cuando el sorteo finaliza.
