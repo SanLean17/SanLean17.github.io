@@ -121,3 +121,49 @@
 .user-page .sl-giveaway-session-strip strong{
   color:#ff003c;font:800 13px/1.2 Montserrat,Arial,sans-serif
 }
+
+/* SORTEOS — chances extra y compactación del ganador en USUARIO. */
+.user-page #streamGiveawaysPanel .sl-giveaway-chance-box{
+  box-sizing:border-box;
+  width:min(100%,955px);
+  margin-top:19px;
+  padding:15px 16px;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  column-gap:28px;
+  row-gap:12px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:14px;
+  background:rgba(8,8,10,.70)
+}
+.user-page #streamGiveawaysPanel .sl-giveaway-chance-box>span{
+  grid-column:1/-1;
+  color:#ff003c;
+  font:800 11px/1.2 Montserrat,Arial,sans-serif;
+  letter-spacing:.08em
+}
+.user-page #streamGiveawaysPanel .sl-giveaway-chance-box label{
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  gap:10px!important;
+  margin:0!important;
+  font:700 12px/1.35 Montserrat,Arial,sans-serif!important;
+  letter-spacing:0!important
+}
+.user-page #streamGiveawaysPanel .sl-giveaway-chance-box small{
+  grid-column:1/-1;
+  color:rgba(255,255,255,.48);
+  font:500 11px/1.5 Montserrat,Arial,sans-serif
+}
+.user-page .sl-giveaway-winner-name{
+  font-size:clamp(22px,2vw,32px)!important;
+  line-height:1!important
+}
+.user-page .sl-giveaway-draw-actions{align-items:center}
+.user-page #slParticipationToggle{min-width:190px}
+@media(max-width:760px){
+  .user-page #streamGiveawaysPanel .sl-giveaway-chance-box{grid-template-columns:1fr}
+  .user-page #streamGiveawaysPanel .sl-giveaway-chance-box>span,
+  .user-page #streamGiveawaysPanel .sl-giveaway-chance-box small{grid-column:auto}
+}
