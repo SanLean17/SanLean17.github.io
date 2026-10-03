@@ -167,3 +167,18 @@
   .user-page #streamGiveawaysPanel .sl-giveaway-chance-box>span,
   .user-page #streamGiveawaysPanel .sl-giveaway-chance-box small{grid-column:auto}
 }
+
+/* SORTEOS — prioridad operativa: primero cerrar/reabrir, después sortear. */
+.user-page .sl-giveaway-draw-actions{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  width:min(100%,360px)!important;
+  gap:10px!important
+}
+.user-page .sl-giveaway-draw-actions button{
+  width:100%!important;
+  min-width:0!important
+}
+.user-page #slParticipationToggle{order:1}
+.user-page #slDrawWinner{order:2}
