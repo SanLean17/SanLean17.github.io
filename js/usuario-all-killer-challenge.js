@@ -186,7 +186,7 @@
     $('allKillerAlignment').addEventListener('click',e=>{const b=e.target.closest('[data-alignment]');if(b)saveAlignment(b.dataset.alignment)});
     $('allKillerOpen').addEventListener('click',toggleOpen);$('allKillerStart').addEventListener('click',start);$('allKillerSearch').addEventListener('input',e=>{search=e.currentTarget.value;renderGrid()});
     $('allKillerWin').addEventListener('click',()=>mark('completed'));$('allKillerLose').addEventListener('click',()=>mark('failed'));$('allKillerPendingBtn').addEventListener('click',()=>mark('pending'));
-    $('allKillerPause').addEventListener('click',pauseOrContinue);$('allKillerObs').addEventListener('click',toggleObs);$('allKillerFinish').addEventListener('click',finish);
+    $('allKillerPause').addEventListener('click',pauseOrContinue);$('allKillerObs').addEventListener('click',toggleObs);$('allKillerFinish').addEventListener('click',async()=>{const ok=window.SanLeanConfirm?.open?await window.SanLeanConfirm.open({eyebrow:'DESAFÍOS',title:'FINALIZAR '+title,text:'¿Estás seguro de finalizar este challenge? Se guardará en el historial y no se podrá volver a editar.',confirmLabel:'FINALIZAR CHALLENGE'}):true;if(ok)finish()});
     window.addEventListener('sanlean:overlays-updated',refresh);window.addEventListener('sanlean:challenge-all-updated',refresh);window.addEventListener('sanlean:section',refresh);
   }
 
