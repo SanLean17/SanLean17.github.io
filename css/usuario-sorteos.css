@@ -37,3 +37,45 @@
 .user-page .sl-giveaway-reel.has-winner .sl-giveaway-selection-band{box-shadow:0 0 22px rgba(255,0,60,.24)}
 @media(max-width:1100px){.user-page .sl-giveaway-layout{grid-template-columns:1fr 1.2fr}.user-page .sl-giveaway-winner{grid-column:1/-1;min-height:0}}
 @media(max-width:760px){.user-page .sl-giveaway-live{padding:20px!important}.user-page .sl-giveaway-layout{grid-template-columns:1fr}.user-page .sl-giveaway-column{min-height:0}.user-page .sl-giveaway-participants{max-height:280px}.user-page .sl-giveaway-winner{grid-column:auto}.user-page .sl-giveaway-reel-row{font-size:15px}.user-page .sl-giveaway-reel-row.is-target{font-size:22px}}
+
+/* Filtros: grilla 2×2 estable. Moderadores queda debajo de Suscriptores. */
+.user-page #streamGiveawaysPanel .eligibility-box{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  column-gap:28px!important;
+  row-gap:14px!important;
+}
+.user-page #streamGiveawaysPanel .eligibility-box>span{grid-column:1/-1!important}
+.user-page #streamGiveawaysPanel .eligibility-box label{margin:0!important}
+
+/* Acciones del reel */
+.user-page .sl-giveaway-draw-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.user-page .sl-giveaway-draw-actions button{height:44px!important;padding:0 20px!important;border-radius:999px!important;font:800 13px/1 Montserrat,Arial,sans-serif!important}
+
+/* Moderación local de los mensajes mostrados en OBS. */
+.user-page .sl-giveaway-winner-message{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 28px;
+  align-items:start;
+  gap:8px;
+  margin:0 0 8px;
+  padding:8px 8px 8px 10px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;
+  background:rgba(8,8,10,.48);
+}
+.user-page .sl-giveaway-winner-message p{margin:0!important}
+.user-page .sl-giveaway-message-remove{
+  width:28px;height:28px;padding:0;border:1px solid rgba(255,0,60,.55);border-radius:999px;
+  background:transparent;color:#ff003c;font:800 17px/1 Montserrat,Arial,sans-serif;cursor:pointer;
+  transition:background-color 180ms ease,color 180ms ease,border-color 180ms ease
+}
+.user-page .sl-giveaway-message-remove:hover,.user-page .sl-giveaway-message-remove:focus-visible{
+  background:#ff003c;color:#fff;border-color:#ff003c;outline:none
+}
+@media(max-width:760px){
+  .user-page #streamGiveawaysPanel .eligibility-box{grid-template-columns:1fr!important}
+  .user-page #streamGiveawaysPanel .eligibility-box>span{grid-column:auto!important}
+  .user-page .sl-giveaway-draw-actions{width:100%}
+  .user-page .sl-giveaway-draw-actions button{width:100%}
+}
