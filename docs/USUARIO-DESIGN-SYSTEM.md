@@ -407,6 +407,9 @@ Una solicitud referida únicamente a USUARIO no debe modificar la WEB pública s
 - En sorteos de una sola plataforma no se repite TWITCH/KICK junto a cada participante. Esa identificación sólo se muestra cuando participan ambas plataformas.
 - Los acentos rojos del overlay deben conservar `#FF003C`, pero usar contraste/sombra oscura suficiente para mantenerse nítidos en una fuente OBS reducida dentro de un stream.
 - Fuente navegador recomendada para SORTEOS en OBS: **1920 × 1080 px**. El overlay está compuesto para esa referencia y debe escalarse desde OBS como una sola fuente, evitando redimensionados intermedios innecesarios.
+- La composición de SORTEOS queda **centrada dentro del lienzo 1920 × 1080**. El streamer puede reposicionar la fuente completa en OBS; el componente no se ancla al borde inferior del lienzo.
+- En estado normal se usan tres superficies hermanas, sin una caja exterior adicional: PARTICIPANTES, SORTEO (palabra clave + reel) y GANADOR. Las tres comparten la misma línea de base inferior.
+- En la configuración previa, PALABRA CLAVE / PLATAFORMA / ANTIGÜEDAD forman una columna y FILTROS / CHANCES EXTRA una segunda columna equilibrada. FILTROS y CHANCES EXTRA comparten exactamente el mismo fondo y geometría.
 - Los mensajes del ganador pueden ocultarse de la salida OBS desde USUARIO sin borrar el mensaje real de Twitch/Kick.
 - `OCULTAR EN OBS / MOSTRAR EN OBS` cambia sólo la visibilidad. `FINALIZAR SORTEO` termina la sesión.
 - La configuración inicial se oculta mientras existe una sesión activa y vuelve a mostrarse cuando el sorteo finaliza.
@@ -420,5 +423,6 @@ Ejemplos: `FINALIZAR SORTEO`, `FINALIZAR META`, `FINALIZAR WIN STREAK`, `FINALIZ
 - El título del modal debe nombrar la acción concreta.
 - El texto debe explicar que la sesión se guardará/cerrará y que no podrá volver a editarse cuando corresponda.
 - `CANCELAR` queda a la izquierda y recibe el foco inicial.
+- El grupo de botones se centra respecto de la **ventana/modal**, no respecto de la longitud del texto. La acción segura queda siempre a la izquierda y la confirmación/finalización a la derecha.
 - La confirmación queda a la derecha.
 - `Esc` y backdrop cancelan de forma segura.
