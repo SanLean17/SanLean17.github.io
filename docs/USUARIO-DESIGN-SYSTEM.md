@@ -440,3 +440,31 @@ Ejemplos: `FINALIZAR SORTEO`, `FINALIZAR META`, `FINALIZAR WIN STREAK`, `FINALIZ
 - El texto descriptivo del modal debe mantener aire antes de las acciones: separación visual aproximada de `48px` entre el párrafo y la fila de botones.
 - La confirmación queda a la derecha.
 - `Esc` y backdrop cancelan de forma segura.
+
+## 14. ROLES DE USUARIO Y PERMISOS
+
+USUARIO distingue tres niveles de acceso:
+
+### ADMINISTRADOR
+- Acceso completo a todas las secciones privadas de USUARIO.
+- Puede visualizar los espacios de propietarios existentes.
+- La cuenta administrativa oficial se reconoce también en backend mediante la identidad autorizada del proyecto.
+- El rol administrativo no depende únicamente de ocultar/mostrar elementos en frontend: Supabase/RLS debe seguir siendo la barrera de autorización.
+
+### PROPIETARIO
+- Es dueño de su `streamer_workspace`.
+- Configura conexiones, colaboradores y permisos.
+- Conserva acceso completo a las herramientas de su propio espacio.
+
+### COLABORADOR
+- Pertenece a uno o más espacios mediante `workspace_members`.
+- Sólo ve en MI PANEL las secciones incluidas en `workspace_members.permissions` para el espacio activo.
+- No ve COLABORADORES en MI CUENTA.
+- Mantiene acceso a su propio MI PERFIL y SEGURIDAD.
+- CONEXIONES sólo aparece cuando tiene el permiso de plataformas correspondiente.
+- Si no tiene permisos habilitados, MI PANEL muestra un estado vacío en lugar de herramientas no autorizadas.
+
+### Permisos disponibles
+`OVERLAYS OBS`, `CARTAS`, `DESAFÍOS`, `SORTEOS`, `BITS / ALERTAS`, `TWITCH / KICK`, `KILLERS`, `PERKS DE KILLERS`, `PERKS DE SUPERVIVIENTES` y `TORNEO 1VS1`.
+
+Los permisos se almacenan por espacio/colaborador en `workspace_members`; no deben depender de `localStorage` como fuente de verdad.
