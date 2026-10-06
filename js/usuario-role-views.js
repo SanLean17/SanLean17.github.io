@@ -38,6 +38,20 @@
     return article;
   }
 
+  async function renderAdminOverview(){
+    const home=$('dashboardHome');if(!home)return;
+    let box=home.querySelector('.sl-admin-overview');
+    if(!box){box=document.createElement('section');box.className='sl-admin-overview ui-content-box';home.appendChild(box)}
+    box.innerHTML='<div class="sl-admin-overview-head"><span>ADMINISTRACIÓN</span><h3>ESPACIOS DE USUARIO</h3><p>Vista general de propietarios, espacios y colaboradores registrados en SanLean.</p></div><div class="sl-admin-overview-list"><p class="sl-admin-overview-empty">CARGANDO ESPACIOS...</p></div>';
+    const db=window.sanleanSupabase;if(!db)return;
+    const {data,error}=await db.rpc('sanlean_admin_workspace_overview');
+    const list=box.querySelector('.sl-admin-overview-list');
+    if(error){list.innerHTML='<p class="sl-admin-overview-empty">No se pudo cargar el resumen administrativo.</p>';return}
+    const rows=Array.isArray(data)?data:[];
+    if(!rows.length){list.innerHTML='<p class="sl-admin-overview-empty">TODAVÍA NO HAY ESPACIOS REGISTRADOS.</p>';return}
+    list.innerHTML=rows.map(row=>'<article class="sl-admin-workspace-row"><div><span>PROPIETARIO</span><strong>'+String(row.owner_username||row.owner_email||'SIN IDENTIFICAR')+'</strong><small>'+String(row.owner_email||'')+'</small></div><div><span>ESPACIO</span><strong>'+String(row.workspace_name||'MI STREAM')+'</strong></div><div><span>COLABORADORES</span><strong>'+Number(row.collaborator_count||0)+'</strong></div></article>').join('');
+  }
+
   function setHomeCards(ctx){
     const home=$('dashboardHome'),grid=home?.querySelector('.dashboard-cards');if(!grid)return;
     if(ctx.role==='collaborator'){
@@ -56,9 +70,11 @@
       grid.innerHTML='<article class="dashboard-card"><span class="card-kicker">ADMINISTRACIÓN</span><h3>ACCESO TOTAL</h3><p>Entrá a todas las herramientas privadas de USUARIO con permisos completos de administración.</p><button type="button" data-go="overlays">VER HERRAMIENTAS</button></article><article class="dashboard-card"><span class="card-kicker">PERMISOS</span><h3>COLABORADORES</h3><p>Revisá la estructura de propietarios, colaboradores y permisos del sistema.</p><button type="button" data-account="collaborators">ADMINISTRAR</button></article><article class="dashboard-card"><span class="card-kicker">INTEGRACIONES</span><h3>TWITCH + KICK</h3><p>Accedé a las conexiones y herramientas vinculadas a las plataformas de cada espacio.</p><button type="button" data-go="platforms">VER PLATAFORMAS</button></article>';
       let note=home.querySelector('.sl-admin-note');
       if(!note){note=document.createElement('p');note.className='sl-admin-note';grid.insertAdjacentElement('afterend',note)}
-      note.textContent='Vista de administrador: esta capa habilita toda la interfaz de USUARIO. La autorización sensible debe seguir validándose también en Supabase/RLS.';
+      note.textContent='Vista de administrador: esta capa habilita toda la interfaz de USUARIO. La autorización sensible también se valida en Supabase/RLS.';
+      renderAdminOverview();
     }else{
       home?.querySelector('.sl-admin-note')?.remove();
+      home?.querySelector('.sl-admin-overview')?.remove();
     }
   }
 
