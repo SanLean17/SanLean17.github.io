@@ -130,6 +130,7 @@
   function apply(ctx){applyMain(ctx);applyAccount(ctx)}
 
   window.addEventListener('sanlean:access-ready',e=>setTimeout(()=>apply(e.detail),80));
+  window.addEventListener('sanlean:access-changed',e=>setTimeout(()=>apply(e.detail),50));
   window.addEventListener('DOMContentLoaded',async()=>{
     const ctx=window.SanLeanAccess?.get?.();
     if(ctx?.ready)setTimeout(()=>apply(ctx),120);
