@@ -9,7 +9,7 @@
     bits:'BITS / ALERTAS',platforms:'TWITCH / KICK',killers:'KILLERS',
     killerPerks:'PERKS DE KILLERS',survivor:'PERKS DE SUPERVIVIENTES',tournament:'TORNEO 1VS1'
   };
-  let context={role:'guest',permissions:[],email:'',username:'',ready:false};
+  let context={role:'guest',permissions:[],permissionsByWorkspace:{},activeWorkspaceId:null,email:'',username:'',ready:false};
 
   const normalize=v=>String(v||'').trim().toLowerCase();
   const unique=a=>[...new Set((Array.isArray(a)?a:[]).filter(x=>ALL_PERMISSIONS.includes(x)))];
@@ -33,7 +33,7 @@
     const db=window.sanleanSupabase||window.SanLeanConnectionsClient||null;
     if(!db)return context;
     const session=account?await account.session():(await db.auth.getSession()).data.session;
-    if(!session){context={role:'guest',permissions:[],email:'',username:'',ready:true};return context}
+    if(!session){context={role:'guest',permissions:[],permissionsByWorkspace:{},activeWorkspaceId:null,email:'',username:'',ready:true};return context}
 
     const email=normalize(session.user.email);
     let profile=null;
@@ -47,20 +47,33 @@
     const username=normalize(profile?.username);
     let role=normalize(profile?.role)||'owner';
     let permissions=[];
+    let permissionsByWorkspace={};
 
     if(email===ADMIN_EMAIL){
       role='admin';
       permissions=[...ALL_PERMISSIONS];
-    }else if(role==='collaborator'){
-      permissions=metadataPermissions(session.user);
-      if(!permissions.length)permissions=previewCollaboratorPermissions(email);
-      if(!permissions.length&&username)permissions=previewCollaboratorPermissions(username);
     }else{
-      role='owner';
-      permissions=[...ALL_PERMISSIONS];
+      let memberships=[];
+      try{
+        const {data}=await db.from('workspace_members').select('workspace_id,role,permissions').eq('user_id',session.user.id);
+        memberships=Array.isArray(data)?data:[];
+      }catch{}
+      memberships.forEach(m=>{permissionsByWorkspace[m.workspace_id]=unique(m.permissions)});
+      const membershipPermissions=unique(memberships.flatMap(m=>m.permissions||[]));
+
+      if(role==='collaborator'||memberships.length){
+        role='collaborator';
+        permissions=membershipPermissions;
+        if(!permissions.length)permissions=metadataPermissions(session.user);
+        if(!permissions.length)permissions=previewCollaboratorPermissions(email);
+        if(!permissions.length&&username)permissions=previewCollaboratorPermissions(username);
+      }else{
+        role='owner';
+        permissions=[...ALL_PERMISSIONS];
+      }
     }
 
-    context={role,permissions,email,username,ready:true};
+    context={role,permissions,permissionsByWorkspace,activeWorkspaceId:null,email,username,ready:true};
     document.documentElement.dataset.sanleanRole=role;
     window.dispatchEvent(new CustomEvent('sanlean:access-ready',{detail:{...context}}));
     return context;
@@ -69,7 +82,15 @@
   function can(section){
     if(context.role==='admin'||context.role==='owner')return true;
     if(section==='home')return true;
-    return context.role==='collaborator'&&context.permissions.includes(section);
+    if(context.role!=='collaborator')return false;
+    const scoped=context.activeWorkspaceId?context.permissionsByWorkspace?.[context.activeWorkspaceId]:null;
+    const source=Array.isArray(scoped)?scoped:context.permissions;
+    return source.includes(section)||source.includes('*');
+  }
+
+  function setWorkspace(workspaceId){
+    context.activeWorkspaceId=workspaceId||null;
+    window.dispatchEvent(new CustomEvent('sanlean:access-changed',{detail:{...context,permissions:[...context.permissions]}}));
   }
 
   function firstAllowed(){
@@ -80,11 +101,13 @@
     resolve,
     get:()=>({...context,permissions:[...context.permissions]}),
     can,
+    setWorkspace,
     firstAllowed,
     labels:{...LABELS},
     allPermissions:[...ALL_PERMISSIONS],
     adminEmail:ADMIN_EMAIL
   };
 
+  window.addEventListener('sanlean:workspace-changed',e=>setWorkspace(e.detail?.workspaceId||null));
   window.addEventListener('DOMContentLoaded',()=>resolve().catch(()=>{}),{once:true});
 })();
