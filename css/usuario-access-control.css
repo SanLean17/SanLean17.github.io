@@ -1,0 +1,19 @@
+/* SANLEAN — roles y permisos de USUARIO */
+.user-page .sl-role-badge,.account-page .sl-role-badge{
+  display:inline-flex;align-items:center;min-height:26px;padding:0 10px;
+  border:1px solid rgba(255,0,60,.55);border-radius:999px;
+  background:rgba(255,0,60,.08);color:#ff003c;
+  font:800 10px/1 Montserrat,Arial,sans-serif;letter-spacing:.08em
+}
+.user-page .sl-access-empty{
+  box-sizing:border-box;width:100%;padding:28px;border:1px solid rgba(255,255,255,.12);
+  border-radius:14px;background:rgba(8,8,10,.84);text-align:center
+}
+.user-page .sl-access-empty strong{display:block;color:#ff003c;font:800 13px/1.3 Montserrat,Arial,sans-serif}
+.user-page .sl-access-empty p{max-width:600px;margin:10px auto 0;color:rgba(255,255,255,.62);font:500 13px/1.55 Montserrat,Arial,sans-serif}
+.user-page .sl-admin-note{
+  margin-top:22px;padding:16px 18px;border:1px solid rgba(255,255,255,.10);
+  border-radius:14px;background:rgba(8,8,10,.70);color:rgba(255,255,255,.66);
+  font:500 12px/1.55 Montserrat,Arial,sans-serif
+}
+.user-page [data-access-hidden="true"],.account-page [data-access-hidden="true"]{display:none!important}
