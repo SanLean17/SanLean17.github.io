@@ -5,7 +5,7 @@ const root=path.resolve(__dirname,'..');
 (async()=>{
  const browser=await chromium.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true});
  try{
-  for(const width of [1440,390]){
+  for(const width of [1440,740,390,320]){
    const page=await browser.newPage({viewport:{width,height:900}});
    await page.route('**/*',r=>r.fulfill({contentType:'text/html',body:'<html><body></body></html>'}));
    await page.goto('https://fixture.test/Usuario/overlay.html?token=fixture-view');
@@ -17,13 +17,13 @@ const root=path.resolve(__dirname,'..');
     window.SanLeanRouletteView={render:(_,data)=>rendered.push(structuredClone(data))};
     const timeout=window.setTimeout;
     window.setTimeout=(fn,ms,...args)=>fn.name==='poll'?(scheduled.push({fn,ms}),1):timeout(fn,ms,...args);
-    window.fetch=async(url,options)=>{calls.push({url,body:JSON.parse(options.body),headers:options.headers,timeout:!!options.signal});if(fail)return{ok:false,status:503};return{ok:true,json:async()=>url.endsWith('update_stream_overlay_by_control')?true:[structuredClone(row)]}};
+    window.fetch=async(url,options)=>{const body=JSON.parse(options.body);calls.push({url,body,headers:options.headers,timeout:!!options.signal});if(fail)return{ok:false,status:503};const revision=JSON.stringify(row);return{ok:true,json:async()=>url.endsWith('update_stream_overlay_by_control')?true:row?[{revision,payload:body.p_revision===revision?null:structuredClone(row)}]:[]}};
     window.step=async()=>{const next=scheduled.shift();await next.fn();return next.ms};
    });
    await page.addScriptTag({path:path.join(root,'js/stream-overlay.js')});
    await page.waitForFunction(()=>scheduled.length===1);
    assert.equal(await page.evaluate(()=>calls.length),1);
-   assert.equal(await page.evaluate(()=>calls[0].url),'https://db.test/rest/v1/rpc/get_stream_overlay_by_token');
+   assert.equal(await page.evaluate(()=>calls[0].url),'https://db.test/rest/v1/rpc/get_stream_overlay_delta');
    assert.equal(await page.evaluate(()=>calls[0].body.p_token),'fixture-view');
    assert.equal(await page.evaluate(()=>calls[0].timeout),true);
    assert.equal(await page.locator('#obsControl').isHidden(),true);
@@ -32,6 +32,10 @@ const root=path.resolve(__dirname,'..');
    await page.evaluate(async()=>{row.settings.pool=[{key:'b'}];await step()});
    assert.equal(await page.evaluate(()=>rendered.at(-1).settings.pool[0].key),'b','Same-size pool edits propagate');
    assert.equal(await page.evaluate(()=>scheduled[0].ms),500);
+   const renderedBefore=await page.evaluate(()=>rendered.length);
+   await page.evaluate(()=>step());
+   assert.equal(await page.evaluate(()=>rendered.length),renderedBefore,'Unchanged response preserves the current animation');
+   assert(await page.evaluate(()=>!!calls.at(-1).body.p_revision),'Conditional reads send last revision');
    await page.evaluate(async()=>{row.state.status='result';row.can_control=true;await step()});
    assert.equal(await page.evaluate(()=>rendered.at(-1).state.status),'result');
    await page.locator('#obsHide').click();
@@ -42,6 +46,11 @@ const root=path.resolve(__dirname,'..');
    await page.evaluate(async()=>{fail=false;row.state.visible=false;await step()});
    assert.equal(await page.evaluate(()=>scheduled[0].ms),500,'Recovery restores normal cadence');
    assert.equal(await page.evaluate(()=>calls.some(c=>c.url.includes('/functions/'))),false);
+   await page.evaluate(async()=>{row=null;await step()});
+   assert.equal(await page.locator('#obsControl').isHidden(),true,'Revoked token hides controls');
+   const callsBefore=await page.evaluate(()=>calls.length);
+   await page.evaluate(()=>document.getElementById('obsHide').click());
+   assert.equal(await page.evaluate(()=>calls.length),callsBefore,'Revoked token cannot issue writes');
    await page.close();
   }
   for(const mode of ['alert','active']){
@@ -50,11 +59,11 @@ const root=path.resolve(__dirname,'..');
    await page.goto('https://fixture.test/Usuario/alertas.html?token=fixture&mode='+mode);
    await page.setContent('<main id="bitsAlertStage" hidden></main><aside id="bitsActiveDock" hidden></aside>');
    await page.evaluate(()=>{
-    window.SANLEAN_SUPABASE={url:'https://db.test'};window.calls=[];window.scheduled=[];window.fail=false;
+    window.SANLEAN_SUPABASE={url:'https://db.test',publishableKey:'fixture'};window.calls=[];window.scheduled=[];window.fail=false;
     window.payload={cursor:'100',events:[],active:[],sound:false,timersPaused:false};
     const timeout=window.setTimeout;
     window.setTimeout=(fn,ms,...args)=>fn.name==='poll'?(scheduled.push({fn,ms}),1):timeout(fn,ms,...args);
-    window.fetch=async url=>{if(!url.includes('/stream-bits/alerts'))return{ok:false};calls.push(url);if(fail)return{ok:false,status:503};return{ok:true,json:async()=>structuredClone(payload)}};
+    window.fetch=async(url,options)=>{if(!url.endsWith('/get_stream_bits_feed'))return{ok:false};calls.push({url,body:JSON.parse(options.body)});if(fail)return{ok:false,status:503};return{ok:true,json:async()=>structuredClone(payload)}};
     window.step=async()=>{const next=scheduled.shift();await next.fn();return next.ms};
    });
    await page.addScriptTag({path:path.join(root,'js/bits-alert.js')});
@@ -63,7 +72,8 @@ const root=path.resolve(__dirname,'..');
    await page.evaluate(async()=>{fail=true;await step();await step()});
    assert.equal(await page.evaluate(()=>scheduled[0].ms),mode==='active'?20000:8000);
    await page.evaluate(async()=>{fail=false;payload.cursor='101';payload.events=[{id:'101',donor:'PRUEBA',bits:300,quantity:1,item_name:'AGITACIÓN',alert_style:'neutral'}];payload.active=[{donor:'PRUEBA',quantity:1,item_name:'AGITACIÓN',expires_at:null}];await step()});
-   assert((await page.evaluate(()=>calls.at(-1))).includes('after=100'),'Cursor survives failed requests');
+   assert.equal(await page.evaluate(()=>calls.at(-1).body.p_after),'100','Cursor survives failed requests');
+   assert.equal(await page.evaluate(()=>calls[0].body.p_mode),mode,'Each OBS source only reads its required feed');
    assert.equal(await page.locator(mode==='active'?'#bitsActiveDock':'#bitsAlertStage').isVisible(),true);
    assert.equal(await page.evaluate(()=>scheduled.length),1);
    await page.close();
