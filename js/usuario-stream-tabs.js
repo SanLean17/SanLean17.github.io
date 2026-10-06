@@ -1,5 +1,5 @@
-document.write('<link rel="stylesheet" href="../css/usuario-access-control.css?v=20261006-1">');
-document.write('<script src="../js/usuario-access-control.js?v=20261006-1"><\/script>');
+document.write('<link rel="stylesheet" href="../css/usuario-access-control.css?v=20261006-2">');
+document.write('<script src="../js/usuario-access-control.js?v=20261006-2"><\/script>');
 // SANLEAN — canonical navigation loader + USUARIO extensions.
 document.write('<script src="../js/usuario-stream-tabs-core.js?v=20261002-4"><\/script>');
 document.write('<link rel="stylesheet" href="../css/usuario-interactions.css?v=20260928-1">');
@@ -20,4 +20,4 @@ document.write('<link rel="stylesheet" href="../css/usuario-all-challenge.css?v=
 document.write('<script src="../js/usuario-all-killer-challenge.js?v=20261003-1"><\/script>');
 document.write('<link rel="stylesheet" href="../css/usuario-sorteos.css?v=20261003-14">');
 document.write('<script src="../js/usuario-sorteos.js?v=20261003-14"><\/script>');
-document.write('<script src="../js/usuario-role-views.js?v=20261006-1"><\/script>');
+document.write('<script src="../js/usuario-role-views.js?v=20261006-2"><\/script>');
