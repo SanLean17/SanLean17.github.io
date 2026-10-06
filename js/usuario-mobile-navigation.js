@@ -2,7 +2,7 @@
 (() => {
   const mobile = matchMedia('(max-width:760px)');
   const groups = [
-    ['panel','MI PANEL', [['home','INICIO'],['overlays','OVERLAYS OBS'],['votes','CARTAS'],['giveaways','SORTEOS'],['bits','BITS Y ALERTAS'],['platforms','TWITCH / KICK'],['tournament','TORNEO 1VS1']]],
+    ['panel','MI PANEL', [['home','INICIO'],['overlays','OVERLAYS OBS'],['votes','CARTAS'],['challenges','DESAFÍOS'],['giveaways','SORTEOS'],['bits','BITS Y ALERTAS'],['platforms','TWITCH / KICK'],['tournament','TORNEO 1VS1']]],
     ['roulette','RULETAS', [['killers','KILLERS'],['killerPerks','PERKS DE KILLERS'],['survivor','PERKS DE SUPERVIVIENTES']]],
     ['account','MI CUENTA', [['home','MI CUENTA'],['profile','MI PERFIL'],['security','SEGURIDAD'],['collaborators','COLABORADORES'],['connections','CONEXIONES']]]
   ];
@@ -28,6 +28,29 @@
     if(panel.hidden&&dialog.hasAttribute('open'))close();
   }).observe(panel,{attributes:true,attributeFilter:['hidden']});
   function currentKey(){return account ? document.querySelector('.account-nav .active')?.dataset.section || 'home' : document.querySelector('.panel-tabs .active')?.dataset.sectionKey || 'home'}
+  function allowed(groupId,key){
+    const access=window.SanLeanAccess;
+    if(!access?.get?.().ready)return true;
+    const role=access.get().role;
+    if(groupId==='account'){
+      if(key==='home'||key==='profile'||key==='security')return true;
+      if(key==='collaborators')return role!=='collaborator';
+      if(key==='connections')return role!=='collaborator'||access.can('platforms');
+      return true;
+    }
+    if(key==='home')return true;
+    return access.can(key);
+  }
+  function syncAccessGroups(){
+    tabs.querySelectorAll('[data-group]').forEach(button=>{
+      const group=groups.find(g=>g[0]===button.dataset.group);
+      button.hidden=!!group&&!group[2].some(([key])=>allowed(group[0],key));
+    });
+    if(tabs.querySelector('[data-group="'+activeGroup+'"]')?.hidden){
+      const first=[...tabs.querySelectorAll('[data-group]')].find(b=>!b.hidden);
+      if(first)activeGroup=first.dataset.group;
+    }
+  }
   function selectGroup(id){
     activeGroup = id;
     const group = groups.find(g=>g[0]===id);
@@ -37,7 +60,7 @@
     });
     options.setAttribute('aria-labelledby',`mobileCategory-${id}`);
     options.replaceChildren();
-    group[2].forEach(([key,label])=>{
+    group[2].filter(([key])=>allowed(id,key)).forEach(([key,label])=>{
       const link=document.createElement('a');
       link.textContent=label;
       link.href=`./${id==='account'?'cuenta':'index'}.html#${key}`;
@@ -90,6 +113,7 @@
     if(document.getElementById('panelView')?.hidden)return;
     sourceTrigger=trigger;if(dialog.hasAttribute('open')){close();return;}
     const key=currentKey();
+    syncAccessGroups();
     selectGroup(account?'account':['killers','killerPerks','survivor'].includes(key)?'roulette':'panel');
     positionMenu();dialog.setAttribute('open','');document.body.classList.add('mobile-navigation-open');
     trigger.setAttribute('aria-expanded','true');trigger.setAttribute('aria-label','Cerrar menú de navegación');
@@ -105,6 +129,8 @@
     document.querySelectorAll('.user-account-dropdown').forEach(menu=>menu.hidden=true);
   }
   mobile.addEventListener('change',syncMode);
+  window.addEventListener('sanlean:access-ready',syncAccessGroups);
+  window.addEventListener('sanlean:access-changed',syncAccessGroups);
   document.body.classList.add('mobile-navigation-ready');
-  syncMode();
+  syncAccessGroups();syncMode();
 })();
