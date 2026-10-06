@@ -29,14 +29,21 @@
   }
 
   async function resolve(){
-    const account=window.SanLeanAccount,db=window.sanleanSupabase;
-    if(!account||!db)return context;
-    const session=await account.session();
+    const account=window.SanLeanAccount;
+    const db=window.sanleanSupabase||window.SanLeanConnectionsClient||null;
+    if(!db)return context;
+    const session=account?await account.session():(await db.auth.getSession()).data.session;
     if(!session){context={role:'guest',permissions:[],email:'',username:'',ready:true};return context}
 
     const email=normalize(session.user.email);
     let profile=null;
-    try{profile=await account.loadProfile()}catch{}
+    try{
+      if(account)profile=await account.loadProfile();
+      else {
+        const {data}=await db.from('user_profiles').select('first_name,last_name,username,role,onboarding_completed').eq('user_id',session.user.id).maybeSingle();
+        profile=data||null;
+      }
+    }catch{}
     const username=normalize(profile?.username);
     let role=normalize(profile?.role)||'owner';
     let permissions=[];
