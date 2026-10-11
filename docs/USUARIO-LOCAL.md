@@ -21,7 +21,7 @@ El aviso MODO DESARROLLO LOCAL identifica todas las páginas y overlays. Despleg
 - **CARTAS:** generá una ronda CHAT, iniciá la votación y usá SIMULAR VOTO A. Cada clic representa otro participante ficticio. La recepción usa el mismo lector local del chat; puede tardar un segundo. Finalizá/revelá con los controles habituales. MANUAL también funciona.
 - **Sorteos:** iniciá un sorteo y pulsá AGREGAR PARTICIPANTES DEMO. Se agregan cinco nombres ficticios a esa sesión. Podés cerrar, sortear y excluir/restaurar participantes.
 - **BITS:** hay una regla demo. Podés crear/editar/eliminar reglas, pausar y usar las pruebas de alerta. SIMULAR APORTE DE BITS aplica la primera regla demo y agrega entradas activas. No se reciben donaciones reales.
-- **Overlays:** abrí VISTA PREVIA en el mismo navegador y origen. El panel y las pestañas de overlay comparten los datos locales. Un OBS externo tiene su propio almacenamiento: usá allí las URLs demo, no esperes sincronización con Chrome.
+- **Overlays:** abrí VISTA PREVIA en el mismo navegador y origen. El panel y las pestañas de overlay comparten los datos locales. El servidor local comparte las visualizaciones con OBS de esta misma PC. Mantené abiertos el servidor y MI PANEL; copiá las URLs OBS de visualización. Los controles se usan desde MI PANEL. No necesitás iniciar una transmisión.
 - **Colaboradores:** los cambios de permisos, altas y bajas afectan sólo registros ficticios.
 
 ## Límites explícitos
@@ -52,3 +52,15 @@ La adaptación no implementa todo el SDK ni todas las funciones SQL. Al agregar 
 - `tests/usuario-local.cjs`: verificaciones automatizadas; este documento contiene los pasos y límites.
 
 Validado: navegación en 1440/390/320 sin desbordamiento horizontal, entrada automática, perfil/cuenta, persistencia de pesos, giro de ruleta, torneo demo, voto/revelado de CARTAS, participantes de sorteos, colaboradores/permisos, eventos Bits/pausa de temporizadores, tokens de visualización/control y hosts de producción falsos con flags de bypass. Cero solicitudes a Supabase y cero errores JavaScript en el recorrido local probado. También pasaron `private-settings.cjs`, `supabase-usage.cjs` y la comprobación HTTP del servidor. No se probó Auth real contra el servicio restringido ni una sesión externa de OBS.
+
+## Monitor visual sin transmitir
+
+Recargá MI PANEL y desplegá **ABRIR MONITOR LOCAL · VER SIN ESTAR EN VIVO**, justo debajo del aviso de desarrollo. Elegí ALERTAS BITS, ENTRADAS ACTIVAS o cualquiera de los overlays. Las pruebas de alerta están debajo de la pantalla del monitor. El área representa 1920 × 1080 y se escala para entrar en desktop y móvil.
+
+Para ruletas, CARTAS, sorteos y desafíos, usá los controles de sus secciones habituales y mirá el resultado en el monitor o en ABRIR VENTANA. Una salida vacía significa que todavía no se envió contenido visible: generá la ronda, girá o activá MOSTRAR. No hay necesidad de estar en vivo ni de conectar Twitch/Kick.
+
+**OBS también puede mostrarlo:** copiá la URL de visualización a una Fuente de navegador, tamaño 1920 × 1080. Usá la misma dirección del servidor que aparece en el panel (127.0.0.1, puerto 4173). El monitor y OBS son espectadores; el manejo se hace en MI PANEL. Se conserva el aviso de demo. La comprobación automatizada usa dos navegadores aislados; no sustituye una prueba manual de tu instalación de OBS ni de su audio.
+
+El puente de visualización vive en memoria del servidor, sólo escucha loopback y se vuelve a llenar al abrir el panel. No guarda datos en nube ni archivos: recibe únicamente estados/configuración visual de overlays y eventos/entradas Bits. Excluye perfiles, autenticación, colaboradores y tokens de control. Rechaza publicaciones de otros orígenes. Si reiniciás el servidor, el panel vuelve a publicar dentro de cinco segundos. Si un servidor estático alternativo no soporta el puente, la vista previa del mismo navegador sigue disponible, pero OBS independiente necesita el iniciador incluido.
+
+Archivos adicionales: `js/usuario-local-preview.js` y `css/usuario-local-preview.css` (monitor que reutiliza controles canónicos); `scripts/usuario-preview-bridge.cjs` (puente de sólo visualización); `tests/usuario-local-preview.cjs` (monitor, navegadores aislados, Bits, aislamiento de origen y responsive). Ejecutar la prueba con acceso a puertos loopback.

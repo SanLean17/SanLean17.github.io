@@ -32,7 +32,19 @@
     if(raw) return JSON.parse(raw);
     const db=seed();write(db);return db;
   }
-  function write(db) { localStorage.setItem(KEY,JSON.stringify(db)); }
+  let publishTimer=null,publishing=false,publishAgain=false;
+  const isPanel=/\/(index\.html)?$/i.test(location.pathname);
+  function write(db) { localStorage.setItem(KEY,JSON.stringify(db)); if(isPanel){clearTimeout(publishTimer);publishTimer=setTimeout(publishPreview,80);} }
+  async function publishPreview(){
+    if(publishing){publishAgain=true;return;}publishing=true;
+    try{
+      const db=read();let source=localStorage.getItem('sanlean-local-preview-source');if(!source){source=crypto.randomUUID();localStorage.setItem('sanlean-local-preview-source',source);}
+      const bits=db.stream_bits_settings.map(s=>({token:s.alert_token||s.public_token,sound:s.sound_enabled,timersPaused:s.timers_paused,active:db.stream_bits_bonuses.filter(b=>b.workspace_id===s.workspace_id),events:db.stream_bits_events.filter(e=>e.workspace_id===s.workspace_id).slice(-100)}));
+      const response=await nativeFetch('/__sanlean_preview/publish',{method:'POST',headers:{'Content-Type':'application/json','X-SanLean-Local':'preview-v1'},body:JSON.stringify({source,overlays:db.stream_overlays.map(({id,public_token,kind,settings,state,updated_at})=>({id,public_token,kind,settings,state,updated_at})),bits})});
+      const status=document.getElementById('localPreviewConnection');if(status)status.textContent=response.ok?'Monitor conectado. Las URLs de visualización también funcionan en OBS de esta PC.':'Vista en navegador disponible. Reiniciá el servidor local para habilitar OBS.';
+    }catch{const status=document.getElementById('localPreviewConnection');if(status)status.textContent='Vista en navegador disponible. Reiniciá el servidor local para habilitar OBS.';}
+    finally{publishing=false;if(publishAgain){publishAgain=false;publishPreview();}}
+  }
   const listeners = new Set();
   let signedIn=true;
   const session=()=>signedIn?{access_token:'LOCAL-DEMO-NOT-A-JWT',user:{id:sessionStorage.getItem('sanlean-local-role')==='collaborator'?'local-collaborator':OWNER,email:sessionStorage.getItem('sanlean-local-role')==='collaborator'?'colaborador@demo.invalid':'propietario@demo.invalid',user_metadata:{}}}:null;
@@ -115,7 +127,13 @@
     if(url.hostname.endsWith('.supabase.co')||url.pathname.startsWith('/__sanlean_local/')){
       let body={};try{body=JSON.parse(options.body||'{}');}catch{}
       let result;
-      if(url.pathname.includes('/rest/v1/rpc/'))result=await rpc(url.pathname.split('/').pop(),body);
+      if(url.pathname.includes('/rest/v1/rpc/')){
+        const name=url.pathname.split('/').pop();
+        if(['get_stream_overlay_delta','get_stream_bits_feed'].includes(name)&&!isPanel){
+          try{const response=await nativeFetch('/__sanlean_preview/'+name,{method:'POST',headers:{'Content-Type':'application/json','X-SanLean-Local':'preview-v1'},body:JSON.stringify(body)});if(response.ok){const data=await response.json();if(name==='get_stream_bits_feed'||data.length)return new Response(JSON.stringify(data),{headers:{'Content-Type':'application/json'}});}}catch{}
+        }
+        result=await rpc(name,body);
+      }
       else result=await edge(url.pathname,body);
       return new Response(JSON.stringify(result.error?{error:result.error.message}:result.data),{status:result.error?503:200,headers:{'Content-Type':'application/json'}});
     }
@@ -158,7 +176,8 @@
     });write(db);
   }
   if(!localStorage.getItem('sanlean-tournament-demo-history'))localStorage.setItem('sanlean-tournament-demo-history',JSON.stringify([{id:1,name:'TORNEO DEMO LOCAL',period:new Date().toISOString().slice(0,7),bestTimesCount:3,state:'finished',logo:'',players:[['Luna_demo',1,12,500],['Sol_demo',1,18,200],['Nico_demo',1,25,0]]}]));
-  window.SanLeanLocal=Object.freeze({active:true,addDemoParticipants});
+  window.SanLeanLocal=Object.freeze({active:true,addDemoParticipants,publishPreview});
+  if(isPanel){setInterval(publishPreview,5000);window.addEventListener('storage',event=>{if(event.key===KEY)publishPreview();});}
   document.addEventListener('DOMContentLoaded',()=>{
     const banner=document.createElement('aside');banner.id='localDevelopmentBanner';banner.className='module-box';banner.setAttribute('aria-label','Modo desarrollo local');
     const title=document.createElement('strong');title.textContent='MODO DESARROLLO LOCAL · IDENTIDAD DEMO';
@@ -176,6 +195,7 @@
       const participants=document.createElement('button');participants.className='module-secondary';participants.textContent='AGREGAR PARTICIPANTES DEMO';participants.onclick=addDemoParticipants;
       const vote=document.createElement('button');vote.className='module-secondary';vote.textContent='SIMULAR VOTO A';vote.onclick=()=>{const db=read();db.stream_chat_messages.push({id:Date.now(),workspace_id:WS,message_id:crypto.randomUUID(),user_id:crypto.randomUUID(),username:'Votante_demo',message:'A',platform:window.SanLeanCards?.getState()?.platform==='kick'?'kick':'twitch',sent_at:now(),created_at:now(),metadata:{}});write(db);};
       const bits=document.createElement('button');bits.className='module-secondary';bits.textContent='SIMULAR APORTE DE BITS';bits.onclick=simulateBits;actions.append(participants,vote,bits);banner.append(actions);
+      const preview=document.createElement('script');preview.src='../js/usuario-local-preview.js';document.head.append(preview);
     }
     if(!/\/(overlay|alertas)\.html$/i.test(location.pathname)){
       const details=document.createElement('details');details.id='localDevelopmentTools';

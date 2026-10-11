@@ -2,7 +2,10 @@
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json','.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp','.svg':'image/svg+xml','.woff2':'font/woff2','.mp3':'audio/mpeg'};
-const server=http.createServer((req,res)=>{
+const mirror=require('./usuario-preview-bridge.cjs')();
+const server=http.createServer(async(req,res)=>{
+  const requestURL=new URL(req.url,'http://127.0.0.1');
+  if(await mirror(req,res,requestURL))return;
   if(!['GET','HEAD'].includes(req.method)){res.writeHead(405);return res.end();}
   try{
     const url=new URL(req.url,'http://127.0.0.1');
@@ -17,4 +20,5 @@ const server=http.createServer((req,res)=>{
   }catch{res.writeHead(404);res.end('Archivo no encontrado');}
 });
 server.on('error',error=>{console.error('No se pudo iniciar el servidor:',error.message);process.exitCode=1;});
-server.listen(4173,'127.0.0.1',()=>console.log('MODO DESARROLLO LOCAL\nAbrí http://127.0.0.1:4173/Usuario/\nDejá esta ventana abierta. Ctrl+C para detener.'));
+const port=Number(process.env.SANLEAN_LOCAL_PORT)||4173;
+server.listen(port,'127.0.0.1',()=>console.log(`MODO DESARROLLO LOCAL\nAbrí http://127.0.0.1:${port}/Usuario/\nDejá esta ventana abierta. Ctrl+C para detener.`));

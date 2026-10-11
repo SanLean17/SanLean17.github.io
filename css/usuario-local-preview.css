@@ -1,0 +1,9 @@
+/* Composition only; controls and typography inherit USUARIO's canonical system. */
+#localVisualMonitor { margin: 16px auto; max-width: 1200px; }
+#localVisualMonitor summary { cursor: pointer; font-weight: 800; }
+#localVisualMonitor .local-monitor-viewport { position: relative; width: 100%; overflow: hidden; background: #111114; border-radius: 14px; border: 1px solid rgba(255,255,255,.24); }
+#localVisualMonitor iframe { display: block; width: 1920px; height: 1080px; border: 0; transform-origin: top left; }
+#localVisualMonitor button[aria-pressed="true"] { background: #FF003C; color: white; }
+#localVisualMonitor .module-actions { flex-wrap: wrap; }
+#localVisualMonitor[open] > * + * { margin-top: 20px; }
+#localVisualMonitor > details > .module-actions { margin-top: 20px; }
