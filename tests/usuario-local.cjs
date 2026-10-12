@@ -14,7 +14,7 @@ const contentType=file=>({'.js':'text/javascript','.css':'text/css','.html':'tex
    try{await route.fulfill({body:fs.readFileSync(file),contentType:contentType(file)});}catch{await route.fulfill({status:404,body:''});}
  });
  const page=await context.newPage();const base='http://127.0.0.1:4173/Usuario/';
- await page.goto(base);await page.waitForFunction(()=>window.SanLeanStreamTools?.getOverlays().length===9);
+ await page.goto(base);await page.waitForFunction(()=>window.SanLeanStreamTools?.getOverlays().length===10);
  assert.equal(await page.locator('#panelView').isVisible(),true);
  assert.equal(await page.evaluate(()=>window.SANLEAN_SUPABASE.url),'http://127.0.0.1:4173/__sanlean_local');
  const sections=['home','overlays','votes','poll','challenges','giveaways','bits','platforms','killers','killerPerks','survivor','tournament'];
@@ -27,7 +27,7 @@ const contentType=file=>({'.js':'text/javascript','.css':'text/css','.html':'tex
    console.log('PASS navigation',width);
  }
  await page.evaluate(async()=>{const a=window.SanLeanAccount;a.queueSettings({weights:{'killers:trapper':3},bonusEntries:{}});await a.flushSettings();});
- await page.reload();await page.waitForFunction(()=>window.SanLeanStreamTools?.getOverlays().length===9);
+ await page.reload();await page.waitForFunction(()=>window.SanLeanStreamTools?.getOverlays().length===10);
  assert.equal(await page.evaluate(()=>window.SanLeanAccount.getSettings().weights['killers:trapper']),3);
  await page.evaluate(()=>window.SanLeanUsuarioNavigation.show('tournament'));
  await page.locator('[data-history="0"]').click();assert.equal(await page.locator('#finishedTournamentName').textContent(),'TORNEO DEMO LOCAL');
@@ -56,7 +56,7 @@ const contentType=file=>({'.js':'text/javascript','.css':'text/css','.html':'tex
  await page.locator('#localDevelopmentTools').evaluate(el=>el.open=true);await page.getByText('VER COMO COLABORADOR',{exact:true}).click();await page.waitForFunction(()=>window.SanLeanAccess?.get().role==='collaborator');
  assert.equal(await page.evaluate(()=>window.SanLeanAccess.can('votes')),true);assert.equal(await page.evaluate(()=>window.SanLeanAccess.can('bits')),false);
  assert.deepEqual(errors,[]);assert.deepEqual(external,[]);console.log('PASS persistence, overlays, giveaway, collaborators, roles, zero Supabase requests');
- const localhost=await context.newPage();await localhost.goto('http://localhost:4173/Usuario/');await localhost.waitForFunction(()=>window.SanLeanStreamTools?.getOverlays().length===9);assert.equal(await localhost.evaluate(()=>window.SanLeanLocal.active),true);await localhost.close();
+ const localhost=await context.newPage();await localhost.goto('http://localhost:4173/Usuario/');await localhost.waitForFunction(()=>window.SanLeanStreamTools?.getOverlays().length===10);assert.equal(await localhost.evaluate(()=>window.SanLeanLocal.active),true);await localhost.close();
  await context.close();
  // Production and deceptive hosts must not acquire the local adapter, regardless of flags.
  for(const host of ['sanlean.com.ar','localhost.evil.test','192.168.1.2']){

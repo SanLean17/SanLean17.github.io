@@ -12,9 +12,9 @@ El iniciador usa Node.js instalado o el incluido con Codex en esta PC. En otra P
 
 ## Qué se conserva
 
-Se usan los mismos módulos, catálogos, imágenes y estilos de USUARIO: navegación, killers/perks, ruletas, Torneo 1VS1, CARTAS, votaciones, desafíos, sorteos, BITS/ALERTAS, MI CUENTA y colaboradores. Los nueve overlays se crean por el flujo existente. No se copiaron pantallas ni se reemplazó el sistema visual.
+Se usan los mismos módulos, catálogos, imágenes y estilos de USUARIO: navegación, killers/perks, ruletas, Torneo 1VS1, CARTAS, votaciones, desafíos, sorteos, BITS/ALERTAS, MI CUENTA y colaboradores. Los diez overlays locales (incluida VOTACIÓN) se crean por el flujo existente. No se copiaron pantallas ni se reemplazó el sistema visual.
 
-El aviso MODO DESARROLLO LOCAL identifica todas las páginas y overlays. Desplegá «Herramientas y límites de la demo» para acceder a los controles. Incluye botones para ver el propietario o un colaborador demo con permisos limitados. Son vistas ficticias, no pruebas de seguridad del servidor.
+El aviso MODO DESARROLLO LOCAL queda en MI PANEL y MI CUENTA. Las salidas de overlays y alertas no llevan avisos superpuestos. Desplegá «Herramientas y límites de la demo» para acceder a los controles. Incluye botones para ver el propietario o un colaborador demo con permisos limitados. Son vistas ficticias, no pruebas de seguridad del servidor.
 
 - **Ruletas:** editá pesos y entradas; girá desde el panel. Los cambios persisten al recargar.
 - **Torneo:** hay un torneo finalizado demo con tres participantes. Podés crear los tuyos con el flujo habitual.
@@ -59,8 +59,12 @@ Recargá MI PANEL y desplegá **ABRIR MONITOR LOCAL · VER SIN ESTAR EN VIVO**, 
 
 Para ruletas, CARTAS, sorteos y desafíos, usá los controles de sus secciones habituales y mirá el resultado en el monitor o en ABRIR VENTANA. Una salida vacía significa que todavía no se envió contenido visible: generá la ronda, girá o activá MOSTRAR. No hay necesidad de estar en vivo ni de conectar Twitch/Kick.
 
-**OBS también puede mostrarlo:** copiá la URL de visualización a una Fuente de navegador, tamaño 1920 × 1080. Usá la misma dirección del servidor que aparece en el panel (127.0.0.1, puerto 4173). El monitor y OBS son espectadores; el manejo se hace en MI PANEL. Se conserva el aviso de demo. La comprobación automatizada usa dos navegadores aislados; no sustituye una prueba manual de tu instalación de OBS ni de su audio.
+**OBS también puede mostrarlo:** copiá la URL de visualización a una Fuente de navegador, tamaño 1920 × 1080. Usá la misma dirección del servidor que aparece en el panel (127.0.0.1, puerto 4173). El monitor y OBS son espectadores; el manejo se hace en MI PANEL. Las fuentes de OBS se muestran limpias, sin avisos de desarrollo. La comprobación automatizada usa dos navegadores aislados; no sustituye una prueba manual de tu instalación de OBS ni de su audio.
 
 El puente de visualización vive en memoria del servidor, sólo escucha loopback y se vuelve a llenar al abrir el panel. No guarda datos en nube ni archivos: recibe únicamente estados/configuración visual de overlays y eventos/entradas Bits. Excluye perfiles, autenticación, colaboradores y tokens de control. Rechaza publicaciones de otros orígenes. Si reiniciás el servidor, el panel vuelve a publicar dentro de cinco segundos. Si un servidor estático alternativo no soporta el puente, la vista previa del mismo navegador sigue disponible, pero OBS independiente necesita el iniciador incluido.
 
 Archivos adicionales: `js/usuario-local-preview.js` y `css/usuario-local-preview.css` (monitor que reutiliza controles canónicos); `scripts/usuario-preview-bridge.cjs` (puente de sólo visualización); `tests/usuario-local-preview.cjs` (monitor, navegadores aislados, Bits, aislamiento de origen y responsive). Ejecutar la prueba con acceso a puertos loopback.
+
+### VOTACIÓN local
+
+En VOTACIÓN elegí Killers o PERSONALIZADA, cargá dos a cinco opciones e iniciá. En Herramientas de la demo podés enviar votos A, B, C, D y E. Cada clic representa una persona diferente; se usa el lector local de chat habitual. El overlay muestra cantidades, porcentajes, ganador/empate y respeta OCULTAR EN OBS. La URL aparece en OVERLAYS OBS y en el selector del monitor. Se agrega automáticamente al abrir MI PANEL, sin borrar las URLs ni los estados existentes. La creación de este overlay adicional está limitada al modo local; no cambia el esquema de producción.

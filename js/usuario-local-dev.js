@@ -179,6 +179,8 @@
   window.SanLeanLocal=Object.freeze({active:true,addDemoParticipants,publishPreview});
   if(isPanel){setInterval(publishPreview,5000);window.addEventListener('storage',event=>{if(event.key===KEY)publishPreview();});}
   document.addEventListener('DOMContentLoaded',()=>{
+    // OBS outputs remain clean; the development notice belongs only to the control panel.
+    if(/\/(overlay|alertas)\.html$/i.test(location.pathname))return;
     const banner=document.createElement('aside');banner.id='localDevelopmentBanner';banner.className='module-box';banner.setAttribute('aria-label','Modo desarrollo local');
     const title=document.createElement('strong');title.textContent='MODO DESARROLLO LOCAL · IDENTIDAD DEMO';
     const copy=document.createElement('p');copy.textContent='Datos ficticios guardados en este navegador. Twitch/Kick, chat y Bits son simulados. Auth, OAuth, EventSub y servicios reales no están disponibles.';
@@ -194,7 +196,7 @@
       const actions=document.createElement('div');actions.className='module-actions';
       const participants=document.createElement('button');participants.className='module-secondary';participants.textContent='AGREGAR PARTICIPANTES DEMO';participants.onclick=addDemoParticipants;
       const vote=document.createElement('button');vote.className='module-secondary';vote.textContent='SIMULAR VOTO A';vote.onclick=()=>{const db=read();db.stream_chat_messages.push({id:Date.now(),workspace_id:WS,message_id:crypto.randomUUID(),user_id:crypto.randomUUID(),username:'Votante_demo',message:'A',platform:window.SanLeanCards?.getState()?.platform==='kick'?'kick':'twitch',sent_at:now(),created_at:now(),metadata:{}});write(db);};
-      const bits=document.createElement('button');bits.className='module-secondary';bits.textContent='SIMULAR APORTE DE BITS';bits.onclick=simulateBits;actions.append(participants,vote,bits);banner.append(actions);
+      const bits=document.createElement('button');bits.className='module-secondary';bits.textContent='SIMULAR APORTE DE BITS';bits.onclick=simulateBits;actions.append(participants,vote);for(const letter of ['B','C','D','E']){const b=document.createElement('button');b.className='module-secondary';b.textContent='SIMULAR VOTO '+letter;b.onclick=()=>{const db=read();db.stream_chat_messages.push({id:Date.now(),workspace_id:WS,message_id:crypto.randomUUID(),user_id:crypto.randomUUID(),username:'Votante_demo',message:letter,platform:window.SanLeanCards?.getState()?.platform==='kick'?'kick':'twitch',sent_at:now(),created_at:now(),metadata:{}});write(db);};actions.append(b);}actions.append(bits);banner.append(actions);
       const preview=document.createElement('script');preview.src='../js/usuario-local-preview.js';document.head.append(preview);
     }
     if(!/\/(overlay|alertas)\.html$/i.test(location.pathname)){
@@ -203,10 +205,6 @@
       while(banner.children.length>1)details.append(banner.children[1]);banner.append(details);
     }
     document.body.prepend(banner);
-    if(/\/(overlay|alertas)\.html$/i.test(location.pathname)){
-      banner.style.cssText='position:fixed;top:0;left:0;z-index:9999;max-width:100%;padding:8px 12px;border-radius:14px;background:#111114;color:white;font:800 13px/1.5 Montserrat,sans-serif;pointer-events:none';
-      copy.remove();title.textContent='MODO DESARROLLO LOCAL · OVERLAY DEMO';
-    }
     const passwordStatus=document.getElementById('passwordStatus');if(passwordStatus)passwordStatus.textContent='No hay contraseñas reales en el modo local.';
     document.querySelectorAll('#savePassword,#sendRecoveryEmail,#completeRecovery').forEach(el=>{el.disabled=true;el.title='Auth real no disponible en desarrollo local';});
     document.querySelectorAll('#demoLogin input').forEach(el=>{el.required=false;});
