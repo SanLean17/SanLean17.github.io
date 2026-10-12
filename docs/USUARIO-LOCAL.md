@@ -68,3 +68,12 @@ Archivos adicionales: `js/usuario-local-preview.js` y `css/usuario-local-preview
 ### VOTACIÓN local
 
 En VOTACIÓN elegí Killers o PERSONALIZADA, cargá dos a cinco opciones e iniciá. En Herramientas de la demo podés enviar votos A, B, C, D y E. Cada clic representa una persona diferente; se usa el lector local de chat habitual. El overlay muestra cantidades, porcentajes, ganador/empate y respeta OCULTAR EN OBS. La URL aparece en OVERLAYS OBS y en el selector del monitor. Se agrega automáticamente al abrir MI PANEL, sin borrar las URLs ni los estados existentes. La creación de este overlay adicional está limitada al modo local; no cambia el esquema de producción.
+
+### Sorteo local con salida a OBS
+
+1. Configurá la palabra y plataforma y pulsá **INICIAR SORTEO**. OBS muestra el sorteo abierto aunque todavía no haya participantes.
+2. En SELECCIÓN DE GANADOR, pulsá **SIMULAR SORTEO**: agrega 45 participantes ficticios a esa sesión y los muestra en OBS. Repetir el botón no duplica participantes ni reinicia los ganadores.
+3. Pulsá **CERRAR PARTICIPACIÓN** y **SORTEAR GANADOR**. Se muestran el giro, ganador y mensajes ficticios; podés sortear otro sin repetir a quienes ya ganaron.
+4. **FINALIZAR SORTEO** guarda el historial local y oculta OBS. Recargar conserva participantes, ganadores y la visibilidad elegida.
+
+Esta carga de participantes dentro de una sesión sólo está habilitada en localhost/127.0.0.1. La simulación independiente de producción continúa aislada y no escribe datos ni envía estados a OBS. Verificación: `tests/usuario-local-giveaway.cjs` y `tests/giveaway-session.cjs`.

@@ -167,13 +167,14 @@
     for(let i=0;i<rule.quantity;i++)db.stream_bits_bonuses.push({id:crypto.randomUUID(),workspace_id:WS,event_id:event.id,kind:rule.kind,item_key:rule.item_key,item_name:rule.item_name,donor:event.donor,quantity:1,created_at:now(),expires_at:rule.duration_minutes?new Date(Date.now()+rule.duration_minutes*60000).toISOString():null,paused_remaining_seconds:settings.timers_paused&&rule.duration_minutes?rule.duration_minutes*60:null});
     write(db);
   }
-  function addDemoParticipants(){
-    const db=read(),active=db.stream_giveaway_sessions.find(r=>r.status==='active');
+  function addDemoParticipants(people=null){
+    const db=read(),active=db.stream_giveaway_sessions.find(r=>r.status==='active'&&r.workspace_id===(window.SanLeanStreamTools?.getWorkspace()?.id||WS));
     if(!active){alert('Iniciá un sorteo para agregar participantes demo.');return;}
-    ['Luna_demo','Sol_demo','Nico_demo','Vale_demo','Alex_demo'].forEach((name,i)=>{
+    (Array.isArray(people)?people:['Luna_demo','Sol_demo','Nico_demo','Vale_demo','Alex_demo'].map(name=>({name}))).forEach((person,i)=>{
+      const name=person.name;
       if(db.stream_giveaway_entries.some(r=>r.session_id===active.id&&r.participant_external_id===name))return;
-      db.stream_giveaway_entries.push({id:crypto.randomUUID(),session_id:active.id,participant_external_id:name,participant_name:name,platform:active.platform==='kick'?'kick':'twitch',eligible:true,excluded:false,eligibility:{is_subscriber:true,is_vip:true},created_at:now()});
-    });write(db);
+      db.stream_giveaway_entries.push({id:crypto.randomUUID(),session_id:active.id,participant_external_id:name,participant_name:name,platform:person.platform||(active.platform==='kick'?'kick':'twitch'),eligible:true,excluded:false,eligibility:{is_subscriber:person.isSubscriber??true,is_vip:person.isVip??true},created_at:now()});
+    });write(db);return true;
   }
   if(!localStorage.getItem('sanlean-tournament-demo-history'))localStorage.setItem('sanlean-tournament-demo-history',JSON.stringify([{id:1,name:'TORNEO DEMO LOCAL',period:new Date().toISOString().slice(0,7),bestTimesCount:3,state:'finished',logo:'',players:[['Luna_demo',1,12,500],['Sol_demo',1,18,200],['Nico_demo',1,25,0]]}]));
   window.SanLeanLocal=Object.freeze({active:true,addDemoParticipants,publishPreview});
