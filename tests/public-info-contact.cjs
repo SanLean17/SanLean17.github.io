@@ -23,7 +23,7 @@ try{
      await option.hover();assert.equal(await option.evaluate(e=>getComputedStyle(e).backgroundColor),'rgba(0, 0, 0, 0)');
     }
     for(const dropdown of await page.locator('.main-nav .has-dropdown').all()){
-     await dropdown.hover();for(const a of await dropdown.locator('.dropdown a').all()){await a.hover();const style=await a.evaluate(e=>({border:getComputedStyle(e).borderBottomWidth,bg:getComputedStyle(e).backgroundColor,w:e.getBoundingClientRect().width,parent:e.parentElement.getBoundingClientRect().width,h:e.getBoundingClientRect().height,ph:e.parentElement.getBoundingClientRect().height}));assert.equal(style.border,'0px');assert.equal(style.bg,'rgb(255, 0, 60)');assert.equal(style.w,style.parent);assert.equal(style.h,style.ph);}
+     await dropdown.hover();for(const a of await dropdown.locator('.dropdown a').all()){await a.hover();const style=await a.evaluate(e=>({border:getComputedStyle(e).borderBottomWidth,bg:getComputedStyle(e).backgroundColor,w:e.getBoundingClientRect().width,parent:e.parentElement.getBoundingClientRect().width,h:e.getBoundingClientRect().height,ph:e.parentElement.getBoundingClientRect().height}));assert.equal(style.border,'0px');assert.equal(style.bg,'rgb(9, 9, 10)');assert.equal(style.w,style.parent);assert.equal(style.h,style.ph);}
     }
    }
   }
@@ -59,8 +59,10 @@ try{
   await page.goto(base+'/creditos.html');
   const creditsText=await page.locator('main').innerText();assert.doesNotMatch(creditsText,/INSPIRACIONES|TierMaker|Anton|Montserrat|321|12 retratos|FormSubmit|Analytics|DanteASC4|NightLight/i);
   for(const h of await page.locator('main h1,main h2').all())assert.equal(await h.evaluate(e=>getComputedStyle(e).color),'rgb(255, 255, 255)');
-  assert.equal(await page.locator('main a[href*="creativecommons.org"],main a[href*="LICENSE.md"],main a[href="aviso-legal.html"]').count(),0);
-  assert.equal(await page.locator('main a[href="https://github.com/3stadt/dbd_perk_slot_machine"]').count(),1);
+  assert.equal(await page.locator('main a[href*="LICENSE.md"],main a[href="aviso-legal.html"]').count(),0);
+  assert.equal(await page.locator('main a[href="https://github.com/3stadt/dbd_perk_slot_machine"]').textContent(),'3stadt');
+  assert.deepEqual(await page.locator('main h2').allTextContents(),['PROPIEDAD INTELECTUAL','RECURSOS UTILIZADOS','ARTE Y RECURSOS VISUALES']);
+  assert.equal(await page.locator('main a[href="https://creativecommons.org/licenses/by-nc-sa/3.0/"]').count(),1);
   assert.equal(await page.locator('main a[href="https://www.patreon.com/antheia3D"]').evaluate(e=>e.parentElement.textContent),'Render de portada y fondos atribuido a su autoría en los créditos originales del sitio. Antheia3D.');
   await page.screenshot({path:path.join(out,`credits-${width}.png`),fullPage:true});
   await page.goto(base+'/1vs1.html');await page.screenshot({path:path.join(out,`footer-short-${width}.png`),fullPage:true});

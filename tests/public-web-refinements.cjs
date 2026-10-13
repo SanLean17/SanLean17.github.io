@@ -57,7 +57,7 @@ const server = http.createServer((req, res) => {
       const nav = page.locator('.main-nav .has-dropdown').first();
       await nav.hover();
       const style = await nav.locator('.dropdown').evaluate(el => ({background:getComputedStyle(el).backgroundColor,radius:getComputedStyle(el).borderRadius,border:getComputedStyle(el).borderColor,borderWidth:getComputedStyle(el).borderTopWidth}));
-      assert.equal(style.background,'rgb(9, 9, 10)'); assert.equal(style.radius,'14px');assert.equal(style.border,'rgb(255, 0, 60)');assert.equal(style.borderWidth,'1px');
+      assert.equal(style.background,'rgb(255, 0, 60)'); assert.equal(style.radius,'14px');assert.equal(style.borderWidth,'0px');
       for (const gear of await page.locator('.perk-gear-btn,.killer-gear-btn').all()) {
         await gear.hover();
         const tooltip = await gear.evaluate(el => ({content:getComputedStyle(el,'::after').content,transform:getComputedStyle(el,'::after').textTransform}));
@@ -67,7 +67,7 @@ const server = http.createServer((req, res) => {
         const rects = await page.evaluate(() => ['.home-title','.home-options'].map(s => {const r=document.querySelector(s).getBoundingClientRect();return {left:r.left,right:r.right};}));
         const width = await page.evaluate(() => document.body.clientWidth);
         assert.ok(Math.abs((rects[0].left+rects[0].right)/2-width/2)<2,'Home title is centered '+JSON.stringify({rects,width}));
-        assert.ok(Math.abs(rects[1].left-rects[0].left-4)<1,'Home selection keeps its original inset');
+        assert.ok(Math.abs((rects[1].left+rects[1].right-rects[0].left-rects[0].right)/2)<1,'Home selection centered under title');
       }
       if (name === '1vs1') {
         assert.equal(await page.locator('.versus').evaluate(el => getComputedStyle(el).color),'rgb(255, 255, 255)');

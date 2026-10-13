@@ -134,8 +134,6 @@ body.public-mobile .killer-reel .reel-edge{width:18px}
  body.public-mobile .halloween-selector .tier-pool{grid-template-columns:repeat(auto-fill,80px)}
  body.public-mobile .tier-empty{grid-column:1/-1}
  body.public-mobile :is(.perk-gear-btn,.killer-gear-btn)::after{display:none}
- body.public-mobile .public-gear-tooltip{position:fixed;z-index:90;width:max-content;max-width:calc(100vw - 16px);padding:6px 9px;border-radius:4px;background:rgba(0,0,0,.76);color:#fff;font:500 12px Montserrat,Arial,sans-serif;text-align:center;pointer-events:none}
- body.public-mobile .public-gear-tooltip[hidden]{display:none}
 }
 @media(min-width:701px) and (max-width:760px){
  body.public-mobile .tier-pool{grid-template-columns:repeat(auto-fill,88px)}

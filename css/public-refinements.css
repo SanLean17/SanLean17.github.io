@@ -6,7 +6,9 @@
   }
   .home-content {width:max-content;}
   .home-title {width:auto;}
-  .home-options {max-width:100%;}
+  .home-options {display:grid;grid-template-columns:repeat(2,min(488px,calc((100vw - 127px)/2)));justify-content:center;gap:64px;width:684px;max-width:100%;margin-inline:auto;}
+  .home-options .home-feature {width:auto;min-width:0;margin-bottom:0;grid-template-columns:94px 1fr;}
+  .home-options .home-feature>div {align-self:start;}
   .main-nav .dropdown {background:#ff003c;border-radius:14px;}
   .one-vs-one-placeholder .versus {color:#fff;}
   /* Center the full grid, keeping incomplete rows aligned with its first column. */
