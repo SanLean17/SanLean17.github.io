@@ -3,7 +3,7 @@
 .tier-card.tier-perk-card{width:92px;height:112px;flex-basis:92px;background:transparent url('../rombo.png') center/contain no-repeat;border:0;overflow:visible;touch-action:pan-y;display:flex;align-items:center;justify-content:center}
 .tier-pool .tier-card.tier-perk-card{width:88px;height:108px;flex-basis:88px}
 .tier-card.tier-perk-card img{width:91%;height:91%;object-fit:contain;object-position:center}
-.tier-perk-card.selected-perk,.tier-perk-card:focus-visible{outline:none;filter:drop-shadow(0 0 6px var(--red))}
+.tier-card.tier-selected,.tier-card:focus-visible{outline:none;filter:drop-shadow(0 0 6px var(--red))}
 .tier-perk-placement{position:fixed;z-index:80;bottom:12px;left:50%;transform:translateX(-50%);width:max-content;max-width:calc(100% - 24px);padding:14px;background:#09090a;border:1px solid var(--red);border-radius:14px;box-shadow:0 4px 24px #000}
 .tier-perk-placement[hidden]{display:none}
 .tier-perk-placement p{max-width:540px;margin:0 0 10px;text-align:center;font-size:13px;overflow-wrap:anywhere}
@@ -18,4 +18,12 @@
 }
 @media(max-width:760px){
  .tier-card.tier-perk-card,.tier-pool .tier-card.tier-perk-card{width:66px;height:82px;flex-basis:66px}
+}
+
+/* Only Tierlists opt into this transient scrolling mode during native drag. */
+html.tier-drag-active{scroll-behavior:auto;overflow-anchor:none}
+@media(min-width:761px){.tier-perk-placement{display:none}}
+@media(max-width:760px){
+ .tier-card,.tier-card.tier-perk-card{touch-action:pan-y;cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+ .tier-perk-placement .tier-tab[hidden]{display:none}
 }
