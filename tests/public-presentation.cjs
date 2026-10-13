@@ -1,0 +1,22 @@
+const fs=require('fs'),path=require('path'),http=require('http'),assert=require('assert/strict'),{execFileSync}=require('child_process');
+const {chromium}=require('C:/Users/Lean/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const root=path.resolve(__dirname,'..'),out=path.resolve(root,'../public-presentation-checks');fs.mkdirSync(out,{recursive:true});
+const server=http.createServer((q,r)=>{const f=path.join(root,decodeURIComponent(q.url.split('?')[0]));try{r.setHeader('Content-Type',({'.css':'text/css','.js':'text/javascript','.html':'text/html','.png':'image/png','.webp':'image/webp','.json':'application/json'})[path.extname(f)]||'application/octet-stream');r.end(fs.readFileSync(f))}catch{r.writeHead(404);r.end()}});
+(async()=>{await new Promise(r=>server.listen(0,'127.0.0.1',r));const base=process.env.PUBLIC_BASE||`http://127.0.0.1:${server.address().port}`,browser=await chromium.launch({channel:'chrome',headless:true});try{
+for(const [width,height] of process.env.PUBLIC_BASE?[[1440,900],[390,844]]:[[1024,768],[1440,900],[1920,1080],[390,844],[740,900]]){
+for(const name of ['index','halloween','ruleta-killer','ruleta-perks','ruleta-perks-killer','tierlist-dbd','1vs1','contacto']){
+const snapshots=[];for(const baseline of process.env.PUBLIC_BASE?[false]:[true,false]){
+const page=await browser.newPage({viewport:{width,height},hasTouch:width<=760,isMobile:width<=760});await page.route('**/*',r=>{const u=new URL(r.request().url());if(u.origin!==base)return r.abort();if(baseline&&['/css/public-refinements.css','/css/public-mobile.css'].includes(u.pathname))return r.fulfill({contentType:'text/css',body:execFileSync('git',['show','e13a5d0:'+u.pathname.slice(1)],{cwd:root})});return r.continue()});await page.goto(base+'/'+name+'.html?skipSplash=1');await page.evaluate(()=>document.fonts.ready);
+const state=await page.evaluate(()=>{const props=['backgroundImage','backgroundSize','backgroundPosition','backgroundRepeat','backgroundAttachment','backgroundColor','opacity','filter','maskImage'];return {backgrounds:[...document.querySelectorAll('body,.config-section,.config-grid')].map(e=>['','::before','::after'].map(p=>{const s=getComputedStyle(e,p||null);return Object.fromEntries(props.map(k=>[k,s[k]]))})),layout:['header','main','footer'].map(q=>{const r=document.querySelector(q).getBoundingClientRect();return [r.x,r.y,r.width,r.height]})}});snapshots.push(state);
+if(!baseline){if(width>760){const bg=state.backgrounds[0][0];assert.equal(bg.backgroundSize.split(',')[1].trim(),`${width*.9}px auto`);assert.ok(bg.backgroundPosition.includes('calc(50% -'));assert.match(bg.backgroundImage,/0\.14/);}await page.screenshot({path:path.join(out,`${name}-${width}.png`)});}await page.close();}
+if(snapshots.length===2){assert.deepEqual(snapshots[1].layout,snapshots[0].layout,`Content layout unchanged ${name} ${width}`);
+for(let i=0;i<snapshots[0].backgrounds.length;i++)for(let j=0;j<3;j++){
+const before=snapshots[0].backgrounds[i][j],after=snapshots[1].backgrounds[i][j];
+if(before.backgroundImage.includes('fondo-negro-textura-2'))for(const key of ['backgroundImage','backgroundSize','backgroundPosition','backgroundRepeat','backgroundAttachment'])assert.equal(after[key].split(',').at(-1).trim(),before[key].split(',').at(-1).trim(),`Texture ${key} ${name} ${width}`);
+if(before.backgroundImage.includes('fondo-sanlean-')){for(const key of ['backgroundImage','backgroundSize','backgroundPosition','backgroundRepeat','backgroundAttachment'])delete before[key],delete after[key];}
+assert.deepEqual(after,before,`Unrelated background properties unchanged ${name} ${width}`);
+}}console.log('Framing checked',name,width);
+}
+const page=await browser.newPage({viewport:{width,height}});await page.route('**/*',r=>r.request().url().startsWith(base)?r.continue():r.abort());await page.goto(base+'/index.html');const style=await page.locator('.splash').evaluate(e=>{const s=getComputedStyle(e);return [s.backgroundPosition,s.backgroundSize,getComputedStyle(e,'::before').backgroundColor]});assert.equal(style[2],'rgba(0, 0, 0, 0.3)');assert.notEqual(style[1],'cover');await page.screenshot({path:path.join(out,`splash-${width}.png`)});await page.close();}
+console.log('PASS: presentation backgrounds, unchanged texture layers and content layout; subtle splash overlay.');
+}finally{await browser.close();server.close()}})().catch(e=>{console.error(e);server.close();process.exitCode=1});
