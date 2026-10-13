@@ -16,3 +16,9 @@
 
 /* The existing background already supplies the empty diamond. Preserve label spacing. */
 .config-item[data-key="slot_vacio"] > img {visibility:hidden;}
+
+/* Public backgrounds only; keep shared/private base styles untouched. */
+@media(min-width:761px){
+  body.public-site.page-bg {background-image:url('../fondo-sanlean-desktop.png'),url('../fondo-negro-textura-2.png');}
+}
+body.public-site .splash {background-image:url('../fondo-sanlean-mobile.png');}
