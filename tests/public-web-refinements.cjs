@@ -56,8 +56,8 @@ const server = http.createServer((req, res) => {
       await goto(page,name);
       const nav = page.locator('.main-nav .has-dropdown').first();
       await nav.hover();
-      const style = await nav.locator('.dropdown').evaluate(el => ({background:getComputedStyle(el).backgroundColor,radius:getComputedStyle(el).borderRadius}));
-      assert.equal(style.background,'rgb(255, 0, 60)'); assert.equal(style.radius,'14px');
+      const style = await nav.locator('.dropdown').evaluate(el => ({background:getComputedStyle(el).backgroundColor,radius:getComputedStyle(el).borderRadius,border:getComputedStyle(el).borderColor,borderWidth:getComputedStyle(el).borderTopWidth}));
+      assert.equal(style.background,'rgb(9, 9, 10)'); assert.equal(style.radius,'14px');assert.equal(style.border,'rgb(255, 0, 60)');assert.equal(style.borderWidth,'1px');
       for (const gear of await page.locator('.perk-gear-btn,.killer-gear-btn').all()) {
         await gear.hover();
         const tooltip = await gear.evaluate(el => ({content:getComputedStyle(el,'::after').content,transform:getComputedStyle(el,'::after').textTransform}));

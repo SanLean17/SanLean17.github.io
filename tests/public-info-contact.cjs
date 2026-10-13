@@ -23,7 +23,7 @@ try{
      await option.hover();assert.equal(await option.evaluate(e=>getComputedStyle(e).backgroundColor),'rgba(0, 0, 0, 0)');
     }
     for(const dropdown of await page.locator('.main-nav .has-dropdown').all()){
-     await dropdown.hover();for(const a of await dropdown.locator('.dropdown a').all()){await a.hover();const style=await a.evaluate(e=>({border:getComputedStyle(e).borderBottomWidth,bg:getComputedStyle(e).backgroundColor,w:e.getBoundingClientRect().width,parent:e.parentElement.getBoundingClientRect().width}));assert.equal(style.border,'0px');assert.equal(style.bg,'rgb(25, 25, 29)');assert.equal(style.w,style.parent);}
+     await dropdown.hover();for(const a of await dropdown.locator('.dropdown a').all()){await a.hover();const style=await a.evaluate(e=>({border:getComputedStyle(e).borderBottomWidth,bg:getComputedStyle(e).backgroundColor,w:e.getBoundingClientRect().width,parent:e.parentElement.getBoundingClientRect().width,h:e.getBoundingClientRect().height,ph:e.parentElement.getBoundingClientRect().height}));assert.equal(style.border,'0px');assert.equal(style.bg,'rgb(255, 0, 60)');assert.equal(style.w,style.parent);assert.equal(style.h,style.ph);}
     }
    }
   }
@@ -35,6 +35,7 @@ try{
   assert.doesNotMatch(await page.locator('main').innerText(),/FormSubmit|leandrosanchez10@gmail.com|enlace de correo/i);assert.equal(await page.locator('a[href^=mailto]').count(),0);
   if(width<761){await page.locator('#menuToggle').tap();await page.locator('#publicMobileMenu').getByRole('button',{name:'SANLEAN',exact:true}).tap();await page.locator('#publicMobileMenu').getByRole('link',{name:'CONTACTO',exact:true}).tap();assert.ok(page.url().endsWith('/contacto.html'));}
   await page.screenshot({path:path.join(out,`contact-${width}.png`),fullPage:true});
+  const centering=await page.locator('#contactForm button').evaluate(e=>{const b=e.getBoundingClientRect(),f=e.closest('form').getBoundingClientRect();return Math.abs((b.left+b.right)-(f.left+f.right));});assert.ok(centering<2,'Contact button centered');
   const email=page.locator('#contactEmail'),message=page.locator('#contactMessage'),button=page.locator('#contactForm button[type=submit]'),status=page.locator('#contactStatus');
   assert.equal(await page.locator('#contactForm').getAttribute('data-contact-enabled'),'true');
   await page.locator('#contactForm').evaluate(e=>e.dataset.contactEnabled='false');
@@ -58,7 +59,9 @@ try{
   await page.goto(base+'/creditos.html');
   const creditsText=await page.locator('main').innerText();assert.doesNotMatch(creditsText,/INSPIRACIONES|TierMaker|Anton|Montserrat|321|12 retratos|FormSubmit|Analytics|DanteASC4|NightLight/i);
   for(const h of await page.locator('main h1,main h2').all())assert.equal(await h.evaluate(e=>getComputedStyle(e).color),'rgb(255, 255, 255)');
-  assert.equal(await page.locator('main a[href*="creativecommons.org/licenses/by-nc-sa/3.0"]').count(),1);
+  assert.equal(await page.locator('main a[href*="creativecommons.org"],main a[href*="LICENSE.md"],main a[href="aviso-legal.html"]').count(),0);
+  assert.equal(await page.locator('main a[href="https://github.com/3stadt/dbd_perk_slot_machine"]').count(),1);
+  assert.equal(await page.locator('main a[href="https://www.patreon.com/antheia3D"]').evaluate(e=>e.parentElement.textContent),'Render de portada y fondos atribuido a su autoría en los créditos originales del sitio. Antheia3D.');
   await page.screenshot({path:path.join(out,`credits-${width}.png`),fullPage:true});
   await page.goto(base+'/1vs1.html');await page.screenshot({path:path.join(out,`footer-short-${width}.png`),fullPage:true});
   results.push({width,pages:12,footer:'pass',contact:'validation, disabled, mocked success/error and double submit pass'});await context.close();

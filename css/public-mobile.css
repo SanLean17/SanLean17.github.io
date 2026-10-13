@@ -124,3 +124,21 @@ body.public-mobile .killer-reel{width:100vw;max-width:none;align-self:center;mar
 body.public-mobile .killer-reel .reel-edge{width:18px}
 @media(prefers-reduced-motion:reduce){body.public-mobile .site-header{transition:none}}
 }
+
+/* Public touch feedback and existing card sizes, isolated from desktop. */
+@media(max-width:760px){
+ body.public-mobile .tier-card{-webkit-tap-highlight-color:transparent}
+ body.public-mobile .tier-card.tier-selected{outline:2px solid var(--red);outline-offset:1px}
+ body.public-mobile .tier-card:focus-visible:not(.tier-selected){outline:none;filter:none}
+ body.public-mobile .tier-pool{display:grid;grid-template-columns:repeat(auto-fill,66px);justify-content:center}
+ body.public-mobile .halloween-selector .tier-pool{grid-template-columns:repeat(auto-fill,80px)}
+ body.public-mobile .tier-empty{grid-column:1/-1}
+ body.public-mobile :is(.perk-gear-btn,.killer-gear-btn)::after{display:none}
+ body.public-mobile .public-gear-tooltip{position:fixed;z-index:90;width:max-content;max-width:calc(100vw - 16px);padding:6px 9px;border-radius:4px;background:rgba(0,0,0,.76);color:#fff;font:500 12px Montserrat,Arial,sans-serif;text-align:center;pointer-events:none}
+ body.public-mobile .public-gear-tooltip[hidden]{display:none}
+}
+@media(min-width:701px) and (max-width:760px){
+ body.public-mobile .tier-pool{grid-template-columns:repeat(auto-fill,88px)}
+ body.public-mobile .tier-perk-pool{grid-template-columns:repeat(auto-fill,66px)}
+ body.public-mobile .halloween-selector .tier-pool{grid-template-columns:repeat(auto-fill,105px)}
+}

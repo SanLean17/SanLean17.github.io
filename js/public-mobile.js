@@ -106,6 +106,40 @@ document.addEventListener('DOMContentLoaded', () => {
     svg.append(path);
     return {button,original,svg};
   });
+  // A short touch tooltip shares the existing gear label; clicks still open configuration.
+  const gearTooltip = document.createElement('span');
+  gearTooltip.className = 'public-gear-tooltip';
+  gearTooltip.hidden = true;
+  gearTooltip.setAttribute('role','tooltip');
+  document.body.append(gearTooltip);
+  let tooltipButton = null, tooltipTimer = null;
+  function hideGearTooltip() {
+    clearTimeout(tooltipTimer);
+    tooltipButton = null;
+    gearTooltip.hidden = true;
+  }
+  function placeGearTooltip() {
+    if (!tooltipButton || !media.matches) return;
+    const rect = tooltipButton.getBoundingClientRect();
+    const width = gearTooltip.offsetWidth, height = gearTooltip.offsetHeight;
+    gearTooltip.style.left = Math.max(8, Math.min(innerWidth - width - 8, rect.right - width)) + 'px';
+    gearTooltip.style.top = Math.max(8, Math.min(innerHeight - height - 8, rect.top - height - 10)) + 'px';
+  }
+  // The killer config intercepts document clicks; observe earlier without cancelling it.
+  window.addEventListener('click', event => {
+    if (!media.matches) return;
+    const button = event.target.closest('.perk-gear-btn,.killer-gear-btn');
+    if (!button) { hideGearTooltip(); return; }
+    hideGearTooltip();
+    tooltipButton = button;
+    gearTooltip.textContent = (button.getAttribute('aria-label') || (button.classList.contains('killer-gear-btn') ? 'CONFIGURAR KILLERS' : 'CONFIGURAR PERKS')).toUpperCase();
+    gearTooltip.hidden = false;
+    placeGearTooltip();
+    tooltipTimer = setTimeout(hideGearTooltip, 2400);
+  }, true);
+  window.addEventListener('scroll', placeGearTooltip, {passive:true});
+  window.addEventListener('resize', placeGearTooltip, {passive:true});
+  media.addEventListener('change', hideGearTooltip);
   let stage = null;
   function sync() {
     body.classList.toggle('public-mobile',media.matches);
