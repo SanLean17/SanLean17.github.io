@@ -1,0 +1,2270 @@
+{
+  "DanteASC4/dbd-assets": {
+    "truncated": false,
+    "matches": []
+  },
+  "3stadt/dbd_perk_slot_machine": {
+    "truncated": false,
+    "matches": [
+      {
+        "local": "killer/00_aNursesCalling.png",
+        "remote": [
+          "assets/iconsourceKill/00_aNursesCalling.png"
+        ],
+        "sha": "27ce7e2231313ba238891ded5bf418f86c938e50"
+      },
+      {
+        "local": "killer/01_agitation.png",
+        "remote": [
+          "assets/iconsourceKill/01_agitation.png"
+        ],
+        "sha": "e30b22a4e19038f61dbe70b38643cc482b6a3402"
+      },
+      {
+        "local": "killer/02_bamboozle.png",
+        "remote": [
+          "assets/iconsourceKill/02_bamboozle.png"
+        ],
+        "sha": "9855914e0efe2d5c3a82bb701b90bbfa96c89e94"
+      },
+      {
+        "local": "killer/03_barbecueAndChilli.png",
+        "remote": [
+          "assets/iconsourceKill/03_barbecueAndChilli.png"
+        ],
+        "sha": "c34253f72c39c347d86e8ee1d3d6d2da0839c705"
+      },
+      {
+        "local": "killer/04_beastOfPrey.png",
+        "remote": [
+          "assets/iconsourceKill/04_beastOfPrey.png"
+        ],
+        "sha": "b42b4fdd38504a4c35852d8725e70a0d8a11b52c"
+      },
+      {
+        "local": "killer/05_bitterMurmur.png",
+        "remote": [
+          "assets/iconsourceKill/05_bitterMurmur.png"
+        ],
+        "sha": "feed4037d4879545847a94c85323171a706a7f06"
+      },
+      {
+        "local": "killer/06_bloodWarden.png",
+        "remote": [
+          "assets/iconsourceKill/06_bloodWarden.png"
+        ],
+        "sha": "e092de5b17106b11cc77aa2e464ea41102ea112c"
+      },
+      {
+        "local": "killer/07_bloodhound.png",
+        "remote": [
+          "assets/iconsourceKill/07_bloodhound.png"
+        ],
+        "sha": "0fb6e90ebeeed7035f86e7a75bd9543d5633f7ae"
+      },
+      {
+        "local": "killer/08_brutalStrength.png",
+        "remote": [
+          "assets/iconsourceKill/08_brutalStrength.png"
+        ],
+        "sha": "4094448bd0d15b7d2d805d9ed8881808cdf4bb8f"
+      },
+      {
+        "local": "killer/09_corruptIntervention.png",
+        "remote": [
+          "assets/iconsourceKill/09_corruptIntervention.png"
+        ],
+        "sha": "6a46925800e4ac1f46a679d6de2bb450c618003c"
+      },
+      {
+        "local": "killer/100_nowhereToHide.png",
+        "remote": [
+          "assets/iconsourceKill/100_nowhereToHide.png"
+        ],
+        "sha": "db799376aaf08120beb39aec6c32417da66a502b"
+      },
+      {
+        "local": "killer/101_faceTheDarkness.png",
+        "remote": [
+          "assets/iconsourceKill/101_faceTheDarkness.png"
+        ],
+        "sha": "8ffeefe1fa7d86a4f4e2ef3fc6d0178674efbd92"
+      },
+      {
+        "local": "killer/102_hubris.png",
+        "remote": [
+          "assets/iconsourceKill/102_hubris.png"
+        ],
+        "sha": "acaab048e6afb4e5e4bcdbf3ada195066921ea08"
+      },
+      {
+        "local": "killer/103_gameAfoot.png",
+        "remote": [
+          "assets/iconsourceKill/103_gameAfoot.png"
+        ],
+        "sha": "50c146193b3917228a0d7a414427c0caf730b7fa"
+      },
+      {
+        "local": "killer/104_leverage.png",
+        "remote": [
+          "assets/iconsourceKill/104_leverage.png"
+        ],
+        "sha": "0c0b7a11f7cedc608ce94deb3735e6a1297ed864"
+      },
+      {
+        "local": "killer/105_thwack.png",
+        "remote": [
+          "assets/iconsourceKill/105_thwack.png"
+        ],
+        "sha": "986d9f2e93bef7eb75aff74a6a0c267c6900fa84"
+      },
+      {
+        "local": "killer/106_forcedHesitation.png",
+        "remote": [
+          "assets/iconsourceKill/106_forcedHesitation.png"
+        ],
+        "sha": "a7b31ba974520083970f76d9784df85b4e94c5ce"
+      },
+      {
+        "local": "killer/107_geneticLimits.png",
+        "remote": [
+          "assets/iconsourceKill/107_geneticLimits.png"
+        ],
+        "sha": "ea71e85d6ce7c3936bc6a7c6298362f8e1f46cab"
+      },
+      {
+        "local": "killer/108_machineLearning.png",
+        "remote": [
+          "assets/iconsourceKill/108_machineLearning.png"
+        ],
+        "sha": "c1b27c58bfd01a8ba399e8836035dbb6beb18c7e"
+      },
+      {
+        "local": "killer/109_alienInstinct.png",
+        "remote": [
+          "assets/iconsourceKill/109_alienInstinct.png"
+        ],
+        "sha": "e7d57a15e595dadb950408a52139df841280f315"
+      },
+      {
+        "local": "killer/10_coulrophobia.png",
+        "remote": [
+          "assets/iconsourceKill/10_coulrophobia.png"
+        ],
+        "sha": "783ee94539d91d7487072ad0206eccb596e921b2"
+      },
+      {
+        "local": "killer/110_rapidBrutality.png",
+        "remote": [
+          "assets/iconsourceKill/110_rapidBrutality.png"
+        ],
+        "sha": "27dd73d0d7d01b0f532dbf007310b7d57696f3f0"
+      },
+      {
+        "local": "killer/111_ultimateWeapon.png",
+        "remote": [
+          "assets/iconsourceKill/111_ultimateWeapon.png"
+        ],
+        "sha": "62aeea68c77d67f37a95c4b874a1fa2dddf83f9d"
+      },
+      {
+        "local": "killer/112_batteriesIncluded.png",
+        "remote": [
+          "assets/iconsourceKill/112_batteriesIncluded.png"
+        ],
+        "sha": "5a01f6af79b325041b7e4432737e9f65206b8f68"
+      },
+      {
+        "local": "killer/113_friendsTilTheEnd.png",
+        "remote": [
+          "assets/iconsourceKill/113_friendsTilTheEnd.png"
+        ],
+        "sha": "57f1fe58c8a8ade534cad5fe88b5bf5b5d271ba0"
+      },
+      {
+        "local": "killer/114_hexTwoCanPlay.png",
+        "remote": [
+          "assets/iconsourceKill/114_hexTwoCanPlay.png"
+        ],
+        "sha": "0167260fc7ae825e6b1e07fd5818d8549a34ca52"
+      },
+      {
+        "local": "killer/115_unbound.png",
+        "remote": [
+          "assets/iconsourceKill/115_unbound.png"
+        ],
+        "sha": "a6516647285ed9ffb6b0c0f3e974adf4f4feb567"
+      },
+      {
+        "local": "killer/116_undone.png",
+        "remote": [
+          "assets/iconsourceKill/116_undone.png"
+        ],
+        "sha": "85b7444a535be6248fbe070bec666bd939fe6090"
+      },
+      {
+        "local": "killer/117_unforeseen.png",
+        "remote": [
+          "assets/iconsourceKill/117_unforeseen.png"
+        ],
+        "sha": "f8d670907a52b0586df8624b0e907c1b8f006100"
+      },
+      {
+        "local": "killer/118_darkArrogance.png",
+        "remote": [
+          "assets/iconsourceKill/118_darkArrogance.png"
+        ],
+        "sha": "938ddbf615b3bed9072c7c18f2d919cace1aaa06"
+      },
+      {
+        "local": "killer/119_languidTouch.png",
+        "remote": [
+          "assets/iconsourceKill/119_languidTouch.png"
+        ],
+        "sha": "2c0d4c42d919504eec2a77b752c6388f3c203151"
+      },
+      {
+        "local": "killer/11_darkDevotion.png",
+        "remote": [
+          "assets/iconsourceKill/11_darkDevotion.png"
+        ],
+        "sha": "926739d68e7736d8abbe558dcde6a19110977bcd"
+      },
+      {
+        "local": "killer/120_weaveAttunement.png",
+        "remote": [
+          "assets/iconsourceKill/120_weaveAttunement.png"
+        ],
+        "sha": "42da62248dbd06cad3d84b3bf2c9889e2d30af1c"
+      },
+      {
+        "local": "killer/121_dominance.png",
+        "remote": [
+          "assets/iconsourceKill/121_dominance.png"
+        ],
+        "sha": "8b3c128bcde0832961c4e49825f84457dd58e4ba"
+      },
+      {
+        "local": "killer/122_hexWretchedFate.png",
+        "remote": [
+          "assets/iconsourceKill/122_hexWretchedFate.png"
+        ],
+        "sha": "8a0ae38c7c28e6ef05348737b22ec76d588309ee"
+      },
+      {
+        "local": "killer/123_humanGreed.png",
+        "remote": [
+          "assets/iconsourceKill/123_humanGreed.png"
+        ],
+        "sha": "e8fd99ce3e836faea87a35f508973fe326525950"
+      },
+      {
+        "local": "killer/124_allShakingThunder.png",
+        "remote": [
+          "assets/iconsourceKill/124_allShakingThunder.png"
+        ],
+        "sha": "69b067318344e2445d22e61133fdbc7f1b91ed39"
+      },
+      {
+        "local": "killer/125_noQuarter.png",
+        "remote": [
+          "assets/iconsourceKill/125_noQuarter.png"
+        ],
+        "sha": "b950400fa15b90c5404031f1eb0ec1733ae11be3"
+      },
+      {
+        "local": "killer/126_jaggedCompass.png",
+        "remote": [
+          "assets/iconsourceKill/126_jaggedCompass.png"
+        ],
+        "sha": "1ba5e31383a61dff3b0ad2eb7af398523c33fbd3"
+      },
+      {
+        "local": "killer/127_noneAreFree.png",
+        "remote": [
+          "assets/iconsourceKill/127_noneAreFree.png"
+        ],
+        "sha": "f0d4633213df127d445f613c1732cb87454642ec"
+      },
+      {
+        "local": "killer/128_foreverEntwined.png",
+        "remote": [
+          "assets/iconsourceKill/128_foreverEntwined.png"
+        ],
+        "sha": "470d1e641b339cfdd6c8fe6bd548a06e2c62473c"
+      },
+      {
+        "local": "killer/129_nothingButMisery.png",
+        "remote": [
+          "assets/iconsourceKill/129_nothingButMisery.png"
+        ],
+        "sha": "ab6587117728134544f95c3b286eddb628cf3388"
+      },
+      {
+        "local": "killer/12_deerstalker.png",
+        "remote": [
+          "assets/iconsourceKill/12_deerstalker.png"
+        ],
+        "sha": "57884201732d53600507fe2bdf9cc4d55b947c44"
+      },
+      {
+        "local": "killer/130_haywire.png",
+        "remote": [
+          "assets/iconsourceKill/130_haywire.png"
+        ],
+        "sha": "0479bdbe4a4190434101e0b0fbd3fb97690c708c"
+      },
+      {
+        "local": "killer/131_helpWanted.png",
+        "remote": [
+          "assets/iconsourceKill/131_helpWanted.png"
+        ],
+        "sha": "22cdf48a7ace129b4df8eeda5f39e49e12293ed0"
+      },
+      {
+        "local": "killer/132_phantomFear.png",
+        "remote": [
+          "assets/iconsourceKill/132_phantomFear.png"
+        ],
+        "sha": "23e87e2b107d909688eacb19e490b32fff2ea765"
+      },
+      {
+        "local": "killer/133_hexOvertureOfDoom.png",
+        "remote": [
+          "assets/iconsourceKill/133_hexOvertureOfDoom.png"
+        ],
+        "sha": "557b17b5541bd922be479440a65d0e6442600d97"
+      },
+      {
+        "local": "killer/134_ravenous.png",
+        "remote": [
+          "assets/iconsourceKill/134_ravenous.png"
+        ],
+        "sha": "dcd4fa56543d4caf89d3a89a4ef9835cb77334cc"
+      },
+      {
+        "local": "killer/135_wanderingEye.png",
+        "remote": [
+          "assets/iconsourceKill/135_wanderingEye.png"
+        ],
+        "sha": "9de1063ef869a0906978828b028feeaa7676e093"
+      },
+      {
+        "local": "killer/136_hiveMind.png",
+        "remote": [
+          "assets/iconsourceKill/136_hiveMind.png"
+        ],
+        "sha": "383a8f81f30033f65fb7c605921a03728693de50"
+      },
+      {
+        "local": "killer/137_secretProject.png",
+        "remote": [
+          "assets/iconsourceKill/137_secretProject.png"
+        ],
+        "sha": "2a5ac0c85521c1ff4dff2c5e7a1c0aa533cc32fd"
+      },
+      {
+        "local": "killer/138_turnBackTheClock.png",
+        "remote": [
+          "assets/iconsourceKill/138_turnBackTheClock.png"
+        ],
+        "sha": "854c63652f42e156387c543d25fd03a96e9cecd0"
+      },
+      {
+        "local": "killer/139_rampage.png",
+        "remote": [
+          "assets/iconsourceKill/139_rampage.png"
+        ],
+        "sha": "b213f45528aded7f22d348be572e6cad7429a0ba"
+      },
+      {
+        "local": "killer/13_discordance.png",
+        "remote": [
+          "assets/iconsourceKill/13_discordance.png"
+        ],
+        "sha": "d958b1a9c14637832a99da9910dc3dc5512f5d78"
+      },
+      {
+        "local": "killer/140_scaredToDeath.png",
+        "remote": [
+          "assets/iconsourceKill/140_scaredToDeath.png"
+        ],
+        "sha": "b664544fef32e8747110cd90fc45cc6c2d14f209"
+      },
+      {
+        "local": "killer/141_silentShadow.png",
+        "remote": [
+          "assets/iconsourceKill/141_silentShadow.png"
+        ],
+        "sha": "5580bb49319ccbda4150ed900524ed69c0ba6527"
+      },
+      {
+        "local": "killer/142_layWaste.png",
+        "remote": [
+          "assets/iconsourceKill/142_layWaste.png",
+          "assets/iconsourceKillColor/142_layWaste.png"
+        ],
+        "sha": "aa4a4921e617d550ff86f9e9f783d1001c8d26f7"
+      },
+      {
+        "local": "killer/143_underYourThumb.png",
+        "remote": [
+          "assets/iconsourceKill/143_underYourThumb.png",
+          "assets/iconsourceKillColor/143_underYourThumb.png"
+        ],
+        "sha": "d6c5a4c03cd245110b7fffdc40188cef5d1b3bc6"
+      },
+      {
+        "local": "killer/144_celestialWitness.png",
+        "remote": [
+          "assets/iconsourceKill/144_celestialWitness.png",
+          "assets/iconsourceKillColor/144_celestialWitness.png"
+        ],
+        "sha": "86a61ac17b433a5dab89c750477aaf29f78d0467"
+      },
+      {
+        "local": "killer/14_distressing.png",
+        "remote": [
+          "assets/iconsourceKill/14_distressing.png"
+        ],
+        "sha": "58fb53de0af5048d9cf68126f86b7fec2f177c08"
+      },
+      {
+        "local": "killer/15_dyingLight.png",
+        "remote": [
+          "assets/iconsourceKill/15_dyingLight.png"
+        ],
+        "sha": "c15e4337c2914d8886c6ecc157bfbc716373b489"
+      },
+      {
+        "local": "killer/16_enduring.png",
+        "remote": [
+          "assets/iconsourceKill/16_enduring.png"
+        ],
+        "sha": "f78abbfac0e75ccb5090c127c63acc740f80c8e1"
+      },
+      {
+        "local": "killer/17_fireUp.png",
+        "remote": [
+          "assets/iconsourceKill/17_fireUp.png"
+        ],
+        "sha": "a170178c1f7304cfabde2cd25da4b76fdf040dd6"
+      },
+      {
+        "local": "killer/18_franklinsDemise.png",
+        "remote": [
+          "assets/iconsourceKill/18_franklinsDemise.png"
+        ],
+        "sha": "8a0343b544b5728bfa2353fc251d189515e58122"
+      },
+      {
+        "local": "killer/19_hangmansTrick.png",
+        "remote": [
+          "assets/iconsourceKill/19_hangmansTrick.png"
+        ],
+        "sha": "b0e44d15dab89cb25d43c85c837b316f94058b7f"
+      },
+      {
+        "local": "killer/20_hexDevourHope.png",
+        "remote": [
+          "assets/iconsourceKill/20_hexDevourHope.png"
+        ],
+        "sha": "5ac0904ba748f99e52ceaf31989a81898b55db22"
+      },
+      {
+        "local": "killer/21_hexHauntedGround.png",
+        "remote": [
+          "assets/iconsourceKill/21_hexHauntedGround.png"
+        ],
+        "sha": "3c80e5b49cf307b4c00625c83ed1d194920b24b8"
+      },
+      {
+        "local": "killer/22_hexHuntressLullaby.png",
+        "remote": [
+          "assets/iconsourceKill/22_hexHuntressLullaby.png"
+        ],
+        "sha": "2315a6ed607c9678c48f3a43fa0856f42b6f2c68"
+      },
+      {
+        "local": "killer/23_hexNoOneEscapesDeath.png",
+        "remote": [
+          "assets/iconsourceKill/23_hexNoOneEscapesDeath.png"
+        ],
+        "sha": "3158b93c3f826383b996aa254c5a30fd932261b8"
+      },
+      {
+        "local": "killer/24_hexRuin.png",
+        "remote": [
+          "assets/iconsourceKill/24_hexRuin.png"
+        ],
+        "sha": "fbe4d201e7015481305138119e5f42253de42b3d"
+      },
+      {
+        "local": "killer/25_hexTheThirdSeal.png",
+        "remote": [
+          "assets/iconsourceKill/25_hexTheThirdSeal.png"
+        ],
+        "sha": "c72daede9f39ddb3edee962c001d7df3a4c7e3f3"
+      },
+      {
+        "local": "killer/26_hexThrillOfTheHunt.png",
+        "remote": [
+          "assets/iconsourceKill/26_hexThrillOfTheHunt.png"
+        ],
+        "sha": "b37e3a17aafaede4f959f29c892871e5e9de68aa"
+      },
+      {
+        "local": "killer/27_infectiousFright.png",
+        "remote": [
+          "assets/iconsourceKill/27_infectiousFright.png"
+        ],
+        "sha": "71d89b2a628be79c5ade29fe84b495de5f7d6649"
+      },
+      {
+        "local": "killer/28_insidious.png",
+        "remote": [
+          "assets/iconsourceKill/28_insidious.png"
+        ],
+        "sha": "a906eb40ade3365455698b23155733c0a365ad23"
+      },
+      {
+        "local": "killer/29_ironGrasp.png",
+        "remote": [
+          "assets/iconsourceKill/29_ironGrasp.png"
+        ],
+        "sha": "d87b3235b2d6ea6b7811ec4aab1eb804736bb048"
+      },
+      {
+        "local": "killer/30_ironMaiden.png",
+        "remote": [
+          "assets/iconsourceKill/30_ironMaiden.png"
+        ],
+        "sha": "123c4ea5ba8e56d5e2018f7c82c0be6ba0a9c4b8"
+      },
+      {
+        "local": "killer/31_knockOut.png",
+        "remote": [
+          "assets/iconsourceKill/31_knockOut.png"
+        ],
+        "sha": "a1e6d815913321543ce8fa61e41c6314dcbdbb82"
+      },
+      {
+        "local": "killer/32_lightborn.png",
+        "remote": [
+          "assets/iconsourceKill/32_lightborn.png"
+        ],
+        "sha": "458f652d758271b5e9d5baaaa728a0d534e92d8c"
+      },
+      {
+        "local": "killer/33_madGrit.png",
+        "remote": [
+          "assets/iconsourceKill/33_madGrit.png"
+        ],
+        "sha": "86aa8c4e4d7606cf70ca3b02e534bb6597d5da8e"
+      },
+      {
+        "local": "killer/34_makeYourChoice.png",
+        "remote": [
+          "assets/iconsourceKill/34_makeYourChoice.png"
+        ],
+        "sha": "3b456a789abfcfdfd58bab823c227deb7fcd6c59"
+      },
+      {
+        "local": "killer/35_monitorAndAbuse.png",
+        "remote": [
+          "assets/iconsourceKill/35_monitorAndAbuse.png"
+        ],
+        "sha": "a1616dc4eed3d726a083cac78738a2410b330918"
+      },
+      {
+        "local": "killer/36_monstrousShrine.png",
+        "remote": [
+          "assets/iconsourceKill/36_monstrousShrine.png"
+        ],
+        "sha": "65dc958a6ae71dd52d3e1f9e6b36837773d20490"
+      },
+      {
+        "local": "killer/37_overcharge.png",
+        "remote": [
+          "assets/iconsourceKill/37_overcharge.png"
+        ],
+        "sha": "f012f3dc018d0c66c4af84b55a308c84234c4780"
+      },
+      {
+        "local": "killer/38_overwhelmingPresence.png",
+        "remote": [
+          "assets/iconsourceKill/38_overwhelmingPresence.png"
+        ],
+        "sha": "56a10b52f973999b09ebecf554e64e781ca9633b"
+      },
+      {
+        "local": "killer/39_playWithYourFood.png",
+        "remote": [
+          "assets/iconsourceKill/39_playWithYourFood.png"
+        ],
+        "sha": "c7ed7ba809ce3f43e59cddc120aeee1de8bae26b"
+      },
+      {
+        "local": "killer/40_popGoesTheWeasel.png",
+        "remote": [
+          "assets/iconsourceKill/40_popGoesTheWeasel.png"
+        ],
+        "sha": "2024763a523a7bbdd7fc73ecd4ddb481053f8369"
+      },
+      {
+        "local": "killer/41_predator.png",
+        "remote": [
+          "assets/iconsourceKill/41_predator.png"
+        ],
+        "sha": "110e5997678161cb4caf06f5680a98f6ba235849"
+      },
+      {
+        "local": "killer/42_rancor.png",
+        "remote": [
+          "assets/iconsourceKill/42_rancor.png"
+        ],
+        "sha": "3bf89cee60b46752d0fa54ae78943e71581e1cd3"
+      },
+      {
+        "local": "killer/43_rememberMe.png",
+        "remote": [
+          "assets/iconsourceKill/43_rememberMe.png"
+        ],
+        "sha": "e9ee2d320ce9e0af303fd9b57160af1dda62e76c"
+      },
+      {
+        "local": "killer/44_saveTheBestForLast.png",
+        "remote": [
+          "assets/iconsourceKill/44_saveTheBestForLast.png"
+        ],
+        "sha": "404443b5cd73897fc5a2f9c1dd49932f9e345343"
+      },
+      {
+        "local": "killer/45_shadowborn.png",
+        "remote": [
+          "assets/iconsourceKill/45_shadowborn.png"
+        ],
+        "sha": "4c236eb1886d84142a05ab03574be03086fbe7ea"
+      },
+      {
+        "local": "killer/46_sloppyButcher.png",
+        "remote": [
+          "assets/iconsourceKill/46_sloppyButcher.png"
+        ],
+        "sha": "38ba02674e557491f4d96543beebaca496070e19"
+      },
+      {
+        "local": "killer/47_spiesFromTheShadows.png",
+        "remote": [
+          "assets/iconsourceKill/47_spiesFromTheShadows.png"
+        ],
+        "sha": "5486fc6e6062b7c85dc3737fcfc3f8521e12e444"
+      },
+      {
+        "local": "killer/48_spiritFury.png",
+        "remote": [
+          "assets/iconsourceKill/48_spiritFury.png"
+        ],
+        "sha": "54f8071fa3d3ed0395bbbde1796ff156b098d18b"
+      },
+      {
+        "local": "killer/49_stridor.png",
+        "remote": [
+          "assets/iconsourceKill/49_stridor.png"
+        ],
+        "sha": "3ab0575403437fda980eab07713c7ab692602e1b"
+      },
+      {
+        "local": "killer/50_surveillance.png",
+        "remote": [
+          "assets/iconsourceKill/50_surveillance.png"
+        ],
+        "sha": "4cd12d12adc6ca30711fe876cdc0b5fd7b0a2e77"
+      },
+      {
+        "local": "killer/51_territorialImperative.png",
+        "remote": [
+          "assets/iconsourceKill/51_territorialImperative.png"
+        ],
+        "sha": "4f52edde33c59416d35b05220c46c0ddcf546df9"
+      },
+      {
+        "local": "killer/52_thanatophobia.png",
+        "remote": [
+          "assets/iconsourceKill/52_thanatophobia.png"
+        ],
+        "sha": "76d764b056d362694288e0ac4764cf75063153cb"
+      },
+      {
+        "local": "killer/53_tinkerer.png",
+        "remote": [
+          "assets/iconsourceKill/53_tinkerer.png"
+        ],
+        "sha": "de033dfb3487038a3c10d14a60791241e6146fc0"
+      },
+      {
+        "local": "killer/54_unnervingPresence.png",
+        "remote": [
+          "assets/iconsourceKill/54_unnervingPresence.png"
+        ],
+        "sha": "b491de648f47b83ec99d63d595232b4e8d2604a3"
+      },
+      {
+        "local": "killer/55_unrelenting.png",
+        "remote": [
+          "assets/iconsourceKill/55_unrelenting.png"
+        ],
+        "sha": "b80ebaa3a040b4f786f22ab085143d0ddaeb46b6"
+      },
+      {
+        "local": "killer/56_whispers.png",
+        "remote": [
+          "assets/iconsourceKill/56_whispers.png"
+        ],
+        "sha": "89b7407458e2b59d65513df8c936ffc1c4920238"
+      },
+      {
+        "local": "killer/57_imAllEars.png",
+        "remote": [
+          "assets/iconsourceKill/57_imAllEars.png"
+        ],
+        "sha": "4520798a24a45575988ddcdb36a9afa6d00a8bd6"
+      },
+      {
+        "local": "killer/58_thrillingTremors.png",
+        "remote": [
+          "assets/iconsourceKill/58_thrillingTremors.png"
+        ],
+        "sha": "70cb92a8e9ea7d8dfbfe819076f284a167b8ad6e"
+      },
+      {
+        "local": "killer/59_furtiveChase.png",
+        "remote": [
+          "assets/iconsourceKill/59_furtiveChase.png"
+        ],
+        "sha": "b62b3c1e58daabd5a1b181734e89cff1cf452d81"
+      },
+      {
+        "local": "killer/60_cruelLimits.png",
+        "remote": [
+          "assets/iconsourceKill/60_cruelLimits.png"
+        ],
+        "sha": "a75b4be188678436a13a0d8b551ed29cded17b81"
+      },
+      {
+        "local": "killer/61_mindbreaker.png",
+        "remote": [
+          "assets/iconsourceKill/61_mindbreaker.png"
+        ],
+        "sha": "ce31b915e37800b271c0a79ab68248028d8a9fea"
+      },
+      {
+        "local": "killer/62_surge.png",
+        "remote": [
+          "assets/iconsourceKill/62_surge.png"
+        ],
+        "sha": "0af43af990fe91d0546a6099e98a5675521834c4"
+      },
+      {
+        "local": "killer/63_bloodEcho.png",
+        "remote": [
+          "assets/iconsourceKill/63_bloodEcho.png"
+        ],
+        "sha": "b36d0b4e811ff24f10c5a6ecb4732bb837abe36e"
+      },
+      {
+        "local": "killer/64_nemesis.png",
+        "remote": [
+          "assets/iconsourceKill/64_nemesis.png"
+        ],
+        "sha": "b1ca9b90d395662c655f815a6c5f4e09a413afd4"
+      },
+      {
+        "local": "killer/65_zanshinTactics.png",
+        "remote": [
+          "assets/iconsourceKill/65_zanshinTactics.png"
+        ],
+        "sha": "66edcd17d3285f0d75a091015f7e276c9cd14fa8"
+      },
+      {
+        "local": "killer/66_gearhead.png",
+        "remote": [
+          "assets/iconsourceKill/66_gearhead.png"
+        ],
+        "sha": "e9749f7bf4cdd4c8191a74c74472607b664b82d0"
+      },
+      {
+        "local": "killer/67_deadMansSwitch.png",
+        "remote": [
+          "assets/iconsourceKill/67_deadMansSwitch.png"
+        ],
+        "sha": "24a4052533c9fbd387ade1f15736db943bbe21b6"
+      },
+      {
+        "local": "killer/68_hexRetribution.png",
+        "remote": [
+          "assets/iconsourceKill/68_hexRetribution.png"
+        ],
+        "sha": "c092a0cc3771548953b2db89077fea6b25498c22"
+      },
+      {
+        "local": "killer/69_forcedPenance.png",
+        "remote": [
+          "assets/iconsourceKill/69_forcedPenance.png"
+        ],
+        "sha": "1fabd64779ddee0e23068141daac3655cefca0dd"
+      },
+      {
+        "local": "killer/70_trailOfTorment.png",
+        "remote": [
+          "assets/iconsourceKill/70_trailOfTorment.png"
+        ],
+        "sha": "6cc0c1ac2b3a9c12103b404789aaecb116ddddd6"
+      },
+      {
+        "local": "killer/71_deathbound.png",
+        "remote": [
+          "assets/iconsourceKill/71_deathbound.png"
+        ],
+        "sha": "87fa56ef6ad5478394e0d9754a6fed19d5b12352"
+      },
+      {
+        "local": "killer/72_hexBloodFavour.png",
+        "remote": [
+          "assets/iconsourceKill/72_hexBloodFavour.png"
+        ],
+        "sha": "a1ed079c4eac6026acc42b822093a3d3ae9c3f0f"
+      },
+      {
+        "local": "killer/73_hexUndying.png",
+        "remote": [
+          "assets/iconsourceKill/73_hexUndying.png"
+        ],
+        "sha": "239e4044e5e39cc20d0870db95f3e6082b0dfd25"
+      },
+      {
+        "local": "killer/74_dragonsGrip.png",
+        "remote": [
+          "assets/iconsourceKill/74_dragonsGrip.png"
+        ],
+        "sha": "44046ae22b4067c06a2261016fe6518b391e6ef8"
+      },
+      {
+        "local": "killer/75_hoarder.png",
+        "remote": [
+          "assets/iconsourceKill/75_hoarder.png"
+        ],
+        "sha": "d7e5ef731be52058425d7dc11e6d5881557d0024"
+      },
+      {
+        "local": "killer/76_oppression.png",
+        "remote": [
+          "assets/iconsourceKill/76_oppression.png"
+        ],
+        "sha": "295df6471c2878e5a769422ec7e6abd305111112"
+      },
+      {
+        "local": "killer/77_coupDeGrace.png",
+        "remote": [
+          "assets/iconsourceKill/77_coupDeGrace.png"
+        ],
+        "sha": "f9ca40b106df160f5683b7283b4bd464a7bd339f"
+      },
+      {
+        "local": "killer/78_starstruck.png",
+        "remote": [
+          "assets/iconsourceKill/78_starstruck.png"
+        ],
+        "sha": "06f38d28e9893930492a7fd7d50c034650005d4d"
+      },
+      {
+        "local": "killer/79_hexCrowdControl.png",
+        "remote": [
+          "assets/iconsourceKill/79_hexCrowdControl.png"
+        ],
+        "sha": "714e49e00989ac3526b606fde45871efee2c405d"
+      },
+      {
+        "local": "killer/80_noWayOut.png",
+        "remote": [
+          "assets/iconsourceKill/80_noWayOut.png"
+        ],
+        "sha": "75862029675c48417d1295abd98fde843c82223f"
+      },
+      {
+        "local": "killer/81_eruption.png",
+        "remote": [
+          "assets/iconsourceKill/81_eruption.png"
+        ],
+        "sha": "048339a010f0c4036aa166a0f014236ce05eda3a"
+      },
+      {
+        "local": "killer/82_hysteria.png",
+        "remote": [
+          "assets/iconsourceKill/82_hysteria.png"
+        ],
+        "sha": "9f317cf1b2cad719ec033df8f7a4782fcc4b155f"
+      },
+      {
+        "local": "killer/83_lethalPursuer.png",
+        "remote": [
+          "assets/iconsourceKill/83_lethalPursuer.png"
+        ],
+        "sha": "6e5ca1aa8fa78def5603e281f5b5b5d4a5752094"
+      },
+      {
+        "local": "killer/84_deadlock.png",
+        "remote": [
+          "assets/iconsourceKill/84_deadlock.png"
+        ],
+        "sha": "bac426633f7d4ee144d7621c6d2fd99384ab2841"
+      },
+      {
+        "local": "killer/85_hexPlaything.png",
+        "remote": [
+          "assets/iconsourceKill/85_hexPlaything.png"
+        ],
+        "sha": "83bad9cefaa2a002586a80d7c51eb19170400270"
+      },
+      {
+        "local": "killer/86_scourgeHookGiftOfPain.png",
+        "remote": [
+          "assets/iconsourceKill/86_scourgeHookGiftOfPain.png"
+        ],
+        "sha": "41e0a3da181e2ed3d7a156a29ae3ba978d5f84f6"
+      },
+      {
+        "local": "killer/87_grimEmbrace.png",
+        "remote": [
+          "assets/iconsourceKill/87_grimEmbrace.png"
+        ],
+        "sha": "2fba94ee596811a86509bc9457fc536afaab1cfd"
+      },
+      {
+        "local": "killer/88_pentimento.png",
+        "remote": [
+          "assets/iconsourceKill/88_pentimento.png"
+        ],
+        "sha": "9b211589c065b8abb6eec2ac560fdbae36e08d61"
+      },
+      {
+        "local": "killer/89_painResonance.png",
+        "remote": [
+          "assets/iconsourceKill/89_painResonance.png"
+        ],
+        "sha": "95b4fb88d7204db2f5cc984db315866a830d40f5"
+      },
+      {
+        "local": "killer/90_callOfBrine.png",
+        "remote": [
+          "assets/iconsourceKill/90_callOfBrine.png"
+        ],
+        "sha": "bf9725b834564ff68d6dcc8cafcb9c6fdc014dbe"
+      },
+      {
+        "local": "killer/91_floodOfRage.png",
+        "remote": [
+          "assets/iconsourceKill/91_floodOfRage.png"
+        ],
+        "sha": "c0f020aeca3cba97d09dc33edac59021131a2a1d"
+      },
+      {
+        "local": "killer/92_mercilessStorm.png",
+        "remote": [
+          "assets/iconsourceKill/92_mercilessStorm.png"
+        ],
+        "sha": "7a8e69e9c3877be17ef10aebdcf8e6950819e468"
+      },
+      {
+        "local": "killer/93_dissolution.png",
+        "remote": [
+          "assets/iconsourceKill/93_dissolution.png"
+        ],
+        "sha": "338c108ce63fbe70436f8ea1b48333569d14c2e1"
+      },
+      {
+        "local": "killer/94_darknessRevelated.png",
+        "remote": [
+          "assets/iconsourceKill/94_darknessRevelated.png"
+        ],
+        "sha": "2e368ce46dcca3a2011e43c8e10d3f040f94159e"
+      },
+      {
+        "local": "killer/95_septicTouch.png",
+        "remote": [
+          "assets/iconsourceKill/95_septicTouch.png"
+        ],
+        "sha": "022298956da2fd631d7636d62e14fe68628aaef5"
+      },
+      {
+        "local": "killer/96_boonDestroyer.png",
+        "remote": [
+          "assets/iconsourceKill/96_boonDestroyer.png"
+        ],
+        "sha": "6bd180c9d854753cc85157689a610630a0a18168"
+      },
+      {
+        "local": "killer/97_awakenedAwarenesss.png",
+        "remote": [
+          "assets/iconsourceKill/97_awakenedAwarenesss.png"
+        ],
+        "sha": "62fb4fba8274079fb5e0a8b05d2f33c3d5208ed3"
+      },
+      {
+        "local": "killer/98_superiorAnatomy.png",
+        "remote": [
+          "assets/iconsourceKill/98_superiorAnatomy.png"
+        ],
+        "sha": "5cb264546be0ffbd10664fba2265fa857828964c"
+      },
+      {
+        "local": "killer/99_terminus.png",
+        "remote": [
+          "assets/iconsourceKill/99_terminus.png"
+        ],
+        "sha": "dc664eb4136e9082fa43a03a6c9c69fe25955777"
+      },
+      {
+        "local": "survivor/00_aceInTheHole.png",
+        "remote": [
+          "assets/iconsourceSurv/00_aceInTheHole.png"
+        ],
+        "sha": "8d2ec2951b013676fbb7719819eb7c0ea54269ac"
+      },
+      {
+        "local": "survivor/01_adrenaline.png",
+        "remote": [
+          "assets/iconsourceSurv/01_adrenaline.png"
+        ],
+        "sha": "98199b89371c5ff590960e47beeda264188a2892"
+      },
+      {
+        "local": "survivor/02_aftercare.png",
+        "remote": [
+          "assets/iconsourceSurv/02_aftercare.png"
+        ],
+        "sha": "f10ad8f40f0d3eb6a57e27e534c0c029d898dfdc"
+      },
+      {
+        "local": "survivor/03_alert.png",
+        "remote": [
+          "assets/iconsourceSurv/03_alert.png"
+        ],
+        "sha": "b8a58a14ac5c6a73694720d3f158c480cfaf4666"
+      },
+      {
+        "local": "survivor/04_autodidact.png",
+        "remote": [
+          "assets/iconsourceSurv/04_autodidact.png"
+        ],
+        "sha": "d0f32e61a7597ff65766c76b19a280b8f228c7a5"
+      },
+      {
+        "local": "survivor/05_balancedLanding.png",
+        "remote": [
+          "assets/iconsourceSurv/05_balancedLanding.png"
+        ],
+        "sha": "7b39de3ba0386588e4ff8c898e9c9359032a917f"
+      },
+      {
+        "local": "survivor/06_boilOver.png",
+        "remote": [
+          "assets/iconsourceSurv/06_boilOver.png"
+        ],
+        "sha": "e7d69becb5692f0cd2b09197e48a739b006b71c9"
+      },
+      {
+        "local": "survivor/07_bond.png",
+        "remote": [
+          "assets/iconsourceSurv/07_bond.png"
+        ],
+        "sha": "1e22310ecd53ee9a5af1df8764c03f47f6c08837"
+      },
+      {
+        "local": "survivor/08_borrowedTime.png",
+        "remote": [
+          "assets/iconsourceSurv/08_borrowedTime.png"
+        ],
+        "sha": "9289dcb3cc75e31d23100ec37dbff41088871073"
+      },
+      {
+        "local": "survivor/09_botanyKnowledge.png",
+        "remote": [
+          "assets/iconsourceSurv/09_botanyKnowledge.png"
+        ],
+        "sha": "72fb42c1ff14294508c3a75ad98d02522bd72846"
+      },
+      {
+        "local": "survivor/100_overcome.png",
+        "remote": [
+          "assets/iconsourceSurv/100_overcome.png"
+        ],
+        "sha": "f6fde0d241be8ad41914c8570ee51ff007e8b5d2"
+      },
+      {
+        "local": "survivor/101_darkTheory.png",
+        "remote": [
+          "assets/iconsourceSurv/101_darkTheory.png"
+        ],
+        "sha": "57e8e19c2267dfef7701620a23451a8d06e3b79c"
+      },
+      {
+        "local": "survivor/102_empathicConnection.png",
+        "remote": [
+          "assets/iconsourceSurv/102_empathicConnection.png"
+        ],
+        "sha": "6008f22e8295362dbafb63840245d14a744e58e5"
+      },
+      {
+        "local": "survivor/103_parentalGuidance.png",
+        "remote": [
+          "assets/iconsourceSurv/103_parentalGuidance.png"
+        ],
+        "sha": "746d2c80c006e3773d3c14813e90874bbcc91d79"
+      },
+      {
+        "local": "survivor/104_innerFocus.png",
+        "remote": [
+          "assets/iconsourceSurv/104_innerFocus.png"
+        ],
+        "sha": "66696191486119e19602e848b7fdbeabfc2d5584"
+      },
+      {
+        "local": "survivor/105_residualManifest.png",
+        "remote": [
+          "assets/iconsourceSurv/105_residualManifest.png"
+        ],
+        "sha": "e14cc11dcac6ad1df4632720fe467efbfece34cd"
+      },
+      {
+        "local": "survivor/106_overzealous.png",
+        "remote": [
+          "assets/iconsourceSurv/106_overzealous.png"
+        ],
+        "sha": "d89d16b3b982c2f96f9db45713d2a9c4c096fbe7"
+      },
+      {
+        "local": "survivor/107_betterThanNew.png",
+        "remote": [
+          "assets/iconsourceSurv/107_betterThanNew.png"
+        ],
+        "sha": "cba44f99a3dfe94e178500252c6fc4074b5f5259"
+      },
+      {
+        "local": "survivor/108_hyperfocus.png",
+        "remote": [
+          "assets/iconsourceSurv/108_hyperfocus.png"
+        ],
+        "sha": "40a45c42d9f795a7cf653998c606aadf27b8e8cb"
+      },
+      {
+        "local": "survivor/109_lowProfile.png",
+        "remote": [
+          "assets/iconsourceSurv/109_lowProfile.png"
+        ],
+        "sha": "41546e6ee242b782e8235da3cc8948f445a2168a"
+      },
+      {
+        "local": "survivor/10_breakdown.png",
+        "remote": [
+          "assets/iconsourceSurv/10_breakdown.png"
+        ],
+        "sha": "4e8527610405305d429679f46efc801dfaa70b75"
+      },
+      {
+        "local": "survivor/110_reactiveHealing.png",
+        "remote": [
+          "assets/iconsourceSurv/110_reactiveHealing.png"
+        ],
+        "sha": "6c1130131f9fcd452fd27986af7ba23273b50441"
+      },
+      {
+        "local": "survivor/111_reassurance.png",
+        "remote": [
+          "assets/iconsourceSurv/111_reassurance.png"
+        ],
+        "sha": "5c546173e4ff0ef1d9e678d39e211d8a1d138560"
+      },
+      {
+        "local": "survivor/112_wiretap.png",
+        "remote": [
+          "assets/iconsourceSurv/112_wiretap.png"
+        ],
+        "sha": "94f75f8584e4c0f41a51c0333303880762b5c098"
+      },
+      {
+        "local": "survivor/113_potentialEnergy.png",
+        "remote": [
+          "assets/iconsourceSurv/113_potentialEnergy.png"
+        ],
+        "sha": "fe3586e98eccafa7c79333e9cb853772d3518d49"
+      },
+      {
+        "local": "survivor/114_fogwise.png",
+        "remote": [
+          "assets/iconsourceSurv/114_fogwise.png"
+        ],
+        "sha": "755347103471fd1c2212a8876df8ae7642a47399"
+      },
+      {
+        "local": "survivor/115_quickGambit.png",
+        "remote": [
+          "assets/iconsourceSurv/115_quickGambit.png"
+        ],
+        "sha": "f3cc9d16536f72264618a57f0745f34b4240674b"
+      },
+      {
+        "local": "survivor/116_backgroundPlayer.png",
+        "remote": [
+          "assets/iconsourceSurv/116_backgroundPlayer.png"
+        ],
+        "sha": "46ce87671b6335ebb3b319160a1376c03eed3ad7"
+      },
+      {
+        "local": "survivor/117_bloodRush.png",
+        "remote": [
+          "assets/iconsourceSurv/117_bloodRush.png"
+        ],
+        "sha": "e175029abeaa91afbd8441744abf63afca6240df"
+      },
+      {
+        "local": "survivor/118_cutLoose.png",
+        "remote": [
+          "assets/iconsourceSurv/118_cutLoose.png"
+        ],
+        "sha": "e151ee2fe9e14a86d11e00bd625350646e2d50a5"
+      },
+      {
+        "local": "survivor/119_friendlyCompetition.png",
+        "remote": [
+          "assets/iconsourceSurv/119_friendlyCompetition.png"
+        ],
+        "sha": "dc281cf12673a00297485f111f4a82f92732fc11"
+      },
+      {
+        "local": "survivor/11_calmSpirit.png",
+        "remote": [
+          "assets/iconsourceSurv/11_calmSpirit.png"
+        ],
+        "sha": "cbfcd8df6f9dee0622744b1446204755ed0b1f26"
+      },
+      {
+        "local": "survivor/120_teamworkCollectiveStealth.png",
+        "remote": [
+          "assets/iconsourceSurv/120_teamworkCollectiveStealth.png"
+        ],
+        "sha": "319f1683d94d2a913bd4fc1eac63285800d982a9"
+      },
+      {
+        "local": "survivor/121_teamworkPowerOfTwo.png",
+        "remote": [
+          "assets/iconsourceSurv/121_teamworkPowerOfTwo.png"
+        ],
+        "sha": "b87a7f4f6a3d1f82a4a017a95160b1449b1c1102"
+      },
+      {
+        "local": "survivor/122_madeForThis.png",
+        "remote": [
+          "assets/iconsourceSurv/122_madeForThis.png"
+        ],
+        "sha": "bb139076d6be87567845c11c6edaaf74ff6cf43a"
+      },
+      {
+        "local": "survivor/123_scavenger.png",
+        "remote": [
+          "assets/iconsourceSurv/123_scavenger.png"
+        ],
+        "sha": "d96aef29c17ee19ebedeb9eab565eb9758d2aad7"
+      },
+      {
+        "local": "survivor/124_troubleshooter.png",
+        "remote": [
+          "assets/iconsourceSurv/124_troubleshooter.png"
+        ],
+        "sha": "44048887d57be57b122b90d8a3fa76678df3f2e0"
+      },
+      {
+        "local": "survivor/125_dramaturgy.png",
+        "remote": [
+          "assets/iconsourceSurv/125_dramaturgy.png"
+        ],
+        "sha": "d145d93ce27eee8f475275441c36cad5e7cd3da4"
+      },
+      {
+        "local": "survivor/126_scenePartner.png",
+        "remote": [
+          "assets/iconsourceSurv/126_scenePartner.png"
+        ],
+        "sha": "33ec1908422e617475d6c7050565fab1dc2d7f7c"
+      },
+      {
+        "local": "survivor/127_plotTwist.png",
+        "remote": [
+          "assets/iconsourceSurv/127_plotTwist.png"
+        ],
+        "sha": "546d114e7487482edda12d1f8eb4f2d4169be8d0"
+      },
+      {
+        "local": "survivor/128_chemicalTrap.png",
+        "remote": [
+          "assets/iconsourceSurv/128_chemicalTrap.png"
+        ],
+        "sha": "22d58e054081fcfa93bb57d587ffd095a32968e9"
+      },
+      {
+        "local": "survivor/129_light-Footed.png",
+        "remote": [
+          "assets/iconsourceSurv/129_light-Footed.png"
+        ],
+        "sha": "34faef536c2a140413c821e2d3f8f82976363c3c"
+      },
+      {
+        "local": "survivor/12_danceWithMe.png",
+        "remote": [
+          "assets/iconsourceSurv/12_danceWithMe.png"
+        ],
+        "sha": "322f579e4007522da04482068770082502edc803"
+      },
+      {
+        "local": "survivor/130_luckyStar.png",
+        "remote": [
+          "assets/iconsourceSurv/130_luckyStar.png"
+        ],
+        "sha": "353925b49eb3169be32c706345307c62d8749965"
+      },
+      {
+        "local": "survivor/131_boonIllumination.png",
+        "remote": [
+          "assets/iconsourceSurv/131_boonIllumination.png"
+        ],
+        "sha": "e2687d953912d971243f497c4de0c36ffc74cae9"
+      },
+      {
+        "local": "survivor/132_championOfLight.png",
+        "remote": [
+          "assets/iconsourceSurv/132_championOfLight.png"
+        ],
+        "sha": "92eaed1ae7cc7da5aa96795ccd8c64ffd72c97ce"
+      },
+      {
+        "local": "survivor/133_deadline.png",
+        "remote": [
+          "assets/iconsourceSurv/133_deadline.png"
+        ],
+        "sha": "157286fd0925351628da488f5fd5af13944977a5"
+      },
+      {
+        "local": "survivor/134_invocationWeavingSpiders.png",
+        "remote": [
+          "assets/iconsourceSurv/134_invocationWeavingSpiders.png"
+        ],
+        "sha": "0a8d96e975051c421908ef6ce5a9cf9e421d087b"
+      },
+      {
+        "local": "survivor/135_strengthInShadows.png",
+        "remote": [
+          "assets/iconsourceSurv/135_strengthInShadows.png"
+        ],
+        "sha": "f28b712d74a80eb20d591ad01e45a3715a4f6e21"
+      },
+      {
+        "local": "survivor/136_wicked.png",
+        "remote": [
+          "assets/iconsourceSurv/136_wicked.png"
+        ],
+        "sha": "37a4077144b502c2b2a180b548fbc335ad7c287b"
+      },
+      {
+        "local": "survivor/137_bardicInspiration.png",
+        "remote": [
+          "assets/iconsourceSurv/137_bardicInspiration.png"
+        ],
+        "sha": "a00e07d3c4b20d4c671b4a492879e3c8cbe992dc"
+      },
+      {
+        "local": "survivor/138_mirroredIllusion.png",
+        "remote": [
+          "assets/iconsourceSurv/138_mirroredIllusion.png"
+        ],
+        "sha": "33196f2e34f4c7d4335e7e24a2c98219467eae34"
+      },
+      {
+        "local": "survivor/139_stillSight.png",
+        "remote": [
+          "assets/iconsourceSurv/139_stillSight.png"
+        ],
+        "sha": "90fbee9f5513b5f27ddd9f79652c1fa56b03e66e"
+      },
+      {
+        "local": "survivor/13_darkSense.png",
+        "remote": [
+          "assets/iconsourceSurv/13_darkSense.png"
+        ],
+        "sha": "09614a5392f5075a481ec1529a688a62b65a90f9"
+      },
+      {
+        "local": "survivor/140_specialist.png",
+        "remote": [
+          "assets/iconsourceSurv/140_specialist.png"
+        ],
+        "sha": "16138caf15a83e1794836af572103337593f38c6"
+      },
+      {
+        "local": "survivor/141_finesse.png",
+        "remote": [
+          "assets/iconsourceSurv/141_finesse.png"
+        ],
+        "sha": "6070ca2d2b58e6184dba105baa9e9b81c23caed0"
+      },
+      {
+        "local": "survivor/142_hardened.png",
+        "remote": [
+          "assets/iconsourceSurv/142_hardened.png"
+        ],
+        "sha": "e2562ed86e9e10695d04fe159f4967ec7109eca4"
+      },
+      {
+        "local": "survivor/143_exultation.png",
+        "remote": [
+          "assets/iconsourceSurv/143_exultation.png"
+        ],
+        "sha": "38cf405fde5adcdd829f8dc0cbc3dfdba099e370"
+      },
+      {
+        "local": "survivor/144_eyesOfBelmont.png",
+        "remote": [
+          "assets/iconsourceSurv/144_eyesOfBelmont.png"
+        ],
+        "sha": "0df22a552cf7ec9bdee7705b5476eae5114deb28"
+      },
+      {
+        "local": "survivor/145_momentOfGlory.png",
+        "remote": [
+          "assets/iconsourceSurv/145_momentOfGlory.png"
+        ],
+        "sha": "09f434225d2e4497c96f0df8b46152ca440e0b4a"
+      },
+      {
+        "local": "survivor/146_cleanBreak.png",
+        "remote": [
+          "assets/iconsourceSurv/146_cleanBreak.png"
+        ],
+        "sha": "b96043c7fcc1468e2752043022342430d9f38ed0"
+      },
+      {
+        "local": "survivor/147_treacherousCrows.png",
+        "remote": [
+          "assets/iconsourceSurv/147_treacherousCrows.png"
+        ],
+        "sha": "d23196298611b5b6ac92f2bd1fcf64b4bb99176d"
+      },
+      {
+        "local": "survivor/148_shoulderTheBurden.png",
+        "remote": [
+          "assets/iconsourceSurv/148_shoulderTheBurden.png"
+        ],
+        "sha": "ec42cb2c087dc258351aa801eca4748cffad2548"
+      },
+      {
+        "local": "survivor/149_doNoHarm.png",
+        "remote": [
+          "assets/iconsourceSurv/149_doNoHarm.png"
+        ],
+        "sha": "b9c1bee0f356007c200ee5ba8bb20d8992f9e13e"
+      },
+      {
+        "local": "survivor/14_deadHard.png",
+        "remote": [
+          "assets/iconsourceSurv/14_deadHard.png"
+        ],
+        "sha": "4ff01b5bec0f0d2f5c8fd72c336d7059c8d82482"
+      },
+      {
+        "local": "survivor/150_dutyOfCare.png",
+        "remote": [
+          "assets/iconsourceSurv/150_dutyOfCare.png"
+        ],
+        "sha": "5bac96b60d9c68677b83c24900b975ae0b7f4f17"
+      },
+      {
+        "local": "survivor/151_rapidResponse.png",
+        "remote": [
+          "assets/iconsourceSurv/151_rapidResponse.png"
+        ],
+        "sha": "70c731ce4fe6698f83fa401aa64c7e421ddc60a5"
+      },
+      {
+        "local": "survivor/152_apocalypticIngenuity.png",
+        "remote": [
+          "assets/iconsourceSurv/152_apocalypticIngenuity.png"
+        ],
+        "sha": "f6598c308454dd0be4c14fae9b70c96db6530456"
+      },
+      {
+        "local": "survivor/153_comeAndGetMe.png",
+        "remote": [
+          "assets/iconsourceSurv/153_comeAndGetMe.png"
+        ],
+        "sha": "27074109b8d1e797a002432bd5aa4ef8e6f574d3"
+      },
+      {
+        "local": "survivor/154_teamworkToughenUp.png",
+        "remote": [
+          "assets/iconsourceSurv/154_teamworkToughenUp.png"
+        ],
+        "sha": "84e6a28fbe00f6a0ae841ec6bf2bce64a9b13b46"
+      },
+      {
+        "local": "survivor/155_conviction.png",
+        "remote": [
+          "assets/iconsourceSurv/155_conviction.png"
+        ],
+        "sha": "cf4bfae49dab8231d15d682ec3a1beeaf532723a"
+      },
+      {
+        "local": "survivor/156_lastStand.png",
+        "remote": [
+          "assets/iconsourceSurv/156_lastStand.png"
+        ],
+        "sha": "1ce05c7db752b832284824d8b35a00bc495746cd"
+      },
+      {
+        "local": "survivor/157_teamworkThrowDown.png",
+        "remote": [
+          "assets/iconsourceSurv/157_teamworkThrowDown.png"
+        ],
+        "sha": "8eb87b29926630c1354fe05b7645b60181acd727"
+      },
+      {
+        "local": "survivor/158_ghostNotes.png",
+        "remote": [
+          "assets/iconsourceSurv/158_ghostNotes.png"
+        ],
+        "sha": "eb4e64174c075eb8139ea86409e06a857a85a100"
+      },
+      {
+        "local": "survivor/159_oneTwoThreeFour.png",
+        "remote": [
+          "assets/iconsourceSurv/159_oneTwoThreeFour.png"
+        ],
+        "sha": "319a8a9dead2ec2f52bd2590afa5054e90b2b2c3"
+      },
+      {
+        "local": "survivor/15_decisiveStrike.png",
+        "remote": [
+          "assets/iconsourceSurv/15_decisiveStrike.png"
+        ],
+        "sha": "54c474ec98c6baad52f9865d24ab16f094d0e37c"
+      },
+      {
+        "local": "survivor/160_roadLife.png",
+        "remote": [
+          "assets/iconsourceSurv/160_roadLife.png"
+        ],
+        "sha": "70cf4e8998a1edaa38a11ba2f3ebf9a4b3f17a59"
+      },
+      {
+        "local": "survivor/161_badaBadaBoom.png",
+        "remote": [
+          "assets/iconsourceSurv/161_badaBadaBoom.png"
+        ],
+        "sha": "35a07bb677e528e5ba61b8ef65199c5aab1f4bc5"
+      },
+      {
+        "local": "survivor/162_changeOfPlan.png",
+        "remote": [
+          "assets/iconsourceSurv/162_changeOfPlan.png"
+        ],
+        "sha": "3ba61d94ce639387f37c78595cf741fa7d66903f"
+      },
+      {
+        "local": "survivor/163_teamworkFullCircuit.png",
+        "remote": [
+          "assets/iconsourceSurv/163_teamworkFullCircuit.png"
+        ],
+        "sha": "af9838803c5277d6ccb3be55f91e58cfd10da839"
+      },
+      {
+        "local": "survivor/164_extrasensoryPerception.png",
+        "remote": [
+          "assets/iconsourceSurv/164_extrasensoryPerception.png"
+        ],
+        "sha": "ed54a5bec91acbd31c4f6df1768aa3d5a56ddbfa"
+      },
+      {
+        "local": "survivor/165_teamworkSoftSpoken.png",
+        "remote": [
+          "assets/iconsourceSurv/165_teamworkSoftSpoken.png"
+        ],
+        "sha": "51a6ba66ab35fb7afc68901445e3b615c284c2ac"
+      },
+      {
+        "local": "survivor/166_weSeeYou.png",
+        "remote": [
+          "assets/iconsourceSurv/166_weSeeYou.png"
+        ],
+        "sha": "375a26ebfa5a654f54c8243d425ba3577450d6ff"
+      },
+      {
+        "local": "survivor/167_aPlaceForUs.png",
+        "remote": [
+          "assets/iconsourceSurv/167_aPlaceForUs.png"
+        ],
+        "sha": "17068c1914a731f6a15059f4f8c464dff69ae4e6"
+      },
+      {
+        "local": "survivor/168_fiveMovesAhead.png",
+        "remote": [
+          "assets/iconsourceSurv/168_fiveMovesAhead.png"
+        ],
+        "sha": "517ff760dc434cd85cb0d64e3be980a3c965908b"
+      },
+      {
+        "local": "survivor/169_flowState.png",
+        "remote": [
+          "assets/iconsourceSurv/169_flowState.png"
+        ],
+        "sha": "91c87e4682129e1c154c072e4443bb1f5bd92227"
+      },
+      {
+        "local": "survivor/16_dejaVu.png",
+        "remote": [
+          "assets/iconsourceSurv/16_dejaVu.png"
+        ],
+        "sha": "ad4e056ee3aeef91eabab5ee94b81fe5e2f5e086"
+      },
+      {
+        "local": "survivor/170_crossExamination.png",
+        "remote": [
+          "assets/iconsourceSurv/170_crossExamination.png"
+        ],
+        "sha": "6ddb2a7f54fdf467c7c7acac93f8c10d1b089ebc"
+      },
+      {
+        "local": "survivor/171_lendaHand.png",
+        "remote": [
+          "assets/iconsourceSurv/171_lendaHand.png"
+        ],
+        "sha": "d75a62551d64e754da3950b6f928fef37bcb73fe"
+      },
+      {
+        "local": "survivor/172_wideOpenThrottle.png",
+        "remote": [
+          "assets/iconsourceSurv/172_wideOpenThrottle.png"
+        ],
+        "sha": "6c91fb9db5e0af6b21ecc6652df5eb4598a2e03f"
+      },
+      {
+        "local": "survivor/173_steadfast.png",
+        "remote": [
+          "assets/iconsourceSurv/173_steadfast.png",
+          "assets/iconsourceSurvColor/173_steadfast.png"
+        ],
+        "sha": "edc190bc441f86566705ac5ee392e678138ee830"
+      },
+      {
+        "local": "survivor/174_salvationsCry.png",
+        "remote": [
+          "assets/iconsourceSurv/174_salvationsCry.png",
+          "assets/iconsourceSurvColor/174_salvationsCry.png"
+        ],
+        "sha": "07d460d3911d081da4d78f071d8624265560f593"
+      },
+      {
+        "local": "survivor/175_fruitsOfYourLabor.png",
+        "remote": [
+          "assets/iconsourceSurv/175_fruitsOfYourLabor.png",
+          "assets/iconsourceSurvColor/175_fruitsOfYourLabor.png"
+        ],
+        "sha": "ebf389aabbff248146a30941f4b15238c33f397b"
+      },
+      {
+        "local": "survivor/17_deliverance.png",
+        "remote": [
+          "assets/iconsourceSurv/17_deliverance.png"
+        ],
+        "sha": "87af7dd1ebb68f8e2c2049e959380332b138e095"
+      },
+      {
+        "local": "survivor/18_detectivesHunch.png",
+        "remote": [
+          "assets/iconsourceSurv/18_detectivesHunch.png"
+        ],
+        "sha": "e5859c7b47e1ea67a1e7a937d4bd3b454b391c13"
+      },
+      {
+        "local": "survivor/19_distortion.png",
+        "remote": [
+          "assets/iconsourceSurv/19_distortion.png"
+        ],
+        "sha": "fca32b8784cd1c7af53433d34b4015cbb1f75973"
+      },
+      {
+        "local": "survivor/20_diversion.png",
+        "remote": [
+          "assets/iconsourceSurv/20_diversion.png"
+        ],
+        "sha": "133a02dbeea908c78873d8134341d3214fe39b72"
+      },
+      {
+        "local": "survivor/21_empathy.png",
+        "remote": [
+          "assets/iconsourceSurv/21_empathy.png"
+        ],
+        "sha": "9954b75c956b03eb1dcf30e9381a60d39207afeb"
+      },
+      {
+        "local": "survivor/22_headOn.png",
+        "remote": [
+          "assets/iconsourceSurv/22_headOn.png"
+        ],
+        "sha": "79485236f70ca90c9dba1f8dbf8ca4dce52bea76"
+      },
+      {
+        "local": "survivor/23_hope.png",
+        "remote": [
+          "assets/iconsourceSurv/23_hope.png"
+        ],
+        "sha": "68386145edfd67e179251982217e56adc2d5681a"
+      },
+      {
+        "local": "survivor/24_ironWill.png",
+        "remote": [
+          "assets/iconsourceSurv/24_ironWill.png"
+        ],
+        "sha": "defcc0645414bb5f050f01d961b714a0bf3722cd"
+      },
+      {
+        "local": "survivor/25_kindred.png",
+        "remote": [
+          "assets/iconsourceSurv/25_kindred.png"
+        ],
+        "sha": "de2c4ee3a963c5a8954260bfdb4b9b49e3a2d5ed"
+      },
+      {
+        "local": "survivor/26_leader.png",
+        "remote": [
+          "assets/iconsourceSurv/26_leader.png"
+        ],
+        "sha": "1cd67d2185cdeccc3469ffed866fdac51aea543d"
+      },
+      {
+        "local": "survivor/27_leftBehind.png",
+        "remote": [
+          "assets/iconsourceSurv/27_leftBehind.png"
+        ],
+        "sha": "09179c7a8f35f89f82755ca9b48b527ff69df89c"
+      },
+      {
+        "local": "survivor/28_lightweight.png",
+        "remote": [
+          "assets/iconsourceSurv/28_lightweight.png"
+        ],
+        "sha": "0eaa961d53b2c142464599216dcef86c166f3366"
+      },
+      {
+        "local": "survivor/29_lithe.png",
+        "remote": [
+          "assets/iconsourceSurv/29_lithe.png"
+        ],
+        "sha": "87a291b5eda1488d54cfef9a557b23d0507277bd"
+      },
+      {
+        "local": "survivor/30_noMither.png",
+        "remote": [
+          "assets/iconsourceSurv/30_noMither.png"
+        ],
+        "sha": "82ba40b907833d83e2202b0691cc13d558033f5b"
+      },
+      {
+        "local": "survivor/31_noOneLeftBehind.png",
+        "remote": [
+          "assets/iconsourceSurv/31_noOneLeftBehind.png"
+        ],
+        "sha": "ab3f5da160e49c77bd86fb1aa5d5eb4be7b31e05"
+      },
+      {
+        "local": "survivor/32_objectOfObsession.png",
+        "remote": [
+          "assets/iconsourceSurv/32_objectOfObsession.png"
+        ],
+        "sha": "7fefebbf00216c69a0b23a2b4be1b7e6ba8f01fa"
+      },
+      {
+        "local": "survivor/33_open-Handed.png",
+        "remote": [
+          "assets/iconsourceSurv/33_open-Handed.png"
+        ],
+        "sha": "cac46a03f8461575cbdf54a4d053a02013ad88d9"
+      },
+      {
+        "local": "survivor/34_pharmacy.png",
+        "remote": [
+          "assets/iconsourceSurv/34_pharmacy.png"
+        ],
+        "sha": "4ff925c55ec34292462a71f58fc1a3d2de8121f6"
+      },
+      {
+        "local": "survivor/35_plunderersInstinct.png",
+        "remote": [
+          "assets/iconsourceSurv/35_plunderersInstinct.png"
+        ],
+        "sha": "e8045b5082aae93f118429763538309466d1c717"
+      },
+      {
+        "local": "survivor/36_poised.png",
+        "remote": [
+          "assets/iconsourceSurv/36_poised.png"
+        ],
+        "sha": "51606bdc112b607df5cb7f0871fa31f5f29a02e7"
+      },
+      {
+        "local": "survivor/37_premonition.png",
+        "remote": [
+          "assets/iconsourceSurv/37_premonition.png"
+        ],
+        "sha": "4b4e95aa564e349fa5566220648a8a655e9d3f6f"
+      },
+      {
+        "local": "survivor/38_proveThyself.png",
+        "remote": [
+          "assets/iconsourceSurv/38_proveThyself.png"
+        ],
+        "sha": "2cfab26de811cfba8d9243e56b8eba607a859d8f"
+      },
+      {
+        "local": "survivor/39_quickAndQuiet.png",
+        "remote": [
+          "assets/iconsourceSurv/39_quickAndQuiet.png"
+        ],
+        "sha": "27ce93c67813b96f223a2a1104ac6c508375502a"
+      },
+      {
+        "local": "survivor/40_resilience.png",
+        "remote": [
+          "assets/iconsourceSurv/40_resilience.png"
+        ],
+        "sha": "7b8da248b3c1d1d85923f9b70f196b9bc446c25f"
+      },
+      {
+        "local": "survivor/41_saboteur.png",
+        "remote": [
+          "assets/iconsourceSurv/41_saboteur.png"
+        ],
+        "sha": "f84940c88422f33294604fd1f2803de01ba48a8b"
+      },
+      {
+        "local": "survivor/42_selfCare.png",
+        "remote": [
+          "assets/iconsourceSurv/42_selfCare.png"
+        ],
+        "sha": "d989419f440d92ccfc530c5cb5fe4911a9c03844"
+      },
+      {
+        "local": "survivor/43_slipperyMeat.png",
+        "remote": [
+          "assets/iconsourceSurv/43_slipperyMeat.png"
+        ],
+        "sha": "f02f770a024418f4e815ee0b253fff864d85ea80"
+      },
+      {
+        "local": "survivor/44_smallGame.png",
+        "remote": [
+          "assets/iconsourceSurv/44_smallGame.png"
+        ],
+        "sha": "8ba64851d513800c6a95837c84cb492faf320d8c"
+      },
+      {
+        "local": "survivor/45_soleSurvivor.png",
+        "remote": [
+          "assets/iconsourceSurv/45_soleSurvivor.png"
+        ],
+        "sha": "028497f85781ff282918b6f586b7705a3e0adb1f"
+      },
+      {
+        "local": "survivor/46_solidarity.png",
+        "remote": [
+          "assets/iconsourceSurv/46_solidarity.png"
+        ],
+        "sha": "58781ac32b301658ae63ddadd10ce4a5e26e3e2e"
+      },
+      {
+        "local": "survivor/47_spineChill.png",
+        "remote": [
+          "assets/iconsourceSurv/47_spineChill.png"
+        ],
+        "sha": "fd1fee3149aa7423c663cc54c5555f1ee8f9a65c"
+      },
+      {
+        "local": "survivor/48_sprintBurst.png",
+        "remote": [
+          "assets/iconsourceSurv/48_sprintBurst.png"
+        ],
+        "sha": "cb5416a20a74fc2128bc35cc06a2578d8b1d1f64"
+      },
+      {
+        "local": "survivor/49_stakeOut.png",
+        "remote": [
+          "assets/iconsourceSurv/49_stakeOut.png"
+        ],
+        "sha": "4d25ff4ccce93a91d22bee22c69f05a2483c1ab5"
+      },
+      {
+        "local": "survivor/50_streetwise.png",
+        "remote": [
+          "assets/iconsourceSurv/50_streetwise.png"
+        ],
+        "sha": "d30a2f54a875946a90f9a6e8f7d45fc1868d6969"
+      },
+      {
+        "local": "survivor/51_technician.png",
+        "remote": [
+          "assets/iconsourceSurv/51_technician.png"
+        ],
+        "sha": "2f87ddd3f7a1de97c54cb551eaf9b7f7fb30ab58"
+      },
+      {
+        "local": "survivor/52_tenacity.png",
+        "remote": [
+          "assets/iconsourceSurv/52_tenacity.png"
+        ],
+        "sha": "1a0ebdd04e8d9a9dfafcc1745ef75774917e1291"
+      },
+      {
+        "local": "survivor/53_thisIsNotHappening.png",
+        "remote": [
+          "assets/iconsourceSurv/53_thisIsNotHappening.png"
+        ],
+        "sha": "9638ad70df84d7330e271eb2f9ffa6a7a6d96976"
+      },
+      {
+        "local": "survivor/54_unbreakable.png",
+        "remote": [
+          "assets/iconsourceSurv/54_unbreakable.png"
+        ],
+        "sha": "1b3b3ca4a15320b4cb0754d68d3ff3cd076306cc"
+      },
+      {
+        "local": "survivor/55_upTheAnte.png",
+        "remote": [
+          "assets/iconsourceSurv/55_upTheAnte.png"
+        ],
+        "sha": "43ff7903c2d098770286709bc20dd439b76a2c89"
+      },
+      {
+        "local": "survivor/56_urbanEvasion.png",
+        "remote": [
+          "assets/iconsourceSurv/56_urbanEvasion.png"
+        ],
+        "sha": "3ee7f94db3036f85e8a161c366dd0608c1bf28c4"
+      },
+      {
+        "local": "survivor/57_vigil.png",
+        "remote": [
+          "assets/iconsourceSurv/57_vigil.png"
+        ],
+        "sha": "22ca006565e7fb5e2c44b9ae8a0fc44777b71e1b"
+      },
+      {
+        "local": "survivor/58_wakeUp.png",
+        "remote": [
+          "assets/iconsourceSurv/58_wakeUp.png"
+        ],
+        "sha": "7e404040f1b3dcc5f97468a89dec8e77755552a6"
+      },
+      {
+        "local": "survivor/59_wellMakeIt.png",
+        "remote": [
+          "assets/iconsourceSurv/59_wellMakeIt.png"
+        ],
+        "sha": "37dc35d471387b66599bf0f690e7ebce6536e16a"
+      },
+      {
+        "local": "survivor/60_wereGonnaLiveForever.png",
+        "remote": [
+          "assets/iconsourceSurv/60_wereGonnaLiveForever.png"
+        ],
+        "sha": "90491fe392290efb401256fd6435c658f7a12ae7"
+      },
+      {
+        "local": "survivor/61_windowsOfOpportunity.png",
+        "remote": [
+          "assets/iconsourceSurv/61_windowsOfOpportunity.png"
+        ],
+        "sha": "9175a2fc3642efe7f25ebe1dc39a0f732bdf798d"
+      },
+      {
+        "local": "survivor/62_buckleUp.png",
+        "remote": [
+          "assets/iconsourceSurv/62_buckleUp.png"
+        ],
+        "sha": "833e93d0aaf7f36cbcf8957e37f5232513b76ded"
+      },
+      {
+        "local": "survivor/63_flipFlop.png",
+        "remote": [
+          "assets/iconsourceSurv/63_flipFlop.png"
+        ],
+        "sha": "401dce35e71dee1125494688d001275037fd8ccf"
+      },
+      {
+        "local": "survivor/64_mettleOfMan.png",
+        "remote": [
+          "assets/iconsourceSurv/64_mettleOfMan.png"
+        ],
+        "sha": "caca01e2d472a1d01a85a5abff07743aec9493e4"
+      },
+      {
+        "local": "survivor/65_babySitter.png",
+        "remote": [
+          "assets/iconsourceSurv/65_babySitter.png"
+        ],
+        "sha": "84b92c46fc89fcd4f9d133f75db203cbab9eb6f6"
+      },
+      {
+        "local": "survivor/66_camaraderie.png",
+        "remote": [
+          "assets/iconsourceSurv/66_camaraderie.png"
+        ],
+        "sha": "befe371153898e4ba57990541c40666fe3cff1f2"
+      },
+      {
+        "local": "survivor/67_secondWind.png",
+        "remote": [
+          "assets/iconsourceSurv/67_secondWind.png"
+        ],
+        "sha": "ba617be08b582b199d23abc795a92b3efcda24c8"
+      },
+      {
+        "local": "survivor/68_betterTogether.png",
+        "remote": [
+          "assets/iconsourceSurv/68_betterTogether.png"
+        ],
+        "sha": "83f198e272c9237363e9a498fb6912eaca8651f0"
+      },
+      {
+        "local": "survivor/69_fixated.png",
+        "remote": [
+          "assets/iconsourceSurv/69_fixated.png"
+        ],
+        "sha": "c7cc92908c530727d84ef04b70d2dad3b05bb8f0"
+      },
+      {
+        "local": "survivor/70_innerStrength.png",
+        "remote": [
+          "assets/iconsourceSurv/70_innerStrength.png"
+        ],
+        "sha": "92914656e2aa6f6dffc42c1c10be837f99dcb723"
+      },
+      {
+        "local": "survivor/71_breakout.png",
+        "remote": [
+          "assets/iconsourceSurv/71_breakout.png"
+        ],
+        "sha": "0b0fe161741a7b8cbc4fc9d3698c32cde87c1c76"
+      },
+      {
+        "local": "survivor/72_anyMeansNecessary.png",
+        "remote": [
+          "assets/iconsourceSurv/72_anyMeansNecessary.png"
+        ],
+        "sha": "8b7bc25b96e4f3af1adb9aac670e5404ee478ef2"
+      },
+      {
+        "local": "survivor/73_luckyBreak.png",
+        "remote": [
+          "assets/iconsourceSurv/73_luckyBreak.png"
+        ],
+        "sha": "17db5311a56d33daefae0d34e1e7a766820b9deb"
+      },
+      {
+        "local": "survivor/74_offTheRecord.png",
+        "remote": [
+          "assets/iconsourceSurv/74_offTheRecord.png"
+        ],
+        "sha": "6619e4b2318fa2932036df22d9f0348a896e8365"
+      },
+      {
+        "local": "survivor/75_redHerring.png",
+        "remote": [
+          "assets/iconsourceSurv/75_redHerring.png"
+        ],
+        "sha": "4c1cf7cc5cc6065a9f041a0d472bd80f2d9ed6d9"
+      },
+      {
+        "local": "survivor/76_forThePeople.png",
+        "remote": [
+          "assets/iconsourceSurv/76_forThePeople.png"
+        ],
+        "sha": "85205222a89d9f409144d24a88ad6b3abc3753cf"
+      },
+      {
+        "local": "survivor/77_soulGuard.png",
+        "remote": [
+          "assets/iconsourceSurv/77_soulGuard.png"
+        ],
+        "sha": "6f0b7021e2e6717f7bcea4b0ec62c317a59f35e6"
+      },
+      {
+        "local": "survivor/78_bloodPact.png",
+        "remote": [
+          "assets/iconsourceSurv/78_bloodPact.png"
+        ],
+        "sha": "0c7e24f7175683e43a9a96ac3a33e0717305372b"
+      },
+      {
+        "local": "survivor/79_repressedAlliance.png",
+        "remote": [
+          "assets/iconsourceSurv/79_repressedAlliance.png"
+        ],
+        "sha": "d0b7aa10ab877bd0365e13087db40a1749798172"
+      },
+      {
+        "local": "survivor/80_desperateMeasures.png",
+        "remote": [
+          "assets/iconsourceSurv/80_desperateMeasures.png"
+        ],
+        "sha": "d7411e201820758c66d9b16124db24f040437379"
+      },
+      {
+        "local": "survivor/81_builtToLast.png",
+        "remote": [
+          "assets/iconsourceSurv/81_builtToLast.png"
+        ],
+        "sha": "df265b6da089f0caff65e14243fd998a7a68868b"
+      },
+      {
+        "local": "survivor/82_visionary.png",
+        "remote": [
+          "assets/iconsourceSurv/82_visionary.png"
+        ],
+        "sha": "20925ddae91f0ccb574e6834f47db1f9aa5ae647"
+      },
+      {
+        "local": "survivor/83_appraisal.png",
+        "remote": [
+          "assets/iconsourceSurv/83_appraisal.png"
+        ],
+        "sha": "b39198600b94f7915b6d4eadb7922ed625334802"
+      },
+      {
+        "local": "survivor/84_deception.png",
+        "remote": [
+          "assets/iconsourceSurv/84_deception.png"
+        ],
+        "sha": "ecc49eccc632e3d717e3da7bf7ce08deb83bdca3"
+      },
+      {
+        "local": "survivor/85_powerStruggle.png",
+        "remote": [
+          "assets/iconsourceSurv/85_powerStruggle.png"
+        ],
+        "sha": "960d63ee2dae6f70503472c258ad2f6e14c1e5ba"
+      },
+      {
+        "local": "survivor/86_fastTrack.png",
+        "remote": [
+          "assets/iconsourceSurv/86_fastTrack.png"
+        ],
+        "sha": "4f581fc69ea4492cc3c10f0691e57fc76f470957"
+      },
+      {
+        "local": "survivor/87_selfPreservation.png",
+        "remote": [
+          "assets/iconsourceSurv/87_selfPreservation.png"
+        ],
+        "sha": "987648031592dee51b1a1274df1592daa3011037"
+      },
+      {
+        "local": "survivor/88_smashHit.png",
+        "remote": [
+          "assets/iconsourceSurv/88_smashHit.png"
+        ],
+        "sha": "f06c01f666206d5f4b629013aceb513f49f406b2"
+      },
+      {
+        "local": "survivor/89_biteTheBullet.png",
+        "remote": [
+          "assets/iconsourceSurv/89_biteTheBullet.png"
+        ],
+        "sha": "bd687172d5f3eec771f2ad1fe61990510d4ef066"
+      },
+      {
+        "local": "survivor/90_blastMine.png",
+        "remote": [
+          "assets/iconsourceSurv/90_blastMine.png"
+        ],
+        "sha": "15b1ef2b2547d9c4acd8cdc334db85b3cd9b4c36"
+      },
+      {
+        "local": "survivor/91_counterforce.png",
+        "remote": [
+          "assets/iconsourceSurv/91_counterforce.png"
+        ],
+        "sha": "8f08987f3689e27ace6a900069704e979b58a524"
+      },
+      {
+        "local": "survivor/92_flashbang.png",
+        "remote": [
+          "assets/iconsourceSurv/92_flashbang.png"
+        ],
+        "sha": "1b08375fb56dd5a4f017f730dd15160614d564b9"
+      },
+      {
+        "local": "survivor/93_resurgence.png",
+        "remote": [
+          "assets/iconsourceSurv/93_resurgence.png"
+        ],
+        "sha": "a64767e8083efdc4ca5aac0b1b6b12da97a28c75"
+      },
+      {
+        "local": "survivor/94_rookieSpirit.png",
+        "remote": [
+          "assets/iconsourceSurv/94_rookieSpirit.png"
+        ],
+        "sha": "0d14ee67f74f6bc4dbafb5a23c269ff29324c334"
+      },
+      {
+        "local": "survivor/95_circleOfHealing.png",
+        "remote": [
+          "assets/iconsourceSurv/95_circleOfHealing.png"
+        ],
+        "sha": "1843130d5defe552da0aab8773e9809780e32d25"
+      },
+      {
+        "local": "survivor/96_shadowStep.png",
+        "remote": [
+          "assets/iconsourceSurv/96_shadowStep.png"
+        ],
+        "sha": "ec010b974aef09d2ef129639ab10d501ce8d2232"
+      },
+      {
+        "local": "survivor/97_clairvoyance.png",
+        "remote": [
+          "assets/iconsourceSurv/97_clairvoyance.png"
+        ],
+        "sha": "29cc1033b75d3ccef128c6fafc23f4d4f49d270c"
+      },
+      {
+        "local": "survivor/98_exponential.png",
+        "remote": [
+          "assets/iconsourceSurv/98_exponential.png"
+        ],
+        "sha": "819f2c38aa017be12c289f65a2f157f636c835a6"
+      },
+      {
+        "local": "survivor/99_correctiveAction.png",
+        "remote": [
+          "assets/iconsourceSurv/99_correctiveAction.png"
+        ],
+        "sha": "462a6f26eba5d05961d4c6faec1b879cd2496505"
+      }
+    ]
+  },
+  "verification": {
+    "date": "2026-10-13",
+    "method": "Git blob SHA-1 of local bytes matched against recursive upstream Git trees; exact matches prove identical bytes, not the path of acquisition.",
+    "3stadt_tree": "bc77235af098ddb0d0b06eab74c5225956b81bb9",
+    "DanteASC4_tree": "b4364f68b27ba9eca92d065fa1fa2c310d72fe41"
+  }
+}

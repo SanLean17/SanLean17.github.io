@@ -27,3 +27,8 @@ html.tier-drag-active{scroll-behavior:auto;overflow-anchor:none}
  .tier-card,.tier-card.tier-perk-card{touch-action:pan-y;cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
  .tier-perk-placement .tier-tab[hidden]{display:none}
 }
+
+/* Pointer capture keeps wheel scrolling available during mouse dragging. */
+html.tier-drag-active{user-select:none;cursor:grabbing}
+.tier-card.tier-drag-preview{position:fixed!important;z-index:1000!important;pointer-events:none!important;margin:0!important;transform:none!important;opacity:1!important}
+.tier-drag-preview.tier-perk-card::after{display:none!important}

@@ -30,10 +30,12 @@ const server = http.createServer((req,res) => {
     await page.waitForFunction(()=>document.documentElement.classList.contains('tier-drag-active'));
   }
   async function finishAt(page,zone){
+    await page.mouse.move(1100,422);
     const rect=await zone.boundingBox();
     assert.ok(rect.y>=0&&rect.y+rect.height<844,'Drop target is in the viewport');
     await page.mouse.move(rect.x+rect.width/2,rect.y+rect.height/2,{steps:15});
-    await page.mouse.move(rect.x+rect.width/2+1,rect.y+rect.height/2,{steps:2});
+    const finalRect=await zone.boundingBox();
+    await page.mouse.move(finalRect.x+finalRect.width/2,finalRect.y+finalRect.height/2);
     await page.mouse.up();
     assert.equal(await page.locator('html.tier-drag-active').count(),0);
   }
@@ -51,13 +53,13 @@ const server = http.createServer((req,res) => {
       await card.hover();
       assert.equal(await card.evaluate(el=>getComputedStyle(el,'::after').visibility),'visible','Perk name still appears');
       await startDrag(desktop,card);
-      // Keep the native ghost and test wheel while held, away from the edge zones.
+      // Keep the captured preview and test wheel while held, away from the edge zones.
       await desktop.mouse.move(1100,400,{steps:5});
       const wheelBefore=await y(desktop);
       await desktop.mouse.wheel(0,-180);
       await desktop.waitForTimeout(250);
       const wheelDelta=wheelBefore-await y(desktop);
-      assert.ok(wheelDelta>100,'Native wheel scroll preserves the active drag');
+      assert.ok(wheelDelta>100,'Wheel scroll preserves the active drag');
       results.push({type,wheelDelta});
       await desktop.evaluate(()=>{
         window.scrollSamples=[];window.recordScroll=true;
@@ -66,10 +68,15 @@ const server = http.createServer((req,res) => {
       });
       const before=await y(desktop);
       // A point in the custom edge band, outside the browser's tiny native edge.
-      await desktop.mouse.move(1100,38,{steps:10});
+      await desktop.mouse.move(1100,310,{steps:10});
       await desktop.waitForTimeout(450);
       const slow=before-await y(desktop);
-      assert.ok(slow>60&&slow<400,`Gradual edge scrolling: ${slow}`);
+      assert.ok(slow>5&&slow<100,`Slow scrolling near center: ${slow}`);
+      const fastStart=await y(desktop);
+      await desktop.mouse.move(1100,38,{steps:5});
+      await desktop.waitForTimeout(450);
+      const fast=fastStart-await y(desktop);
+      assert.ok(fast>slow*2&&fast<650,`Progressive acceleration: ${slow} -> ${fast}`);
       await desktop.mouse.move(1100,400,{steps:10});
       const stopped=await y(desktop);
       await desktop.waitForTimeout(200);
@@ -104,9 +111,19 @@ const server = http.createServer((req,res) => {
     for(const [name,type] of [['tierlist-dbd','killers'],['tierlist-dbd','survivors'],['tierlist-halloween',null]]){
       await desktop.goto(`${base}/${name}.html`);
       if(type)await desktop.locator(`.tier-tab[data-type="${type}"]`).click();
-      const card=desktop.locator('#tierPool .tier-card').first();
+      const card=desktop.locator('#tierPool .tier-card').last();
       await card.click();assert.equal(await desktop.locator('.tier-perk-placement').isVisible(),false);
       await startDrag(desktop,card);
+      await desktop.mouse.move(1100,422,{steps:5});
+      const beforeWheel=await y(desktop);
+      const ghostBefore=await desktop.locator('.tier-drag-preview').boundingBox();
+      await desktop.mouse.wheel(0,-180);
+      await desktop.waitForTimeout(250);
+      assert.ok(beforeWheel-await y(desktop)>80,'Wheel during character drag');
+      assert.equal(await desktop.locator('.dragging').count(),1);
+      const ghostAfter=await desktop.locator('.tier-drag-preview').boundingBox();
+      assert.ok(Math.abs(ghostBefore.y-ghostAfter.y)<1,'Preview stays with cursor during wheel');
+      results.push({type:type||'heroes',wheelDelta:beforeWheel-await y(desktop)});
       await desktop.mouse.move(1200,30,{steps:10});
       await desktop.waitForFunction(()=>scrollY<220);
       await finishAt(desktop,desktop.locator('[data-tier="A"]'));
@@ -114,7 +131,7 @@ const server = http.createServer((req,res) => {
       await desktop.locator('.tier-reset').click();
       assert.equal(await desktop.locator('.tier-board .tier-card').count(),0);
     }
-    // Cancelling native drag also stops the frame loop without needing a drop.
+    // Cancelling pointer drag also stops the frame loop without needing a drop.
     await desktop.goto(base+'/tierlist-dbd.html');
     await desktop.locator('.tier-tab[data-type="killerPerks"]').click();
     await startDrag(desktop,desktop.locator('#tierPool .tier-card').last());
@@ -179,14 +196,14 @@ const server = http.createServer((req,res) => {
       await mobile.screenshot({path:path.join(output,`hero-destinations-${width}.png`)});
       // Resizing must clear mobile selection and restore mouse-only interaction.
       await mobile.setViewportSize({width:1440,height:844});
-      await mobile.waitForFunction(()=>document.querySelector('#tierPool .tier-card').draggable);
+      await mobile.waitForFunction(()=>document.querySelector('#tierPool .tier-card').tabIndex===-1);
       assert.equal(await mobile.locator('.tier-perk-placement').isVisible(),false);
-      assert.equal(await mobile.locator('#tierPool .tier-card').first().getAttribute('draggable'),'true');
+      assert.equal(await mobile.locator('#tierPool .tier-card').first().getAttribute('draggable'),'false');
       await mobile.context().close();
     }
     assert.deepEqual(errors,[]);
     fs.writeFileSync(path.join(output,'results.json'),JSON.stringify(results,null,2));
     console.log(JSON.stringify(results));
-    console.log('PASS: native drag and edge scrolling, drop/release stop, desktop click isolation, all five mobile collections and destination filtering.');
+    console.log('PASS: pointer drag and edge scrolling, drop/release stop, desktop click isolation, all five mobile collections and destination filtering.');
   }finally{await browser.close();server.close();}
 })().catch(error=>{console.error(error);server.close();process.exitCode=1;});
