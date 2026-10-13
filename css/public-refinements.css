@@ -21,4 +21,9 @@
 @media(min-width:761px){
   body.public-site.page-bg {background-image:url('../fondo-sanlean-desktop.png'),url('../fondo-negro-textura-2.png');}
 }
-body.public-site .splash {background-image:url('../fondo-sanlean-mobile.png');}
+body.public-site .splash {background-image:url('../fondo-sanlean-mobile.png');background-position:center 28%;}
+
+/* Anchor the face to the first viewport, not to the full page height. */
+@media(min-width:761px){
+  body.public-site:is(.page-bg,.killer-page-bg,.perk-roulette-page) {background-position:center -22vw,center bottom;}
+}
