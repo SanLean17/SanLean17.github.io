@@ -1,11 +1,10 @@
-/* Public contact only. Enable delivery after provider consent and mailbox activation. */
+/* Public contact: FormSubmit AJAX, mailbox activated with owner consent. No client secrets. */
 (() => {
   const form = document.querySelector('#contactForm');
   if (!form) return;
   const email = form.elements.email, message = form.elements.message;
   const button = form.querySelector('button[type="submit"]');
   const status = document.querySelector('#contactStatus');
-  const direct = document.querySelector('#contactDirect');
   let sending = false;
   function show(text, state) { status.textContent = text; status.dataset.state = state; }
   message.addEventListener('input', () => message.setCustomValidity(''));
@@ -14,12 +13,11 @@
     if (sending) return;
     message.setCustomValidity(message.value.trim() ? '' : 'Escribí un mensaje.');
     if (!form.reportValidity()) return;
-    direct.href = 'mailto:leandrosanchez10@gmail.com?subject=' + encodeURIComponent('Contacto — SanLean') + '&body=' + encodeURIComponent(message.value.trim());
     if (form.dataset.contactEnabled !== 'true') {
-      show('El envío desde el formulario todavía no está habilitado. Usá el enlace de correo de abajo; tu mensaje está preparado allí.', 'error');
+      show('El envío desde el formulario todavía no está habilitado. Intentá nuevamente más tarde.', 'error');
       return;
     }
-    if (form.elements.website.value) { show('No se pudo enviar el mensaje. Usá el enlace de correo.', 'error'); return; }
+    if (form.elements.website.value) { show('No se pudo enviar el mensaje. Intentá nuevamente.', 'error'); return; }
     sending = true;
     button.disabled = true;
     email.readOnly = message.readOnly = true;
@@ -36,11 +34,10 @@
       });
       const data = await response.json();
       if (!response.ok || ![true, 'true'].includes(data.success)) throw new Error('Delivery was not accepted');
-      show('El servicio de correo recibió tu mensaje. Gracias por escribir a SanLean.', 'success');
+      show('Tu mensaje fue enviado. Gracias por escribir a SanLean.', 'success');
       form.reset();
-      direct.href = 'mailto:leandrosanchez10@gmail.com';
     } catch {
-      show('No pudimos confirmar el envío. Tu texto sigue acá; podés intentar nuevamente o usar el enlace de correo.', 'error');
+      show('No pudimos confirmar el envío. Tu texto sigue acá; podés intentar nuevamente.', 'error');
     } finally {
       clearTimeout(timeout);
       sending = false;

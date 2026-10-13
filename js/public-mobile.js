@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const groups = [
     ['DEAD BY DAYLIGHT', [['RULETA KILLER','ruleta-killer.html'],['RULETA PERKS','ruleta-perks.html'],['PERKS DE KILLER','ruleta-perks-killer.html'],['PERKS DE SUPERVIVIENTE','ruleta-perks-superviviente.html'],['1VS1','1vs1.html']]],
     ['TIERLIST', [['DEAD BY DAYLIGHT','tierlist-dbd.html'],['HALLOWEEN','tierlist-halloween.html']]],
-    ['SANLEAN', [['INICIO','index.html'],['HALLOWEEN','halloween.html'],['CRÉDITOS','creditos.html']]]
+    ['SANLEAN', [['INICIO','index.html'],['HALLOWEEN','halloween.html'],['CRÉDITOS','creditos.html'],['CONTACTO','contacto.html']]]
   ];
   const menu = document.createElement('nav');
   menu.id = 'publicMobileMenu'; menu.className = 'public-mobile-menu'; menu.hidden = true;
