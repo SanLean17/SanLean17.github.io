@@ -1,0 +1,18 @@
+/* Loaded only by the public website. Keep desktop corrections out of mobile. */
+@media (min-width:901px) {
+  .perk-gear-btn::after,.killer-gear-btn::after {
+    content:attr(aria-label);
+    text-transform:uppercase;
+  }
+  .home-content {width:max-content;}
+  .home-title {width:auto;}
+  .home-options {max-width:100%;}
+  .main-nav .dropdown {background:#ff003c;border-radius:14px;}
+  .one-vs-one-placeholder .versus {color:#fff;}
+  /* Center the full grid, keeping incomplete rows aligned with its first column. */
+  .tier-pool {display:grid;grid-template-columns:repeat(auto-fill,88px);justify-content:center;}
+  .halloween-selector .tier-pool {grid-template-columns:repeat(auto-fill,105px);}
+}
+
+/* The existing background already supplies the empty diamond. Preserve label spacing. */
+.config-item[data-key="slot_vacio"] > img {visibility:hidden;}
