@@ -29,11 +29,18 @@
 }
 body.public-site .splash {
   background-image:url('../hero-bg2.png');
-  background-size:contain;
-  background-position:center center;
+  background-size:100% auto;
+  background-position:center top;
   background-repeat:no-repeat;
 }
 
 /* Temporary public splash test. Historical overlay in style.css: rgba(0,0,0,.22).
    To restore it exactly, remove this override. Keep the shared original intact. */
 body.public-site .splash::before {background:transparent;}
+
+@media(max-width:760px){
+  body.public-site .splash {
+    background-image:url('../fondo-sanlean-mobile2.png');
+    background-size:cover;
+  }
+}
