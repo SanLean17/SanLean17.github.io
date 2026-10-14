@@ -17,23 +17,18 @@
 /* The existing background already supplies the empty diamond. Preserve label spacing. */
 .config-item[data-key="slot_vacio"] > img {visibility:hidden;}
 
-/* Public backgrounds only; each overlay follows its image, not the texture. */
+/* Public backgrounds: preserve the desktop image's full-width, long-page composition. */
 @media(min-width:761px){
   body.public-site:is(.page-bg,.killer-page-bg,.perk-roulette-page) {
-    background-image:linear-gradient(90deg,#080809 0%,#00000024 6%,#00000024 94%,#080809 100%),url('../fondo-sanlean-desktop.png'),url('../fondo-negro-textura-2.png');
-    background-size:90vw 220.875vw,90vw auto,100% auto;
-    background-position:calc(50% - 3vw) -16vw,calc(50% - 3vw) -16vw,center bottom;
-    background-repeat:no-repeat,no-repeat,repeat-y;
-    background-attachment:scroll,scroll,scroll;
+    background-image:url('../fondo-sanlean-desktop2.png'),url('../fondo-negro-textura-2.png');
+    background-size:100% auto,100% auto;
+    background-position:center top,center bottom;
+    background-repeat:no-repeat,repeat-y;
+    background-attachment:scroll,scroll;
   }
 }
 body.public-site .splash {
-  background-image:linear-gradient(90deg,#070708 0%,transparent 6%,transparent 94%,#070708 100%),url('../fondo-sanlean-mobile.png');
-  background-size:max(90vw,63.54696svh) max(127.46479vw,90svh),max(90vw,63.54696svh) auto;
-  background-position:calc(50% - 3vw) 28%;
-}
-body.public-site .splash::before {background:rgba(0,0,0,.30);}
-
-@media(max-width:760px){
-  body.public-site .splash {background-position:calc(50% - 3vw) top;}
+  background-image:url('../hero-bg2.png');
+  background-size:cover;
+  background-position:center center;
 }
