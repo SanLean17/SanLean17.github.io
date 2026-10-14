@@ -1,7 +1,7 @@
 .public-mobile-menu{display:none}
 @media(max-width:760px){
 html:has(body.public-mobile){scrollbar-gutter:auto;overflow-y:auto}
-body.public-mobile{background-image:url('../fondo-sanlean-mobile2.png');background-size:cover;background-position:center;background-repeat:repeat-y;background-attachment:scroll}
+body.public-mobile{background-image:url('../fondo-sanlean-mobile2.png');background-size:cover;background-position:center center;background-repeat:no-repeat;background-attachment:scroll}
 body.public-mobile:is(.home-page,.mobile-compact-page):not(.perk-roulette-page){background-image:linear-gradient(#08080955,#08080955),url('../fondo-sanlean-mobile2.png');background-size:cover;background-position:center;background-repeat:no-repeat;background-attachment:fixed}
 body.public-mobile .header-inner{height:76px;width:calc(100% - 32px)}
 body.public-mobile #mainNav{display:none!important}

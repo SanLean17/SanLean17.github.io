@@ -17,12 +17,12 @@
 /* The existing background already supplies the empty diamond. Preserve label spacing. */
 .config-item[data-key="slot_vacio"] > img {visibility:hidden;}
 
-/* Public backgrounds: preserve the desktop image's full-width, long-page composition. */
+/* Prepared public backgrounds; keep the existing texture layer unchanged. */
 @media(min-width:761px){
   body.public-site:is(.page-bg,.killer-page-bg,.perk-roulette-page) {
     background-image:url('../fondo-sanlean-desktop2.png'),url('../fondo-negro-textura-2.png');
-    background-size:100% auto,100% auto;
-    background-position:center top,center bottom;
+    background-size:cover,100% auto;
+    background-position:center center,center bottom;
     background-repeat:no-repeat,repeat-y;
     background-attachment:scroll,scroll;
   }
@@ -31,4 +31,5 @@ body.public-site .splash {
   background-image:url('../hero-bg2.png');
   background-size:cover;
   background-position:center center;
+  background-repeat:no-repeat;
 }
