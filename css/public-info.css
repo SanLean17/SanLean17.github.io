@@ -33,3 +33,13 @@ body.public-site>.public-footer{margin-top:32px}
 }
 
 .contact-form button[type="submit"]{display:block;margin-inline:auto}
+
+/* Public desktop only: extra space after content on the selected pages. */
+@media(min-width:901px){
+  body.public-site.desktop-footer-space>main,
+  body.public-site.home-page.desktop-footer-space>.home-main {min-height:calc(100vh - 56px);padding-bottom:48px;}
+  body.public-site.desktop-footer-space>.perk-choice-page {padding-bottom:78px;}
+  body.public-site.desktop-footer-space>.roulette-page {padding-bottom:118px;}
+  body.public-site .main-nav>ul>li>.nav-link {transition:color .18s ease;}
+  body.public-site .main-nav>ul>li>.nav-link:hover {color:#ff003c;}
+}
