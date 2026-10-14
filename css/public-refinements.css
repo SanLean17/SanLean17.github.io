@@ -21,15 +21,19 @@
 @media(min-width:761px){
   body.public-site:is(.page-bg,.killer-page-bg,.perk-roulette-page) {
     background-image:url('../fondo-sanlean-desktop2.png'),url('../fondo-negro-textura-2.png');
-    background-size:cover,100% auto;
-    background-position:center center,center bottom;
+    background-size:100% auto,100% auto;
+    background-position:center top,center bottom;
     background-repeat:no-repeat,repeat-y;
     background-attachment:scroll,scroll;
   }
 }
 body.public-site .splash {
   background-image:url('../hero-bg2.png');
-  background-size:cover;
+  background-size:contain;
   background-position:center center;
   background-repeat:no-repeat;
 }
+
+/* Temporary public splash test. Historical overlay in style.css: rgba(0,0,0,.22).
+   To restore it exactly, remove this override. Keep the shared original intact. */
+body.public-site .splash::before {background:transparent;}
