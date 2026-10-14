@@ -44,3 +44,7 @@ body.public-site .splash::before {background:transparent;}
     background-size:cover;
   }
 }
+
+@media(min-width:901px){
+  body.public-site .splash-content {transform:translate(-3.5%,calc(-1% + 24px));}
+}

@@ -23,7 +23,7 @@ body.public-mobile :is(.roulette-page,.placeholder,.credits-wrap){padding-top:16
 body.public-mobile{--public-title-size:clamp(40px,12.3vw,48px);--public-space:16px;--public-section-gap:32px;--killer-card-width:clamp(144px,42vw,184px)}
 body.public-mobile :is(.roulette-page h1,.tierlist-title,.tournament-hero h1,.perk-choice-title,.placeholder h1,.credits-wrap h1,.killer-perks-title,.home-title){font-family:var(--head);font-size:var(--public-title-size)!important;font-weight:400;line-height:1.04!important;letter-spacing:-.5px;text-align:center!important;text-wrap:balance;width:100%;max-width:100%;margin:0 auto var(--public-section-gap)!important;overflow-wrap:normal}
 body.public-mobile :is(.roulette-page,.tierlist-page,.one-vs-one-main,.perk-choice-page,.home-content,.credits-wrap){padding-top:var(--public-section-gap)!important}
-body.public-mobile.mobile-compact-page:not(.mobile-config-open)>main{padding-top:var(--public-section-gap)!important;padding-bottom:var(--public-section-gap)!important}
+body.public-mobile:is(.mobile-compact-page,.public-legal-page):not(.mobile-config-open)>main{padding-top:var(--public-section-gap)!important;padding-bottom:var(--public-section-gap)!important}
 body.public-mobile .build-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 8px;min-height:0;margin:0 auto}
 body.public-mobile .build-slot{--perk-size:min(34vw,18svh,145px);height:calc(var(--perk-size) + 64px);min-height:0}
 body.public-mobile .build-slot:before{width:var(--perk-size);height:var(--perk-size);top:0}
