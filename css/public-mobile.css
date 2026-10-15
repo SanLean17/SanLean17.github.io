@@ -1,8 +1,19 @@
 .public-mobile-menu{display:none}
 @media(max-width:760px){
 html:has(body.public-mobile){scrollbar-gutter:auto;overflow-y:auto}
-body.public-mobile{background-image:url('../fondo-sanlean-mobile2.png'),url('../fondo-negro-textura-2.png');background-size:cover,100% auto;background-position:center top,center bottom;background-repeat:no-repeat,repeat-y;background-attachment:scroll}
-body.public-mobile:is(.home-page,.mobile-compact-page):not(.perk-roulette-page){background-image:url('../fondo-sanlean-mobile2.png'),url('../fondo-negro-textura-2.png');background-size:cover,100% auto;background-position:center top,center bottom;background-repeat:no-repeat,repeat-y;background-attachment:fixed}
+/* One shared first-screen portrait, independent of document height. */
+body.public-mobile:not(.mobile-tierlist-page){background-color:#080809;background-image:url('../fondo-negro-textura-2.png');background-size:100% auto;background-position:center bottom;background-repeat:repeat-y;background-attachment:scroll}
+/* Preserve the texture's existing attachment; this no longer contains the portrait. */
+body.public-mobile:is(.home-page,.mobile-compact-page):not(.perk-roulette-page),
+body.public-mobile:is(.perks-menu-page,.one-vs-one-page):not(.mobile-config-open){background-attachment:fixed}
+body.public-mobile:not(.mobile-tierlist-page)::before,
+body.public-site.public-mobile .splash::before{
+ content:'';display:block!important;position:absolute;inset:0 0 auto;height:100svh;
+ z-index:0;pointer-events:none;
+ background-color:transparent;background-image:url('../fondo-sanlean-mobile2.png');
+ background-size:cover;background-position:center top;background-repeat:no-repeat;background-attachment:scroll;
+}
+body.public-site.public-mobile .splash{background-image:none}
 body.public-mobile .header-inner{height:76px;width:calc(100% - 32px)}
 body.public-mobile #mainNav{display:none!important}
 body.public-mobile #menuToggle{display:flex;width:44px;height:44px;padding:10px;gap:5px;border:0;border-radius:9px;background:transparent;align-items:center;justify-content:center;flex-direction:column}
@@ -95,9 +106,7 @@ body.public-mobile :is(p,h1,h2,h3){word-spacing:normal;hyphens:none}
 body.public-mobile :is(.home-feature,.perk-choice-card) h3{color:var(--red)}
 body.public-mobile :is(.home-feature,.perk-choice-card) p{color:#fff}
 body.public-mobile .home-feature:focus-visible{outline:2px solid var(--red);outline-offset:8px;border-radius:12px}
-body.public-mobile:is(.perks-menu-page,.one-vs-one-page):not(.mobile-config-open){background-image:url('../fondo-sanlean-mobile2.png'),url('../fondo-negro-textura-2.png');background-size:cover,100% auto;background-position:center top,center bottom;background-repeat:no-repeat,repeat-y;background-attachment:fixed}
 body.public-mobile.killer-page-bg{background-color:#080809;background-image:url('../fondo-negro-textura-2.png');background-size:100% auto;background-repeat:repeat-y;background-position:center top;background-attachment:scroll}
-body.public-mobile.killer-page-bg::before{content:'';display:block!important;position:absolute;inset:0 0 auto;height:100svh;z-index:0;pointer-events:none;background:url('../fondo-sanlean-mobile2.png') center top/cover no-repeat;mask-image:linear-gradient(#000 75%,transparent);-webkit-mask-image:linear-gradient(#000 75%,transparent)}
 body.public-mobile.mobile-tierlist-page{background-color:#080809;background-image:url('../fondo-negro-textura-2.png');background-size:100% auto;background-repeat:repeat-y;background-position:center top;background-attachment:scroll}
 body.public-mobile .config-grid.open::before{background:url('../fondo-negro-textura-2.png') center top/cover no-repeat}
 body.public-mobile .tier-tabs{justify-content:center;flex-wrap:wrap;padding:0 44px;gap:8px}
@@ -115,7 +124,6 @@ body.public-mobile.public-menu-open>main{overflow:hidden!important}
 body.public-mobile.public-menu-surface .site-header{background:#09090b}
 body.public-mobile .site-header{transition:background-color 220ms ease}
 body.public-mobile:is(.perk-roulette-page,.killer-page-bg){background:#080809 url('../fondo-negro-textura-2.png') center top/100% auto repeat-y; background-attachment:scroll}
-body.public-mobile:is(.perk-roulette-page,.killer-page-bg)::before{content:'';display:block!important;position:absolute;inset:0 0 auto;height:100svh;z-index:0;pointer-events:none;background:url('../fondo-sanlean-mobile2.png') center top/cover no-repeat;mask-image:linear-gradient(#000 85%,transparent);-webkit-mask-image:linear-gradient(#000 85%,transparent)}
 body.public-mobile .config-section.gear-visible{position:relative;isolation:isolate;padding-top:16px}
 body.public-mobile .config-section.gear-visible::before{content:'';position:absolute;z-index:-1;top:0;bottom:-34px;left:50%;width:100vw;transform:translateX(-50%);background:#080809 url('../fondo-negro-textura-2.png') center top/100% auto repeat-y;pointer-events:none}
 body.public-mobile .config-grid.open::before{display:none}

@@ -38,13 +38,6 @@ body.public-site .splash {
    To restore it exactly, remove this override. Keep the shared original intact. */
 body.public-site .splash::before {background:transparent;}
 
-@media(max-width:760px){
-  body.public-site .splash {
-    background-image:url('../fondo-sanlean-mobile2.png');
-    background-size:cover;
-  }
-}
-
 @media(min-width:901px){
   body.public-site .splash-content {transform:translate(-3.5%,calc(-1% + 254px));}
 }
