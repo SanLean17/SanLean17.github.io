@@ -38,7 +38,7 @@ Se excluyen reposts, identidades distintas y contenido citado de terceros.
 Ventana móvil de 150 días, hasta 12 páginas de 100 entradas, con reintentos y timeout.
 Una consulta incompleta o identidad distinta aborta sin publicar datos parciales.
 El historial del catálogo se conserva aunque una publicación salga de la ventana.
-Se guardan URL/alt de imágenes oficiales como evidencia; no se descargan ni renderizan.
+Se guardan URL/alt de imágenes oficiales como evidencia; se referencian desde el CDN oficial, sin descargar archivos al repositorio.
 No se lee texto incrustado en imágenes ni se recorren hilos/respuestas.
 
 Fuentes futuras X_ES y DBD_WEB quedan desactivadas en el registro. X Español
@@ -51,8 +51,7 @@ estructurado estable apto para esta V1; no se agregó scraping de su página din
 CONFIRMED exige identidad oficial y una instrucción explícita de canje asociada
 con un único código. Normaliza uppercase y deduplica por `code`. Conserva todas las
 publicaciones en `sources`. Recompensas se conservan en idioma original; si faltan,
-se indica la ausencia. `this Charm` es literalmente el anuncio de MACHETE: no se
-inventa el nombre a partir de su imagen.
+se indica la ausencia. DIABLO y MACHETE tienen nombres contrastados visualmente contra sus gráficas oficiales; `rewardEvidence` conserva esa revisión y evita que una consulta posterior los reemplace por texto genérico.
 Noticias de NieR y «DIABLO COLLECTION AVAILABLE NOW» son REJECTED.
 Varios códigos, negaciones, ejemplos, disponibilidad futura o contexto incompleto
 van a REVIEW. MAURICEPRIDE + WORLDPRIDE2026 quedan en REVIEW porque su anuncio no
@@ -67,8 +66,7 @@ fecha/hora oficial. `expiryUpperBound` es un límite conservador de ordenamiento
 NO un timestamp de vencimiento y NO dispara finalización automática.
 
 **Únicamente `expiresAt` dispara active → expired automáticamente.** Si falta,
-se mantiene activo hasta revisión/evidencia oficial. Sin plazo alguno aparece
-«SIN FECHA DE FINALIZACIÓN CONFIRMADA». ROADTRIP dice «until October 2027», no un
+se mantiene activo hasta revisión/evidencia oficial. Sin plazo alguno se omite la línea de vencimiento en la interfaz. ROADTRIP dice «until October 2027», no un
 día inventado. Para los códigos históricos SHINEBRIGHT, BIKERIDE y THESLASHER,
 el plazo oficial ya pasó al 25/10/2026: la carga inicial guarda `statusEvidence`
 de esa revisión y mantiene expiresAt null. STARSGUIDE y CROWCAW sí tienen hora ET.
@@ -115,7 +113,7 @@ revisión y códigos publicados solo como imagen pueden no detectarse.
 `node --test tests/dbd-codes.test.mjs`
 `node scripts/codigos/update.mjs`
 Una segunda ejecución con la misma evidencia debe informar «Cambios realizados: no».
-El catálogo inicial contiene 7 activos y 5 finalizados; todas las tarjetas conservan
+El catálogo revisado contiene 3 activos y 9 finalizados; todas las tarjetas conservan
 su URL oficial. Las pruebas cubren falsos positivos, fuente adulterada, múltiples
 códigos, deduplicación, idempotencia, zona horaria, plazos parciales y fallos de identidad.
 Pruebas de navegador: 1440, 740, 390 y 320px; copiar real/feedback, estados,
@@ -125,3 +123,43 @@ Referencias técnicas oficiales:
 - https://docs.bsky.app/docs/api/app-bsky-feed-get-author-feed
 - https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule
 - https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow
+
+## Revisión visual con imágenes — 25/10/2026
+
+La interfaz elimina el kicker de laboratorio, contador global y explicaciones técnicas.
+Título e introducción reutilizan `.placeholder` de Halloween sin cambiar sus estilos
+fuente. Tarjetas `.tier-board` y botones `.tier-tab` reutilizan Tierlist, cargado solo
+en esta ruta. Dos columnas desktop/tablet y una en mobile. Fechas en español;
+ROADTRIP conserva precisión mensual y no se inventa un día.
+
+Campos `imageUrl`, `imageAlt` (español) e `imageSourceUrl` se derivan de la última
+publicación confirmada con imagen. Los originales y alt oficiales permanecen en
+`sources[].images`. Si un anuncio posterior no trae imagen se conserva la última
+evidencia ilustrada. No se aceptan imágenes por sí solas como códigos.
+
+Las imágenes se referencian, no se almacenan. El contenedor reserva proporción 1:1
+y usa object-fit:contain para mostrar la pieza completa. Si el CDN falla o elimina
+una URL, la misma zona muestra «Imagen oficial no disponible» sin cambiar altura;
+los datos, fuente y copiado siguen funcionando. Si no hay imagen desde el inicio,
+aparece «Sin imagen oficial». No se añaden imágenes inventadas ni de terceros.
+
+Copiar cambia únicamente el texto del botón de altura y ancho estables; la región
+accesible de confirmación queda fuera del flujo. Incluye error de portapapeles sin
+cambiar geometría.
+
+Se revisaron 85 publicaciones oficiales entre 25/08 y 25/10/2026; los cuatro
+anuncios con instrucciones de canje son DIABLO, MACHETE, ROADTRIP y STARSGUIDE,
+ya presentes. Se conserva todo el historial. La publicación española en X no pudo
+consultarse (403); evidencia confirmada desde publicaciones/gráficas de Bluesky
+oficial, sin atribuir a X una verificación no realizada.
+
+El diagnóstico traduce las clasificaciones y muestra imágenes encontradas. La fecha
+de la última ejecución se identifica como inicio del workflow; no se confunde con
+la fecha del último cambio guardado. Frecuencia, permisos y detección no cambian.
+
+Las imágenes de ENTITYLOVEFORALL, RAINBOWTOOLS, INTOTHERAINBOW2026 y RAINBOWBRIGHT
+contienen sus códigos y «REDEEM BY AUG 17 11AM EST». Esta revisión visual añade
+17/08/2026 como plazo y los marca finalizados, con `statusEvidence` y URL de imagen.
+No se convierte la abreviatura EST de verano a una hora ISO dudosa; se muestra solo
+la fecha. El texto del anuncio por sí solo no incluía este vencimiento. Resultado:
+3 activos y 9 finalizados, los 12 con imagen oficial.

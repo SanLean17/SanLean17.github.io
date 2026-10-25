@@ -47,3 +47,28 @@ test('network adapter checks identity and pagination before returning anything',
  await assert.rejects(collect({fetcher:async()=>({ok:true,json:async()=>({did:'wrong',handle:ACCOUNT})})}),/identidad/);
  let n=0;const r=await collect({since:'2026-01-01',fetcher:async()=>({ok:true,json:async()=>++n===1?{did:DID,handle:ACCOUNT}:{feed:fixture}})});assert.equal(r.posts.length,13);
 });
+import {expiryLabel,officialImage} from '../codigos/presentation.mjs';
+test('Spanish dates preserve month precision and omit unknown deadlines',()=>{
+ assert.equal(expiryLabel({expiryText:'before November 25',expiryPrecision:'day',publishedAt:'2026-10-24'}),'25 de noviembre de 2026');
+ assert.equal(expiryLabel({expiryText:'until October 2027',expiryPrecision:'month',publishedAt:'2026-09-21'}),'octubre de 2027');
+ assert.equal(expiryLabel({expiresAt:'2026-10-10T15:00:00Z'}),'10 de octubre de 2026');
+ assert.equal(expiryLabel({expiresAt:null}),null);
+});
+test('images accompany confirmed codes only and survive image-less follow-ups',()=>{
+ const r=mergeCodes(empty,review,posts,now);assert.equal(r.stats.imagesFound,12);
+ for(const c of r.catalog.codes){assert.ok(officialImage(c.imageUrl));assert.equal(c.imageSourceUrl,c.sourceUrl);assert.ok(c.imageAlt.includes(c.code));}
+ const unrelated=post('DIABLO COLLECTION AVAILABLE NOW');unrelated.images=[{url:posts[0].images[0].url}];assert.equal(mergeCodes(empty,review,[unrelated],now).catalog.codes.length,0);
+ const source=posts.find(p=>classify(p).code==='ROADTRIP');const later={...source,uri:source.uri+'later',sourceUrl:source.sourceUrl+'later',publishedAt:'2026-10-25T19:00:00Z',images:[]};
+ const c=mergeCodes(r.catalog,r.review,[later],now).catalog.codes.find(c=>c.code==='ROADTRIP');assert.equal(c.imageSourceUrl,source.sourceUrl);
+ assert.equal(officialImage('https://cdn.bsky.app.evil.test/image.png'),false);assert.equal(officialImage('javascript:alert(1)'),false);
+});
+test('verified image reward survives subsequent automatic refresh',()=>{
+ const first=mergeCodes(empty,review,posts,now);const c=first.catalog.codes.find(c=>c.code==='DIABLO');c.rewardEvidence={sourcePostUri:c.rawPostUri,reward:'Tristram Ruins Banner + Horadric Cube Badge'};c.reward=c.rewardEvidence.reward;
+ const next=mergeCodes(first.catalog,first.review,posts,now);assert.equal(next.catalog.codes.find(c=>c.code==='DIABLO').reward,c.reward);assert.equal(next.changed,false);
+});
+test('curated catalog preserves image-verified deadlines on automatic refresh',()=>{
+ const catalog=JSON.parse(fs.readFileSync(new URL('../data/codigos.json',import.meta.url),'utf8'));
+ const reviews=JSON.parse(fs.readFileSync(new URL('../data/codigos-review.json',import.meta.url),'utf8'));
+ const result=mergeCodes(catalog,reviews,posts,now);assert.equal(result.changed,false);
+ for(const code of ['ENTITYLOVEFORALL','RAINBOWTOOLS','INTOTHERAINBOW2026','RAINBOWBRIGHT']){const c=result.catalog.codes.find(c=>c.code===code);assert.equal(c.status,'expired');assert.equal(expiryLabel(c),'17 de agosto de 2026');assert.ok(c.statusEvidence.imageUrl);}
+});

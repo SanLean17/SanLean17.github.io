@@ -8,6 +8,7 @@ on:
     paths:
       - '.github/workflows/update-dbd-codes.yml'
       - 'scripts/codigos/**'
+      - 'codigos/presentation.mjs'
       - 'tests/dbd-codes.test.mjs'
       - 'tests/fixtures/codigos/**'
 permissions:

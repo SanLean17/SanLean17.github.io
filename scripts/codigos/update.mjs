@@ -15,7 +15,7 @@ async function main(){
  const review=await read('data/codigos-review.json',{schemaVersion:1,updatedAt:null,items:[]});
  const result=mergeCodes(previous,review,posts,now);
  if(result.changed){for(const [file,data] of [['data/codigos.json',result.catalog],['data/codigos-review.json',result.review]]){const dest=path.join(root,file);await fs.mkdir(path.dirname(dest),{recursive:true});await fs.writeFile(dest+'.tmp',JSON.stringify(data,null,2)+'\n');await fs.rename(dest+'.tmp',dest);}}
- const log=`Posts consultados: ${fetched}\nPosts analizados: ${result.stats.postsAnalyzed}\nCandidatos: ${result.stats.candidates}\nConfirmed: ${result.stats.confirmed}\nReview: ${result.stats.review}\nRejected: ${result.stats.rejected}\nCambios realizados: ${result.changed?'sí':'no'}`;
+ const log=`Posts consultados: ${fetched}\nPosts analizados: ${result.stats.postsAnalyzed}\nCandidatos: ${result.stats.candidates}\nConfirmed: ${result.stats.confirmed}\nReview: ${result.stats.review}\nRejected: ${result.stats.rejected}\nImágenes encontradas: ${result.stats.imagesFound}\nCambios realizados: ${result.changed?'sí':'no'}`;
  console.log(log);
  if(process.env.GITHUB_STEP_SUMMARY)await fs.appendFile(process.env.GITHUB_STEP_SUMMARY,`## Códigos DBD — ${now}\n\n\x60\x60\x60\n${log}\n\x60\x60\x60\n`);
 }
