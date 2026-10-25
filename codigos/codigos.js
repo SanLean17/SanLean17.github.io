@@ -1,3 +1,4 @@
+import {setupLightbox} from './lightbox.mjs';
 import {setupArchive} from './archive.mjs';
 import {expiryLabel,officialImage} from './presentation.mjs';
 const $=id=>document.getElementById(id);
@@ -7,6 +8,8 @@ const debug=new URLSearchParams(location.search).get('debug')==='1';
 const official=/^https:\/\/bsky\.app\/profile\/deadbydaylight\.com\/post\/[a-z0-9]+$/i;
 const imageFailures=new Set();
 function logImageFailure(code){imageFailures.add(code);console.warn('image unavailable',code);if(debug){const log=$('codes-image-log')||element('pre',undefined);log.id='codes-image-log';log.textContent=[...imageFailures].map(c=>`image unavailable: ${c}`).join('\n');$('codes-debug').append(log);}}
+const lightbox=setupLightbox();
+const wikiOfficial=url=>{try{const u=new URL(url);return u.protocol==='https:'&&u.hostname==='deadbydaylight.wiki.gg'&&u.pathname.startsWith('/wiki/');}catch{return false;}};
 const date=value=>new Intl.DateTimeFormat('es-AR',{dateStyle:'medium',timeZone:'UTC'}).format(new Date(value));
 async function json(url){const r=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(10000)});if(!r.ok)throw Error(`HTTP ${r.status}`);return r.json();}
 function element(tag,text,className){const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(className)n.className=className;return n;}
@@ -18,6 +21,7 @@ function card(c){
  if(officialImage(imageUrl)){
   const img=element('img');img.alt=c.imageAlt||`Gráfica oficial del código ${c.code}`;img.width=800;img.height=800;img.loading='lazy';img.decoding='async';img.referrerPolicy='no-referrer';img.draggable=false;
   img.addEventListener('error',()=>{img.hidden=true;fallback.hidden=false;logImageFailure(c.code);},{once:true});img.src=imageUrl;media.append(img);
+  if(c.status==='active'){const zoom=element('button',undefined,'code-zoom');zoom.type='button';zoom.setAttribute('aria-label',`Ampliar imagen de ${c.code}`);zoom.addEventListener('click',()=>{if(!img.hidden&&img.naturalWidth)lightbox.open(imageUrl,img.alt,zoom);});img.addEventListener('error',()=>zoom.hidden=true,{once:true});media.append(zoom);}
  }
  const content=element('div',undefined,'code-content'),heading=element('div',undefined,'code-heading');
  heading.append(element('h3',c.code),element('span',c.status==='active'?'ACTIVO':'FINALIZADO','code-state'));
@@ -27,23 +31,25 @@ function card(c){
  const actions=element('div',undefined,'code-actions');const button=element('button',c.status==='active'?'COPIAR CÓDIGO':'NO DISPONIBLE','tier-tab active');button.type='button';button.disabled=c.status!=='active';button.setAttribute('aria-label',`${c.status==='active'?'Copiar':'No disponible:'} ${c.code}`);
  const feedback=element('span',undefined,'code-feedback');feedback.setAttribute('role','status');let timer;
  button.addEventListener('click',async()=>{clearTimeout(timer);try{await navigator.clipboard.writeText(c.code);button.textContent='COPIADO';feedback.textContent=`${c.code} copiado`;}catch{button.textContent='NO SE PUDO COPIAR';feedback.textContent='Seleccioná el código y copialo manualmente.';}timer=setTimeout(()=>{button.textContent='COPIAR CÓDIGO';feedback.textContent='';},2000);});
- const link=element('a','VER PUBLICACIÓN OFICIAL','code-source');link.href=c.sourceUrl;link.target='_blank';link.rel='noopener noreferrer';
+ const link=element('a',c.sourceType==='official_wiki'?'WIKI OFICIAL DE DBD':'VER PUBLICACIÓN OFICIAL','code-source');link.href=c.sourceUrl;link.target='_blank';link.rel='noopener noreferrer';
  if(c.status==='active')actions.append(button,feedback);actions.append(link);content.append(heading,dl,actions);article.append(media,content);return article;
 }
 function render(data){
  if(data.schemaVersion!==1||!Array.isArray(data.codes))throw Error('Catálogo inválido');
- const codes=data.codes.filter(c=>c.official===true&&c.confidence==='CONFIRMED'&&c.sourceAccount==='deadbydaylight.com'&&/^[A-Z0-9_-]{3,64}$/.test(c.code)&&official.test(c.sourceUrl)&&Number.isFinite(Date.parse(c.publishedAt))).map(c=>({...c,status:c.status==='expired'||(c.expiresAt&&Date.now()>Date.parse(c.expiresAt))?'expired':'active'}));
+ const codes=data.codes.filter(c=>c.official===true&&c.confidence==='CONFIRMED'&&(c.sourceAccount==='deadbydaylight.com'||c.sourceType==='official_wiki')&&/^[A-Z0-9_-]{3,64}$/.test(c.code)&&(official.test(c.sourceUrl)||c.sourceType==='official_wiki'&&wikiOfficial(c.sourceUrl))&&(Number.isFinite(Date.parse(c.publishedAt))||Number.isFinite(Date.parse(c.detectedAt)))).map(c=>({...c,status:c.status==='expired'||(c.expiresAt&&Date.now()>Date.parse(c.expiresAt))?'expired':'active'}));
  const unique=[...new Map(codes.map(c=>[c.code,c])).values()];
- const active=unique.filter(c=>c.status==='active').sort((a,b)=>b.publishedAt.localeCompare(a.publishedAt));
- const expired=unique.filter(c=>c.status==='expired').sort((a,b)=>(b.expiresAt||b.expiryUpperBound||b.publishedAt).localeCompare(a.expiresAt||a.expiryUpperBound||a.publishedAt));
+ const active=unique.filter(c=>c.status==='active').sort((a,b)=>(b.publishedAt||b.detectedAt).localeCompare(a.publishedAt||a.detectedAt));
+ const expired=unique.filter(c=>c.status==='expired').sort((a,b)=>(b.expiresAt||b.expiryUpperBound||b.publishedAt||b.detectedAt).localeCompare(a.expiresAt||a.expiryUpperBound||a.publishedAt||a.detectedAt));
  for(const [id,list] of [['codes-active',active],['codes-expired',expired]])$(id).replaceChildren(...(list.length?list.map(card):[element('p','No hay códigos en esta categoría.') ]));
 
 }
 async function showDebug(data){
  $('codes-debug').hidden=false;
- const s=data.stats||{};let run='No disponible';
- try{const r=await json('https://api.github.com/repos/SanLean17/SanLean17.github.io/actions/workflows/update-dbd-codes.yml/runs?per_page=1');const last=r.workflow_runs?.[0];if(last)run=`${last.created_at} · ${({completed:'finalizada',in_progress:'en curso',queued:'en espera'})[last.status]||'pendiente'} · ${({success:'correcta',failure:'fallida',cancelled:'cancelada',skipped:'omitida'})[last.conclusion]||'pendiente'}`;}catch{}
- $('codes-debug-content').textContent=`Último cambio del catálogo: ${data.updatedAt}\nÚltima consulta programada (inicio de ejecución): ${run}\nEstadísticas del último cambio guardado:\nPosts analizados: ${s.postsAnalyzed??'—'}\nCandidatos: ${s.candidates??'—'}\nConfirmados: ${s.confirmed??'—'}\nEn revisión: ${s.review??'—'}\nRechazados: ${s.rejected??'—'}\nImágenes encontradas en códigos confirmados: ${s.imagesFound??data.codes.filter(c=>c.imageUrl).length}\nLas consultas sin cambios quedan en los logs de Actions, sin generar commits.`;
+ const s=data.stats||{};let health=null;
+ try{const r=await json('https://api.github.com/repos/SanLean17/SanLean17.github.io/commits/main/check-runs?check_name=Codigos-health&filter=latest&per_page=1');health=JSON.parse(r.check_runs?.[0]?.output?.summary||'null');}catch{}
+ const stale=!health?.lastSuccessAt||Date.now()-Date.parse(health.lastSuccessAt)>6*3600000;
+ $('codes-debug-content').textContent=`AUTOMATIZACIÓN\n${stale?'ACTUALIZACIÓN ATRASADA':'ACTUALIZACIÓN CORRECTA'}\nÚltima ejecución programada: ${health?.lastScheduledAt||'Sin registro disponible'}\nÚltima actualización correcta: ${health?.lastSuccessAt||'Sin registro disponible'}\nÚltimo cambio de catálogo: ${data.updatedAt}\nFuentes correctas: ${health?.sourcesHealthy??'—'}\nFuentes con error: ${health?.sourcesFailed??'—'}\nModo: ${health?.mode||'—'}\n${Object.entries(health?.sources||{}).map(([id,v])=>`${id}: ${v.lastError||'correcta'} · consulta ${v.lastAttemptAt} · última correcta ${v.lastSuccessAt||'—'} · elementos ${v.itemsFetched}`).join('\n')}\nPosts del último cambio: ${s.postsAnalyzed??'—'}\nConfirmados: ${s.confirmed??'—'} · En revisión: ${s.review??'—'} · Rechazados: ${s.rejected??'—'}`;
+
 }
 async function load(){
  $('codes-retry').hidden=true;$('codes-notice').hidden=true;

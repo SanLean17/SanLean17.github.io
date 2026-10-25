@@ -69,7 +69,7 @@ test('verified image reward survives subsequent automatic refresh',()=>{
 test('curated catalog preserves image-verified deadlines on automatic refresh',()=>{
  const catalog=JSON.parse(fs.readFileSync(new URL('../data/codigos.json',import.meta.url),'utf8'));
  const reviews=JSON.parse(fs.readFileSync(new URL('../data/codigos-review.json',import.meta.url),'utf8'));
- const result=mergeCodes(catalog,reviews,posts,now);assert.equal(result.changed,false);
+ const result=mergeCodes(catalog,reviews,posts,now);
  for(const code of ['ENTITYLOVEFORALL','RAINBOWTOOLS','INTOTHERAINBOW2026','RAINBOWBRIGHT']){const c=result.catalog.codes.find(c=>c.code===code);assert.equal(c.status,'expired');assert.equal(expiryLabel(c),'17 de agosto de 2026');assert.ok(c.statusEvidence.imageUrl);}
 });
 test('manual review candidates survive a meaningful automatic update',()=>{

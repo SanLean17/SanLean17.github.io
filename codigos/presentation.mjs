@@ -1,6 +1,6 @@
 // Presentation only: never alters expiration or detector confidence.
 export function expiryLabel(c){
- if(c.expiresAt&&Number.isFinite(Date.parse(c.expiresAt)))return new Intl.DateTimeFormat('es-AR',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(c.expiresAt));
+ if(!c.expiryPolicy&&c.expiresAt&&Number.isFinite(Date.parse(c.expiresAt)))return new Intl.DateTimeFormat('es-AR',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(c.expiresAt));
  if(!c.expiryText||!['day','month'].includes(c.expiryPrecision))return null;
  const months=['january','february','march','april','may','june','july','august','september','october','november','december'];
  const spanish=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
@@ -12,5 +12,5 @@ export function expiryLabel(c){
 }
 export function officialImage(url){
  if(typeof url!=='string')return false;
- try{const u=new URL(url);return u.protocol==='https:'&&u.hostname==='cdn.bsky.app'&&u.pathname.startsWith('/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/')&&!u.username&&!u.password;}catch{return false;}
+ try{const u=new URL(url);return u.protocol==='https:'&&((u.hostname==='cdn.bsky.app'&&u.pathname.startsWith('/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/'))||(u.hostname==='deadbydaylight.wiki.gg'&&u.pathname.startsWith('/images/')))&&!u.username&&!u.password;}catch{return false;}
 }

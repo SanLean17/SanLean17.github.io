@@ -41,7 +41,7 @@ export function classify(post){
   if(multi)return{classification:'REVIEW',candidates:[...new Set([...unique,...(text.match(/\b[A-Z][A-Z0-9_-]{3,63}\b/g)||[]).filter(valid)])],reason:'Varios códigos; revisar asociación individual de recompensas y fechas'};
   const negative=/\b(?:do not|don't|cannot|can't|not yet|no longer|will be able to|coming soon|not a code|example|for example|no uses|no canjees|ejemplo)\b/i.test(text);
   if(negative)return{classification:'REVIEW',candidates:unique,reason:'Negación, ejemplo o disponibilidad futura; requiere revisión'};
-  const patternsReward=[/\bredeem\s+(?:the\s+)?(.+?)\s+using\s+(?:the\s+)?code\b/i,/\b(?:to\s+(?:redeem|unlock)|to get)\s+(?:the\s+)?(.+?)(?=\s+(?:until|before|in the|just in time)\b|[.!\n]|$)/i,/\bwith\s+(a Banner and a Badge)\b/i,/\b(?:para\s+(?:canjear|obtener|desbloquear))\s+(.+?)(?=\s+hasta\b|[.!\n]|$)/i];
+  const patternsReward=[/\bredeem\s+(?:the\s+)?(.+?)\s+using\s+(?:the\s+)?code\b/i,/\b(?:to\s+(?:redeem|unlock)|to get)\s+(?:the\s+)?(.+?)(?=\s+(?:until|before|in the in-game Store|just in time)\b|[.!\n]|$)/i,/\bwith\s+(a Banner and a Badge)\b/i,/\b(?:para\s+(?:canjear|obtener|desbloquear))\s+(.+?)(?=\s+hasta\b|[.!\n]|$)/i];
   let reward=null;for(const p of patternsReward){const m=text.match(p);if(m){reward=m[1].replace(/[✨🌈]/gu,'').replace(/[,\s]+$/,'').trim();break;}}
   if(reward&&reward.length>180)reward=null;
   // Generic 'this Charm' is what the official text says; never infer names from art.

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-25T21:46:28.517Z",
+  "updatedAt": "2026-10-25T23:34:53.008Z",
   "items": [
     {
       "candidates": [
@@ -15,6 +15,19 @@
       "publishedAt": "2026-08-10T15:01:00.415Z",
       "text": "Into the Rainbow is coming to an end, but Pride never does. 🌈\nTogether, we've raised over €28,000 for InterPride, and we couldn't have done it without you.\n➡️ Enter the code MAURICEPRIDE and WORLDPRIDE2026 in the in-game Store to unlock the last two rewards. ",
       "detectedAt": "2026-10-25T21:39:57.885Z"
+    },
+    {
+      "candidates": [
+        "JOKERSWILD"
+      ],
+      "confidence": "REVIEW",
+      "reason": "Negación, ejemplo o disponibilidad futura; requiere revisión",
+      "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mfcs5xntxs25",
+      "sourceAccount": "deadbydaylight.com",
+      "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mfcs5xntxs25",
+      "publishedAt": "2026-02-20T19:00:11.779Z",
+      "text": "Don't let this Joker go hungry. 🃏\n\nUntil March 20th, use the code JOKERSWILD in the in-game Store to redeem the Unknown Madness's head piece for The Unknown.",
+      "detectedAt": "2026-10-25T23:34:53.008Z"
     }
   ],
   "manualCandidates": [
@@ -38,7 +51,7 @@
     },
     {
       "code": "GROUNDCHUCKHBD",
-      "confidence": "REVIEW",
+      "confidence": "CONFIRMED",
       "origin": "user-requested-research",
       "reviewedAt": "2026-10-25T22:34:21.114838+00:00",
       "candidateOfficialUrl": null,
@@ -52,7 +65,8 @@
         "Publicaciones de la cuenta oficial Bluesky consultadas y archivo previo de 1000 entradas sin coincidencias",
         "Búsquedas exactas en sitio oficial y cuentas de Dead by Daylight/Behaviour",
         "Pistas comunitarias solo para localizar fuentes; no usadas como confirmación"
-      ]
+      ],
+      "resolvedBy": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Charms"
     },
     {
       "code": "PLAYXENOMORPHIN2V8",
@@ -74,7 +88,7 @@
     },
     {
       "code": "MISSBEHAVIOURGC2026",
-      "confidence": "REVIEW",
+      "confidence": "CONFIRMED",
       "origin": "user-requested-research",
       "reviewedAt": "2026-10-25T22:34:21.114838+00:00",
       "candidateOfficialUrl": null,
@@ -88,7 +102,8 @@
         "Publicaciones de la cuenta oficial Bluesky consultadas y archivo previo de 1000 entradas sin coincidencias",
         "Búsquedas exactas en sitio oficial y cuentas de Dead by Daylight/Behaviour",
         "Pistas comunitarias solo para localizar fuentes; no usadas como confirmación"
-      ]
+      ],
+      "resolvedBy": "https://deadbydaylight.wiki.gg/wiki/Template%3ASpecial_Banners"
     }
   ]
 }

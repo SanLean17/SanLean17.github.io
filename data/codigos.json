@@ -1,15 +1,243 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-25T22:11:09.356Z",
+  "updatedAt": "2026-10-25T23:34:53.008Z",
   "stats": {
-    "postsAnalyzed": 234,
-    "candidates": 14,
-    "confirmed": 12,
-    "review": 1,
-    "rejected": 221,
-    "imagesFound": 12
+    "postsAnalyzed": 589,
+    "candidates": 24,
+    "confirmed": 21,
+    "review": 2,
+    "rejected": 566,
+    "imagesFound": 21
   },
   "codes": [
+    {
+      "code": "GRASPINGTHEDARKNESS",
+      "publishedAt": null,
+      "detectedAt": "2026-10-25T23:34:53.008Z",
+      "status": "active",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "sources": [
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Badges",
+          "revisionId": 193354,
+          "revisionAt": "2026-10-24T22:46:43Z",
+          "reward": "Eyes in the Darkness Badge",
+          "expiryDate": null,
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_NA_BDG_07.png?2cadd0",
+          "evidence": "Redeemable via code \"GRASPINGTHEDARKNESS\" starting 26 June 2026."
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Banners",
+          "revisionId": 193353,
+          "revisionAt": "2026-10-24T22:46:09Z",
+          "reward": "Grasping Hallway Banner",
+          "expiryDate": null,
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_NA_BNR_04_icon.png?22b8b5",
+          "evidence": "Redeemable via code \"GRASPINGTHEDARKNESS\" starting 26 June 2026."
+        }
+      ],
+      "reward": "Eyes in the Darkness Badge + Grasping Hallway Banner",
+      "source": "wiki",
+      "sourceType": "official_wiki",
+      "sourceAccount": "deadbydaylight.wiki.gg",
+      "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Badges",
+      "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_NA_BDG_07.png?2cadd0",
+      "imageAlt": "Recompensa de GRASPINGTHEDARKNESS en la Wiki oficial de DBD",
+      "imageSourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Badges",
+      "imageSourceType": "official_wiki"
+    },
+    {
+      "code": "GROUNDCHUCKHBD",
+      "publishedAt": null,
+      "detectedAt": "2026-10-25T23:34:53.008Z",
+      "status": "active",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "sources": [
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Charms",
+          "revisionId": 192995,
+          "revisionAt": "2026-10-13T20:25:03Z",
+          "reward": "Ground Chuck Charm",
+          "expiryDate": "2026-10-31",
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/VAN_017.png?330df9",
+          "evidence": "Redeemable via code \"GROUNDCHUCKHBD\" from 13-31 October 2026."
+        }
+      ],
+      "reward": "Ground Chuck Charm",
+      "source": "wiki",
+      "sourceType": "official_wiki",
+      "sourceAccount": "deadbydaylight.wiki.gg",
+      "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Charms",
+      "expiryDate": "2026-10-31",
+      "expiryText": "until October 31, 2026",
+      "expiryPrecision": "day",
+      "expiresAt": "2026-10-31T23:59:59.999Z",
+      "expiryPolicy": "calendar-day-end-UTC",
+      "imageUrl": "https://deadbydaylight.wiki.gg/images/VAN_017.png?330df9",
+      "imageAlt": "Recompensa de GROUNDCHUCKHBD en la Wiki oficial de DBD",
+      "imageSourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Charms",
+      "imageSourceType": "official_wiki"
+    },
+    {
+      "code": "KODOMONOHI2026",
+      "publishedAt": null,
+      "detectedAt": "2026-10-25T23:34:53.008Z",
+      "status": "expired",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "sources": [
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Badges",
+          "revisionId": 193354,
+          "revisionAt": "2026-10-24T22:46:43Z",
+          "reward": "Kashiwa Mochi Badge",
+          "expiryDate": "2026-05-31",
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_RAM_BDG_15.png?92ae3d",
+          "evidence": "Redeemable via code \"KODOMONOHI2026\" between 5-31 May 2026."
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Banners",
+          "revisionId": 193353,
+          "revisionAt": "2026-10-24T22:46:09Z",
+          "reward": "Koinobori Banner",
+          "expiryDate": "2026-05-31",
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_RAM_BNR_06_icon.png?5fbfac",
+          "evidence": "Redeemable via code \"KODOMONOHI2026\" between 5-31 May 2026."
+        }
+      ],
+      "reward": "Kashiwa Mochi Badge + Koinobori Banner",
+      "source": "wiki",
+      "sourceType": "official_wiki",
+      "sourceAccount": "deadbydaylight.wiki.gg",
+      "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Badges",
+      "expiryDate": "2026-05-31",
+      "expiryText": "until May 31, 2026",
+      "expiryPrecision": "day",
+      "expiresAt": "2026-05-31T23:59:59.999Z",
+      "expiryPolicy": "calendar-day-end-UTC",
+      "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_RAM_BDG_15.png?92ae3d",
+      "imageAlt": "Recompensa de KODOMONOHI2026 en la Wiki oficial de DBD",
+      "imageSourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Badges",
+      "imageSourceType": "official_wiki"
+    },
+    {
+      "code": "LIFEOFTHEPARTY",
+      "publishedAt": null,
+      "detectedAt": "2026-10-25T23:34:53.008Z",
+      "status": "expired",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "sources": [
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Charms",
+          "revisionId": 192995,
+          "revisionAt": "2026-10-13T20:25:03Z",
+          "reward": "Party Dwight Figurine Charm",
+          "expiryDate": "2026-08-05",
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/RAM_015.png?f7096a",
+          "evidence": "Redeemable via code \"LIFEOFTHEPARTY\" between 7 June - 5 August 2026."
+        }
+      ],
+      "reward": "Party Dwight Figurine Charm",
+      "source": "wiki",
+      "sourceType": "official_wiki",
+      "sourceAccount": "deadbydaylight.wiki.gg",
+      "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Charms",
+      "expiryDate": "2026-08-05",
+      "expiryText": "until August 5, 2026",
+      "expiryPrecision": "day",
+      "expiresAt": "2026-08-05T23:59:59.999Z",
+      "expiryPolicy": "calendar-day-end-UTC",
+      "imageUrl": "https://deadbydaylight.wiki.gg/images/RAM_015.png?f7096a",
+      "imageAlt": "Recompensa de LIFEOFTHEPARTY en la Wiki oficial de DBD",
+      "imageSourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Charms",
+      "imageSourceType": "official_wiki"
+    },
+    {
+      "code": "MISSBEHAVIOURGC2026",
+      "publishedAt": null,
+      "detectedAt": "2026-10-25T23:34:53.008Z",
+      "status": "active",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "sources": [
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3ASpecial_Banners",
+          "revisionId": 190537,
+          "revisionAt": "2026-08-28T23:07:34Z",
+          "reward": "Pixel Dwight Banner",
+          "expiryDate": null,
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_LS_BNR_13_icon.png?df064b",
+          "evidence": "redeemable via code \"MISSBEHAVIOURGC2026\"."
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3ASpecial_Banners",
+          "revisionId": 190537,
+          "revisionAt": "2026-08-28T23:07:34Z",
+          "reward": "Pixel Sable Banner",
+          "expiryDate": null,
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_LS_BNR_14_icon.png?a74cff",
+          "evidence": "redeemable via code \"MISSBEHAVIOURGC2026\"."
+        }
+      ],
+      "reward": "Pixel Dwight Banner + Pixel Sable Banner",
+      "source": "wiki",
+      "sourceType": "official_wiki",
+      "sourceAccount": "deadbydaylight.wiki.gg",
+      "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3ASpecial_Banners",
+      "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_LS_BNR_13_icon.png?df064b",
+      "imageAlt": "Recompensa de MISSBEHAVIOURGC2026 en la Wiki oficial de DBD",
+      "imageSourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3ASpecial_Banners",
+      "imageSourceType": "official_wiki"
+    },
+    {
+      "code": "NIGHTSHIFT",
+      "publishedAt": null,
+      "detectedAt": "2026-10-25T23:34:53.008Z",
+      "status": "active",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "sources": [
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3ASpecial_Banners",
+          "revisionId": 190537,
+          "revisionAt": "2026-08-28T23:07:34Z",
+          "reward": "Horror Attraction Banner",
+          "expiryDate": null,
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_KE_BNR_11_icon.png?a354e6",
+          "evidence": "redeemable via code \"NIGHTSHIFT\"."
+        }
+      ],
+      "reward": "Horror Attraction Banner",
+      "source": "wiki",
+      "sourceType": "official_wiki",
+      "sourceAccount": "deadbydaylight.wiki.gg",
+      "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3ASpecial_Banners",
+      "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_KE_BNR_11_icon.png?a354e6",
+      "imageAlt": "Recompensa de NIGHTSHIFT en la Wiki oficial de DBD",
+      "imageSourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3ASpecial_Banners",
+      "imageSourceType": "official_wiki"
+    },
     {
       "code": "DIABLO",
       "reward": "Tristram Ruins Banner + Horadric Cube Badge",
@@ -34,6 +262,28 @@
           "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3myn65xdls22v",
           "publishedAt": "2026-10-24T17:00:14.538Z",
           "text": "Hell leaves its mark. \nEnter the code DIABLO in the in-game Store before November 25 to celebrate the release of the new Diablo Collection with a Banner and a Badge."
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Badges",
+          "revisionId": 193354,
+          "revisionAt": "2026-10-24T22:46:43Z",
+          "reward": "Horadric Cube Badge",
+          "expiryDate": "2026-11-25",
+          "imageUrl": null,
+          "evidence": "Redeemable via code \"DIABLO\" between 24 October - 25 November 2026."
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Banners",
+          "revisionId": 193353,
+          "revisionAt": "2026-10-24T22:46:09Z",
+          "reward": "Tristram Ruins Banner",
+          "expiryDate": "2026-11-25",
+          "imageUrl": null,
+          "evidence": "Redeemable via code \"DIABLO\" between 24 October - 25 November 2026."
         }
       ],
       "source": "bluesky",
@@ -41,7 +291,7 @@
       "sourceAccount": "deadbydaylight.com",
       "sourcePostId": "3myn65xdls22v",
       "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3myn65xdls22v",
-      "expiresAt": null,
+      "expiresAt": "2026-11-25T00:00:00.000Z",
       "expiryText": "before November 25",
       "expiryPrecision": "day",
       "expiryUpperBound": "2026-11-26T12:00:00.000Z",
@@ -57,7 +307,10 @@
       },
       "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreih3dpbsrlngo6cc7u3pjupkpyg5pg242ol2o4hlyn2l6bo76xwdte",
       "imageAlt": "Gráfica oficial del código DIABLO",
-      "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3myn65xdls22v"
+      "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3myn65xdls22v",
+      "sourceType": "official_direct",
+      "expiryDate": "2026-11-25",
+      "expiryPolicy": "before-calendar-date-UTC"
     },
     {
       "code": "MACHETE",
@@ -83,6 +336,17 @@
           "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mx2o4vsru22k",
           "publishedAt": "2026-10-04T15:00:12.597Z",
           "text": "Did someone say treats? Enter the code MACHETE in the in-game Store before October 31st to redeem this Charm, just in time for the release of a new blighted Outfit for The Slasher.\n"
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Charms",
+          "revisionId": 192995,
+          "revisionAt": "2026-10-13T20:25:03Z",
+          "reward": "Slasher's Machete Charm",
+          "expiryDate": "2026-10-31",
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/SUS_003.png?228e68",
+          "evidence": "Redeemable via code \"MACHETE\" between 4-31 October 2026."
         }
       ],
       "source": "bluesky",
@@ -90,7 +354,7 @@
       "sourceAccount": "deadbydaylight.com",
       "sourcePostId": "3mx2o4vsru22k",
       "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mx2o4vsru22k",
-      "expiresAt": null,
+      "expiresAt": "2026-10-31T00:00:00.000Z",
       "expiryText": "before October 31st",
       "expiryPrecision": "day",
       "expiryUpperBound": "2026-11-01T12:00:00.000Z",
@@ -106,7 +370,10 @@
       },
       "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreihps22zifhxex36co5xav3fgm3oite6hzeiekvosddsorg5faisn4",
       "imageAlt": "Gráfica oficial del código MACHETE",
-      "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mx2o4vsru22k"
+      "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mx2o4vsru22k",
+      "sourceType": "official_direct",
+      "expiryDate": "2026-10-31",
+      "expiryPolicy": "before-calendar-date-UTC"
     },
     {
       "code": "ROADTRIP",
@@ -139,7 +406,7 @@
       "sourceAccount": "deadbydaylight.com",
       "sourcePostId": "3mvzy3nxyo626",
       "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mvzy3nxyo626",
-      "expiresAt": null,
+      "expiresAt": "2027-10-31T23:59:59.999Z",
       "expiryText": "until October 2027",
       "expiryPrecision": "month",
       "expiryUpperBound": "2027-11-01T12:00:00.000Z",
@@ -147,7 +414,9 @@
       "lastVerifiedAt": "2026-10-25T22:07:29.242Z",
       "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreig6wkpritao77ayqgcf7rn7lqp7akloyrij3hcbsbf2a5sy4x6cdi",
       "imageAlt": "Gráfica oficial del código ROADTRIP",
-      "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mvzy3nxyo626"
+      "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mvzy3nxyo626",
+      "expiryDate": "2027-10-31",
+      "expiryPolicy": "calendar-period-end-UTC"
     },
     {
       "code": "STARSGUIDE",
@@ -173,6 +442,17 @@
           "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mv6cxwm45k2s",
           "publishedAt": "2026-09-10T15:00:50.188Z",
           "text": "Thank you everyone who participated to the making of Chorus of Sin! \n\nIn celebration, please redeem the ✨ Stardotter Banner ✨ using the code STARSGUIDE in the in-game Store before October 10th, 11AM ET. "
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Banners",
+          "revisionId": 193353,
+          "revisionAt": "2026-10-24T22:46:09Z",
+          "reward": "Stardotter Banner",
+          "expiryDate": "2026-10-10",
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_UDO_BNR_10_icon.png?7cd453",
+          "evidence": "Redeemable via code \"STARSGUIDE\" between 10 September - 10 October 2026."
         }
       ],
       "source": "bluesky",
@@ -188,7 +468,8 @@
       "lastVerifiedAt": "2026-10-25T22:07:29.242Z",
       "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreih3d3hhwlfnsz64tl5c23vdnvvknb543ofaz6hjg5oy7e3wv3etb4",
       "imageAlt": "Gráfica oficial del código STARSGUIDE",
-      "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mv6cxwm45k2s"
+      "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mv6cxwm45k2s",
+      "sourceType": "official_direct"
     },
     {
       "code": "SHINEBRIGHT",
@@ -221,7 +502,7 @@
       "sourceAccount": "deadbydaylight.com",
       "sourcePostId": "3msit4ehusy2o",
       "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3msit4ehusy2o",
-      "expiresAt": null,
+      "expiresAt": "2026-09-10T00:00:00.000Z",
       "expiryText": "before September 10",
       "expiryPrecision": "day",
       "expiryUpperBound": "2026-09-11T12:00:00.000Z",
@@ -235,7 +516,9 @@
       },
       "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreibswm3qkeqj2wfylc3ur2y7cjguphczrvxjpxh3tqoci6seut3tfm",
       "imageAlt": "Gráfica oficial del código SHINEBRIGHT",
-      "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3msit4ehusy2o"
+      "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3msit4ehusy2o",
+      "expiryDate": "2026-09-10",
+      "expiryPolicy": "before-calendar-date-UTC"
     },
     {
       "code": "ENTITYLOVEFORALL",
@@ -268,7 +551,7 @@
       "sourceAccount": "deadbydaylight.com",
       "sourcePostId": "3msgpzx7ame2z",
       "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3msgpzx7ame2z",
-      "expiresAt": null,
+      "expiresAt": "2026-08-17T23:59:59.999Z",
       "expiryText": "until August 17",
       "expiryPrecision": "day",
       "expiryUpperBound": "2026-08-18T12:00:00.000Z",
@@ -284,7 +567,9 @@
         "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreia2iol66lv5omlkccorwvwvhhe6bajf5mntdlmn65z7euz6ed2wnu",
         "officialText": "REDEEM BY AUG 17 11AM EST",
         "reason": "The official graphic includes this code and a deadline already in the past. Year follows the official publication; no exact timestamp inferred from seasonal timezone wording."
-      }
+      },
+      "expiryDate": "2026-08-17",
+      "expiryPolicy": "calendar-period-end-UTC"
     },
     {
       "code": "RAINBOWTOOLS",
@@ -317,7 +602,7 @@
       "sourceAccount": "deadbydaylight.com",
       "sourcePostId": "3msbsh6sgr72n",
       "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3msbsh6sgr72n",
-      "expiresAt": null,
+      "expiresAt": "2026-08-17T23:59:59.999Z",
       "expiryText": "until August 17",
       "expiryPrecision": "day",
       "expiryUpperBound": "2026-08-18T12:00:00.000Z",
@@ -333,7 +618,9 @@
         "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreia2dd7guv3v6vgqggd46rz4zydz6g6w3gy2kvlvtzkzojrypkqcx4",
         "officialText": "REDEEM BY AUG 17 11AM EST",
         "reason": "The official graphic includes this code and a deadline already in the past. Year follows the official publication; no exact timestamp inferred from seasonal timezone wording."
-      }
+      },
+      "expiryDate": "2026-08-17",
+      "expiryPolicy": "calendar-period-end-UTC"
     },
     {
       "code": "INTOTHERAINBOW2026",
@@ -366,7 +653,7 @@
       "sourceAccount": "deadbydaylight.com",
       "sourcePostId": "3ms76myyvlo2u",
       "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3ms76myyvlo2u",
-      "expiresAt": null,
+      "expiresAt": "2026-08-17T23:59:59.999Z",
       "expiryText": "until August 17",
       "expiryPrecision": "day",
       "expiryUpperBound": "2026-08-18T12:00:00.000Z",
@@ -382,7 +669,9 @@
         "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreicm57f5stu2fnh6hd7nwxjgvlzw6q7jout7g7lheco3ephn4hdg74",
         "officialText": "REDEEM BY AUG 17 11AM EST",
         "reason": "The official graphic includes this code and a deadline already in the past. Year follows the official publication; no exact timestamp inferred from seasonal timezone wording."
-      }
+      },
+      "expiryDate": "2026-08-17",
+      "expiryPolicy": "calendar-period-end-UTC"
     },
     {
       "code": "RAINBOWBRIGHT",
@@ -415,7 +704,7 @@
       "sourceAccount": "deadbydaylight.com",
       "sourcePostId": "3mrxtwwmc3p22",
       "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mrxtwwmc3p22",
-      "expiresAt": null,
+      "expiresAt": "2026-08-17T23:59:59.999Z",
       "expiryText": "until August 17",
       "expiryPrecision": "day",
       "expiryUpperBound": "2026-08-18T12:00:00.000Z",
@@ -431,7 +720,9 @@
         "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreigtoxrcdsljvas7d25p6dxcpynpbetd4mzc6lfw3knc6lj4rpg77m",
         "officialText": "REDEEM BY AUG 17 11AM EST",
         "reason": "The official graphic includes this code and a deadline already in the past. Year follows the official publication; no exact timestamp inferred from seasonal timezone wording."
-      }
+      },
+      "expiryDate": "2026-08-17",
+      "expiryPolicy": "calendar-period-end-UTC"
     },
     {
       "code": "CROWCAW",
@@ -457,6 +748,17 @@
           "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mqu7z2xqj32h",
           "publishedAt": "2026-07-17T17:00:23.184Z",
           "text": "Thank you for 1M followers on TikTok! 🐦‍⬛\n\nRedeem the Crowtok Banner using the code CROWCAW in the in-game Store before August 17th, 11AM ET. Join us on TikTok if you haven't already! 🔗 https://www.tiktok.com/@deadbydaylight"
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Banners",
+          "revisionId": 193353,
+          "revisionAt": "2026-10-24T22:46:09Z",
+          "reward": "CrowTok Banner",
+          "expiryDate": "2026-08-17",
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_RAM_BNR_26_icon.png?476989",
+          "evidence": "Redeemable via code \"CROWCAW\" between 17 July - 17 August 2026."
         }
       ],
       "source": "bluesky",
@@ -472,7 +774,8 @@
       "lastVerifiedAt": "2026-10-25T22:07:29.242Z",
       "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreieoi6kn6kzjq35afwoccs2ukazlf2pm6xlql5swlmfpbozl4awmba",
       "imageAlt": "Gráfica oficial del código CROWCAW",
-      "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mqu7z2xqj32h"
+      "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mqu7z2xqj32h",
+      "sourceType": "official_direct"
     },
     {
       "code": "BIKERIDE",
@@ -498,6 +801,17 @@
           "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mplru4vrg62v",
           "publishedAt": "2026-07-01T15:00:35.532Z",
           "text": "Get ready for your new ride or die Charm! Enter the code BIKERIDE in the in-game Store before July 25 to unlock the Shane Wiigwaas Figurine.\n"
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Charms",
+          "revisionId": 192995,
+          "revisionAt": "2026-10-13T20:25:03Z",
+          "reward": "Shane Wiigwaas Figurine Charm",
+          "expiryDate": "2026-07-25",
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/SUS_004.png?c1e286",
+          "evidence": "Redeemable via code \"BIKERIDE\" between 1-25 July 2026."
         }
       ],
       "source": "bluesky",
@@ -505,7 +819,7 @@
       "sourceAccount": "deadbydaylight.com",
       "sourcePostId": "3mplru4vrg62v",
       "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mplru4vrg62v",
-      "expiresAt": null,
+      "expiresAt": "2026-07-25T00:00:00.000Z",
       "expiryText": "before July 25",
       "expiryPrecision": "day",
       "expiryUpperBound": "2026-07-26T12:00:00.000Z",
@@ -519,7 +833,10 @@
       },
       "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreibgscyvt7km7aazxicpcpvm2cu47eglct7h75sxgnsqt4cofp66za",
       "imageAlt": "Gráfica oficial del código BIKERIDE",
-      "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mplru4vrg62v"
+      "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mplru4vrg62v",
+      "sourceType": "official_direct",
+      "expiryDate": "2026-07-25",
+      "expiryPolicy": "before-calendar-date-UTC"
     },
     {
       "code": "THESLASHER",
@@ -545,6 +862,17 @@
           "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3molj6ro7wl2f",
           "publishedAt": "2026-06-18T19:00:17.524Z",
           "text": "The perfect Charm to go slashing through The Fog 🔪  Enter the code THESLASHER in the in-game Store before July 16 to unlock the Slasher Figurine Charm."
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Charms",
+          "revisionId": 192995,
+          "revisionAt": "2026-10-13T20:25:03Z",
+          "reward": "Slasher Figurine Charm",
+          "expiryDate": "2026-07-16",
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/SUS_001.png?bac008",
+          "evidence": "Redeemable via code \"THESLASHER\" between 18 June - 16 July 2026."
         }
       ],
       "source": "bluesky",
@@ -552,7 +880,7 @@
       "sourceAccount": "deadbydaylight.com",
       "sourcePostId": "3molj6ro7wl2f",
       "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3molj6ro7wl2f",
-      "expiresAt": null,
+      "expiresAt": "2026-07-16T00:00:00.000Z",
       "expiryText": "before July 16",
       "expiryPrecision": "day",
       "expiryUpperBound": "2026-07-17T12:00:00.000Z",
@@ -566,7 +894,575 @@
       },
       "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreibwiw2c6rj7rsd6nvfz6omvtbqf4233ggo6racc6pzyuxgc2bp2wq",
       "imageAlt": "Gráfica oficial del código THESLASHER",
-      "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3molj6ro7wl2f"
+      "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3molj6ro7wl2f",
+      "sourceType": "official_direct",
+      "expiryDate": "2026-07-16",
+      "expiryPolicy": "before-calendar-date-UTC"
+    },
+    {
+      "code": "COLOSSAL",
+      "reward": "Colossal Titan Charm and Banner",
+      "publishedAt": "2026-05-19T15:00:28.734Z",
+      "status": "expired",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "detectedAt": "2026-10-25T23:34:53.008Z",
+      "sources": [
+        {
+          "images": [
+            {
+              "url": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreifnbttccqlilhjg3n5tizxjjrohlhhyjvn5fv36v6o6aytrvzz5li",
+              "alt": "Colossal Titan charm and Colossal Titan banner on the Bloodbound themed background Use Code 'COLOSSAL' to redeem it. "
+            }
+          ],
+          "source": "bluesky",
+          "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mm7nsdmhgq2v",
+          "sourceAccount": "deadbydaylight.com",
+          "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
+          "sourcePostId": "3mm7nsdmhgq2v",
+          "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mm7nsdmhgq2v",
+          "publishedAt": "2026-05-19T15:00:28.734Z",
+          "text": "This iteration of 2v8 is coming to an end, but the Titans will continue wreaking havoc in The Fog.  \nEnter the code COLOSSAL in the in-game Store before June 18 to unlock the Colossal Titan Charm and Banner."
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Charms",
+          "revisionId": 192995,
+          "revisionAt": "2026-10-13T20:25:03Z",
+          "reward": "Colossal Titan Charm",
+          "expiryDate": "2026-06-18",
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/RAM_020.png?3cc45d",
+          "evidence": "Redeemable via code \"COLOSSAL\" between 19 May - 18 June 2026."
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Banners",
+          "revisionId": 193353,
+          "revisionAt": "2026-10-24T22:46:09Z",
+          "reward": "Colossal Titan Banner",
+          "expiryDate": "2026-06-18",
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_RAM_BNR_02_icon.png?37529b",
+          "evidence": "Redeemable via code \"COLOSSAL\" between 19 May - 18 June 2026."
+        }
+      ],
+      "source": "bluesky",
+      "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mm7nsdmhgq2v",
+      "sourceAccount": "deadbydaylight.com",
+      "sourcePostId": "3mm7nsdmhgq2v",
+      "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mm7nsdmhgq2v",
+      "expiresAt": "2026-06-18T00:00:00.000Z",
+      "expiryText": "before June 18",
+      "expiryPrecision": "day",
+      "expiryUpperBound": "2026-06-19T12:00:00.000Z",
+      "expiryYearInferred": true,
+      "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreifnbttccqlilhjg3n5tizxjjrohlhhyjvn5fv36v6o6aytrvzz5li",
+      "imageAlt": "Gráfica oficial del código COLOSSAL",
+      "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mm7nsdmhgq2v",
+      "lastVerifiedAt": "2026-10-25T23:34:53.008Z",
+      "sourceType": "official_direct",
+      "expiryDate": "2026-06-18",
+      "expiryPolicy": "before-calendar-date-UTC"
+    },
+    {
+      "code": "ENCORE",
+      "reward": "Heart Snatcher Badge",
+      "publishedAt": "2026-04-17T14:00:53.709Z",
+      "status": "expired",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "detectedAt": "2026-10-25T23:34:53.008Z",
+      "sources": [
+        {
+          "images": [
+            {
+              "url": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreidtpmnqy7yliemvzmz46jwngd37wycnh7wcwcrzdxaopx4of66tou",
+              "alt": "A heart-shaped lightstick badge against a purple background. The text reads: Use code ENCORE."
+            }
+          ],
+          "source": "bluesky",
+          "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mjp3kdh3c52p",
+          "sourceAccount": "deadbydaylight.com",
+          "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
+          "sourcePostId": "3mjp3kdh3c52p",
+          "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mjp3kdh3c52p",
+          "publishedAt": "2026-04-17T14:00:53.709Z",
+          "text": "Raise your lightsticks for the encore 🎵\nMiNA made her debut in The Fog a month ago now. Use the code ENCORE in the in-game Store before May 17 to celebrate with the Heart Snatcher Badge."
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Badges",
+          "revisionId": 193354,
+          "revisionAt": "2026-10-24T22:46:43Z",
+          "reward": "Heart Snatcher Badge",
+          "expiryDate": "2026-05-17",
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_QUI_BDG_03.png?ae7307",
+          "evidence": "Redeemable via code \"ENCORE\" between 17 April - 17 May 2026."
+        }
+      ],
+      "source": "bluesky",
+      "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mjp3kdh3c52p",
+      "sourceAccount": "deadbydaylight.com",
+      "sourcePostId": "3mjp3kdh3c52p",
+      "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mjp3kdh3c52p",
+      "expiresAt": "2026-05-17T00:00:00.000Z",
+      "expiryText": "before May 17",
+      "expiryPrecision": "day",
+      "expiryUpperBound": "2026-05-18T12:00:00.000Z",
+      "expiryYearInferred": true,
+      "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreidtpmnqy7yliemvzmz46jwngd37wycnh7wcwcrzdxaopx4of66tou",
+      "imageAlt": "Gráfica oficial del código ENCORE",
+      "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mjp3kdh3c52p",
+      "lastVerifiedAt": "2026-10-25T23:34:53.008Z",
+      "sourceType": "official_direct",
+      "rewardSourceType": "official_wiki",
+      "expiryDate": "2026-05-17",
+      "expiryPolicy": "before-calendar-date-UTC"
+    },
+    {
+      "code": "COMEBACK",
+      "reward": "Tricky Mascot Badge and the Tricky Dance Banner",
+      "publishedAt": "2026-03-30T17:00:24.668Z",
+      "status": "expired",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "detectedAt": "2026-10-25T23:34:53.008Z",
+      "sources": [
+        {
+          "images": [
+            {
+              "url": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreibnflct4estjnedj43foh2irqfkq7xgzc5x3z744fsalzkm3pdcgm",
+              "alt": "On dark and blurry Trickster's Delusions background Tricky Mascot Badge and Tricky Dance Banner with the text 'Use Code - Comeback'"
+            }
+          ],
+          "source": "bluesky",
+          "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mic56r4jjo25",
+          "sourceAccount": "deadbydaylight.com",
+          "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
+          "sourcePostId": "3mic56r4jjo25",
+          "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mic56r4jjo25",
+          "publishedAt": "2026-03-30T17:00:24.668Z",
+          "text": "The ALL-KILL Chapter took the stage 5 years ago today, and we're so glad it made a comeback! 🎧\nEnter the code COMEBACK in the in-game Store before April 30 to redeem the Tricky Mascot Badge and the Tricky Dance Banner."
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Badges",
+          "revisionId": 193354,
+          "revisionAt": "2026-10-24T22:46:43Z",
+          "reward": "Tricky Mascot Badge",
+          "expiryDate": "2026-04-30",
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_QUI_BDG_10.png?f556f6",
+          "evidence": "Redeemable via code \"COMEBACK\" between 30 March - 30 April 2026."
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Banners",
+          "revisionId": 193353,
+          "revisionAt": "2026-10-24T22:46:09Z",
+          "reward": "Tricky Dance Banner",
+          "expiryDate": "2026-04-30",
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_QUI_BNR_09_icon.png?605d16",
+          "evidence": "Redeemable via code \"COMEBACK\" between 30 March - 30 April 2026."
+        }
+      ],
+      "source": "bluesky",
+      "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mic56r4jjo25",
+      "sourceAccount": "deadbydaylight.com",
+      "sourcePostId": "3mic56r4jjo25",
+      "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mic56r4jjo25",
+      "expiresAt": "2026-04-30T00:00:00.000Z",
+      "expiryText": "before April 30",
+      "expiryPrecision": "day",
+      "expiryUpperBound": "2026-05-01T12:00:00.000Z",
+      "expiryYearInferred": true,
+      "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreibnflct4estjnedj43foh2irqfkq7xgzc5x3z744fsalzkm3pdcgm",
+      "imageAlt": "Gráfica oficial del código COMEBACK",
+      "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mic56r4jjo25",
+      "lastVerifiedAt": "2026-10-25T23:34:53.008Z",
+      "sourceType": "official_direct",
+      "expiryDate": "2026-04-30",
+      "expiryPolicy": "before-calendar-date-UTC"
+    },
+    {
+      "code": "KARMA",
+      "reward": "a unique set of Player Cards",
+      "publishedAt": "2026-03-19T20:00:15.225Z",
+      "status": "expired",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "detectedAt": "2026-10-25T23:34:53.008Z",
+      "sources": [
+        {
+          "images": [
+            {
+              "url": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreialkcn6d3fqlpaghvpc34fnyljjrtk52kpbvq2mzzzvmnqvwt2wlm",
+              "alt": "On dark background, Badge and Banner with Karma: The Dark World theme, text on the bottom reads ' Use Code KARMA'. \n\n"
+            }
+          ],
+          "source": "bluesky",
+          "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mhgs47q64z2k",
+          "sourceAccount": "deadbydaylight.com",
+          "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
+          "sourcePostId": "3mhgs47q64z2k",
+          "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mhgs47q64z2k",
+          "publishedAt": "2026-03-19T20:00:15.225Z",
+          "text": " From one dark world to another...\nWe're celebrating with our friends over at Pollard Studio the one year anniversary of the release of Karma: The Dark World. Enter the code KARMA in the in-game Store before June 30 to unlock a unique set of Player Cards. "
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Badges",
+          "revisionId": 193354,
+          "revisionAt": "2026-10-24T22:46:43Z",
+          "reward": "Daniel McGovern Portrait Badge",
+          "expiryDate": "2026-06-30",
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_QUI_BDG_05.png?3b0b64",
+          "evidence": "Redeemable via code \"KARMA\" between 19 March - 30 June 2026."
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Banners",
+          "revisionId": 193353,
+          "revisionAt": "2026-10-24T22:46:09Z",
+          "reward": "The Black Sea Banner",
+          "expiryDate": "2026-06-30",
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_QUI_BNR_03_icon.png?6b6afe",
+          "evidence": "Redeemable via code \"KARMA\" between 19 March - 30 June 2026."
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Banners",
+          "revisionId": 193353,
+          "revisionAt": "2026-10-24T22:46:09Z",
+          "reward": "The Silent Corridor Banner",
+          "expiryDate": "2026-06-30",
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_QUI_BNR_04_icon.png?d0a622",
+          "evidence": "Redeemable via code \"KARMA\" between 19 March - 30 June 2026."
+        }
+      ],
+      "source": "bluesky",
+      "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mhgs47q64z2k",
+      "sourceAccount": "deadbydaylight.com",
+      "sourcePostId": "3mhgs47q64z2k",
+      "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mhgs47q64z2k",
+      "expiresAt": "2026-06-30T00:00:00.000Z",
+      "expiryText": "before June 30",
+      "expiryPrecision": "day",
+      "expiryUpperBound": "2026-07-01T12:00:00.000Z",
+      "expiryYearInferred": true,
+      "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreialkcn6d3fqlpaghvpc34fnyljjrtk52kpbvq2mzzzvmnqvwt2wlm",
+      "imageAlt": "Gráfica oficial del código KARMA",
+      "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mhgs47q64z2k",
+      "lastVerifiedAt": "2026-10-25T23:34:53.008Z",
+      "sourceType": "official_direct",
+      "expiryDate": "2026-06-30",
+      "expiryPolicy": "before-calendar-date-UTC"
+    },
+    {
+      "code": "HAPPYHORSEYEAR2026",
+      "reward": "168,888 Bloodpoints and the Lunar Horse charm",
+      "publishedAt": "2026-02-16T15:00:53.823Z",
+      "status": "expired",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "detectedAt": "2026-10-25T23:34:53.008Z",
+      "sources": [
+        {
+          "images": [
+            {
+              "url": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreidyf54h6obiedj5pndl7kb2ncfvfyxwb6oxlnt7zoqr5s6fkjp3na",
+              "alt": "On red background, Bloodpoints coming out of red envelopes and on the right side there is Lunar Horse charm. On the bottom text reads 'HAPPYHORSEYEAR2026'"
+            }
+          ],
+          "source": "bluesky",
+          "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3meycwf5c3s2u",
+          "sourceAccount": "deadbydaylight.com",
+          "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
+          "sourcePostId": "3meycwf5c3s2u",
+          "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3meycwf5c3s2u",
+          "publishedAt": "2026-02-16T15:00:53.823Z",
+          "text": " Celebrate the Year of the Horse with us! Use the code HAPPYHORSEYEAR2026 in the in-game Store before March 3 to redeem 168,888 Bloodpoints and the Lunar Horse charm!"
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Charms",
+          "revisionId": 192995,
+          "revisionAt": "2026-10-13T20:25:03Z",
+          "reward": "Lunar Horse Charm",
+          "expiryDate": "2026-03-03",
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/PTN_014.png?2c4a92",
+          "evidence": "Redeemable via code \"HAPPYHORSEYEAR2026\" between 16 February - 3 March 2026."
+        }
+      ],
+      "source": "bluesky",
+      "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3meycwf5c3s2u",
+      "sourceAccount": "deadbydaylight.com",
+      "sourcePostId": "3meycwf5c3s2u",
+      "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3meycwf5c3s2u",
+      "expiresAt": "2026-03-03T00:00:00.000Z",
+      "expiryText": "before March 3",
+      "expiryPrecision": "day",
+      "expiryUpperBound": "2026-03-04T12:00:00.000Z",
+      "expiryYearInferred": true,
+      "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreidyf54h6obiedj5pndl7kb2ncfvfyxwb6oxlnt7zoqr5s6fkjp3na",
+      "imageAlt": "Gráfica oficial del código HAPPYHORSEYEAR2026",
+      "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3meycwf5c3s2u",
+      "lastVerifiedAt": "2026-10-25T23:34:53.008Z",
+      "sourceType": "official_direct",
+      "expiryDate": "2026-03-03",
+      "expiryPolicy": "before-calendar-date-UTC"
+    },
+    {
+      "code": "FINDERSCREEPERS",
+      "reward": "Élodie’s Skull Badge and the Élodie in the Catacombs Banner",
+      "publishedAt": "2025-11-28T19:00:26.682Z",
+      "status": "active",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "detectedAt": "2026-10-25T23:34:53.008Z",
+      "sources": [
+        {
+          "images": [
+            {
+              "url": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreiefpdw7yvd35lzrjrr7fy2osrnggmqcmwfoupp4h3jfhomjcap6hq",
+              "alt": ""
+            }
+          ],
+          "source": "bluesky",
+          "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3m6pkz3boxs2n",
+          "sourceAccount": "deadbydaylight.com",
+          "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
+          "sourcePostId": "3m6pkz3boxs2n",
+          "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3m6pkz3boxs2n",
+          "publishedAt": "2025-11-28T19:00:26.682Z",
+          "text": "Élodie is here to light the way into the weekend! 🔦💀\n\nUse code FINDERSCREEPERS to get the Élodie’s Skull Badge and the Élodie in the Catacombs Banner!"
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Badges",
+          "revisionId": 193354,
+          "revisionAt": "2026-10-24T22:46:43Z",
+          "reward": "Élodie's Skull Badge",
+          "expiryDate": "2026-11-25",
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_OM_BDG_11.png?376448",
+          "evidence": "Redeemable via code \"FINDERSCREEPERS\" between 28 November 2025 - 25 November 2026."
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Banners",
+          "revisionId": 193353,
+          "revisionAt": "2026-10-24T22:46:09Z",
+          "reward": "Élodie in the Catacombs Banner",
+          "expiryDate": "2026-11-25",
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_OM_BNR_09_icon.png?b00c50",
+          "evidence": "Redeemable via code \"FINDERSCREEPERS\" between 28 November 2025 - 25 November 2026."
+        }
+      ],
+      "source": "bluesky",
+      "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3m6pkz3boxs2n",
+      "sourceAccount": "deadbydaylight.com",
+      "sourcePostId": "3m6pkz3boxs2n",
+      "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3m6pkz3boxs2n",
+      "expiresAt": "2026-11-25T23:59:59.999Z",
+      "expiryText": "until November 25, 2026",
+      "expiryPrecision": "day",
+      "expiryUpperBound": null,
+      "expiryYearInferred": false,
+      "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreiefpdw7yvd35lzrjrr7fy2osrnggmqcmwfoupp4h3jfhomjcap6hq",
+      "imageAlt": "Gráfica oficial del código FINDERSCREEPERS",
+      "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3m6pkz3boxs2n",
+      "lastVerifiedAt": "2026-10-25T23:34:53.008Z",
+      "sourceType": "official_direct",
+      "expiryDate": "2026-11-25",
+      "expiryPolicy": "calendar-day-end-UTC",
+      "expirySourceType": "official_wiki"
+    },
+    {
+      "code": "HAUNTED",
+      "reward": "this treat",
+      "publishedAt": "2025-10-31T16:01:41.431Z",
+      "status": "expired",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "detectedAt": "2026-10-25T23:34:53.008Z",
+      "sources": [
+        {
+          "images": [
+            {
+              "url": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreialiu4ygt6sup2ig66jxgynqnvkx5cgegubgaq4753ickdg3uzqte",
+              "alt": "The Flash from the Grave Charm against a blurry purple background. The text reads: Happy Halloween! Enter the code HAUNTED in the in-game Store before November 4th, 11:59PM ET."
+            }
+          ],
+          "source": "bluesky",
+          "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3m4itxnxeon2b",
+          "sourceAccount": "deadbydaylight.com",
+          "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
+          "sourcePostId": "3m4itxnxeon2b",
+          "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3m4itxnxeon2b",
+          "publishedAt": "2025-10-31T16:01:41.431Z",
+          "text": "Happy Halloween! Enter the code HAUNTED in the in-game Store to redeem this treat. 🍬 "
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Charms",
+          "revisionId": 192995,
+          "revisionAt": "2026-10-13T20:25:03Z",
+          "reward": "Flash from the Grave Charm",
+          "expiryDate": "2025-11-04",
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/NA_014.png?6e5479",
+          "evidence": "Redeemable via code \"HAUNTED\" from 31 October - 4 November 2025."
+        }
+      ],
+      "source": "bluesky",
+      "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3m4itxnxeon2b",
+      "sourceAccount": "deadbydaylight.com",
+      "sourcePostId": "3m4itxnxeon2b",
+      "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3m4itxnxeon2b",
+      "expiresAt": "2025-11-04T23:59:59.999Z",
+      "expiryText": "until November 4, 2025",
+      "expiryPrecision": "day",
+      "expiryUpperBound": null,
+      "expiryYearInferred": false,
+      "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreialiu4ygt6sup2ig66jxgynqnvkx5cgegubgaq4753ickdg3uzqte",
+      "imageAlt": "Gráfica oficial del código HAUNTED",
+      "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3m4itxnxeon2b",
+      "lastVerifiedAt": "2026-10-25T23:34:53.008Z",
+      "sourceType": "official_direct",
+      "expiryDate": "2025-11-04",
+      "expiryPolicy": "calendar-day-end-UTC",
+      "expirySourceType": "official_wiki"
+    },
+    {
+      "code": "BOULETBROTHERS",
+      "reward": "set",
+      "publishedAt": "2025-10-30T16:00:58.704Z",
+      "status": "expired",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "detectedAt": "2026-10-25T23:34:53.008Z",
+      "sources": [
+        {
+          "images": [
+            {
+              "url": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreiftm7yhqozfbpp6qa7sa3vx67dwybtadkkqpguuxlplpq672tc2iq",
+              "alt": "Visual of the Boulet Brothers Charm and Player Card. The text reads “use code Bouletbrothers to redeem"
+            }
+          ],
+          "source": "bluesky",
+          "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3m4gdhhr2pk24",
+          "sourceAccount": "deadbydaylight.com",
+          "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
+          "sourcePostId": "3m4gdhhr2pk24",
+          "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3m4gdhhr2pk24",
+          "publishedAt": "2025-10-30T16:00:58.704Z",
+          "text": "It's been 1 year since The Boulet Brothers appeared within the Fog and brought Drag to The Entity's Realm! 🖤 \n\nTo celebrate, we've got a fabulous Charm and Banner to spice up your corner of the realm! From now until November 30th, use code: BOULETBROTHERS to get the set!"
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Charms",
+          "revisionId": 192995,
+          "revisionAt": "2026-10-13T20:25:03Z",
+          "reward": "Boulet Brothers Surprise Charm",
+          "expiryDate": "2025-11-30",
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/GEL_004.png?da91ce",
+          "evidence": "Redeemable via code \"BOULETBROTHERS\" between 30 October - 30 November 2025."
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Banners",
+          "revisionId": 193353,
+          "revisionAt": "2026-10-24T22:46:09Z",
+          "reward": "Boulet Touch Banner",
+          "expiryDate": "2025-11-30",
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_GE_BNR_03_icon.png?7d7052",
+          "evidence": "Redeemable via code \"BOULETBROTHERS\" between 30 October - 30 November 2025."
+        }
+      ],
+      "source": "bluesky",
+      "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3m4gdhhr2pk24",
+      "sourceAccount": "deadbydaylight.com",
+      "sourcePostId": "3m4gdhhr2pk24",
+      "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3m4gdhhr2pk24",
+      "expiresAt": "2025-11-30T23:59:59.999Z",
+      "expiryText": "until November 30th",
+      "expiryPrecision": "day",
+      "expiryUpperBound": "2025-12-01T12:00:00.000Z",
+      "expiryYearInferred": true,
+      "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreiftm7yhqozfbpp6qa7sa3vx67dwybtadkkqpguuxlplpq672tc2iq",
+      "imageAlt": "Gráfica oficial del código BOULETBROTHERS",
+      "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3m4gdhhr2pk24",
+      "lastVerifiedAt": "2026-10-25T23:34:53.008Z",
+      "sourceType": "official_direct",
+      "expiryDate": "2025-11-30",
+      "expiryPolicy": "calendar-period-end-UTC"
+    },
+    {
+      "code": "1MILLIONCROWS",
+      "reward": "this Charm",
+      "publishedAt": "2025-10-28T15:00:40.196Z",
+      "status": "expired",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "detectedAt": "2026-10-25T23:34:53.008Z",
+      "sources": [
+        {
+          "images": [
+            {
+              "url": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreihm3p2dj3bucuzhsigd2v25l27z7ktnxtrhi5gqacxpxcc36x34ka",
+              "alt": "A crow Charm against the background of a dark forest. The text reads: Surprise Bloodrush, from October 28 to November 4. Enter code 1millioncrows to redeem the Charm."
+            }
+          ],
+          "source": "bluesky",
+          "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3m4b75rwxvz2c",
+          "sourceAccount": "deadbydaylight.com",
+          "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
+          "sourcePostId": "3m4b75rwxvz2c",
+          "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3m4b75rwxvz2c",
+          "publishedAt": "2025-10-28T15:00:40.196Z",
+          "text": "Thank you for 1M followers on Instagram! 🐦‍⬛\n\nRedeem this Charm using the code 1MILLIONCROWS in the in-game Store, and step into The Fog to earn 1.5x Bloodpoints from all matches until the end of the Haunted by Daylight Event!"
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Charms",
+          "revisionId": 192995,
+          "revisionAt": "2026-10-13T20:25:03Z",
+          "reward": "Instacrow Charm",
+          "expiryDate": "2025-11-04",
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/NA_015.png?d5680b",
+          "evidence": "Redeemable via code \"1MILLIONCROWS\" between 28 October - 4 November 2025."
+        }
+      ],
+      "source": "bluesky",
+      "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3m4b75rwxvz2c",
+      "sourceAccount": "deadbydaylight.com",
+      "sourcePostId": "3m4b75rwxvz2c",
+      "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3m4b75rwxvz2c",
+      "expiresAt": "2025-11-04T23:59:59.999Z",
+      "expiryText": "until November 4, 2025",
+      "expiryPrecision": "day",
+      "expiryUpperBound": null,
+      "expiryYearInferred": false,
+      "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreihm3p2dj3bucuzhsigd2v25l27z7ktnxtrhi5gqacxpxcc36x34ka",
+      "imageAlt": "Gráfica oficial del código 1MILLIONCROWS",
+      "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3m4b75rwxvz2c",
+      "lastVerifiedAt": "2026-10-25T23:34:53.008Z",
+      "sourceType": "official_direct",
+      "expiryDate": "2025-11-04",
+      "expiryPolicy": "calendar-day-end-UTC",
+      "expirySourceType": "official_wiki"
     }
   ]
 }

@@ -10,6 +10,7 @@ on:
       - 'scripts/codigos/**'
       - 'codigos/presentation.mjs'
       - 'tests/dbd-codes.test.mjs'
+      - 'tests/codigos-multisource.test.mjs'
       - 'tests/fixtures/codigos/**'
 permissions:
   contents: read
@@ -23,14 +24,22 @@ jobs:
     timeout-minutes: 10
     permissions:
       contents: write
+      checks: write
+    env:
+      CODE_STATE_PATH: ${{ runner.temp }}/codigos-runtime/state.json
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - uses: actions/cache/restore@v4
+        with:
+          path: ${{ runner.temp }}/codigos-runtime
+          key: codigos-v2-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: codigos-v2-
       - name: Test conservative detection
-        run: node --test tests/dbd-codes.test.mjs
-      - name: Query official public Bluesky feed
+        run: node --test tests/dbd-codes.test.mjs tests/codigos-multisource.test.mjs
+      - name: Query independent public sources
         run: node scripts/codigos/update.mjs
       - name: Commit only meaningful catalog changes
         shell: bash
@@ -42,3 +51,13 @@ jobs:
           git add -- data/codigos.json data/codigos-review.json
           git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Update official DBD codes'
           git push origin HEAD:main
+      - name: Save cursors and health without a repository commit
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ runner.temp }}/codigos-runtime
+          key: codigos-v2-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Publish public debug diagnostic
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/codigos/publish-health.mjs
