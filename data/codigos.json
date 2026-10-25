@@ -1,0 +1,487 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-25T21:46:28.517Z",
+  "stats": {
+    "postsAnalyzed": 234,
+    "candidates": 14,
+    "confirmed": 12,
+    "review": 1,
+    "rejected": 221
+  },
+  "codes": [
+    {
+      "code": "DIABLO",
+      "reward": "a Banner and a Badge",
+      "publishedAt": "2026-10-24T17:00:14.538Z",
+      "status": "active",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "detectedAt": "2026-10-25T21:39:57.885Z",
+      "sources": [
+        {
+          "images": [
+            {
+              "url": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreih3dpbsrlngo6cc7u3pjupkpyg5pg242ol2o4hlyn2l6bo76xwdte",
+              "alt": ""
+            }
+          ],
+          "source": "bluesky",
+          "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3myn65xdls22v",
+          "sourceAccount": "deadbydaylight.com",
+          "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
+          "sourcePostId": "3myn65xdls22v",
+          "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3myn65xdls22v",
+          "publishedAt": "2026-10-24T17:00:14.538Z",
+          "text": "Hell leaves its mark. \nEnter the code DIABLO in the in-game Store before November 25 to celebrate the release of the new Diablo Collection with a Banner and a Badge."
+        }
+      ],
+      "source": "bluesky",
+      "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3myn65xdls22v",
+      "sourceAccount": "deadbydaylight.com",
+      "sourcePostId": "3myn65xdls22v",
+      "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3myn65xdls22v",
+      "expiresAt": null,
+      "expiryText": "before November 25",
+      "expiryPrecision": "day",
+      "expiryUpperBound": "2026-11-26T12:00:00.000Z",
+      "expiryYearInferred": true,
+      "lastVerifiedAt": "2026-10-25T21:46:28.517Z"
+    },
+    {
+      "code": "MACHETE",
+      "reward": "this Charm",
+      "publishedAt": "2026-10-04T15:00:12.597Z",
+      "status": "active",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "detectedAt": "2026-10-25T21:39:57.885Z",
+      "sources": [
+        {
+          "images": [
+            {
+              "url": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreihps22zifhxex36co5xav3fgm3oite6hzeiekvosddsorg5faisn4",
+              "alt": "Dead by Daylight and Jason logos above a Slasher’s Machete Charm, text reads 'Use Code: Machete' "
+            }
+          ],
+          "source": "bluesky",
+          "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mx2o4vsru22k",
+          "sourceAccount": "deadbydaylight.com",
+          "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
+          "sourcePostId": "3mx2o4vsru22k",
+          "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mx2o4vsru22k",
+          "publishedAt": "2026-10-04T15:00:12.597Z",
+          "text": "Did someone say treats? Enter the code MACHETE in the in-game Store before October 31st to redeem this Charm, just in time for the release of a new blighted Outfit for The Slasher.\n"
+        }
+      ],
+      "source": "bluesky",
+      "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mx2o4vsru22k",
+      "sourceAccount": "deadbydaylight.com",
+      "sourcePostId": "3mx2o4vsru22k",
+      "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mx2o4vsru22k",
+      "expiresAt": null,
+      "expiryText": "before October 31st",
+      "expiryPrecision": "day",
+      "expiryUpperBound": "2026-11-01T12:00:00.000Z",
+      "expiryYearInferred": true,
+      "lastVerifiedAt": "2026-10-25T21:46:28.517Z"
+    },
+    {
+      "code": "ROADTRIP",
+      "reward": "Dark Bomber",
+      "publishedAt": "2026-09-21T15:00:36.861Z",
+      "status": "active",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "detectedAt": "2026-10-25T21:39:57.885Z",
+      "sources": [
+        {
+          "images": [
+            {
+              "url": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreig6wkpritao77ayqgcf7rn7lqp7akloyrij3hcbsbf2a5sy4x6cdi",
+              "alt": "On dark foggy environment, Shane Wiigwaas's Dark Bomber Torso with text reads 'ROADTRIP' "
+            }
+          ],
+          "source": "bluesky",
+          "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mvzy3nxyo626",
+          "sourceAccount": "deadbydaylight.com",
+          "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
+          "sourcePostId": "3mvzy3nxyo626",
+          "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mvzy3nxyo626",
+          "publishedAt": "2026-09-21T15:00:36.861Z",
+          "text": "We are celebrating our first indigenous survivor of The Fog, Shane Wiigwaas! Enter ROADTRIP in the in-game Store to redeem Dark Bomber until October 2027."
+        }
+      ],
+      "source": "bluesky",
+      "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mvzy3nxyo626",
+      "sourceAccount": "deadbydaylight.com",
+      "sourcePostId": "3mvzy3nxyo626",
+      "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mvzy3nxyo626",
+      "expiresAt": null,
+      "expiryText": "until October 2027",
+      "expiryPrecision": "month",
+      "expiryUpperBound": "2027-11-01T12:00:00.000Z",
+      "expiryYearInferred": false,
+      "lastVerifiedAt": "2026-10-25T21:46:28.517Z"
+    },
+    {
+      "code": "STARSGUIDE",
+      "reward": "Stardotter Banner",
+      "publishedAt": "2026-09-10T15:00:50.188Z",
+      "status": "expired",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "detectedAt": "2026-10-25T21:39:57.885Z",
+      "sources": [
+        {
+          "images": [
+            {
+              "url": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreih3d3hhwlfnsz64tl5c23vdnvvknb543ofaz6hjg5oy7e3wv3etb4",
+              "alt": "On the Grimoire page, Stardotter banner with the text 'Use Code - STARSGUIDE' "
+            }
+          ],
+          "source": "bluesky",
+          "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mv6cxwm45k2s",
+          "sourceAccount": "deadbydaylight.com",
+          "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
+          "sourcePostId": "3mv6cxwm45k2s",
+          "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mv6cxwm45k2s",
+          "publishedAt": "2026-09-10T15:00:50.188Z",
+          "text": "Thank you everyone who participated to the making of Chorus of Sin! \n\nIn celebration, please redeem the ✨ Stardotter Banner ✨ using the code STARSGUIDE in the in-game Store before October 10th, 11AM ET. "
+        }
+      ],
+      "source": "bluesky",
+      "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mv6cxwm45k2s",
+      "sourceAccount": "deadbydaylight.com",
+      "sourcePostId": "3mv6cxwm45k2s",
+      "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mv6cxwm45k2s",
+      "expiresAt": "2026-10-10T15:00:00.000Z",
+      "expiryText": "before October 10th, 11AM ET",
+      "expiryPrecision": "instant",
+      "expiryUpperBound": "2026-10-10T15:00:00.000Z",
+      "expiryYearInferred": true,
+      "lastVerifiedAt": "2026-10-25T21:46:28.517Z"
+    },
+    {
+      "code": "SHINEBRIGHT",
+      "reward": "Proud Rainbow Crow Banner",
+      "publishedAt": "2026-08-07T15:00:41.322Z",
+      "status": "expired",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "detectedAt": "2026-10-25T21:39:57.885Z",
+      "sources": [
+        {
+          "images": [
+            {
+              "url": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreibswm3qkeqj2wfylc3ur2y7cjguphczrvxjpxh3tqoci6seut3tfm",
+              "alt": "On Into The Rainbow themed background, Proud Rainbow Crow Banner with the text reads 'Use Code SHINEBRIGHT' "
+            }
+          ],
+          "source": "bluesky",
+          "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3msit4ehusy2o",
+          "sourceAccount": "deadbydaylight.com",
+          "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
+          "sourcePostId": "3msit4ehusy2o",
+          "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3msit4ehusy2o",
+          "publishedAt": "2026-08-07T15:00:41.322Z",
+          "text": "Thank you to everyone who's already helped us raise €15k for InterPride!\n\n🌈 Enter SHINEBRIGHT in the in-game Store before September 10 to redeem the Proud Rainbow Crow Banner.\n\nWe're not done yet! You have until August 10 to donate. 🔗 https://dbd.game/44WLb8k"
+        }
+      ],
+      "source": "bluesky",
+      "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3msit4ehusy2o",
+      "sourceAccount": "deadbydaylight.com",
+      "sourcePostId": "3msit4ehusy2o",
+      "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3msit4ehusy2o",
+      "expiresAt": null,
+      "expiryText": "before September 10",
+      "expiryPrecision": "day",
+      "expiryUpperBound": "2026-09-11T12:00:00.000Z",
+      "expiryYearInferred": true,
+      "lastVerifiedAt": "2026-10-25T21:46:28.517Z",
+      "statusEvidence": {
+        "method": "initial-official-date-review",
+        "reviewedAt": "2026-10-25",
+        "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3msit4ehusy2o",
+        "reason": "Official named deadline is already in the past; no exact expiry timestamp asserted."
+      }
+    },
+    {
+      "code": "ENTITYLOVEFORALL",
+      "reward": "300 Iridescent Shards",
+      "publishedAt": "2026-08-06T19:00:19.590Z",
+      "status": "active",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "detectedAt": "2026-10-25T21:39:57.885Z",
+      "sources": [
+        {
+          "images": [
+            {
+              "url": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreia2iol66lv5omlkccorwvwvhhe6bajf5mntdlmn65z7euz6ed2wnu",
+              "alt": "A bar showing the progression of the Into the Rainbow fundraiser for InterPride with rewards for each milestone."
+            }
+          ],
+          "source": "bluesky",
+          "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3msgpzx7ame2z",
+          "sourceAccount": "deadbydaylight.com",
+          "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
+          "sourcePostId": "3msgpzx7ame2z",
+          "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3msgpzx7ame2z",
+          "publishedAt": "2026-08-06T19:00:19.590Z",
+          "text": "We're four #IntoTheRainbow milestones in, two more to go! 🌈\n\nYou can now enter the code ENTITYLOVEFORALL in the in-game Store to redeem 300 Iridescent Shards.\n\nThank you to everyone who's celebrated with us so far! We're far from done, so donate now. 🔗 https://dbd.game/44WLb8k"
+        }
+      ],
+      "source": "bluesky",
+      "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3msgpzx7ame2z",
+      "sourceAccount": "deadbydaylight.com",
+      "sourcePostId": "3msgpzx7ame2z",
+      "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3msgpzx7ame2z",
+      "expiresAt": null,
+      "expiryText": null,
+      "expiryPrecision": null,
+      "expiryUpperBound": null,
+      "expiryYearInferred": false,
+      "lastVerifiedAt": "2026-10-25T21:46:28.517Z"
+    },
+    {
+      "code": "RAINBOWTOOLS",
+      "reward": "Pride Toolbox Charm",
+      "publishedAt": "2026-08-04T20:00:12.566Z",
+      "status": "active",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "detectedAt": "2026-10-25T21:39:57.885Z",
+      "sources": [
+        {
+          "images": [
+            {
+              "url": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreia2dd7guv3v6vgqggd46rz4zydz6g6w3gy2kvlvtzkzojrypkqcx4",
+              "alt": "A bar showing the progression of the Into the Rainbow fundraiser for InterPride with rewards for each milestone."
+            }
+          ],
+          "source": "bluesky",
+          "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3msbsh6sgr72n",
+          "sourceAccount": "deadbydaylight.com",
+          "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
+          "sourcePostId": "3msbsh6sgr72n",
+          "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3msbsh6sgr72n",
+          "publishedAt": "2026-08-04T20:00:12.566Z",
+          "text": "We've passed our third #IntoTheRainbow milestone, and you know what this means! 🌈\n\nEnter the code RAINBOWTOOLS in the in-game Store to redeem the Pride Toolbox Charm.\n\nBut our celebrations are not over yet! Donate now 🔗  https://dbd.game/44WLb8k"
+        }
+      ],
+      "source": "bluesky",
+      "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3msbsh6sgr72n",
+      "sourceAccount": "deadbydaylight.com",
+      "sourcePostId": "3msbsh6sgr72n",
+      "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3msbsh6sgr72n",
+      "expiresAt": null,
+      "expiryText": null,
+      "expiryPrecision": null,
+      "expiryUpperBound": null,
+      "expiryYearInferred": false,
+      "lastVerifiedAt": "2026-10-25T21:46:28.517Z"
+    },
+    {
+      "code": "INTOTHERAINBOW2026",
+      "reward": "100K Bloodpoints",
+      "publishedAt": "2026-08-03T19:00:13.496Z",
+      "status": "active",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "detectedAt": "2026-10-25T21:39:57.885Z",
+      "sources": [
+        {
+          "images": [
+            {
+              "url": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreicm57f5stu2fnh6hd7nwxjgvlzw6q7jout7g7lheco3ephn4hdg74",
+              "alt": " A bar showing the progression of the Into the Rainbow fundraiser for InterPride with the Pride Flashlight Charm for the first milestone and the 100K Bloodpoint for the second milestone."
+            }
+          ],
+          "source": "bluesky",
+          "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3ms76myyvlo2u",
+          "sourceAccount": "deadbydaylight.com",
+          "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
+          "sourcePostId": "3ms76myyvlo2u",
+          "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3ms76myyvlo2u",
+          "publishedAt": "2026-08-03T19:00:13.496Z",
+          "text": "We've reached our second #IntoTheRainbow milestone, and this is worth celebrating! 🌈\n\nYou can now enter the code INTOTHERAINBOW2026 in the in-game Store to redeem 100K Bloodpoints. \n\nBut we're far from done. Donate now 🔗 https://dbd.game/44WLb8k"
+        }
+      ],
+      "source": "bluesky",
+      "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3ms76myyvlo2u",
+      "sourceAccount": "deadbydaylight.com",
+      "sourcePostId": "3ms76myyvlo2u",
+      "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3ms76myyvlo2u",
+      "expiresAt": null,
+      "expiryText": null,
+      "expiryPrecision": null,
+      "expiryUpperBound": null,
+      "expiryYearInferred": false,
+      "lastVerifiedAt": "2026-10-25T21:46:28.517Z"
+    },
+    {
+      "code": "RAINBOWBRIGHT",
+      "reward": "Pride Flashlight Charm",
+      "publishedAt": "2026-07-31T21:00:17.200Z",
+      "status": "active",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "detectedAt": "2026-10-25T21:39:57.885Z",
+      "sources": [
+        {
+          "images": [
+            {
+              "url": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreigtoxrcdsljvas7d25p6dxcpynpbetd4mzc6lfw3knc6lj4rpg77m",
+              "alt": "A bar showing the progression of the Into the Rainbow fundraiser for InterPride with the Pride Flashlight Charm for the first milestone. \n"
+            }
+          ],
+          "source": "bluesky",
+          "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mrxtwwmc3p22",
+          "sourceAccount": "deadbydaylight.com",
+          "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
+          "sourcePostId": "3mrxtwwmc3p22",
+          "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mrxtwwmc3p22",
+          "publishedAt": "2026-07-31T21:00:17.200Z",
+          "text": "Thank you to everyone who has donated to InterPride so far!  #IntoTheRainbow\n\nYou've unlocked the first reward, and you can now enter the code RAINBOWBRIGHT in the in-game Store to redeem the Pride Flashlight Charm. But it's just the beginning!\n\nDonate now 🔗 https://dbd.game/44WLb8k"
+        }
+      ],
+      "source": "bluesky",
+      "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mrxtwwmc3p22",
+      "sourceAccount": "deadbydaylight.com",
+      "sourcePostId": "3mrxtwwmc3p22",
+      "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mrxtwwmc3p22",
+      "expiresAt": null,
+      "expiryText": null,
+      "expiryPrecision": null,
+      "expiryUpperBound": null,
+      "expiryYearInferred": false,
+      "lastVerifiedAt": "2026-10-25T21:46:28.517Z"
+    },
+    {
+      "code": "CROWCAW",
+      "reward": "Crowtok Banner",
+      "publishedAt": "2026-07-17T17:00:23.184Z",
+      "status": "expired",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "detectedAt": "2026-10-25T21:39:57.885Z",
+      "sources": [
+        {
+          "images": [
+            {
+              "url": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreieoi6kn6kzjq35afwoccs2ukazlf2pm6xlql5swlmfpbozl4awmba",
+              "alt": "On dark background the Crowtok Banner  on the middle, and the text reads 'USE CODE: CROWCAW' "
+            }
+          ],
+          "source": "bluesky",
+          "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mqu7z2xqj32h",
+          "sourceAccount": "deadbydaylight.com",
+          "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
+          "sourcePostId": "3mqu7z2xqj32h",
+          "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mqu7z2xqj32h",
+          "publishedAt": "2026-07-17T17:00:23.184Z",
+          "text": "Thank you for 1M followers on TikTok! 🐦‍⬛\n\nRedeem the Crowtok Banner using the code CROWCAW in the in-game Store before August 17th, 11AM ET. Join us on TikTok if you haven't already! 🔗 https://www.tiktok.com/@deadbydaylight"
+        }
+      ],
+      "source": "bluesky",
+      "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mqu7z2xqj32h",
+      "sourceAccount": "deadbydaylight.com",
+      "sourcePostId": "3mqu7z2xqj32h",
+      "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mqu7z2xqj32h",
+      "expiresAt": "2026-08-17T15:00:00.000Z",
+      "expiryText": "before August 17th, 11AM ET",
+      "expiryPrecision": "instant",
+      "expiryUpperBound": "2026-08-17T15:00:00.000Z",
+      "expiryYearInferred": true,
+      "lastVerifiedAt": "2026-10-25T21:46:28.517Z"
+    },
+    {
+      "code": "BIKERIDE",
+      "reward": "Shane Wiigwaas Figurine",
+      "publishedAt": "2026-07-01T15:00:35.532Z",
+      "status": "expired",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "detectedAt": "2026-10-25T21:39:57.885Z",
+      "sources": [
+        {
+          "images": [
+            {
+              "url": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreibgscyvt7km7aazxicpcpvm2cu47eglct7h75sxgnsqt4cofp66za",
+              "alt": ""
+            }
+          ],
+          "source": "bluesky",
+          "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mplru4vrg62v",
+          "sourceAccount": "deadbydaylight.com",
+          "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
+          "sourcePostId": "3mplru4vrg62v",
+          "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mplru4vrg62v",
+          "publishedAt": "2026-07-01T15:00:35.532Z",
+          "text": "Get ready for your new ride or die Charm! Enter the code BIKERIDE in the in-game Store before July 25 to unlock the Shane Wiigwaas Figurine.\n"
+        }
+      ],
+      "source": "bluesky",
+      "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mplru4vrg62v",
+      "sourceAccount": "deadbydaylight.com",
+      "sourcePostId": "3mplru4vrg62v",
+      "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mplru4vrg62v",
+      "expiresAt": null,
+      "expiryText": "before July 25",
+      "expiryPrecision": "day",
+      "expiryUpperBound": "2026-07-26T12:00:00.000Z",
+      "expiryYearInferred": true,
+      "lastVerifiedAt": "2026-10-25T21:46:28.517Z",
+      "statusEvidence": {
+        "method": "initial-official-date-review",
+        "reviewedAt": "2026-10-25",
+        "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mplru4vrg62v",
+        "reason": "Official named deadline is already in the past; no exact expiry timestamp asserted."
+      }
+    },
+    {
+      "code": "THESLASHER",
+      "reward": "Slasher Figurine Charm",
+      "publishedAt": "2026-06-18T19:00:17.524Z",
+      "status": "expired",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "detectedAt": "2026-10-25T21:39:57.885Z",
+      "sources": [
+        {
+          "images": [
+            {
+              "url": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreibwiw2c6rj7rsd6nvfz6omvtbqf4233ggo6racc6pzyuxgc2bp2wq",
+              "alt": "On dark foggy forest background Slasher Figurine Charm with the text 'Use Code - THESLASHER'"
+            }
+          ],
+          "source": "bluesky",
+          "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3molj6ro7wl2f",
+          "sourceAccount": "deadbydaylight.com",
+          "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
+          "sourcePostId": "3molj6ro7wl2f",
+          "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3molj6ro7wl2f",
+          "publishedAt": "2026-06-18T19:00:17.524Z",
+          "text": "The perfect Charm to go slashing through The Fog 🔪  Enter the code THESLASHER in the in-game Store before July 16 to unlock the Slasher Figurine Charm."
+        }
+      ],
+      "source": "bluesky",
+      "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3molj6ro7wl2f",
+      "sourceAccount": "deadbydaylight.com",
+      "sourcePostId": "3molj6ro7wl2f",
+      "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3molj6ro7wl2f",
+      "expiresAt": null,
+      "expiryText": "before July 16",
+      "expiryPrecision": "day",
+      "expiryUpperBound": "2026-07-17T12:00:00.000Z",
+      "expiryYearInferred": true,
+      "lastVerifiedAt": "2026-10-25T21:46:28.517Z",
+      "statusEvidence": {
+        "method": "initial-official-date-review",
+        "reviewedAt": "2026-10-25",
+        "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3molj6ro7wl2f",
+        "reason": "Official named deadline is already in the past; no exact expiry timestamp asserted."
+      }
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+name: Update DBD codes
+on:
+  schedule:
+    - cron: '17,47 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/update-dbd-codes.yml'
+      - 'scripts/codigos/**'
+      - 'tests/dbd-codes.test.mjs'
+      - 'tests/fixtures/codigos/**'
+permissions:
+  contents: read
+concurrency:
+  group: update-dbd-codes
+  cancel-in-progress: false
+jobs:
+  update:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test conservative detection
+        run: node --test tests/dbd-codes.test.mjs
+      - name: Query official public Bluesky feed
+        run: node scripts/codigos/update.mjs
+      - name: Commit only meaningful catalog changes
+        shell: bash
+        run: |
+          if git diff --quiet -- data/codigos.json data/codigos-review.json; then
+            echo 'No data changes; no commit.'
+            exit 0
+          fi
+          git add -- data/codigos.json data/codigos-review.json
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Update official DBD codes'
+          git push origin HEAD:main
