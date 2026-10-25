@@ -24,6 +24,7 @@ test('uncertain, multiple, future and negative claims require review',()=>{
  for(const text of ['New code SOMETHING soon!','Use code FIRSTCODE and SECONDCODE in the Store','Do not use code EXAMPLE in the Store','For example, use code EXAMPLE in the Store'])assert.equal(classify(post(text)).classification,'REVIEW');
 });
 test('source spoof, repost and embedded foreign content cannot publish',()=>{
+ assert.equal(officialPost(fixture[0]).sourceType,'official_direct');
  const item=structuredClone(fixture[0]);item.post.author.did='did:plc:impostor';assert.equal(officialPost(item),null);
  assert.equal(officialPost({...fixture[0],reason:{}}),null);
  assert.equal(classify({...post('Use code DIABLO'),sourceDid:'fake'}).classification,'REJECTED');

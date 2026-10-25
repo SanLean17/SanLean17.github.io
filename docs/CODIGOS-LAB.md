@@ -61,7 +61,7 @@ Fuentes comunitarias comunes solo aportan candidatos REVIEW, nunca publicación.
 
 ## Estado y diagnóstico sin commits artificiales
 
-CODE_STATE_PATH apunta a RUNNER_TEMP/codigos-runtime/state.json en Actions.
+CODE_STATE_PATH apunta a /tmp/codigos-runtime/state.json en el runner Ubuntu.
 Caché Actions restore/save preserva cursores, revisiones, imágenes y salud por fuente:
 lastAttemptAt, lastSuccessAt, lastError, itemsFetched y candidatesFound.
 Cada run tiene clave nueva, recupera la anterior por prefijo; tamaño pequeño y sujeto
