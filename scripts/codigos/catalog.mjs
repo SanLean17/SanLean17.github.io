@@ -36,5 +36,5 @@ export function mergeCodes(previous,previousReview,posts,now=new Date().toISOStr
  const entries=[...codes.values()].sort((a,b)=>b.publishedAt.localeCompare(a.publishedAt)||a.code.localeCompare(b.code));
  const reviewEntries=[...reviews.values()].sort((a,b)=>b.publishedAt.localeCompare(a.publishedAt)||a.sourceUrl.localeCompare(b.sourceUrl));
  const changed=JSON.stringify(entries)!==JSON.stringify(previous?.codes||[])||JSON.stringify(reviewEntries)!==JSON.stringify(previousReview?.items||[]);
- return{changed,stats,catalog:changed?{schemaVersion:1,updatedAt:now,stats,codes:entries}:previous,review:changed?{schemaVersion:1,updatedAt:now,items:reviewEntries}:previousReview};
+ return{changed,stats,catalog:changed?{schemaVersion:1,updatedAt:now,stats,codes:entries}:previous,review:changed?{...previousReview,schemaVersion:1,updatedAt:now,items:reviewEntries}:previousReview};
 }

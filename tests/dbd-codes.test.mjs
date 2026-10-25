@@ -72,3 +72,7 @@ test('curated catalog preserves image-verified deadlines on automatic refresh',(
  const result=mergeCodes(catalog,reviews,posts,now);assert.equal(result.changed,false);
  for(const code of ['ENTITYLOVEFORALL','RAINBOWTOOLS','INTOTHERAINBOW2026','RAINBOWBRIGHT']){const c=result.catalog.codes.find(c=>c.code===code);assert.equal(c.status,'expired');assert.equal(expiryLabel(c),'17 de agosto de 2026');assert.ok(c.statusEvidence.imageUrl);}
 });
+test('manual review candidates survive a meaningful automatic update',()=>{
+ const previousReview={items:[],manualCandidates:[{code:'BPFFM2026',confidence:'REVIEW'}]};
+ const result=mergeCodes(empty,previousReview,posts,now);assert.deepEqual(result.review.manualCandidates,previousReview.manualCandidates);
+});

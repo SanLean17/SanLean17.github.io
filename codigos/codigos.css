@@ -28,3 +28,32 @@
 .codes-page .codes-debug pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px;line-height:1.7}
 .codes-page [hidden]{display:none!important}
 @media(max-width:760px){.codes-page .codes-grid{grid-template-columns:1fr}.codes-page .codes-intro{margin-bottom:var(--public-section-gap)}.codes-page .codes-section h2{font-size:30px}.codes-page .code-content{padding:20px}.codes-page .code-card h3{font-size:28px}.codes-page .code-card dl{min-height:112px}}
+/* Shared left edge and spacing are local to the codes page. */
+.codes-page .codes-intro{margin-bottom:40px;align-items:flex-start!important;text-align:left}
+.codes-page .codes-intro :is(h1,p){text-align:left!important;margin-left:0!important;margin-right:0!important}
+.codes-page .codes-section{width:100%;margin:0 0 48px}
+.codes-page .codes-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.codes-page .code-card{border-radius:14px}
+.codes-page .code-media{border-radius:14px;overflow:hidden}
+.codes-page .code-content{padding:20px;gap:18px}
+.codes-page .code-heading{min-height:54px;align-content:flex-start}
+.codes-page .code-card h3{font-size:28px}
+.codes-page .code-card dl{min-height:132px}
+.codes-page .code-card dd:first-of-type{min-height:48px}
+.codes-page .codes-notice,.codes-page .codes-debug{border-radius:14px}
+.codes-page .code-media-fallback{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:16px;padding:24px;width:100%;height:100%;text-align:center;background:#09090a}
+.codes-page .code-media-fallback>span{font-size:12px;font-weight:800;color:var(--red);letter-spacing:.12em}
+.codes-page .code-media-fallback strong{font:400 clamp(24px,3vw,36px)/1.15 var(--head);overflow-wrap:anywhere;max-width:100%}
+.codes-page .code-media-fallback small{font-size:11px;color:#aaa}
+.codes-page .codes-archive{display:flex;gap:20px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:thin;scrollbar-color:#63303c #111114;cursor:grab;padding:0 0 14px;touch-action:pan-x pan-y;max-width:100%}
+.codes-page .codes-archive::-webkit-scrollbar{height:5px}.codes-page .codes-archive::-webkit-scrollbar-thumb{background:#63303c;border-radius:999px}.codes-page .codes-archive::-webkit-scrollbar-track{background:#111114;border-radius:999px}
+.codes-page .codes-archive .code-card{flex:0 0 280px;scroll-snap-align:start}
+.codes-page .codes-archive .code-content{padding:18px;gap:14px}
+.codes-page .codes-archive h3{font-size:24px}.codes-page .codes-archive dl{font-size:14px;min-height:122px}
+.codes-page .codes-archive .code-source{font-size:11px}
+.codes-page .codes-archive.is-dragging{cursor:grabbing;scroll-snap-type:none;user-select:none}
+.codes-page .codes-archive.is-dragging *{cursor:grabbing;user-select:none}
+.codes-page .codes-archive:focus-visible{outline:2px solid var(--red);outline-offset:4px}
+@media(max-width:1200px){.codes-page .codes-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.codes-page .codes-grid{grid-template-columns:1fr}.codes-page .codes-intro{margin-bottom:32px}.codes-page .codes-archive .code-card{flex-basis:min(280px,85%)}.codes-page .code-card dl{min-height:112px}}
+.codes-page .codes-archive{border-radius:14px}

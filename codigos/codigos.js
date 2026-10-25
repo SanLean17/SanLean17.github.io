@@ -1,9 +1,12 @@
+import {setupArchive} from './archive.mjs';
 import {expiryLabel,officialImage} from './presentation.mjs';
 const $=id=>document.getElementById(id);
 const raw='https://raw.githubusercontent.com/SanLean17/SanLean17.github.io/main/';
 const production=['sanlean.com.ar','www.sanlean.com.ar','sanlean17.github.io'].includes(location.hostname);
 const debug=new URLSearchParams(location.search).get('debug')==='1';
 const official=/^https:\/\/bsky\.app\/profile\/deadbydaylight\.com\/post\/[a-z0-9]+$/i;
+const imageFailures=new Set();
+function logImageFailure(code){imageFailures.add(code);console.warn('image unavailable',code);if(debug){const log=$('codes-image-log')||element('pre',undefined);log.id='codes-image-log';log.textContent=[...imageFailures].map(c=>`image unavailable: ${c}`).join('\n');$('codes-debug').append(log);}}
 const date=value=>new Intl.DateTimeFormat('es-AR',{dateStyle:'medium',timeZone:'UTC'}).format(new Date(value));
 async function json(url){const r=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(10000)});if(!r.ok)throw Error(`HTTP ${r.status}`);return r.json();}
 function element(tag,text,className){const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(className)n.className=className;return n;}
@@ -11,10 +14,10 @@ function card(c){
  const article=element('article',undefined,'tier-board code-card');article.dataset.status=c.status;
  const media=element('div',undefined,'code-media');
  const imageUrl=c.imageUrl||[...(c.sources||[])].reverse().find(s=>s.images?.length)?.images[0]?.url;
- const fallback=element('span',officialImage(imageUrl)?'Imagen oficial no disponible':'Sin imagen oficial');fallback.hidden=officialImage(imageUrl);media.append(fallback);
+ const fallback=element('div',undefined,'code-media-fallback');fallback.append(element('span','CÓDIGO'),element('strong',c.code),element('small','SIN IMAGEN OFICIAL'));fallback.hidden=officialImage(imageUrl);media.append(fallback);
  if(officialImage(imageUrl)){
-  const img=element('img');img.alt=c.imageAlt||`Gráfica oficial del código ${c.code}`;img.width=800;img.height=800;img.loading='lazy';img.decoding='async';img.referrerPolicy='no-referrer';
-  img.addEventListener('error',()=>{img.hidden=true;fallback.hidden=false;},{once:true});img.src=imageUrl;media.append(img);
+  const img=element('img');img.alt=c.imageAlt||`Gráfica oficial del código ${c.code}`;img.width=800;img.height=800;img.loading='lazy';img.decoding='async';img.referrerPolicy='no-referrer';img.draggable=false;
+  img.addEventListener('error',()=>{img.hidden=true;fallback.hidden=false;logImageFailure(c.code);},{once:true});img.src=imageUrl;media.append(img);
  }
  const content=element('div',undefined,'code-content'),heading=element('div',undefined,'code-heading');
  heading.append(element('h3',c.code),element('span',c.status==='active'?'ACTIVO':'FINALIZADO','code-state'));
@@ -25,7 +28,7 @@ function card(c){
  const feedback=element('span',undefined,'code-feedback');feedback.setAttribute('role','status');let timer;
  button.addEventListener('click',async()=>{clearTimeout(timer);try{await navigator.clipboard.writeText(c.code);button.textContent='COPIADO';feedback.textContent=`${c.code} copiado`;}catch{button.textContent='NO SE PUDO COPIAR';feedback.textContent='Seleccioná el código y copialo manualmente.';}timer=setTimeout(()=>{button.textContent='COPIAR CÓDIGO';feedback.textContent='';},2000);});
  const link=element('a','VER PUBLICACIÓN OFICIAL','code-source');link.href=c.sourceUrl;link.target='_blank';link.rel='noopener noreferrer';
- actions.append(button,link,feedback);content.append(heading,dl,actions);article.append(media,content);return article;
+ if(c.status==='active')actions.append(button,feedback);actions.append(link);content.append(heading,dl,actions);article.append(media,content);return article;
 }
 function render(data){
  if(data.schemaVersion!==1||!Array.isArray(data.codes))throw Error('Catálogo inválido');
@@ -47,4 +50,5 @@ async function load(){
  try{let data;try{data=await json(production?`${raw}data/codigos.json?t=${Date.now()}`:'/data/codigos.json');render(data);}catch(error){if(!production)throw error;data=await json('/data/codigos.json');render(data);$('codes-notice').hidden=false;$('codes-notice').textContent=`No se pudo consultar la actualización más reciente. Mostrando la copia publicada del ${date(data.updatedAt)}; verificá la fuente oficial antes de canjear.`;}if(debug)await showDebug(data);}
  catch{$('codes-notice').hidden=false;$('codes-notice').textContent='No se pudieron cargar los códigos. Intentá nuevamente en unos minutos.';$('codes-retry').hidden=false;}
 }
+setupArchive($('codes-expired'));
 $('codes-retry').addEventListener('click',load);load();

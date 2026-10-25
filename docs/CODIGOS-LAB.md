@@ -163,3 +163,30 @@ contienen sus códigos y «REDEEM BY AUG 17 11AM EST». Esta revisión visual a�
 No se convierte la abreviatura EST de verano a una hora ISO dudosa; se muestra solo
 la fecha. El texto del anuncio por sí solo no incluía este vencimiento. Resultado:
 3 activos y 9 finalizados, los 12 con imagen oficial.
+
+## Archivo horizontal y revisión de candidatos
+
+Activos: 3 columnas por encima de 1200px, 2 hasta 1200px y 1 hasta 760px,
+reutilizando cortes existentes del sitio. Todos los bloques parten del contenedor
+principal; separación de 40px tras la introducción (32px mobile). Radio 14px.
+
+CÓDIGOS ANTERIORES usa scroll horizontal nativo, scrollbar fina, snap proximity,
+trackpad y swipe touch. El drag personalizado solo actúa con mouse, tras superar
+6px horizontales; captura el puntero y suprime el clic producido por el arrastre,
+sin bloquear clics normales en fuentes. Touch mantiene pan-x/pan-y nativos y scroll
+vertical. El carrusel recibe foco y admite flechas, Inicio y Fin. Sin botón de copia
+en el archivo. Cards de 280px, limitadas al 85% del ancho en mobile.
+
+Fallback: mismo espacio reservado, bloque oscuro con código y SIN IMAGEN OFICIAL.
+Si falla una imagen se oculta el img y se registra `image unavailable` en consola
+y en debug; no se muestra icono roto ni cambia geometría. Las URLs del CDN Bluesky
+identifican blobs por contenido y no llevan expiración firmada en estas referencias,
+pero su disponibilidad no está garantizada (borrado, moderación, cambios del CDN).
+No son copias permanentes propias. No se necesita caché local para esta prueba;
+puede evaluarse en otra etapa si se requiere conservación independiente.
+
+Los cuatro candidatos solicitados quedan en `manualCandidates` de codigos-review.json.
+Este bloque se preserva al actualizar automáticamente el archivo. No se añade ninguno
+al catálogo confirmado: BPFFM2026 tiene un enlace oficial candidato cuyo contenido
+no fue accesible (403 de X), los otros tres no tienen publicación oficial verificable
+en las fuentes consultadas. No se cargan recompensas, fechas ni imágenes comunitarias.
