@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-25T23:34:53.008Z",
+  "updatedAt": "2026-10-25T23:44:35.394Z",
   "items": [
     {
       "candidates": [
@@ -105,5 +105,6 @@
       ],
       "resolvedBy": "https://deadbydaylight.wiki.gg/wiki/Template%3ASpecial_Banners"
     }
-  ]
+  ],
+  "sourceConflicts": []
 }

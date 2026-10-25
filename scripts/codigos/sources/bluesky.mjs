@@ -8,7 +8,7 @@ export function officialPost(item) {
   if (!p.uri?.startsWith(prefix) || !/^[a-z0-9]+$/i.test(p.uri.slice(prefix.length))) return null;
   if (typeof p.record.text !== 'string' || p.record.text.length > 5000 || !Number.isFinite(Date.parse(p.record.createdAt))) return null;
   const images=(p.embed?.images||p.embed?.media?.images||[]).filter(i=>typeof i.fullsize==='string'&&i.fullsize.startsWith('https://cdn.bsky.app/')).map(i=>({url:i.fullsize,alt:typeof i.alt==='string'?i.alt.slice(0,2000):''}));
-  return {images,id:p.uri.slice(prefix.length), uri:p.uri, text:p.record.text, publishedAt:new Date(p.record.createdAt).toISOString(), source:'bluesky', sourceAccount:ACCOUNT, sourceDid:DID, sourceUrl:`https://bsky.app/profile/${ACCOUNT}/post/${p.uri.slice(prefix.length)}`};
+  return {images,id:p.uri.slice(prefix.length), uri:p.uri, text:p.record.text, publishedAt:new Date(p.record.createdAt).toISOString(), source:'bluesky', sourceType:'official_direct', sourceAccount:ACCOUNT, sourceDid:DID, sourceUrl:`https://bsky.app/profile/${ACCOUNT}/post/${p.uri.slice(prefix.length)}`};
 }
 async function json(url, fetcher) {
   let last;

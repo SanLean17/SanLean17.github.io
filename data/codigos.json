@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-25T23:34:53.008Z",
+  "updatedAt": "2026-10-25T23:44:35.394Z",
   "stats": {
     "postsAnalyzed": 589,
     "candidates": 24,
@@ -255,6 +255,7 @@
             }
           ],
           "source": "bluesky",
+          "sourceType": "official_direct",
           "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3myn65xdls22v",
           "sourceAccount": "deadbydaylight.com",
           "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
@@ -296,7 +297,7 @@
       "expiryPrecision": "day",
       "expiryUpperBound": "2026-11-26T12:00:00.000Z",
       "expiryYearInferred": true,
-      "lastVerifiedAt": "2026-10-25T22:07:29.242Z",
+      "lastVerifiedAt": "2026-10-25T23:44:35.394Z",
       "rewardEvidence": {
         "reward": "Tristram Ruins Banner + Horadric Cube Badge",
         "sourcePostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3myn65xdls22v",
@@ -329,6 +330,7 @@
             }
           ],
           "source": "bluesky",
+          "sourceType": "official_direct",
           "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mx2o4vsru22k",
           "sourceAccount": "deadbydaylight.com",
           "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
@@ -359,7 +361,7 @@
       "expiryPrecision": "day",
       "expiryUpperBound": "2026-11-01T12:00:00.000Z",
       "expiryYearInferred": true,
-      "lastVerifiedAt": "2026-10-25T22:07:29.242Z",
+      "lastVerifiedAt": "2026-10-25T23:44:35.394Z",
       "rewardEvidence": {
         "reward": "Slasher’s Machete Charm",
         "sourcePostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mx2o4vsru22k",
@@ -392,6 +394,7 @@
             }
           ],
           "source": "bluesky",
+          "sourceType": "official_direct",
           "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mvzy3nxyo626",
           "sourceAccount": "deadbydaylight.com",
           "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
@@ -411,12 +414,13 @@
       "expiryPrecision": "month",
       "expiryUpperBound": "2027-11-01T12:00:00.000Z",
       "expiryYearInferred": false,
-      "lastVerifiedAt": "2026-10-25T22:07:29.242Z",
+      "lastVerifiedAt": "2026-10-25T23:44:35.394Z",
       "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreig6wkpritao77ayqgcf7rn7lqp7akloyrij3hcbsbf2a5sy4x6cdi",
       "imageAlt": "Gráfica oficial del código ROADTRIP",
       "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mvzy3nxyo626",
       "expiryDate": "2027-10-31",
-      "expiryPolicy": "calendar-period-end-UTC"
+      "expiryPolicy": "calendar-period-end-UTC",
+      "sourceType": "official_direct"
     },
     {
       "code": "STARSGUIDE",
@@ -435,6 +439,7 @@
             }
           ],
           "source": "bluesky",
+          "sourceType": "official_direct",
           "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mv6cxwm45k2s",
           "sourceAccount": "deadbydaylight.com",
           "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
@@ -465,7 +470,7 @@
       "expiryPrecision": "instant",
       "expiryUpperBound": "2026-10-10T15:00:00.000Z",
       "expiryYearInferred": true,
-      "lastVerifiedAt": "2026-10-25T22:07:29.242Z",
+      "lastVerifiedAt": "2026-10-25T23:44:35.394Z",
       "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreih3d3hhwlfnsz64tl5c23vdnvvknb543ofaz6hjg5oy7e3wv3etb4",
       "imageAlt": "Gráfica oficial del código STARSGUIDE",
       "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mv6cxwm45k2s",
@@ -488,6 +493,7 @@
             }
           ],
           "source": "bluesky",
+          "sourceType": "official_direct",
           "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3msit4ehusy2o",
           "sourceAccount": "deadbydaylight.com",
           "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
@@ -507,7 +513,7 @@
       "expiryPrecision": "day",
       "expiryUpperBound": "2026-09-11T12:00:00.000Z",
       "expiryYearInferred": true,
-      "lastVerifiedAt": "2026-10-25T22:07:29.242Z",
+      "lastVerifiedAt": "2026-10-25T23:44:35.394Z",
       "statusEvidence": {
         "method": "initial-official-date-review",
         "reviewedAt": "2026-10-25",
@@ -518,7 +524,8 @@
       "imageAlt": "Gráfica oficial del código SHINEBRIGHT",
       "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3msit4ehusy2o",
       "expiryDate": "2026-09-10",
-      "expiryPolicy": "before-calendar-date-UTC"
+      "expiryPolicy": "before-calendar-date-UTC",
+      "sourceType": "official_direct"
     },
     {
       "code": "ENTITYLOVEFORALL",
@@ -537,6 +544,7 @@
             }
           ],
           "source": "bluesky",
+          "sourceType": "official_direct",
           "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3msgpzx7ame2z",
           "sourceAccount": "deadbydaylight.com",
           "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
@@ -556,7 +564,7 @@
       "expiryPrecision": "day",
       "expiryUpperBound": "2026-08-18T12:00:00.000Z",
       "expiryYearInferred": true,
-      "lastVerifiedAt": "2026-10-25T22:07:29.242Z",
+      "lastVerifiedAt": "2026-10-25T23:44:35.394Z",
       "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreia2iol66lv5omlkccorwvwvhhe6bajf5mntdlmn65z7euz6ed2wnu",
       "imageAlt": "Gráfica oficial del código ENTITYLOVEFORALL",
       "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3msgpzx7ame2z",
@@ -569,7 +577,8 @@
         "reason": "The official graphic includes this code and a deadline already in the past. Year follows the official publication; no exact timestamp inferred from seasonal timezone wording."
       },
       "expiryDate": "2026-08-17",
-      "expiryPolicy": "calendar-period-end-UTC"
+      "expiryPolicy": "calendar-period-end-UTC",
+      "sourceType": "official_direct"
     },
     {
       "code": "RAINBOWTOOLS",
@@ -588,6 +597,7 @@
             }
           ],
           "source": "bluesky",
+          "sourceType": "official_direct",
           "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3msbsh6sgr72n",
           "sourceAccount": "deadbydaylight.com",
           "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
@@ -607,7 +617,7 @@
       "expiryPrecision": "day",
       "expiryUpperBound": "2026-08-18T12:00:00.000Z",
       "expiryYearInferred": true,
-      "lastVerifiedAt": "2026-10-25T22:07:29.242Z",
+      "lastVerifiedAt": "2026-10-25T23:44:35.394Z",
       "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreia2dd7guv3v6vgqggd46rz4zydz6g6w3gy2kvlvtzkzojrypkqcx4",
       "imageAlt": "Gráfica oficial del código RAINBOWTOOLS",
       "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3msbsh6sgr72n",
@@ -620,7 +630,8 @@
         "reason": "The official graphic includes this code and a deadline already in the past. Year follows the official publication; no exact timestamp inferred from seasonal timezone wording."
       },
       "expiryDate": "2026-08-17",
-      "expiryPolicy": "calendar-period-end-UTC"
+      "expiryPolicy": "calendar-period-end-UTC",
+      "sourceType": "official_direct"
     },
     {
       "code": "INTOTHERAINBOW2026",
@@ -639,6 +650,7 @@
             }
           ],
           "source": "bluesky",
+          "sourceType": "official_direct",
           "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3ms76myyvlo2u",
           "sourceAccount": "deadbydaylight.com",
           "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
@@ -658,7 +670,7 @@
       "expiryPrecision": "day",
       "expiryUpperBound": "2026-08-18T12:00:00.000Z",
       "expiryYearInferred": true,
-      "lastVerifiedAt": "2026-10-25T22:07:29.242Z",
+      "lastVerifiedAt": "2026-10-25T23:44:35.394Z",
       "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreicm57f5stu2fnh6hd7nwxjgvlzw6q7jout7g7lheco3ephn4hdg74",
       "imageAlt": "Gráfica oficial del código INTOTHERAINBOW2026",
       "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3ms76myyvlo2u",
@@ -671,7 +683,8 @@
         "reason": "The official graphic includes this code and a deadline already in the past. Year follows the official publication; no exact timestamp inferred from seasonal timezone wording."
       },
       "expiryDate": "2026-08-17",
-      "expiryPolicy": "calendar-period-end-UTC"
+      "expiryPolicy": "calendar-period-end-UTC",
+      "sourceType": "official_direct"
     },
     {
       "code": "RAINBOWBRIGHT",
@@ -690,6 +703,7 @@
             }
           ],
           "source": "bluesky",
+          "sourceType": "official_direct",
           "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mrxtwwmc3p22",
           "sourceAccount": "deadbydaylight.com",
           "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
@@ -709,7 +723,7 @@
       "expiryPrecision": "day",
       "expiryUpperBound": "2026-08-18T12:00:00.000Z",
       "expiryYearInferred": true,
-      "lastVerifiedAt": "2026-10-25T22:07:29.242Z",
+      "lastVerifiedAt": "2026-10-25T23:44:35.394Z",
       "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreigtoxrcdsljvas7d25p6dxcpynpbetd4mzc6lfw3knc6lj4rpg77m",
       "imageAlt": "Gráfica oficial del código RAINBOWBRIGHT",
       "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mrxtwwmc3p22",
@@ -722,7 +736,8 @@
         "reason": "The official graphic includes this code and a deadline already in the past. Year follows the official publication; no exact timestamp inferred from seasonal timezone wording."
       },
       "expiryDate": "2026-08-17",
-      "expiryPolicy": "calendar-period-end-UTC"
+      "expiryPolicy": "calendar-period-end-UTC",
+      "sourceType": "official_direct"
     },
     {
       "code": "CROWCAW",
@@ -741,6 +756,7 @@
             }
           ],
           "source": "bluesky",
+          "sourceType": "official_direct",
           "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mqu7z2xqj32h",
           "sourceAccount": "deadbydaylight.com",
           "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
@@ -771,7 +787,7 @@
       "expiryPrecision": "instant",
       "expiryUpperBound": "2026-08-17T15:00:00.000Z",
       "expiryYearInferred": true,
-      "lastVerifiedAt": "2026-10-25T22:07:29.242Z",
+      "lastVerifiedAt": "2026-10-25T23:44:35.394Z",
       "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreieoi6kn6kzjq35afwoccs2ukazlf2pm6xlql5swlmfpbozl4awmba",
       "imageAlt": "Gráfica oficial del código CROWCAW",
       "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mqu7z2xqj32h",
@@ -794,6 +810,7 @@
             }
           ],
           "source": "bluesky",
+          "sourceType": "official_direct",
           "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mplru4vrg62v",
           "sourceAccount": "deadbydaylight.com",
           "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
@@ -824,7 +841,7 @@
       "expiryPrecision": "day",
       "expiryUpperBound": "2026-07-26T12:00:00.000Z",
       "expiryYearInferred": true,
-      "lastVerifiedAt": "2026-10-25T22:07:29.242Z",
+      "lastVerifiedAt": "2026-10-25T23:44:35.394Z",
       "statusEvidence": {
         "method": "initial-official-date-review",
         "reviewedAt": "2026-10-25",
@@ -855,6 +872,7 @@
             }
           ],
           "source": "bluesky",
+          "sourceType": "official_direct",
           "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3molj6ro7wl2f",
           "sourceAccount": "deadbydaylight.com",
           "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
@@ -885,7 +903,7 @@
       "expiryPrecision": "day",
       "expiryUpperBound": "2026-07-17T12:00:00.000Z",
       "expiryYearInferred": true,
-      "lastVerifiedAt": "2026-10-25T22:07:29.242Z",
+      "lastVerifiedAt": "2026-10-25T23:44:35.394Z",
       "statusEvidence": {
         "method": "initial-official-date-review",
         "reviewedAt": "2026-10-25",
@@ -916,6 +934,7 @@
             }
           ],
           "source": "bluesky",
+          "sourceType": "official_direct",
           "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mm7nsdmhgq2v",
           "sourceAccount": "deadbydaylight.com",
           "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
@@ -960,7 +979,7 @@
       "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreifnbttccqlilhjg3n5tizxjjrohlhhyjvn5fv36v6o6aytrvzz5li",
       "imageAlt": "Gráfica oficial del código COLOSSAL",
       "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mm7nsdmhgq2v",
-      "lastVerifiedAt": "2026-10-25T23:34:53.008Z",
+      "lastVerifiedAt": "2026-10-25T23:44:35.394Z",
       "sourceType": "official_direct",
       "expiryDate": "2026-06-18",
       "expiryPolicy": "before-calendar-date-UTC"
@@ -982,6 +1001,7 @@
             }
           ],
           "source": "bluesky",
+          "sourceType": "official_direct",
           "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mjp3kdh3c52p",
           "sourceAccount": "deadbydaylight.com",
           "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
@@ -1015,7 +1035,7 @@
       "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreidtpmnqy7yliemvzmz46jwngd37wycnh7wcwcrzdxaopx4of66tou",
       "imageAlt": "Gráfica oficial del código ENCORE",
       "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mjp3kdh3c52p",
-      "lastVerifiedAt": "2026-10-25T23:34:53.008Z",
+      "lastVerifiedAt": "2026-10-25T23:44:35.394Z",
       "sourceType": "official_direct",
       "rewardSourceType": "official_wiki",
       "expiryDate": "2026-05-17",
@@ -1038,6 +1058,7 @@
             }
           ],
           "source": "bluesky",
+          "sourceType": "official_direct",
           "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mic56r4jjo25",
           "sourceAccount": "deadbydaylight.com",
           "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
@@ -1082,7 +1103,7 @@
       "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreibnflct4estjnedj43foh2irqfkq7xgzc5x3z744fsalzkm3pdcgm",
       "imageAlt": "Gráfica oficial del código COMEBACK",
       "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mic56r4jjo25",
-      "lastVerifiedAt": "2026-10-25T23:34:53.008Z",
+      "lastVerifiedAt": "2026-10-25T23:44:35.394Z",
       "sourceType": "official_direct",
       "expiryDate": "2026-04-30",
       "expiryPolicy": "before-calendar-date-UTC"
@@ -1104,6 +1125,7 @@
             }
           ],
           "source": "bluesky",
+          "sourceType": "official_direct",
           "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mhgs47q64z2k",
           "sourceAccount": "deadbydaylight.com",
           "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
@@ -1159,7 +1181,7 @@
       "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreialkcn6d3fqlpaghvpc34fnyljjrtk52kpbvq2mzzzvmnqvwt2wlm",
       "imageAlt": "Gráfica oficial del código KARMA",
       "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mhgs47q64z2k",
-      "lastVerifiedAt": "2026-10-25T23:34:53.008Z",
+      "lastVerifiedAt": "2026-10-25T23:44:35.394Z",
       "sourceType": "official_direct",
       "expiryDate": "2026-06-30",
       "expiryPolicy": "before-calendar-date-UTC"
@@ -1181,6 +1203,7 @@
             }
           ],
           "source": "bluesky",
+          "sourceType": "official_direct",
           "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3meycwf5c3s2u",
           "sourceAccount": "deadbydaylight.com",
           "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
@@ -1214,7 +1237,7 @@
       "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreidyf54h6obiedj5pndl7kb2ncfvfyxwb6oxlnt7zoqr5s6fkjp3na",
       "imageAlt": "Gráfica oficial del código HAPPYHORSEYEAR2026",
       "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3meycwf5c3s2u",
-      "lastVerifiedAt": "2026-10-25T23:34:53.008Z",
+      "lastVerifiedAt": "2026-10-25T23:44:35.394Z",
       "sourceType": "official_direct",
       "expiryDate": "2026-03-03",
       "expiryPolicy": "before-calendar-date-UTC"
@@ -1236,6 +1259,7 @@
             }
           ],
           "source": "bluesky",
+          "sourceType": "official_direct",
           "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3m6pkz3boxs2n",
           "sourceAccount": "deadbydaylight.com",
           "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
@@ -1280,7 +1304,7 @@
       "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreiefpdw7yvd35lzrjrr7fy2osrnggmqcmwfoupp4h3jfhomjcap6hq",
       "imageAlt": "Gráfica oficial del código FINDERSCREEPERS",
       "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3m6pkz3boxs2n",
-      "lastVerifiedAt": "2026-10-25T23:34:53.008Z",
+      "lastVerifiedAt": "2026-10-25T23:44:35.394Z",
       "sourceType": "official_direct",
       "expiryDate": "2026-11-25",
       "expiryPolicy": "calendar-day-end-UTC",
@@ -1303,6 +1327,7 @@
             }
           ],
           "source": "bluesky",
+          "sourceType": "official_direct",
           "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3m4itxnxeon2b",
           "sourceAccount": "deadbydaylight.com",
           "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
@@ -1336,7 +1361,7 @@
       "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreialiu4ygt6sup2ig66jxgynqnvkx5cgegubgaq4753ickdg3uzqte",
       "imageAlt": "Gráfica oficial del código HAUNTED",
       "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3m4itxnxeon2b",
-      "lastVerifiedAt": "2026-10-25T23:34:53.008Z",
+      "lastVerifiedAt": "2026-10-25T23:44:35.394Z",
       "sourceType": "official_direct",
       "expiryDate": "2025-11-04",
       "expiryPolicy": "calendar-day-end-UTC",
@@ -1359,6 +1384,7 @@
             }
           ],
           "source": "bluesky",
+          "sourceType": "official_direct",
           "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3m4gdhhr2pk24",
           "sourceAccount": "deadbydaylight.com",
           "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
@@ -1403,7 +1429,7 @@
       "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreiftm7yhqozfbpp6qa7sa3vx67dwybtadkkqpguuxlplpq672tc2iq",
       "imageAlt": "Gráfica oficial del código BOULETBROTHERS",
       "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3m4gdhhr2pk24",
-      "lastVerifiedAt": "2026-10-25T23:34:53.008Z",
+      "lastVerifiedAt": "2026-10-25T23:44:35.394Z",
       "sourceType": "official_direct",
       "expiryDate": "2025-11-30",
       "expiryPolicy": "calendar-period-end-UTC"
@@ -1425,6 +1451,7 @@
             }
           ],
           "source": "bluesky",
+          "sourceType": "official_direct",
           "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3m4b75rwxvz2c",
           "sourceAccount": "deadbydaylight.com",
           "sourceDid": "did:plc:rrbpnmgc4i2nn6naohkdsbhj",
@@ -1458,7 +1485,7 @@
       "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreihm3p2dj3bucuzhsigd2v25l27z7ktnxtrhi5gqacxpxcc36x34ka",
       "imageAlt": "Gráfica oficial del código 1MILLIONCROWS",
       "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3m4b75rwxvz2c",
-      "lastVerifiedAt": "2026-10-25T23:34:53.008Z",
+      "lastVerifiedAt": "2026-10-25T23:44:35.394Z",
       "sourceType": "official_direct",
       "expiryDate": "2025-11-04",
       "expiryPolicy": "calendar-day-end-UTC",

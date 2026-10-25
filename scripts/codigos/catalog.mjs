@@ -18,13 +18,13 @@ export function mergeCodes(previous,previousReview,posts,now=new Date().toISOStr
   }
   reviews.delete(post.sourceUrl);
   stats.imagesFound+=(post.images||[]).length;
-  const evidence={images:post.images||[],source:post.source,sourceUrl:post.sourceUrl,sourceAccount:post.sourceAccount,sourceDid:post.sourceDid,sourcePostId:post.id,rawPostUri:post.uri,publishedAt:post.publishedAt,text:post.text};
+  const evidence={images:post.images||[],source:post.source,sourceType:'official_direct',sourceUrl:post.sourceUrl,sourceAccount:post.sourceAccount,sourceDid:post.sourceDid,sourcePostId:post.id,rawPostUri:post.uri,publishedAt:post.publishedAt,text:post.text};
   const sources=[...(old?.sources||[])];const index=sources.findIndex(s=>s.rawPostUri===post.uri);
   if(index>=0)sources[index]=evidence;else sources.push(evidence);
   sources.sort((a,b)=>(a.publishedAt||a.revisionAt||'').localeCompare(b.publishedAt||b.revisionAt||'')||(a.rawPostUri||a.sourceUrl).localeCompare(b.rawPostUri||b.sourceUrl));
   const newer=!old||post.publishedAt>=(old.publishedAt||'');
   let entry=old?{...old,sources}:{code:result.code,reward:null,publishedAt:post.publishedAt,status:'active',official:true,confidence:'CONFIRMED',detectedAt:now,sources};
-  if(newer)entry={...entry,reward:entry.rewardEvidence?.sourcePostUri===post.uri?entry.rewardEvidence.reward:(result.reward||entry.reward),publishedAt:post.publishedAt,source:post.source,sourceUrl:post.sourceUrl,sourceAccount:post.sourceAccount,sourcePostId:post.id,rawPostUri:post.uri,
+  if(newer)entry={...entry,reward:entry.rewardEvidence?.sourcePostUri===post.uri?entry.rewardEvidence.reward:(result.reward||entry.reward),publishedAt:post.publishedAt,source:post.source,sourceType:'official_direct',sourceUrl:post.sourceUrl,sourceAccount:post.sourceAccount,sourcePostId:post.id,rawPostUri:post.uri,
     expiresAt:result.expiresAt||entry.expiresAt||null,expiryText:result.expiryText||entry.expiryText||null,expiryPrecision:result.expiryPrecision||entry.expiryPrecision||null,expiryUpperBound:result.expiryUpperBound||entry.expiryUpperBound||null,expiryYearInferred:result.expiryText?result.expiryYearInferred:(entry.expiryYearInferred||false)};
   const illustrated=[...sources].reverse().find(s=>s.images?.length);
   if(illustrated){entry.imageUrl=illustrated.images[0].url;entry.imageAlt=`Gráfica oficial del código ${entry.code}`;entry.imageSourceUrl=illustrated.sourceUrl;}

@@ -26,7 +26,7 @@ jobs:
       contents: write
       checks: write
     env:
-      CODE_STATE_PATH: ${{ runner.temp }}/codigos-runtime/state.json
+      CODE_STATE_PATH: /tmp/codigos-runtime/state.json
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -34,7 +34,7 @@ jobs:
           node-version: '22'
       - uses: actions/cache/restore@v4
         with:
-          path: ${{ runner.temp }}/codigos-runtime
+          path: /tmp/codigos-runtime
           key: codigos-v2-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: codigos-v2-
       - name: Test conservative detection
@@ -55,7 +55,7 @@ jobs:
         if: always()
         uses: actions/cache/save@v4
         with:
-          path: ${{ runner.temp }}/codigos-runtime
+          path: /tmp/codigos-runtime
           key: codigos-v2-${{ github.run_id }}-${{ github.run_attempt }}
       - name: Publish public debug diagnostic
         env:
