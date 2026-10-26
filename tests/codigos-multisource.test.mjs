@@ -12,3 +12,29 @@ test('no-op with unchanged evidence; REVIEW preserved',async()=>{const rev={item
 test('modes catch up after missed schedules',()=>{assert.equal(selectMode({},now),'daily');assert.equal(selectMode({lastDailyAt:now,lastFullAt:now},now),'fast');assert.equal(selectMode({lastDailyAt:'2026-10-25T04:00:00Z',lastFullAt:'2026-10-25T17:00:00Z'},now),'full');});
 test('calendar policy explicit and month precision retained',()=>{const c=applyCalendarExpiry({expiryText:'until October 2027',expiryPrecision:'month',expiryUpperBound:'2027-11-01T12:00:00Z'});assert.equal(c.expiresAt,'2027-10-31T23:59:59.999Z');assert.equal(c.expiryPrecision,'month');assert.equal(applyCalendarExpiry({}).expiresAt,undefined);});
 test('Wiki fast check reuses cached unchanged revisions without content or image downloads',async()=>{let calls=0;const state={version:3,pages:Object.fromEntries(pages.map(p=>[p.title,{revisionId:p.revisions[0].revid,entries:[]} ])),images:{}};await collect({mode:'fast',state,fetcher:async()=>{calls++;return {ok:true,json:async()=>({query:{pages:pages.map(p=>({title:p.title,revisions:[{revid:p.revisions[0].revid}]}))}})};}});assert.equal(calls,1);});
+
+// Presentation metadata derives from evidence, never detection time when a better date exists.
+
+const {codeImages,releaseInfo,wikiRelease,compareCodes,enrichCode}=await import('../codigos/model.mjs');
+const wikiImage=n=>`https://deadbydaylight.wiki.gg/images/${n}.png`;
+test('gallery derives one, multiple and deduplicated verified reward images',()=>{
+ const c={code:'MULTI',sources:[{source:'wiki',reward:'A',imageUrl:wikiImage('A')},{source:'wiki',reward:'B',imageUrl:wikiImage('B')},{source:'wiki',reward:'A',imageUrl:wikiImage('A')+'?v=2'}]};
+ assert.equal(codeImages({...c,sources:c.sources.slice(0,1)}).length,1);assert.deepEqual(codeImages(c).map(i=>i.reward),['A','B']);
+ const url=posts.find(p=>p.images.length)?.images[0].url;assert.ok(url);c.sources.push({source:'bluesky',publishedAt:now,images:[{url}]});assert.equal(codeImages(c)[0].sourceType,'official_direct');assert.equal(codeImages(c).length,3);
+});
+test('release dates parse start of ranges and starting dates; revisions are marked estimates',()=>{
+ assert.equal(wikiRelease('from 13-31 October 2026.'),'2026-10-13T00:00:00.000Z');
+ assert.equal(wikiRelease('between 24 October - 25 November 2026.'),'2026-10-24T00:00:00.000Z');
+ assert.equal(wikiRelease('starting 26 June 2026.'),'2026-06-26T00:00:00.000Z');
+ const r=releaseInfo({sources:[{source:'wiki',revisionAt:'2026-08-28T23:07:34Z'}],detectedAt:now});assert.equal(r.releaseEvidence.estimated,true);assert.equal(r.releasedAt,'2026-08-28T23:07:34Z');
+ assert.equal(releaseInfo({...r,sources:[{revisionAt:now}]}).releasedAt,r.releasedAt);
+});
+test('release ordering ignores expiration and recent discovery; new permanent code goes first',()=>{
+ const list=[{code:'OLD',detectedAt:now,sources:[{evidence:'starting 26 June 2026.'}]},{code:'NEW',source:'bluesky',publishedAt:'2026-10-24T17:00:00Z',expiresAt:null},{code:'MIDDLE',sources:[{evidence:'from 13-31 October 2026.'}],expiresAt:'2026-10-31T23:59:59Z'}].map(enrichCode).sort(compareCodes);
+ assert.deepEqual(list.map(c=>c.code),['NEW','MIDDLE','OLD']);assert.deepEqual(list.map(c=>({...c,status:'expired'})).sort(compareCodes).map(c=>c.code),['NEW','MIDDLE','OLD']);
+ list.push(enrichCode({code:'TOMORROW',source:'bluesky',publishedAt:'2026-10-27T00:00:00Z'}));assert.equal(list.sort(compareCodes)[0].code,'TOMORROW');
+});
+test('expiry retains release date and an undated expiry remains active',async()=>{
+ const c={codes:[enrichCode({code:'EXPIRED',source:'bluesky',publishedAt:'2026-10-24T00:00:00Z',expiresAt:'2026-10-25T00:00:00Z',status:'active',sources:[]}),enrichCode({code:'PERMANENT',source:'bluesky',publishedAt:'2026-10-24T00:00:00Z',status:'active',sources:[]})]};
+ const r=await runCycle({catalog:c,review,sources:[bad('bluesky'),bad('wiki')],now});assert.equal(r.catalog.codes.find(c=>c.code==='EXPIRED').status,'expired');assert.equal(r.catalog.codes.find(c=>c.code==='PERMANENT').status,'active');assert.equal(r.catalog.codes[0].releasedAt,'2026-10-24T00:00:00Z');
+});

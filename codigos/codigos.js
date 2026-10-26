@@ -1,6 +1,8 @@
+import {createGallery} from './gallery.mjs';
+import {enrichCode,compareCodes} from './model.mjs';
 import {setupLightbox} from './lightbox.mjs';
 import {setupArchive} from './archive.mjs';
-import {expiryLabel,officialImage} from './presentation.mjs';
+import {expiryLabel} from './presentation.mjs';
 const $=id=>document.getElementById(id);
 const raw='https://raw.githubusercontent.com/SanLean17/SanLean17.github.io/main/';
 const production=['sanlean.com.ar','www.sanlean.com.ar','sanlean17.github.io'].includes(location.hostname);
@@ -15,14 +17,8 @@ async function json(url){const r=await fetch(url,{cache:'no-store',signal:AbortS
 function element(tag,text,className){const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(className)n.className=className;return n;}
 function card(c){
  const article=element('article',undefined,'tier-board code-card');article.dataset.status=c.status;
- const media=element('div',undefined,'code-media');
- const imageUrl=c.imageUrl||[...(c.sources||[])].reverse().find(s=>s.images?.length)?.images[0]?.url;
- const fallback=element('div',undefined,'code-media-fallback');fallback.append(element('span','CÓDIGO'),element('strong',c.code),element('small','SIN IMAGEN OFICIAL'));fallback.hidden=officialImage(imageUrl);media.append(fallback);
- if(officialImage(imageUrl)){
-  const img=element('img');img.alt=c.imageAlt||`Gráfica oficial del código ${c.code}`;img.width=800;img.height=800;img.loading='lazy';img.decoding='async';img.referrerPolicy='no-referrer';img.draggable=false;
-  img.addEventListener('error',()=>{img.hidden=true;fallback.hidden=false;logImageFailure(c.code);},{once:true});img.src=imageUrl;media.append(img);
-  if(c.status==='active'){const zoom=element('button',undefined,'code-zoom');zoom.type='button';zoom.setAttribute('aria-label',`Ampliar imagen de ${c.code}`);zoom.addEventListener('click',()=>{if(!img.hidden&&img.naturalWidth)lightbox.open(imageUrl,img.alt,zoom);});img.addEventListener('error',()=>zoom.hidden=true,{once:true});media.append(zoom);}
- }
+ const images=c.images||[];
+ const media=createGallery({images:c.status==='active'?images:images.slice(0,1),code:c.code,swipe:c.status==='active',onFailure:()=>logImageFailure(c.code),...(c.status==='active'?{onOpen:(index,button)=>lightbox.open(images,index,button,c.code)}:{})}).root;
  const content=element('div',undefined,'code-content'),heading=element('div',undefined,'code-heading');
  heading.append(element('h3',c.code),element('span',c.status==='active'?'ACTIVO':'FINALIZADO','code-state'));
  const dl=element('dl');const field=(label,value)=>dl.append(element('dt',label),element('dd',value));
@@ -36,10 +32,10 @@ function card(c){
 }
 function render(data){
  if(data.schemaVersion!==1||!Array.isArray(data.codes))throw Error('Catálogo inválido');
- const codes=data.codes.filter(c=>c.official===true&&c.confidence==='CONFIRMED'&&(c.sourceAccount==='deadbydaylight.com'||c.sourceType==='official_wiki')&&/^[A-Z0-9_-]{3,64}$/.test(c.code)&&(official.test(c.sourceUrl)||c.sourceType==='official_wiki'&&wikiOfficial(c.sourceUrl))&&(Number.isFinite(Date.parse(c.publishedAt))||Number.isFinite(Date.parse(c.detectedAt)))).map(c=>({...c,status:c.status==='expired'||(c.expiresAt&&Date.now()>Date.parse(c.expiresAt))?'expired':'active'}));
+ const codes=data.codes.filter(c=>c.official===true&&c.confidence==='CONFIRMED'&&(c.sourceAccount==='deadbydaylight.com'||c.sourceType==='official_wiki')&&/^[A-Z0-9_-]{3,64}$/.test(c.code)&&(official.test(c.sourceUrl)||c.sourceType==='official_wiki'&&wikiOfficial(c.sourceUrl))&&(Number.isFinite(Date.parse(c.publishedAt))||Number.isFinite(Date.parse(c.detectedAt)))).map(c=>({...enrichCode(c),status:c.status==='expired'||(c.expiresAt&&Date.now()>Date.parse(c.expiresAt))?'expired':'active'}));
  const unique=[...new Map(codes.map(c=>[c.code,c])).values()];
- const active=unique.filter(c=>c.status==='active').sort((a,b)=>(b.publishedAt||b.detectedAt).localeCompare(a.publishedAt||a.detectedAt));
- const expired=unique.filter(c=>c.status==='expired').sort((a,b)=>(b.expiresAt||b.expiryUpperBound||b.publishedAt||b.detectedAt).localeCompare(a.expiresAt||a.expiryUpperBound||a.publishedAt||a.detectedAt));
+ const active=unique.filter(c=>c.status==='active').sort(compareCodes);
+ const expired=unique.filter(c=>c.status==='expired').sort(compareCodes);
  for(const [id,list] of [['codes-active',active],['codes-expired',expired]])$(id).replaceChildren(...(list.length?list.map(card):[element('p','No hay códigos en esta categoría.') ]));
 
 }

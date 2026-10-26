@@ -9,6 +9,7 @@ on:
       - '.github/workflows/update-dbd-codes.yml'
       - 'scripts/codigos/**'
       - 'codigos/presentation.mjs'
+      - 'codigos/model.mjs'
       - 'tests/dbd-codes.test.mjs'
       - 'tests/codigos-multisource.test.mjs'
       - 'tests/fixtures/codigos/**'
