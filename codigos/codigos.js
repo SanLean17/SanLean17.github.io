@@ -18,7 +18,7 @@ function element(tag,text,className){const n=document.createElement(tag);if(text
 function card(c){
  const article=element('article',undefined,'tier-board code-card');article.dataset.status=c.status;
  const images=c.images||[];
- const media=createGallery({images:c.status==='active'?images:images.slice(0,1),code:c.code,swipe:c.status==='active',onFailure:()=>logImageFailure(c.code),...(c.status==='active'?{onOpen:(index,button)=>lightbox.open(images,index,button,c.code)}:{})}).root;
+ const media=createGallery({images:c.status==='active'?images:images.slice(0,1),code:c.code,swipe:c.status==='active',onFailure:()=>logImageFailure(c.code),...(c.status==='active'?{onOpen:(index,button)=>{lightbox.open(images,index,button,c.code);window.sanleanTrack?.('code_image_open',{code:c.code,image_index:index+1,image_count:images.length});}}:{})}).root;
  const content=element('div',undefined,'code-content'),heading=element('div',undefined,'code-heading');
  heading.append(element('h3',c.code),element('span',c.status==='active'?'ACTIVO':'FINALIZADO','code-state'));
  const dl=element('dl');const field=(label,value)=>dl.append(element('dt',label),element('dd',value));
@@ -26,8 +26,8 @@ function card(c){
  const expiry=expiryLabel(c);if(expiry)field(c.status==='expired'?'FINALIZÓ':'DISPONIBLE HASTA',expiry);
  const actions=element('div',undefined,'code-actions');const button=element('button',c.status==='active'?'COPIAR CÓDIGO':'NO DISPONIBLE','tier-tab active');button.type='button';button.disabled=c.status!=='active';button.setAttribute('aria-label',`${c.status==='active'?'Copiar':'No disponible:'} ${c.code}`);
  const feedback=element('span',undefined,'code-feedback');feedback.setAttribute('role','status');let timer;
- button.addEventListener('click',async()=>{clearTimeout(timer);try{await navigator.clipboard.writeText(c.code);button.textContent='COPIADO';feedback.textContent=`${c.code} copiado`;}catch{button.textContent='NO SE PUDO COPIAR';feedback.textContent='Seleccioná el código y copialo manualmente.';}timer=setTimeout(()=>{button.textContent='COPIAR CÓDIGO';feedback.textContent='';},2000);});
- const link=element('a',c.sourceType==='official_wiki'?'WIKI OFICIAL DE DBD':'VER PUBLICACIÓN OFICIAL','code-source');link.href=c.sourceUrl;link.target='_blank';link.rel='noopener noreferrer';
+ button.addEventListener('click',async()=>{clearTimeout(timer);try{await navigator.clipboard.writeText(c.code);window.sanleanTrack?.('code_copy',{code:c.code,status:c.status,source_type:c.sourceType});button.textContent='COPIADO';feedback.textContent=`${c.code} copiado`;}catch{button.textContent='NO SE PUDO COPIAR';feedback.textContent='Seleccioná el código y copialo manualmente.';}timer=setTimeout(()=>{button.textContent='COPIAR CÓDIGO';feedback.textContent='';},2000);});
+ const link=element('a',c.sourceType==='official_wiki'?'WIKI OFICIAL DE DBD':'VER PUBLICACIÓN OFICIAL','code-source');link.href=c.sourceUrl;link.target='_blank';link.rel='noopener noreferrer';link.addEventListener('click',()=>window.sanleanTrack?.('code_source_click',{code:c.code,source_type:c.sourceType,source_host:new URL(c.sourceUrl).hostname}));
  if(c.status==='active')actions.append(button,feedback);actions.append(link);content.append(heading,dl,actions);article.append(media,content);return article;
 }
 function render(data){
