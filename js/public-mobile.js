@@ -6,8 +6,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const page = location.pathname.split('/').pop() || 'index.html';
   const groups = [
     ['DEAD BY DAYLIGHT', [['RULETA KILLER','ruleta-killer.html'],['RULETA PERKS','ruleta-perks.html'],['PERKS DE KILLER','ruleta-perks-killer.html'],['PERKS DE SUPERVIVIENTE','ruleta-perks-superviviente.html'],['1VS1','1vs1.html']]],
+    ['CÓDIGOS', null, '/codigos/'],
+    ['HALLOWEEN', null, 'halloween.html'],
     ['TIERLIST', [['DEAD BY DAYLIGHT','tierlist-dbd.html'],['HALLOWEEN','tierlist-halloween.html']]],
-    ['SANLEAN', [['INICIO','index.html'],['HALLOWEEN','halloween.html'],['CRÉDITOS','creditos.html'],['CONTACTO','contacto.html']]]
+    ['CONTACTO', null, 'contacto.html']
   ];
   const menu = document.createElement('nav');
   menu.id = 'publicMobileMenu'; menu.className = 'public-mobile-menu'; menu.hidden = true;
@@ -15,16 +17,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const categories = document.createElement('div'), options = document.createElement('div');
   categories.className = 'public-mobile-groups'; options.className = 'public-mobile-options';
   menu.append(categories, options); header.after(menu);
-  let selected = Math.max(0, groups.findIndex(g => g[1].some(l => l[1] === page)));
+  let selected = Math.max(0, groups.findIndex(g => g[1]?.some(l => l[1] === page)));
   function select(index) {
     selected = index;
-    [...categories.children].forEach((b,i) => b.setAttribute('aria-pressed', String(i === index)));
+    [...categories.children].forEach((b,i) => {if(b.tagName==='BUTTON')b.setAttribute('aria-pressed', String(i === index));});
     options.replaceChildren(...groups[index][1].map(([label,href]) => {
       const a = document.createElement('a'); a.textContent = label; a.href = href;
       if (href === page) a.setAttribute('aria-current','page'); return a;
     }));
   }
-  groups.forEach(([label], i) => {
+  groups.forEach(([label,children,href], i) => {
+    if(href){const a=document.createElement('a');a.textContent=label;a.href=href;
+      if(new URL(href,document.baseURI).pathname===location.pathname)a.setAttribute('aria-current','page');
+      categories.append(a);return;}
+
     const b = document.createElement('button'); b.type = 'button'; b.textContent = label;
     b.addEventListener('click', () => select(i)); categories.append(b);
   });

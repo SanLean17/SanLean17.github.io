@@ -1,8 +1,11 @@
 # CÓDIGOS: arquitectura real multifuente
 
-Ruta aislada: https://sanlean.com.ar/codigos/; diagnóstico: `?debug=1`.
-Sin enlaces desde menú/footer y con noindex,nofollow. No es una ruta privada.
-No se modifican páginas existentes, estilos compartidos ni USUARIO.
+Publicación oficial: 25 de octubre de 2026 (Argentina).
+URL pública: https://sanlean.com.ar/codigos/; diagnóstico no enlazado: `?debug=1`.
+CÓDIGOS aparece como enlace principal entre DEAD BY DAYLIGHT y HALLOWEEN,
+en headers públicos y menú móvil. Indexación index,follow y canonical habilitados.
+Sin enlace nuevo en el footer. USUARIO permanece separado e intacto.
+El diseño, datos y automatización aprobados no cambian por esta publicación.
 
 ## Calendario único en GitHub Actions
 
