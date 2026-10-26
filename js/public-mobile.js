@@ -5,8 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!trigger || !header) return;
   const page = location.pathname.split('/').pop() || 'index.html';
   const groups = [
-    ['DEAD BY DAYLIGHT', [['RULETA KILLER','ruleta-killer.html'],['RULETA PERKS','ruleta-perks.html'],['PERKS DE KILLER','ruleta-perks-killer.html'],['PERKS DE SUPERVIVIENTE','ruleta-perks-superviviente.html'],['1VS1','1vs1.html']]],
-    ['CÓDIGOS', null, '/codigos/'],
+    ['DEAD BY DAYLIGHT', [['RULETA KILLER','ruleta-killer.html'],['RULETA PERKS','ruleta-perks.html'],['1VS1','1vs1.html'],['CÓDIGOS','/codigos/']]],
     ['HALLOWEEN', null, 'halloween.html'],
     ['TIERLIST', [['DEAD BY DAYLIGHT','tierlist-dbd.html'],['HALLOWEEN','tierlist-halloween.html']]],
     ['CONTACTO', null, 'contacto.html']
@@ -15,15 +14,15 @@ document.addEventListener('DOMContentLoaded', () => {
   menu.id = 'publicMobileMenu'; menu.className = 'public-mobile-menu'; menu.hidden = true;
   menu.setAttribute('aria-label','Navegación móvil');
   const categories = document.createElement('div'), options = document.createElement('div');
-  categories.className = 'public-mobile-groups'; options.className = 'public-mobile-options';
+  categories.className = 'public-mobile-groups'; options.className = 'public-mobile-options'; options.id='publicMobileOptions';
   menu.append(categories, options); header.after(menu);
-  let selected = Math.max(0, groups.findIndex(g => g[1]?.some(l => l[1] === page)));
+  let selected = -1;
   function select(index) {
     selected = index;
-    [...categories.children].forEach((b,i) => {if(b.tagName==='BUTTON')b.setAttribute('aria-pressed', String(i === index));});
-    options.replaceChildren(...groups[index][1].map(([label,href]) => {
+    [...categories.children].forEach((b,i) => {if(b.tagName==='BUTTON')b.setAttribute('aria-expanded', String(i === index));});
+    options.replaceChildren(...(groups[index]?.[1] || []).map(([label,href]) => {
       const a = document.createElement('a'); a.textContent = label; a.href = href;
-      if (href === page) a.setAttribute('aria-current','page'); return a;
+      if (new URL(href,document.baseURI).pathname===location.pathname) a.setAttribute('aria-current','page'); return a;
     }));
   }
   groups.forEach(([label,children,href], i) => {
@@ -32,12 +31,14 @@ document.addEventListener('DOMContentLoaded', () => {
       categories.append(a);return;}
 
     const b = document.createElement('button'); b.type = 'button'; b.textContent = label;
-    b.addEventListener('click', () => select(i)); categories.append(b);
+    b.setAttribute('aria-controls',options.id);
+    b.addEventListener('click', () => select(selected===i?-1:i)); categories.append(b);
   });
   select(selected);
   let menuOpen = false, menuAnimation = null;
   const reducedMotion = matchMedia('(prefers-reduced-motion:reduce)');
   function setMenu(open, immediate = false) {
+    if(open)select(-1);
     menuOpen = open;
     menuAnimation?.cancel();
     menuAnimation = null;
