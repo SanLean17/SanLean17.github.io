@@ -38,3 +38,37 @@ test('expiry retains release date and an undated expiry remains active',async()=
  const c={codes:[enrichCode({code:'EXPIRED',source:'bluesky',publishedAt:'2026-10-24T00:00:00Z',expiresAt:'2026-10-25T00:00:00Z',status:'active',sources:[]}),enrichCode({code:'PERMANENT',source:'bluesky',publishedAt:'2026-10-24T00:00:00Z',status:'active',sources:[]})]};
  const r=await runCycle({catalog:c,review,sources:[bad('bluesky'),bad('wiki')],now});assert.equal(r.catalog.codes.find(c=>c.code==='EXPIRED').status,'expired');assert.equal(r.catalog.codes.find(c=>c.code==='PERMANENT').status,'active');assert.equal(r.catalog.codes[0].releasedAt,'2026-10-24T00:00:00Z');
 });
+
+
+// Disabled discovery metadata must never become a publishing source.
+const {enabledSources,disabledSources,nightlight}=await import('../scripts/codigos/sources/index.mjs');
+test('NightLight is known, disabled and cannot confirm or publish',()=>{
+ assert.ok(disabledSources.includes(nightlight));
+ assert.equal(nightlight.id,'nightlight');assert.equal(nightlight.url,'https://nightlight.gg/codes');
+ for(const key of ['enabled','canConfirm','canPublish'])assert.equal(nightlight[key],false);
+ assert.equal(nightlight.sourceType,'community_discovery');
+ assert.deepEqual(enabledSources.map(s=>s.id),['bluesky','wiki']);
+ assert.equal(nightlight.collect,undefined);
+ assert.equal(nightlight.futureCandidate.confidence,'REVIEW');
+ assert.equal(nightlight.futureCandidate.official,false);
+ assert.equal(nightlight.futureCandidate.sourceType,'community_discovery');
+});
+test('registry import makes no requests; disabled discovery is absent from cycle',async()=>{
+ const original=globalThis.fetch;let requests=0;
+ globalThis.fetch=()=>{requests++;throw Error('unexpected network request');};
+ try {
+  const registry=await import('../scripts/codigos/sources/index.mjs?no-network-test');
+  const r=await runCycle({catalog,review,now,sources:registry.enabledSources.map(s=>s.id==='bluesky'?goodBlue:goodWiki)});
+  assert.equal(requests,0);assert.equal(r.state.sourcesHealthy,2);
+  assert.equal(r.state.sources.nightlight,undefined);
+  assert.ok(r.catalog.codes.some(c=>c.code==='DIABLO'));
+  assert.ok(r.catalog.codes.some(c=>c.code==='GROUNDCHUCKHBD'));
+ } finally {globalThis.fetch=original;}
+});
+test('NightLight-only evidence cannot enter the published catalog',async()=>{
+ const {mergeCodes}=await import('../scripts/codigos/catalog.mjs');
+ const external={...posts[0],source:'nightlight',sourceType:'community_discovery',sourceAccount:'nightlight',sourceDid:null,sourceUrl:nightlight.url,text:'Use code NIGHTLIGHTONLY to unlock a reward.'};
+ const r=mergeCodes(catalog,review,[external],now);
+ assert.equal((r.catalog||catalog).codes.length,0);
+ assert.equal(r.stats.confirmed,0);
+});

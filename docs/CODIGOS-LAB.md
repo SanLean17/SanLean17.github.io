@@ -139,3 +139,35 @@ Referencias:
 https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule
 https://docs.github.com/en/billing/concepts/product-billing/github-actions
 https://docs.discord.com/developers/resources/message#get-channel-messages
+
+
+## NIGHTLIGHT
+
+Referencia manual: https://nightlight.gg/codes (NightLight Codes).
+Fuente comunitaria independiente de Behaviour Interactive, registrada como
+`community_discovery` en `scripts/codigos/sources/index.mjs`, dentro de
+`disabledSources`. `enabled`, `canConfirm` y `canPublish` son `false`.
+No existe una API pública de códigos según el contexto de esta incorporación;
+no se consulta su HTML ni se realiza scraping por respeto a sus términos.
+No se inspeccionan endpoints internos ni se copia su base de datos, imágenes,
+descripciones, logos o diseño. No se ha realizado ninguna consulta a NightLight
+para implementar este registro.
+
+El registro contiene únicamente metadata y la política `futureCandidate`:
+`sourceType: community_discovery`, `confidence: REVIEW`, `official: false`.
+No hay adaptador ejecutable, collector, fetch ni importación de candidatos.
+No aparece en la interfaz pública ni participa del cron `17,47 * * * *`;
+las únicas fuentes automáticas siguen siendo Bluesky oficial y Wiki DBD.
+El diagnóstico existente tampoco cambia; el enlace anterior permite revisión manual.
+
+Una integración futura requiere verificar al menos una condición: API oficial de
+códigos, feed/archivo estructurado expresamente destinado a integraciones externas,
+permiso escrito del responsable para consulta automática o términos que permitan
+expresamente ese uso. Ninguna condición activa automáticamente la fuente: habrá
+que implementar y revisar una integración autorizada. Endpoints privados,
+DevTools, ingeniería inversa y scraping sin autorización no habilitan su uso.
+
+Flujo futuro: descubrimiento → candidato REVIEW → confirmación independiente por
+Bluesky/Wiki/fuente oficial → posible publicación. NightLight sola nunca confirma,
+publica ni se presenta como FUENTE OFICIAL. Las imágenes procederán de una
+publicación oficial, Bluesky oficial, Wiki DBD o el fallback de SanLean.
