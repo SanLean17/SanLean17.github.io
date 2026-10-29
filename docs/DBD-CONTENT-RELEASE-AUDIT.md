@@ -14,6 +14,8 @@ No falló el JSON, el ZIP, la conexión, la creación del PR ni la migración de
 
 La primera corrección produjo el commit `a8512a2099f20c67aec43c22422924cb2e43399b`. Aunque GitHub marcó success al run 40959281931, la inspección completa del log descubrió un timeout anterior de navegador: PowerShell había propagado sólo el resultado del último comando. El workflow ahora ejecuta cada comando en un paso separado; las pruebas de navegador también usan las cantidades activas. Ese success intermedio no se considera la validación final.
 
+Al incorporar toda la regresión del Gestor a PR #11, el run 40965776716 detectó una expectativa adicional de `dbd-manager-v2.test.cjs`: exigía cuatro catálogos modificados aun cuando tres ya estaban normalizados y no cambiaban. La prueba ahora contrasta los hashes del archivo original y preparado, exige Killers entre los cambios y verifica que el manifiesto incluya exactamente los archivos modificados. El ZIP sigue comprobándose por separado como paquete completo y sin datos personales.
+
 ## Cambios del sistema
 
 - `publication.cjs`, `server.cjs`, `ui/app.js`, `ui/publication-view.js`: fases reales, duración congelada, diagnóstico de CI, reintento explícito, consultas secuenciales, vigilancia ligera de PR/main, conexión automática y protección de producción.

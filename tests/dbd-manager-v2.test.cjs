@@ -23,12 +23,12 @@ test('nombre descargado con espacios, paréntesis y acentos conserva los bytes o
 });
 
 test('desactivar/reactivar conserva exactamente identidad, imagen, aliases y owner; prepara sin altas',async()=>{
- let d=create();const original=m.catalogs.killers.find(i=>i.key==='plague');
- d=apply(d,'killers','plague','disable');const entry=m.effectiveCatalogs(d).killers.find(i=>i.key==='plague');
+ let d=create();const original=m.catalogs.killers.find(i=>i.enabled!==false),key=original.key;
+ d=apply(d,'killers',key,'disable');const entry=m.effectiveCatalogs(d).killers.find(i=>i.key===key);
  assert.deepEqual(entry,{...original,enabled:false});d=await m.prepare(d.id);assert(d.validation.ok,JSON.stringify(d.validation));
- const a=m.artifact(d);assert.deepEqual(a.manifest.files.map(f=>f.path).sort(),TYPES.map(t=>'data/'+t+'.json').sort());assert.equal(a.manifest.totals.killers.after,a.manifest.totals.killers.before-1);
+ const a=m.artifact(d),changed=TYPES.map(t=>'data/'+t+'.json').filter(f=>hash(fs.readFileSync(path.join(root,f)))!==hash(fs.readFileSync(path.join(a.root,f))));assert(changed.includes('data/killers.json'));assert.deepEqual(a.manifest.files.map(f=>f.path).sort(),changed.sort());assert.equal(a.manifest.totals.killers.after,a.manifest.totals.killers.before-1);
  d=await m.patch(d.id);const JSZip=require('jszip'),zip=await JSZip.loadAsync(fs.readFileSync(path.join(m.data,d.patch.file)));assert.equal(Object.values(zip.files).filter(f=>!f.dir).length,6);assert(!Object.keys(zip.files).some(f=>/datos|AppData/i.test(f)));
- d=apply(d,'killers','plague','enable');assert.equal(d.catalogChanges.length,0);assert.deepEqual(m.effectiveCatalogs(d).killers.find(i=>i.key==='plague'),original);
+ d=apply(d,'killers',key,'enable');assert.equal(d.catalogChanges.length,0);assert.deepEqual(m.effectiveCatalogs(d).killers.find(i=>i.key===key),original);
 });
 
 test('acciones por paquete: scope explícito, lista exacta, sin eliminación automática de perks',async()=>{
