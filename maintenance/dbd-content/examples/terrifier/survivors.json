@@ -1,0 +1,14 @@
+[
+  {
+    "key": "siennashaw",
+    "name": "Sienna Shaw — CONFIRMAR EN LANZAMIENTO",
+    "image": "survivors/T_UI_S55_SiennaShaw_Portrait.png",
+    "aliases": [
+      "Sienna",
+      "Sienna Shaw",
+      "Terrifier"
+    ],
+    "enabled": false,
+    "updateId": "terrifier-2026"
+  }
+]

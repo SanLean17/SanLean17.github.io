@@ -7,7 +7,7 @@
   const standaloneResult=overlay=>overlay?.state?.visible!==false&&overlay?.state?.status==='result'&&!overlay?.state?.cardRule&&['killers','killerPerks','survivor'].includes(section);
   let privateClient=null,catalogPromise=null;
   const supabaseClient=()=>window.sanleanSupabase||(privateClient||(privateClient=window.SANLEAN_SUPABASE&&window.supabase?window.supabase.createClient(window.SANLEAN_SUPABASE.url,window.SANLEAN_SUPABASE.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}):null));
-  const loadKillers=()=>catalogPromise||(catalogPromise=fetch('../data/killers.json',{signal:AbortSignal.timeout(12000)}).then(r=>{if(!r.ok)throw new Error('No se pudo cargar el catálogo de Killers.');return r.json()}).catch(e=>{catalogPromise=null;throw e}));
+  const loadKillers=()=>catalogPromise||(catalogPromise=SanLeanDBDCatalog.loadKillers().catch(e=>{catalogPromise=null;throw e}));
   const absoluteImage=item=>{const raw=String(item?.image||`killers/${item?.key||''}.png`).replace(/^\.\.\//,'').replace(/^\//,'');return `${location.origin}/${raw}`};
   const random01=()=>{const bytes=new Uint32Array(1);crypto.getRandomValues(bytes);return bytes[0]/0x100000000};
 

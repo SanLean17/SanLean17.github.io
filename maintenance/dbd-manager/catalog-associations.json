@@ -1,0 +1,772 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "path": "js/usuario-roulette-tools.js",
+      "fields": [
+        "OWNER_BY_KEY",
+        "OWNER_RANGES"
+      ],
+      "note": "Explicit keys before 60; corrected ranges 97–114 take precedence over shifted legacy groups."
+    },
+    {
+      "path": "js/usuario.js",
+      "fields": [
+        "survivorOwners",
+        "survivorOwnerGroups"
+      ],
+      "note": "Existing explicit survivor keys and ranges; no roster-order inference."
+    }
+  ],
+  "owners": {
+    "killers": {
+      "nurse": [
+        "nurse enfermera sally smithson la enfermera"
+      ],
+      "trapper": [
+        "trapper trampero evan macmillan el trampero"
+      ],
+      "clown": [
+        "clown payaso kenneth chase el payaso"
+      ],
+      "leatherface": [
+        "leatherface cannibal canibal bubba el canibal"
+      ],
+      "huntress": [
+        "huntress cazadora anna la cazadora"
+      ],
+      "freddy": [
+        "freddy nightmare pesadilla la pesadilla freddy krueger"
+      ],
+      "wraith": [
+        "wraith espectro philip ojomo el espectro"
+      ],
+      "plague": [
+        "plague plaga adiris la plaga"
+      ],
+      "doctor": [
+        "doctor herman carter el doctor"
+      ],
+      "legion": [
+        "legion frank julie susie joey la legion el legion"
+      ],
+      "myers": [
+        "myers shape forma michael myers la forma"
+      ],
+      "hillbilly": [
+        "hillbilly pueblerino max thompson el pueblerino"
+      ],
+      "pig": [
+        "pig cerda amanda young la cerda"
+      ],
+      "hag": [
+        "hag bruja lisa sherwood la bruja"
+      ],
+      "spirit": [
+        "spirit espiritu rin yamaoka el espiritu la espiritu"
+      ],
+      "ghostface": [
+        "ghost face ghostface cara fantasma el ghost face"
+      ],
+      "demogorgon": [
+        "demogorgon demo el demogorgon"
+      ],
+      "oni": [
+        "oni kazan yamaoka el oni"
+      ],
+      "deathslinger": [
+        "deathslinger arponero caleb quinn el arponero"
+      ],
+      "pyramidhead": [
+        "pyramid head executioner verdugo el verdugo pyramidhead"
+      ],
+      "blight": [
+        "blight deterioro talbot grimes el deterioro"
+      ],
+      "twins": [
+        "twins gemelos charlotte victor los gemelos"
+      ],
+      "trickster": [
+        "trickster traicionero ji woon hak el traicionero"
+      ],
+      "nemesis": [
+        "nemesis el nemesis"
+      ],
+      "cenobite": [
+        "cenobite pinhead cenobita el cenobita"
+      ],
+      "artist": [
+        "artist artista carmina mora la artista"
+      ],
+      "onryo": [
+        "onryo sadako la onryo el onryo"
+      ],
+      "dredge": [
+        "dredge draga la draga"
+      ],
+      "wesker": [
+        "wesker mastermind mente maestra albert wesker la mente maestra"
+      ],
+      "knight": [
+        "knight caballero tarhos kovacs el caballero"
+      ],
+      "skullmerchant": [
+        "skull merchant comerciante de calaveras adriana imai la comerciante de calaveras"
+      ],
+      "singularity": [
+        "singularity singularidad hux la singularidad"
+      ],
+      "xenomorph": [
+        "xenomorph alien xenomorfo el xenomorfo"
+      ],
+      "chucky": [
+        "chucky good guy chico bueno el chico bueno"
+      ],
+      "unknown": [
+        "unknown the unknown desconocido lo desconocido el desconocido"
+      ],
+      "vecna": [
+        "vecna lich liche el liche"
+      ],
+      "dracula": [
+        "dracula dark lord señor oscuro el señor oscuro"
+      ],
+      "houndmaster": [
+        "houndmaster adiestradora canina la adiestradora canina"
+      ],
+      "ghoul": [
+        "ghoul kaneki el ghoul"
+      ],
+      "animatronic": [
+        "animatronic springtrap animatronico el animatronico"
+      ],
+      "krasue": [
+        "krasue la krasue"
+      ],
+      "lich": [
+        "first lich primer liche el primer liche"
+      ],
+      "jason": [
+        "jason slasher el slasher"
+      ],
+      "judgment": [
+        "judgment sentencia la sentencia"
+      ]
+    },
+    "survivors": {
+      "acevisconti": [
+        "ace visconti"
+      ],
+      "dwightfairfield": [
+        "dwight fairfield"
+      ],
+      "megthomas": [
+        "meg thomas"
+      ],
+      "claudettemorel": [
+        "claudette morel"
+      ],
+      "jakepark": [
+        "jake park"
+      ],
+      "neakarlsson": [
+        "nea karlsson"
+      ],
+      "lauriestrode": [
+        "laurie strode"
+      ],
+      "williambilloverbeck": [
+        "william bill overbeck bill"
+      ],
+      "fengmin": [
+        "feng min"
+      ],
+      "davidking": [
+        "david king"
+      ],
+      "quentinsmith": [
+        "quentin smith"
+      ],
+      "detectivedavidtapp": [
+        "detective david tapp david tapp tapp"
+      ],
+      "katedenson": [
+        "kate denson"
+      ],
+      "adamfrancis": [
+        "adam francis"
+      ],
+      "jeffjohansen": [
+        "jeff johansen"
+      ],
+      "janeromero": [
+        "jane romero"
+      ],
+      "ashleyjwilliams": [
+        "ashley j williams ash"
+      ],
+      "steveharrington": [
+        "steve harrington steve"
+      ],
+      "nancywheeler": [
+        "nancy wheeler nancy"
+      ],
+      "yuikimura": [
+        "yui kimura yui"
+      ],
+      "zarinakassir": [
+        "zarina kassir zarina"
+      ],
+      "cherylmason": [
+        "cheryl mason cheryl"
+      ],
+      "felixrichter": [
+        "felix richter felix"
+      ],
+      "elodierakoto": [
+        "elodie rakoto elodie"
+      ],
+      "yunjinlee": [
+        "yun jin lee yun-jin yunjin"
+      ],
+      "jillvalentine": [
+        "jill valentine jill"
+      ],
+      "leonskennedy": [
+        "leon s kennedy leon kennedy leon"
+      ],
+      "mikaelareid": [
+        "mikaela reid mikaela mika"
+      ],
+      "jonahvasquez": [
+        "jonah vasquez jonah"
+      ],
+      "yoichiasakawa": [
+        "yoichi asakawa yoichi"
+      ],
+      "haddiekaur": [
+        "haddie kaur haddie"
+      ],
+      "rebeccachambers": [
+        "rebecca chambers rebecca"
+      ],
+      "adawong": [
+        "ada wong ada"
+      ],
+      "vittoriotoscano": [
+        "vittorio toscano vittorio"
+      ],
+      "renatolyra": [
+        "renato lyra renato"
+      ],
+      "thalitalyra": [
+        "thalita lyra thalita"
+      ],
+      "gabrielsoma": [
+        "gabriel soma gabriel"
+      ],
+      "nicolascage": [
+        "nicolas cage nicolas nick cage"
+      ],
+      "ellenripley": [
+        "ellen ripley ripley"
+      ],
+      "alanwake": [
+        "alan wake alan"
+      ],
+      "sableward": [
+        "sable ward sable"
+      ],
+      "thetroupe": [
+        "aestri yazar baermar troupe"
+      ],
+      "laracroft": [
+        "lara croft lara"
+      ],
+      "trevorbelmont": [
+        "trevor belmont trevor"
+      ],
+      "tauriecain": [
+        "taurie cain taurie"
+      ],
+      "orelarose": [
+        "orela rose orela"
+      ],
+      "rickgrimes": [
+        "rick grimes rick"
+      ],
+      "michonnegrimes": [
+        "michonne grimes michonne"
+      ],
+      "veeboonyasak": [
+        "vee boonyasak vee"
+      ],
+      "dustinhenderson": [
+        "dustin henderson dustin"
+      ],
+      "eleven": [
+        "eleven jane hopper once"
+      ],
+      "kwontaeyoung": [
+        "kwon tae young kwon tae-young"
+      ],
+      "shanewiigwaas": [
+        "shane wiigwaas shane"
+      ],
+      "aurora": [
+        "aurora"
+      ]
+    }
+  },
+  "perks": {
+    "perks-killer": {
+      "00_aNursesCalling": "nurse",
+      "49_stridor": "nurse",
+      "52_thanatophobia": "nurse",
+      "01_agitation": "trapper",
+      "08_brutalStrength": "trapper",
+      "54_unnervingPresence": "trapper",
+      "02_bamboozle": "clown",
+      "10_coulrophobia": "clown",
+      "40_popGoesTheWeasel": "clown",
+      "03_barbecueAndChilli": "leatherface",
+      "18_franklinsDemise": "leatherface",
+      "31_knockOut": "leatherface",
+      "04_beastOfPrey": "huntress",
+      "22_hexHuntressLullaby": "huntress",
+      "51_territorialImperative": "huntress",
+      "06_bloodWarden": "freddy",
+      "17_fireUp": "freddy",
+      "43_rememberMe": "freddy",
+      "07_bloodhound": "wraith",
+      "41_predator": "wraith",
+      "45_shadowborn": "wraith",
+      "09_corruptIntervention": "plague",
+      "11_darkDevotion": "plague",
+      "27_infectiousFright": "plague",
+      "35_monitorAndAbuse": "doctor",
+      "37_overcharge": "doctor",
+      "38_overwhelmingPresence": "doctor",
+      "13_discordance": "legion",
+      "30_ironMaiden": "legion",
+      "33_madGrit": "legion",
+      "15_dyingLight": "myers",
+      "39_playWithYourFood": "myers",
+      "44_saveTheBestForLast": "myers",
+      "16_enduring": "hillbilly",
+      "32_lightborn": "hillbilly",
+      "53_tinkerer": "hillbilly",
+      "19_hangmansTrick": "pig",
+      "34_makeYourChoice": "pig",
+      "50_surveillance": "pig",
+      "20_hexDevourHope": "hag",
+      "24_hexRuin": "hag",
+      "25_hexTheThirdSeal": "hag",
+      "21_hexHauntedGround": "spirit",
+      "42_rancor": "spirit",
+      "48_spiritFury": "spirit",
+      "57_imAllEars": "ghostface",
+      "58_thrillingTremors": "ghostface",
+      "59_furtiveChase": "ghostface",
+      "60_cruelLimits": "demogorgon",
+      "61_mindbreaker": "demogorgon",
+      "62_surge": "demogorgon",
+      "63_bloodEcho": "oni",
+      "64_nemesis": "oni",
+      "65_zanshinTactics": "oni",
+      "66_gearhead": "deathslinger",
+      "67_deadMansSwitch": "deathslinger",
+      "68_hexRetribution": "deathslinger",
+      "69_forcedPenance": "pyramidhead",
+      "70_trailOfTorment": "pyramidhead",
+      "71_deathbound": "pyramidhead",
+      "72_hexBloodFavour": "blight",
+      "73_hexUndying": "blight",
+      "74_dragonsGrip": "blight",
+      "75_hoarder": "twins",
+      "76_oppression": "twins",
+      "77_coupDeGrace": "twins",
+      "78_starstruck": "trickster",
+      "79_hexCrowdControl": "trickster",
+      "80_noWayOut": "trickster",
+      "81_eruption": "nemesis",
+      "82_hysteria": "nemesis",
+      "83_lethalPursuer": "nemesis",
+      "84_deadlock": "cenobite",
+      "85_hexPlaything": "cenobite",
+      "86_scourgeHookGiftOfPain": "cenobite",
+      "87_grimEmbrace": "artist",
+      "88_pentimento": "artist",
+      "89_painResonance": "artist",
+      "90_callOfBrine": "onryo",
+      "91_floodOfRage": "onryo",
+      "92_mercilessStorm": "onryo",
+      "93_dissolution": "dredge",
+      "94_darknessRevelated": "dredge",
+      "95_septicTouch": "dredge",
+      "97_awakenedAwarenesss": "wesker",
+      "98_superiorAnatomy": "wesker",
+      "99_terminus": "wesker",
+      "100_nowhereToHide": "knight",
+      "101_faceTheDarkness": "knight",
+      "102_hubris": "knight",
+      "103_gameAfoot": "skullmerchant",
+      "104_leverage": "skullmerchant",
+      "105_thwack": "skullmerchant",
+      "106_forcedHesitation": "singularity",
+      "107_geneticLimits": "singularity",
+      "108_machineLearning": "singularity",
+      "109_alienInstinct": "xenomorph",
+      "110_rapidBrutality": "xenomorph",
+      "111_ultimateWeapon": "xenomorph",
+      "112_batteriesIncluded": "chucky",
+      "113_friendsTilTheEnd": "chucky",
+      "114_hexTwoCanPlay": "chucky",
+      "115_unbound": "unknown",
+      "116_undone": "unknown",
+      "117_unforeseen": "unknown",
+      "118_darkArrogance": "vecna",
+      "119_languidTouch": "vecna",
+      "120_weaveAttunement": "vecna",
+      "121_dominance": "dracula",
+      "122_hexWretchedFate": "dracula",
+      "123_humanGreed": "dracula",
+      "124_allShakingThunder": "houndmaster",
+      "125_noQuarter": "houndmaster",
+      "126_jaggedCompass": "houndmaster",
+      "127_noneAreFree": "ghoul",
+      "128_foreverEntwined": "ghoul",
+      "129_nothingButMisery": "ghoul",
+      "130_haywire": "animatronic",
+      "131_helpWanted": "animatronic",
+      "132_phantomFear": "animatronic",
+      "133_hexOvertureOfDoom": "krasue",
+      "134_ravenous": "krasue",
+      "135_wanderingEye": "krasue",
+      "136_hiveMind": "lich",
+      "137_secretProject": "lich",
+      "138_turnBackTheClock": "lich",
+      "139_rampage": "jason",
+      "140_scaredToDeath": "jason",
+      "141_silentShadow": "jason",
+      "142_layWaste": "judgment",
+      "143_underYourThumb": "judgment",
+      "144_celestialWitness": "judgment"
+    },
+    "perks-survivor": {
+      "00_aceInTheHole": "acevisconti",
+      "33_open-Handed": "acevisconti",
+      "55_upTheAnte": "acevisconti",
+      "07_bond": "dwightfairfield",
+      "26_leader": "dwightfairfield",
+      "38_proveThyself": "dwightfairfield",
+      "01_adrenaline": "megthomas",
+      "39_quickAndQuiet": "megthomas",
+      "48_sprintBurst": "megthomas",
+      "09_botanyKnowledge": "claudettemorel",
+      "21_empathy": "claudettemorel",
+      "42_selfCare": "claudettemorel",
+      "11_calmSpirit": "jakepark",
+      "24_ironWill": "jakepark",
+      "41_saboteur": "jakepark",
+      "05_balancedLanding": "neakarlsson",
+      "50_streetwise": "neakarlsson",
+      "56_urbanEvasion": "neakarlsson",
+      "15_decisiveStrike": "lauriestrode",
+      "32_objectOfObsession": "lauriestrode",
+      "45_soleSurvivor": "lauriestrode",
+      "08_borrowedTime": "williambilloverbeck",
+      "27_leftBehind": "williambilloverbeck",
+      "54_unbreakable": "williambilloverbeck",
+      "03_alert": "fengmin",
+      "29_lithe": "fengmin",
+      "51_technician": "fengmin",
+      "14_deadHard": "davidking",
+      "30_noMither": "davidking",
+      "60_wereGonnaLiveForever": "davidking",
+      "34_pharmacy": "quentinsmith",
+      "57_vigil": "quentinsmith",
+      "58_wakeUp": "quentinsmith",
+      "18_detectivesHunch": "detectivedavidtapp",
+      "49_stakeOut": "detectivedavidtapp",
+      "52_tenacity": "detectivedavidtapp",
+      "06_boilOver": "katedenson",
+      "12_danceWithMe": "katedenson",
+      "61_windowsOfOpportunity": "katedenson",
+      "04_autodidact": "adamfrancis",
+      "17_deliverance": "adamfrancis",
+      "20_diversion": "adamfrancis",
+      "02_aftercare": "jeffjohansen",
+      "10_breakdown": "jeffjohansen",
+      "19_distortion": "jeffjohansen",
+      "22_headOn": "janeromero",
+      "36_poised": "janeromero",
+      "46_solidarity": "janeromero",
+      "62_buckleUp": "ashleyjwilliams",
+      "63_flipFlop": "ashleyjwilliams",
+      "64_mettleOfMan": "ashleyjwilliams",
+      "65_babySitter": "steveharrington",
+      "66_camaraderie": "steveharrington",
+      "67_secondWind": "steveharrington",
+      "68_betterTogether": "nancywheeler",
+      "69_fixated": "nancywheeler",
+      "70_innerStrength": "nancywheeler",
+      "71_breakout": "yuikimura",
+      "72_anyMeansNecessary": "yuikimura",
+      "73_luckyBreak": "yuikimura",
+      "74_offTheRecord": "zarinakassir",
+      "75_redHerring": "zarinakassir",
+      "76_forThePeople": "zarinakassir",
+      "77_soulGuard": "cherylmason",
+      "78_bloodPact": "cherylmason",
+      "79_repressedAlliance": "cherylmason",
+      "80_desperateMeasures": "felixrichter",
+      "81_builtToLast": "felixrichter",
+      "82_visionary": "felixrichter",
+      "83_appraisal": "elodierakoto",
+      "84_deception": "elodierakoto",
+      "85_powerStruggle": "elodierakoto",
+      "86_fastTrack": "yunjinlee",
+      "87_selfPreservation": "yunjinlee",
+      "88_smashHit": "yunjinlee",
+      "89_biteTheBullet": "jillvalentine",
+      "90_blastMine": "jillvalentine",
+      "91_counterforce": "jillvalentine",
+      "92_flashbang": "leonskennedy",
+      "93_resurgence": "leonskennedy",
+      "94_rookieSpirit": "leonskennedy",
+      "95_circleOfHealing": "mikaelareid",
+      "96_shadowStep": "mikaelareid",
+      "97_clairvoyance": "mikaelareid",
+      "98_exponential": "jonahvasquez",
+      "99_correctiveAction": "jonahvasquez",
+      "100_overcome": "jonahvasquez",
+      "101_darkTheory": "yoichiasakawa",
+      "102_empathicConnection": "yoichiasakawa",
+      "103_parentalGuidance": "yoichiasakawa",
+      "104_innerFocus": "haddiekaur",
+      "105_residualManifest": "haddiekaur",
+      "106_overzealous": "haddiekaur",
+      "107_betterThanNew": "rebeccachambers",
+      "108_hyperfocus": "rebeccachambers",
+      "109_lowProfile": "rebeccachambers",
+      "110_reactiveHealing": "adawong",
+      "111_reassurance": "adawong",
+      "112_wiretap": "adawong",
+      "113_potentialEnergy": "vittoriotoscano",
+      "114_fogwise": "vittoriotoscano",
+      "115_quickGambit": "vittoriotoscano",
+      "116_backgroundPlayer": "renatolyra",
+      "117_bloodRush": "renatolyra",
+      "118_cutLoose": "renatolyra",
+      "119_friendlyCompetition": "thalitalyra",
+      "120_teamworkCollectiveStealth": "thalitalyra",
+      "121_teamworkPowerOfTwo": "thalitalyra",
+      "122_madeForThis": "gabrielsoma",
+      "123_scavenger": "gabrielsoma",
+      "124_troubleshooter": "gabrielsoma",
+      "125_dramaturgy": "nicolascage",
+      "126_scenePartner": "nicolascage",
+      "127_plotTwist": "nicolascage",
+      "128_chemicalTrap": "ellenripley",
+      "129_light-Footed": "ellenripley",
+      "130_luckyStar": "ellenripley",
+      "131_boonIllumination": "alanwake",
+      "132_championOfLight": "alanwake",
+      "133_deadline": "alanwake",
+      "134_invocationWeavingSpiders": "sableward",
+      "135_strengthInShadows": "sableward",
+      "136_wicked": "sableward",
+      "137_bardicInspiration": "thetroupe",
+      "138_mirroredIllusion": "thetroupe",
+      "139_stillSight": "thetroupe",
+      "140_specialist": "laracroft",
+      "141_finesse": "laracroft",
+      "142_hardened": "laracroft",
+      "143_exultation": "trevorbelmont",
+      "144_eyesOfBelmont": "trevorbelmont",
+      "145_momentOfGlory": "trevorbelmont",
+      "146_cleanBreak": "tauriecain",
+      "147_treacherousCrows": "tauriecain",
+      "148_shoulderTheBurden": "tauriecain",
+      "149_doNoHarm": "orelarose",
+      "150_dutyOfCare": "orelarose",
+      "151_rapidResponse": "orelarose",
+      "152_apocalypticIngenuity": "rickgrimes",
+      "153_comeAndGetMe": "rickgrimes",
+      "154_teamworkToughenUp": "rickgrimes",
+      "155_conviction": "michonnegrimes",
+      "156_lastStand": "michonnegrimes",
+      "157_teamworkThrowDown": "michonnegrimes",
+      "158_ghostNotes": "veeboonyasak",
+      "159_oneTwoThreeFour": "veeboonyasak",
+      "160_roadLife": "veeboonyasak",
+      "161_badaBadaBoom": "dustinhenderson",
+      "162_changeOfPlan": "dustinhenderson",
+      "163_teamworkFullCircuit": "dustinhenderson",
+      "164_extrasensoryPerception": "eleven",
+      "165_teamworkSoftSpoken": "eleven",
+      "166_weSeeYou": "eleven",
+      "167_aPlaceForUs": "kwontaeyoung",
+      "168_fiveMovesAhead": "kwontaeyoung",
+      "169_flowState": "kwontaeyoung",
+      "170_crossExamination": "shanewiigwaas",
+      "171_lendaHand": "shanewiigwaas",
+      "172_wideOpenThrottle": "shanewiigwaas",
+      "173_steadfast": "aurora",
+      "174_salvationsCry": "aurora",
+      "175_fruitsOfYourLabor": "aurora"
+    }
+  },
+  "unassigned": {
+    "perks-killer": [
+      {
+        "key": "slot_vacio",
+        "name": "Slot Vacio",
+        "reason": "Empty slot"
+      },
+      {
+        "key": "05_bitterMurmur",
+        "name": "Murmullo amargo",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      },
+      {
+        "key": "12_deerstalker",
+        "name": "Acechador de ciervos",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      },
+      {
+        "key": "14_distressing",
+        "name": "Desasosiego",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      },
+      {
+        "key": "23_hexNoOneEscapesDeath",
+        "name": "Maleficio: Nadie escapa de la muerte",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      },
+      {
+        "key": "26_hexThrillOfTheHunt",
+        "name": "Maleficio: La emoción de la caza",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      },
+      {
+        "key": "28_insidious",
+        "name": "Insidioso",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      },
+      {
+        "key": "29_ironGrasp",
+        "name": "Apretón de hierro",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      },
+      {
+        "key": "36_monstrousShrine",
+        "name": "Gancho Flagelante: Santuario monstruoso",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      },
+      {
+        "key": "46_sloppyButcher",
+        "name": "Carnicero chapucero",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      },
+      {
+        "key": "47_spiesFromTheShadows",
+        "name": "Espía de las sombras",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      },
+      {
+        "key": "55_unrelenting",
+        "name": "Implacable",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      },
+      {
+        "key": "56_whispers",
+        "name": "Murmullos",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      },
+      {
+        "key": "96_boonDestroyer",
+        "name": "Esperanza destruida",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      }
+    ],
+    "perks-survivor": [
+      {
+        "key": "slot_vacio",
+        "name": "Slot Vacio",
+        "reason": "Empty slot"
+      },
+      {
+        "key": "13_darkSense",
+        "name": "Percepción oscura",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      },
+      {
+        "key": "16_dejaVu",
+        "name": "Déjà Vu",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      },
+      {
+        "key": "23_hope",
+        "name": "Esperanza",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      },
+      {
+        "key": "25_kindred",
+        "name": "Familia",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      },
+      {
+        "key": "28_lightweight",
+        "name": "De pies ligeros",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      },
+      {
+        "key": "31_noOneLeftBehind",
+        "name": "Nadie se queda atrás",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      },
+      {
+        "key": "35_plunderersInstinct",
+        "name": "Instinto de saqueador",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      },
+      {
+        "key": "37_premonition",
+        "name": "Premonición",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      },
+      {
+        "key": "40_resilience",
+        "name": "Resiliencia",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      },
+      {
+        "key": "43_slipperyMeat",
+        "name": "Carne resbaladiza",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      },
+      {
+        "key": "44_smallGame",
+        "name": "Caza menor",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      },
+      {
+        "key": "47_spineChill",
+        "name": "Escalofríos",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      },
+      {
+        "key": "53_thisIsNotHappening",
+        "name": "Esto no puede estar pasando",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      },
+      {
+        "key": "59_wellMakeIt",
+        "name": "Lo conseguiremos",
+        "reason": "No character association in project sources; retained without owner, pending review."
+      }
+    ]
+  }
+}

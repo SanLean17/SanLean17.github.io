@@ -1,0 +1,11 @@
+/* Layout only. Controls, fields, boxes and typography inherit the canonical system. */
+.user-page .obs-presentation-config{margin-block:var(--sl-section-gap)}
+.user-page .obs-presentation-config .cards-choice-field{margin-block:var(--sl-section-gap);max-width:760px}
+.user-page .obs-presentation-config details[open]>summary{margin-bottom:var(--sl-section-gap)}
+.user-page .obs-presentation-config .ui-fields-two-contained{margin-block:var(--sl-field-group-gap)}
+.user-page .obs-presentation-config .ui-checkbox-row{display:flex;gap:var(--sl-space-2);align-items:center;margin-block:var(--sl-field-group-gap)}
+
+.user-page .obs-presentation-config [hidden]{display:none!important}
+.user-page .obs-presentation-config .ui-checkbox-row{flex-direction:row!important;justify-content:flex-start!important}
+.user-page .obs-presentation-config summary{display:flex;align-items:center;cursor:pointer}
+

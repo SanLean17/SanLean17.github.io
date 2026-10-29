@@ -2,6 +2,15 @@
 (()=>{
   if(window.SanLeanConfirm)return;
   let resolver=null,lastFocus=null;
+  // Observe every canonical modal, including nested confirmations and legacy dialogs.
+  let bodyLock=null;
+  function syncBodyLock(){
+    const open=[...document.querySelectorAll('.profile-modal')].some(n=>!n.hidden&&getComputedStyle(n).display!=='none');
+    if(open&&!bodyLock){bodyLock={y:scrollY,position:document.body.style.position,top:document.body.style.top,width:document.body.style.width,overflow:document.body.style.overflow};document.body.style.position='fixed';document.body.style.top=-bodyLock.y+'px';document.body.style.width='100%';document.body.style.overflow='hidden';}
+    else if(!open&&bodyLock){const saved=bodyLock;bodyLock=null;for(const k of ['position','top','width','overflow'])document.body.style[k]=saved[k];scrollTo(0,saved.y);}
+  }
+  const observe=()=>{new MutationObserver(syncBodyLock).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['hidden','class']});syncBodyLock();};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',observe,{once:true});else observe();
   function ensure(){
     let modal=document.getElementById('sanleanSystemConfirm');
     if(modal)return modal;

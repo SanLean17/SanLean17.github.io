@@ -1,0 +1,35 @@
+[
+  {
+    "key": "145_funnyBusiness",
+    "name": "CONFIRMAR EN LANZAMIENTO — perk 1",
+    "image": "killer/145_funnyBusiness.png",
+    "aliases": [
+      "Funny Business"
+    ],
+    "ownerKey": "terrifier",
+    "enabled": false,
+    "updateId": "terrifier-2026"
+  },
+  {
+    "key": "[CONFIRMAR_KEY_PERK_2]",
+    "name": "CONFIRMAR EN LANZAMIENTO — perk 2",
+    "image": "[CONFIRMAR_RUTA_PERK_2]",
+    "aliases": [
+      "[CONFIRMAR_ALIAS]"
+    ],
+    "ownerKey": "terrifier",
+    "enabled": false,
+    "updateId": "terrifier-2026"
+  },
+  {
+    "key": "[CONFIRMAR_KEY_PERK_3]",
+    "name": "CONFIRMAR EN LANZAMIENTO — perk 3",
+    "image": "[CONFIRMAR_RUTA_PERK_3]",
+    "aliases": [
+      "[CONFIRMAR_ALIAS]"
+    ],
+    "ownerKey": "terrifier",
+    "enabled": false,
+    "updateId": "terrifier-2026"
+  }
+]

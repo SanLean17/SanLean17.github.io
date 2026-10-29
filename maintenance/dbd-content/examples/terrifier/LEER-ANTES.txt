@@ -1,0 +1,4 @@
+EJEMPLO AISLADO. No se carga en ninguna pantalla. Todos los elementos están desactivados.
+No incluye assets. Nombres, claves, números y rutas son referencias provisionales del pedido, NO datos verificados del lanzamiento.
+Los placeholders de las perks 2 y 3 deben completarse con datos confirmados.
+No copiar a data/ hasta confirmar datos y disponer de todas las imágenes; enabled:false también exige assets válidos.

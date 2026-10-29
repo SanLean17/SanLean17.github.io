@@ -1,0 +1,108 @@
+'use strict';
+const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),os=require('node:os');
+const {GitHub}=require('../maintenance/dbd-manager/github.cjs'),delta=require('../maintenance/dbd-content/streamer-runtime/catalog-delta.cjs');
+const testRoot=path.resolve(process.env.SANLEAN_TEST_ROOT||path.join(os.tmpdir(),'sanlean/tests/publication-v4'));
+const temp=path.join(testRoot,'run-'+require('node:crypto').randomUUID());fs.mkdirSync(temp,{recursive:true});
+test.after(()=>{assert(path.resolve(temp).startsWith(testRoot+path.sep));assert(path.basename(temp).startsWith('run-'));fs.rmSync(temp,{recursive:true,force:true});});
+function fixture(){let d={id:'fixture',updateId:'isolated-state',name:'Estado aislado',revision:1,items:[],state:'CAMBIO LISTO PARA PUBLICAR',build:{manifestHash:'abc123'},catalogChanges:[{type:'killers',key:'a',action:'enabled',enabled:false}]};const base={killers:[{key:'a',name:'A',enabled:true},{key:'b',name:'B',enabled:false}],survivors:[],'perks-killer':[],'perks-survivor':[]},requests=[],state={foundation:true,checks:'success',sha:'head1',merged:false,pages:'building',live:false};
+ const m={v4:true,data:temp,home:temp,base:temp,repo:'SanLean17/SanLean17.github.io',branch:'codex/dbd-content-catalogs',read:()=>structuredClone(d),write:value=>(d=structuredClone(value)),ready:()=>structuredClone(d),patch:async()=>d,artifact:()=>({root:temp}),delta:()=>({format:'sanlean-dbd-delta-v1',changes:[{type:'killers',key:'a',action:'enabled',value:false}],assets:[]})};
+ const request=async(method,url,body)=>{requests.push({method,url,body});if(url==='user')return {id:1,login:'fixture-user',name:'Fixture',email:null};if(url.includes('/contents/')){const file=url.split('/contents/')[1].split('?')[0];if(file==='js/dbd-catalog.js'){if(!state.foundation)throw Error('404 Not Found');return {encoding:'base64',content:Buffer.from('function filterEnabled(){}').toString('base64')};}if(file==='.github/workflows/dbd-content.yml')return {encoding:'base64',content:Buffer.from('on: pull_request').toString('base64')};const name=path.basename(file,'.json');return {encoding:'base64',content:Buffer.from(JSON.stringify(name==='perk-conflicts'?{killer:[],survivor:[]}:base[name])).toString('base64')};}
+ if(url.includes('/git/ref/heads/content/'))throw Error('404');if(url.includes('/git/ref/heads/'))return {object:{sha:'base1'}};if(method==='GET'&&url.includes('/git/commits/'))return {tree:{sha:'tree0'}};if(url.endsWith('/git/blobs'))return {sha:'blob1'};if(url.endsWith('/git/trees'))return {sha:'tree1'};if(url.endsWith('/git/commits'))return {sha:'head1'};if(url.endsWith('/git/refs'))return {};if(url.includes('/pulls?'))return [];if(method==='POST'&&url.endsWith('/pulls'))return {number:12,html_url:'https://github.com/SanLean17/SanLean17.github.io/pull/12'};
+ if(url.includes('/check-runs?'))return {total_count:state.checks==='missing'?0:1,check_runs:state.checks==='missing'?[]:[{name:'content',app:{slug:'github-actions'},status:state.checks==='pending'?'in_progress':'completed',conclusion:state.checks==='pending'?null:state.checks,started_at:'2026-10-29T12:00:00.000Z',completed_at:state.checks==='pending'?null:'2026-10-29T12:00:38.000Z',html_url:'https://github.com/SanLean17/SanLean17.github.io/actions/runs/99/job/88'}]};if(url.includes('/status?'))return {total_count:0,statuses:[]};if(url.endsWith('/pages/builds/latest'))return {status:state.pages,commit:state.pagesCommit||'merge1'};
+ if(url.includes('/actions/jobs/'))return {workflow_name:'DBD content architecture',steps:[{name:'Regression test',conclusion:state.checks}]};if(url.endsWith('/merge')){state.merged=true;return {merged:true,sha:'merge1'};}if(url.endsWith('/pulls/12'))return {state:state.merged?'closed':'open',draft:state.draft||false,mergeable:state.mergeable??true,mergeable_state:state.mergeableState||'clean',merged_at:state.merged?'2026-10-29T12:01:00.000Z':null,merged:state.merged,merge_commit_sha:'merge1',head:{sha:state.sha,repo:{full_name:m.repo}},base:{ref:d.productionReview?.baseBranch||d.publication?.baseBranch,repo:{full_name:m.repo}}};throw Error('Unexpected '+method+' '+url);};
+ const gh=new GitHub(m,{request});gh.verifyLive=async()=>state.live;return {gh,m,state,requests,base};}
+test('v4 review applies delta on remote base, preserves other disable and never merges automatically',async()=>{const f=fixture();const d=await f.gh.publish('fixture','isolated-state',{revision:1,manifestHash:'abc123'});assert.equal(d.state,'EN REVISIÓN');assert.equal(d.publication.expectedCatalogs.killers[1].enabled,false);assert(!f.requests.some(r=>r.url.endsWith('/merge')));assert.equal(f.requests.find(r=>r.url.endsWith('/pulls')&&r.method==='POST').body.base,'main');});
+test('review destination and commit must match the explicit confirmation plan',async()=>{const f=fixture();const plan=await f.gh.publicationPlan('fixture');assert.equal(plan.baseBranch,'main');assert.equal(plan.baseCommit,'base1');assert.equal(plan.totals.killers.after,0);await assert.rejects(f.gh.publish('fixture','isolated-state',{revision:1,manifestHash:'abc123',baseBranch:'other',baseCommit:'base1'}));await assert.rejects(f.gh.publish('fixture','isolated-state',{revision:1,manifestHash:'abc123',baseBranch:'main',baseCommit:'older'}));assert(!f.requests.some(r=>r.method==='POST'));});
+test('interrupted production PR can resume without merging',async()=>{const f=fixture();f.state.foundation=false;await f.gh.publish('fixture','isolated-state',{revision:1,manifestHash:'abc123'});f.state.foundation=true;const request=f.gh.request;let interrupted=false;f.gh.request=async(method,url,body)=>{if(!interrupted&&method==='POST'&&url.endsWith('/git/trees')){interrupted=true;throw Error('Simulated connection loss');}return request(method,url,body);};await assert.rejects(f.gh.productionPR('fixture',{confirmation:'isolated-state'}),/connection loss/);assert((await f.gh.progress('fixture')).canPrepareProduction);const recovered=await f.gh.productionPR('fixture',{confirmation:'isolated-state'});assert.equal(recovered.productionReview.baseBranch,'main');assert.equal(recovered.productionReview.number,12);assert(!f.requests.some(r=>r.url.endsWith('/merge')));});
+test('production rejects absent/pending/failed CI, stale head, wrong confirmation and review branch',async()=>{for(const state of ['missing','pending','failure']){const f=fixture();await f.gh.publish('fixture','isolated-state',{revision:1,manifestHash:'abc123'});f.state.checks=state;assert.equal((await f.gh.progress('fixture')).canProduction,false);await assert.rejects(f.gh.production('fixture',{confirmation:'isolated-state',commit:'head1'}));assert(!f.requests.some(r=>r.url.endsWith('/merge')));}const f=fixture();await f.gh.publish('fixture','isolated-state',{revision:1,manifestHash:'abc123'});f.state.sha='other';await assert.rejects(f.gh.production('fixture',{confirmation:'isolated-state',commit:'head1'}));f.state.sha='head1';await assert.rejects(f.gh.production('fixture',{confirmation:'wrong',commit:'head1'}));const g=fixture();g.state.foundation=false;await g.gh.publish('fixture','isolated-state',{revision:1,manifestHash:'abc123'});assert.equal((await g.gh.progress('fixture')).canProduction,false);await assert.rejects(g.gh.production('fixture',{confirmation:'isolated-state',commit:'head1'}));});
+test('explicit confirmation merges exact SHA, Pages must match and live files must verify before green',async()=>{const f=fixture();await f.gh.publish('fixture','isolated-state',{revision:1,manifestHash:'abc123'});assert((await f.gh.progress('fixture')).canProduction);await f.gh.production('fixture',{confirmation:'isolated-state',commit:'head1'});assert.equal(f.requests.find(r=>r.url.endsWith('/merge')).body.sha,'head1');assert.equal((await f.gh.progress('fixture')).state,'DESPLEGANDO');f.state.pages='built';f.state.pagesCommit='older';f.state.live=true;assert.equal((await f.gh.progress('fixture')).completed,undefined);f.state.pagesCommit='merge1';f.state.live=false;assert.equal((await f.gh.progress('fixture')).completed,undefined);f.state.live=true;assert.equal((await f.gh.progress('fixture')).state,'PRODUCCIÓN ACTUALIZADA');});
+test('runtime applies queued deltas once, preserves unrelated updates and recovers interrupted journal',()=>{const root=path.join(temp,'delta-runtime');fs.mkdirSync(path.join(root,'data/actualizaciones'),{recursive:true});const base={killers:[{key:'a',name:'A'},{key:'b',name:'B'}],survivors:[],'perks-killer':[],'perks-survivor':[]};for(const [t,v] of Object.entries({...base,'perk-conflicts':{killer:[],survivor:[]}}))fs.writeFileSync(path.join(root,'data',t+'.json'),JSON.stringify(v));const q=(id,key)=>fs.writeFileSync(path.join(root,'data/actualizaciones',id+'.json'),JSON.stringify({id,format:'sanlean-dbd-delta-v1',createdAt:id,changes:[{type:'killers',key,action:'enabled',value:false}]}));q('first','a');assert.deepEqual(delta.applyPending(root),['first']);q('second','b');assert.deepEqual(delta.applyPending(root),['second']);assert(JSON.parse(fs.readFileSync(path.join(root,'data/killers.json'))).every(i=>i.enabled===false));assert.deepEqual(delta.applyPending(root),[]);const before=JSON.parse(fs.readFileSync(path.join(root,'data/killers.json')));fs.writeFileSync(path.join(root,'data/catalog-update-journal.json'),JSON.stringify({before:{killers:before}}));fs.writeFileSync(path.join(root,'data/killers.json'),'[]');delta.applyPending(root);assert.deepEqual(JSON.parse(fs.readFileSync(path.join(root,'data/killers.json'))),before);});
+test('CI terminals freeze duration, show failed step and survive a fresh manager instance',async()=>{
+ for(const conclusion of ['success','failure','cancelled','skipped','timed_out']){
+  const f=fixture();f.state.foundation=false;await f.gh.publish('fixture','isolated-state',{revision:1,manifestHash:'abc123'});f.state.checks=conclusion;
+  const status=await f.gh.progress('fixture');assert.equal(status.state,conclusion==='success'?'BLOQUEADO POR BASE':'CI FALLÓ');assert.equal(status.active,false);assert.equal(status.durationSeconds,38);assert.equal(status.canProduction,false);
+  const reloaded=new GitHub(f.m,{request:f.gh.request}),again=await reloaded.progress('fixture');assert.equal(again.durationSeconds,38);assert.equal(again.finishedAt,status.finishedAt);
+  if(conclusion!=='success'){assert.equal(status.failure.conclusion,conclusion);assert.equal(status.failure.workflow,'DBD content architecture');assert(status.failure.url.includes('/actions/runs/99'));}
+ }
+});
+test('pending CI has an active phase; absent CI and interrupted upload do not claim active work after restart',async()=>{
+ const f=fixture();await f.gh.publish('fixture','isolated-state',{revision:1,manifestHash:'abc123'});
+ f.state.checks='pending';let status=await f.gh.progress('fixture');assert.equal(status.state,'CI EN CURSO');assert.equal(status.active,true);assert.equal(status.finishedAt,null);
+ f.state.checks='missing';status=await f.gh.progress('fixture');assert.equal(status.state,'PR CREADO');assert.equal(status.active,false);assert.equal(status.canProduction,false);
+ const d=f.m.read();delete d.publication.number;delete d.publication.finishedAt;d.publication.state='SUBIENDO';f.m.write(d);
+ status=await new GitHub(f.m,{request:f.gh.request}).progress('fixture');assert.equal(status.state,'ERROR DE PUBLICACIÓN');assert.equal(status.active,false);assert.match(status.error,/interrumpió/);
+});
+test('network errors do not masquerade as a missing foundation; dirty, draft and stale heads block production',async()=>{
+ const f=fixture(),request=f.gh.request;f.gh.request=async(method,url,body)=>{if(url.includes('js/dbd-catalog.js'))throw Error('Network unavailable');return request(method,url,body);};await assert.rejects(f.gh.publicationPlan('fixture'),/verificar.*Network/);assert(!f.requests.some(r=>r.method==='POST'));
+ for(const property of [{draft:true},{mergeable:false},{mergeableState:'dirty'},{mergeableState:'behind'},{sha:'unreviewed'}]){
+  const g=fixture();await g.gh.publish('fixture','isolated-state',{revision:1,manifestHash:'abc123'});Object.assign(g.state,property);assert(!(await g.gh.progress('fixture')).canProduction);await assert.rejects(g.gh.production('fixture',{confirmation:'isolated-state',commit:'head1'}));assert(!g.requests.some(r=>r.url.endsWith('/merge')));
+ }
+});
+test('double click creates one commit, branch and PR; lost commit/ref/PR responses recover the same objects',async()=>{
+ const expected={revision:1,manifestHash:'abc123'},f=fixture();await Promise.all([f.gh.publish('fixture','isolated-state',expected),f.gh.publish('fixture','isolated-state',expected)]);
+ for(const endpoint of ['/git/commits','/git/refs','/pulls'])assert.equal(f.requests.filter(r=>r.method==='POST'&&r.url.endsWith(endpoint)).length,1);
+ for(const endpoint of ['/git/commits','/git/refs','/pulls']){
+  const g=fixture(),request=g.gh.request;let interrupted=false,ref,pr,bodyBefore;
+  g.gh.request=async(method,url,body)=>{
+   if(method==='GET'&&url.includes('/git/ref/heads/content/')&&ref)return {object:{sha:ref}};
+   if(method==='GET'&&url.includes('/pulls?')&&pr)return [pr];
+   const result=await request(method,url,body);
+   if(method==='POST'&&url.endsWith('/git/refs'))ref=body.sha;
+   if(method==='POST'&&url.endsWith('/pulls'))pr={...result,state:'open',head:{sha:'head1'}};
+   if(method==='POST'&&url.endsWith(endpoint)&&!interrupted){bodyBefore=cloneRequest(body);interrupted=true;throw Error('Lost response after acceptance');}
+   if(method==='POST'&&url.endsWith(endpoint)&&bodyBefore)assert.deepEqual(body,bodyBefore);
+   return result;
+  };
+  await assert.rejects(g.gh.publish('fixture','isolated-state',expected),/Lost response/);
+  const restored=new GitHub(g.m,{request:g.gh.request}),d=await restored.publish('fixture','isolated-state',expected);assert.equal(d.publication.number,12);assert.equal(d.publication.commit,'head1');assert.equal(d.publication.refCreated,true);
+  assert.equal(g.requests.filter(r=>r.method==='POST'&&r.url.endsWith('/pulls')).length,1);assert(!g.requests.some(r=>r.url.endsWith('/merge')));
+ }
+ function cloneRequest(body){return structuredClone(body);}
+});
+test('UI duration is frozen on every terminal state and deployment wording is exclusive to active deployment',()=>{
+ const view=require('../maintenance/dbd-manager/ui/publication-view.js'),start='2026-10-29T12:00:00.000Z',finish='2026-10-29T12:00:38.000Z';
+ for(const state of ['CI APROBADA','CI FALLÓ','BLOQUEADO POR BASE','PRODUCCIÓN ACTUALIZADA','ERROR DE PUBLICACIÓN']){
+  const status={state,startedAt:start,finishedAt:finish,active:false};assert.equal(view.clock(status,Date.now()),'Duración: 00:38');assert.equal(view.clock(status,Date.now()+3600000),'Duración: 00:38');assert(!view.html(status).includes('El despliegue puede tardar'));
+ }
+ assert(view.html({state:'DESPLEGANDO',active:true}).includes('El despliegue puede tardar'));assert(!view.html({state:'CI EN CURSO',active:true}).includes('El despliegue puede tardar'));
+ assert(!view.html({state:'<img onerror=alert(1)>',error:'<script>malicious</script>'}).includes('<script>'));
+});
+
+test('retry waits for a new GitHub check without a fake clock or duplicate rerun and survives restart',async()=>{
+ const f=fixture();await f.gh.publish('fixture','isolated-state',{revision:1,manifestHash:'abc123'});f.state.checks='failure';await f.gh.progress('fixture');const request=f.gh.request;let reruns=0;
+ f.gh.request=async(method,url,body)=>url.endsWith('/rerun-failed-jobs')?(reruns++,{}):request(method,url,body);
+ await Promise.all([f.gh.retryCI('fixture',{commit:'head1'}),f.gh.retryCI('fixture',{commit:'head1'})]);assert.equal(reruns,1);
+ const restored=new GitHub(f.m,{request:f.gh.request});let s=await restored.progress('fixture');assert.equal(s.active,false);assert.equal(s.waiting,true);assert.equal(s.durationSeconds,38);assert.equal(s.failure.runId,undefined);
+ await restored.retryCI('fixture',{commit:'head1'});assert.equal(reruns,1);f.state.checks='pending';s=await restored.progress('fixture');assert.equal(s.active,true);assert.equal(s.retry,undefined);f.state.checks='success';s=await restored.progress('fixture');assert.equal(s.active,false);assert.equal(s.waiting,false);
+});
+
+test('a changed main blocks the reviewed PR and requires a newly confirmed base before creating another PR',async()=>{
+ const f=fixture();await f.gh.publish('fixture','isolated-state',{revision:1,manifestHash:'abc123'});const request=f.gh.request;let head='base2';
+ f.gh.request=async(method,url,body)=>url.endsWith('/git/ref/heads/main')?{object:{sha:head}}:request(method,url,body);
+ const status=await f.gh.progress('fixture');assert.equal(status.canProduction,false);assert.equal(status.canPrepareProduction,true);assert.equal(status.currentBase,'base2');
+ await assert.rejects(f.gh.production('fixture',{confirmation:'isolated-state',commit:'head1'}),/main cambió/);head='base3';await assert.rejects(f.gh.productionPR('fixture',{confirmation:'isolated-state',baseCommit:'base2'}),/rama destino cambió/);assert(!f.requests.some(r=>r.url.endsWith('/merge')));
+});
+
+test('confirmation uses the reviewed delta and verification links appear only after live confirmation',async()=>{
+ const f=fixture();await f.gh.publish('fixture','isolated-state',{revision:1,manifestHash:'abc123'});
+ const status=await f.gh.progress('fixture'),view=require('../maintenance/dbd-manager/ui/publication-view.js');
+ assert.deepEqual(status.summary.disabled,['A']);assert.equal(status.summary.totals.killers.before,1);assert.equal(status.summary.totals.killers.after,0);
+ const prompt=view.confirmation({name:'El Trampero — Desactivar'},{summary:{totals:{killers:{before:44,after:43,disabled:1}},disabled:['El Trampero']}});
+ assert.equal(prompt.title,'PUBLICAR EL TRAMPERO — DESACTIVAR');assert.match(prompt.text,/KILLERS\n44 → 43/);assert.match(prompt.text,/Desactivados:\nEl Trampero/);assert.match(prompt.text,/imagen, aliases, key ni progreso guardado/);
+ assert.equal(prompt.cancelLabel,'CANCELAR');assert.equal(prompt.confirmLabel,'PUBLICAR');
+ assert(!view.html(status).includes('ABRIR RULETA DE KILLERS'));
+ const done=view.html({completed:true});for(const url of ['ruleta-killer.html','tierlist-dbd.html','Usuario/'])assert(done.includes('href="https://sanlean.com.ar/'+url+'"'));
+});
+
+test('Pages creation and CDN delay keep polling, while actual failure or expired wait stops safely',async()=>{
+ const f=fixture();await f.gh.publish('fixture','isolated-state',{revision:1,manifestHash:'abc123'});await f.gh.production('fixture',{confirmation:'isolated-state',commit:'head1'});
+ f.state.pages='built';f.state.pagesCommit='older';let status=await f.gh.progress('fixture');
+ assert.equal(status.state,'PR FUSIONADO');assert.equal(status.waiting,true);assert.equal(status.active,false);assert.equal(status.canProduction,false);
+ const request=f.gh.request;f.gh.request=async(method,url,body)=>{if(url.endsWith('/pages/builds/latest'))throw Error('404 Not Found');return request(method,url,body);};
+ status=await f.gh.progress('fixture');assert.equal(status.state,'PR FUSIONADO');assert.equal(status.waiting,true);
+ f.gh.request=request;f.state.pagesCommit='merge1';status=await f.gh.progress('fixture');assert.equal(status.state,'VERIFICANDO PRODUCCIÓN');assert.equal(status.waiting,true);assert(!status.completed);
+ f.state.pages='errored';status=await f.gh.progress('fixture');assert.equal(status.state,'ERROR DE PUBLICACIÓN');assert.equal(status.waiting,false);
+ f.state.pages='built';f.state.live=true;status=await f.gh.progress('fixture');assert.equal(status.completed,true);assert.equal(status.waiting,false);assert.equal(status.active,false);
+ const g=fixture();await g.gh.publish('fixture','isolated-state',{revision:1,manifestHash:'abc123'});await g.gh.production('fixture',{confirmation:'isolated-state',commit:'head1'});const d=g.m.read();d.deployment.at=new Date(Date.now()-960000).toISOString();g.m.write(d);g.state.pagesCommit='older';
+ status=await g.gh.progress('fixture');assert.equal(status.state,'ERROR DE PUBLICACIÓN');assert.equal(status.waiting,false);assert(!status.completed);
+});

@@ -20,7 +20,7 @@
   const roleLabel=role=>role==='both'?'KILLER + SUPERVIVIENTE':role==='survivor'?'SUPERVIVIENTE':'KILLER';
   const normalizeRole=value=>['killer','survivor','both'].includes(value)?value:'killer';
   const killerAliases={trapper:'trampero evan macmillan',wraith:'espectro philip ojomo',hillbilly:'pueblerino max thompson',nurse:'enfermera sally smithson',myers:'michael myers shape forma',hag:'bruja lisa sherwood',doctor:'herman carter',huntress:'cazadora anna',leatherface:'cannibal canibal bubba sawyer',freddy:'nightmare pesadilla freddy krueger',pig:'cerda amanda young',clown:'payaso kenneth chase',spirit:'espiritu rin yamaoka',legion:'frank julie susie joey',plague:'plaga adiris',ghostface:'ghost face cara fantasma danny johnson',demogorgon:'demo',oni:'kazan yamaoka',deathslinger:'arponero caleb quinn',pyramidhead:'pyramid head executioner verdugo',blight:'deterioro talbot grimes',twins:'gemelos charlotte victor deshayes',trickster:'traicionero ji woon hak',nemesis:'t type',cenobite:'cenobita pinhead elliot spencer',artist:'artista carmina mora',onryo:'sadako yamamura',dredge:'draga',wesker:'mastermind mente maestra albert wesker',knight:'caballero tarhos kovacs',skullmerchant:'skull merchant comerciante calaveras adriana imai',singularity:'singularidad hux',xenomorph:'xenomorfo alien',chucky:'good guy charles lee ray',unknown:'desconocido',vecna:'lich liche',dracula:'dark lord señor oscuro',houndmaster:'adiestradora canina portia maye',ghoul:'kaneki ken kaneki',animatronic:'animatronico springtrap',krasue:'krasue',lich:'first primero',jason:'voorhees slasher destripador',judgment:'sentencia'};
-  const normalizeSearch=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[_-]+/g,' ').replace(/[^a-z0-9ñ ]/g,' ').replace(/\s+/g,' ').trim();
+  const normalizeSearch=v=>SanLeanDBDCatalog.normalizeSearch(v);
 
 
   function installPanel(){
@@ -289,9 +289,8 @@
   async function loadStreakKillers(){
     if(streakKillers.length)return streakKillers;
     try{
-      const response=await fetch('../data/killers.json',{cache:'no-store'});if(!response.ok)throw new Error('No se pudo cargar el catálogo de Killers.');
-      const raw=await response.json();
-      streakKillers=raw.filter(k=>k?.key&&k?.name&&k?.image).map(k=>({...k,image:'../'+String(k.image).replace(/^\.\.\//,'').replace(/^\//,''),search:normalizeSearch(`${k.key} ${k.name} ${killerAliases[k.key]||''}`)}));
+      const raw=await SanLeanDBDCatalog.loadKillers();
+      streakKillers=raw.filter(k=>k?.key&&k?.name&&k?.image).map(k=>({...k,image:'../'+String(k.image).replace(/^\.\.\//,'').replace(/^\//,''),search:SanLeanDBDCatalog.buildSearchText(k,{type:'killers',legacy:killerAliases[k.key]||''})}));
       return streakKillers;
     }catch(err){$('streakStatus').textContent=err.message||'No se pudo cargar el catálogo de Killers.';return[]}
   }

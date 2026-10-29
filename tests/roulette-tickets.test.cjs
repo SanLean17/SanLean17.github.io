@@ -1,0 +1,50 @@
+const {test,before,after}=require('node:test');
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),os=require('node:os'),crypto=require('node:crypto');
+const root=path.resolve(__dirname,'..'),runtime=path.join(root,'maintenance/dbd-content/streamer-runtime');
+const sequence=require(path.join(runtime,'spin-sequence.cjs')),tickets=require(path.join(runtime,'public/js/roulette-entries.js'));
+let dir,appFactory,wheel;
+function reload(){for(const key of Object.keys(require.cache))if(key.startsWith(dir+path.sep))delete require.cache[key];appFactory=require(path.join(dir,'application.cjs'));wheel=appFactory.models.wheel;}
+before(()=>{dir=fs.mkdtempSync(path.join(os.tmpdir(),'sanlean-ticket-test-'));fs.cpSync(runtime,dir,{recursive:true});fs.mkdirSync(path.join(dir,'data'));
+for(const name of ['killers','survivors','perks-killer','perks-survivor','perk-conflicts'])fs.copyFileSync(path.join(root,'data',name+'.json'),path.join(dir,'data',name+'.json'));
+// Controlled 44/45-ticket scenarios never depend on the production roster or activate real content.
+fs.writeFileSync(path.join(dir,'data/killers.json'),JSON.stringify(Array.from({length:44},(_,n)=>({key:n?'ticketfixture'+n:'trapper',name:'Ticket fixture '+n,image:'assets/killers/fixture.png',enabled:true}))));
+fs.copyFileSync(path.join(root,'js/dbd-catalog.js'),path.join(dir,'public/js/dbd-catalog.js'));reload();});
+after(()=>{assert(path.resolve(dir).startsWith(path.resolve(os.tmpdir())+path.sep+'sanlean-ticket-test-'));fs.rmSync(dir,{recursive:true,force:true});});
+function add(state,key='trapper',n=10,tool='killer-wheel'){for(let i=0;i<n;i++)state=wheel.reduce(state,{tool,type:'weight',key,delta:1});return state;}
+function act(state,type,extra={}){return wheel.reduce(state,{tool:'killer-wheel',type,...extra},1000);}
+function gaps(deck,key){const p=deck.flatMap((e,i)=>e.killer.key===key?[i]:[]);return p.map((v,i)=>((p[(i+1)%p.length]-v+deck.length)%deck.length)||deck.length);}
+function verify(state,total,key,copies,gap){const s=state.tools['killer-wheel'].state,p=s.entryPool;assert.equal(p.length,total);assert.equal(s.visualDeck.length,total);
+assert.equal(new Set(s.visualDeck.map(e=>e.entryId)).size,total);assert.deepEqual(s.visualDeck.map(e=>e.entryId).sort(),p.map(e=>e.entryId).sort());assert.equal(s.visualDeck.filter(e=>e.killer.key===key).length,copies);
+assert.equal(Math.min(...gaps(s.visualDeck,key)),gap);assert(Math.max(...gaps(s.visualDeck,key))<=gap+1);
+assert(sequence.validKillerSequence(s.spinSequence,p));assert.equal(s.spinSequence[s.targetIndex].entryId,s.targets[0].entryId);assert.equal(s.winnerEntryId,s.targets[0].entryId);assert.equal(s.winner.killerKey,s.targets[0].key);assert.equal(s.winner.source,s.targets[0].type);wheel.validate(state);}
+test('A: 44 base + 10 Trapper = 54 real visual IDs, 11 Trappers, circular gaps 4/5',()=>{let s=add(wheel.fresh());s=act(act(s,'generate'),'spin');verify(s,54,'trapper',11,4);assert.equal(tickets.stats(wheel.catalogs['killer-wheel'],s.tools['killer-wheel']).extras,10);});
+test('B: 45 base including Terrifier + 10 extras = 55 real IDs, gaps exactly 5',()=>{const file=path.join(dir,'data/killers.json'),original=fs.readFileSync(file);try{const catalog=JSON.parse(original);catalog.push({key:'terrifier',name:'Terrifier',image:'assets/killers/terrifier.png',enabled:true});fs.writeFileSync(file,JSON.stringify(catalog));reload();let s=add(wheel.fresh(),'terrifier');s=act(act(s,'generate'),'spin');verify(s,55,'terrifier',11,5);}finally{fs.writeFileSync(file,original);reload();}});
+test('C/D: default, LC and SANLEAN retain separate IDs; only forced LC winner is removed',()=>{let s=wheel.fresh();for(const name of ['LC','SANLEAN'])s=act(s,'add',{key:'trapper',name});
+const entries=wheel.pool('killer-wheel',s.tools['killer-wheel']),family=entries.filter(e=>e.key==='trapper'),lc=family.find(e=>e.donor==='LC');assert.equal(new Set(family.map(e=>e.entryId)).size,3);
+const random=crypto.randomInt;try{crypto.randomInt=n=>{assert.equal(n,entries.length);return entries.findIndex(e=>e.entryId===lc.entryId);};s=act(act(act(s,'mode',{value:'remove'}),'generate'),'spin');}finally{crypto.randomInt=random;}
+assert.equal(s.tools['killer-wheel'].state.winner.donor,'LC');assert.equal(s.tools['killer-wheel'].state.winner.entryId,lc.entryId);s=wheel.settle(s,'killer-wheel',10000);
+const remaining=wheel.pool('killer-wheel',s.tools['killer-wheel']);assert.deepEqual(s.tools['killer-wheel'].usedKillerEntries,[lc.entryId]);assert(!remaining.some(e=>e.entryId===lc.entryId));for(const e of family.filter(e=>e!==lc))assert(remaining.some(i=>i.entryId===e.entryId));wheel.validate(s);
+});
+test('Keep preserves all entries; visual snapshot remains valid after changing options',()=>{let s=add(wheel.fresh());s=act(act(s,'generate'),'spin');const before=wheel.pool('killer-wheel',s.tools['killer-wheel']);s=wheel.settle(s,'killer-wheel',10000);assert.deepEqual(wheel.pool('killer-wheel',s.tools['killer-wheel']),before);assert.deepEqual(s.tools['killer-wheel'].usedKillerEntries,[]);s=act(s,'weight',{key:'trapper',delta:-1});wheel.validate(s);});
+test('F: persisted extras, donors, exact winning entry, deck and used IDs survive reopen',()=>{const data=path.join(dir,'isolated-data');let app=appFactory(data);
+for(let i=0;i<10;i++)app.action('tools','',{tool:'killer-wheel',type:'weight',key:'trapper',delta:1});
+app.action('tools','',{tool:'killer-wheel',type:'add',key:'trapper',name:'LC'});app.action('tools','',{tool:'killer-wheel',type:'mode',value:'remove'});app.action('tools','',{tool:'killer-wheel',type:'generate'});app.action('tools','',{tool:'killer-wheel',type:'spin'},1);app.tick({scope:'tools',key:'killer-wheel'});app.checkpoint();
+const before=structuredClone(app.get('tools'));reload();app=appFactory(data);assert.deepEqual(app.get('tools'),before);});
+test('Legacy spin repairs visual cycle once without rerolling winner or changing timing/donors',()=>{let s=act(act(add(wheel.fresh()),'generate'),'spin'),old=s.tools['killer-wheel'].state;const kept=structuredClone({targets:old.targets,spinId:old.spinId,startedAt:old.startedAt,durationMs:old.durationMs,spinPool:old.spinPool});
+for(const k of ['sequenceVersion','visualDeck','entryPool','winner','winnerEntryId'])delete old[k];old.spinSequence=old.spinSequence.filter(e=>e.killer.key!=='trapper');
+const repaired=wheel.validate(s),next=repaired.tools['killer-wheel'].state;for(const [k,v] of Object.entries(kept))assert.deepEqual(next[k],v);verify(repaired,54,'trapper',11,4);assert.deepEqual(wheel.validate(repaired),repaired);});
+test('Legacy ready deck survives an exhausted pool without restoring disabled tickets',()=>{let s=act(add(wheel.fresh()),'generate'),tool=s.tools['killer-wheel'];delete tool.state.entryPool;delete tool.state.visualDeck;delete tool.state.sequenceVersion;for(const e of tool.entries)e.enabled=false;const next=wheel.validate(s);assert.equal(wheel.pool('killer-wheel',next.tools['killer-wheel']).length,0);assert.equal(next.tools['killer-wheel'].state.visualDeck.length,54);assert.equal(new Set(next.tools['killer-wheel'].state.visualDeck.map(e=>e.entryId)).size,54);});
+test('Validation rejects lost/duplicated/swapped IDs, altered donors and mismatched winner',()=>{const s=act(act(add(wheel.fresh()),'generate'),'spin');
+for(const corrupt of [s=>s.visualDeck[1]=s.visualDeck[0],s=>s.spinSequence[10]=s.spinSequence[11],s=>s.spinSequence[s.targetIndex].donor='wrong',s=>s.winnerEntryId='wrong',s=>s.entryPool.pop()]){const bad=structuredClone(s);corrupt(bad.tools['killer-wheel'].state);assert.throws(()=>wheel.validate(bad));}});
+test('G: both perk wheels draw one real ticket, exclude all copies from remaining build slots, preserve pool',()=>{for(const tool of ['perks-killer','perks-survivor']){const key=wheel.catalogs[tool].find(e=>!e.emptySlot&&e.key!=='slot_vacio').key;const s=add(wheel.fresh(),key,10,tool),p=wheel.pool(tool,s.tools[tool]),before=structuredClone(p);assert.equal(p.filter(e=>e.key===key).length,11);
+const random=crypto.randomInt;let firstWins=0;try{for(let index=0;index<p.length;index++){let call=0;crypto.randomInt=n=>call++===0?index:0;const chosen=wheel.select(tool,p);assert.equal(chosen[0].entryId,p[index].entryId);assert.equal(new Set(chosen.map(e=>e.key)).size,4);if(chosen[0].key===key)firstWins++;}}finally{crypto.randomInt=random;}assert.equal(firstWins,11);assert.deepEqual(p,before);
+for(let i=0;i<1000;i++)assert.equal(new Set(wheel.select(tool,p).map(e=>e.key)).size,4);
+}});
+test('Every killer ticket has exactly one random draw position: 11/54, without extra weights',()=>{const s=add(wheel.fresh()),p=wheel.pool('killer-wheel',s.tools['killer-wheel']),random=crypto.randomInt;let hits=0;try{for(let i=0;i<p.length;i++){crypto.randomInt=n=>{assert.equal(n,54);return i;};const [winner]=wheel.select('killer-wheel',p);assert.equal(winner.entryId,p[i].entryId);if(winner.key==='trapper')hits++;}}finally{crypto.randomInt=random;}assert.equal(hits,11);});
+test('Circular spacing reaches the mathematical maximum for exhaustive small partitions and 300 seeded loads',()=>{
+let cases=0;function check(counts){const p=counts.flatMap((n,k)=>Array.from({length:n},(_,i)=>({key:String(k),entryId:k+':'+i,type:'extra',donor:null}))),d=sequence.prepareKillerDeck(p,p[p.length-1]);assert(sequence.validKillerSequence(d.spinSequence,p),JSON.stringify(counts));assert.equal(new Set(d.visualDeck.map(e=>e.entryId)).size,p.length);const minimum=Math.min(...counts.map((_,k)=>Math.min(...gaps(d.visualDeck,String(k)))));assert.equal(minimum,Math.floor(p.length/Math.max(...counts)));if(Math.max(...counts)<=p.length/2)assert(minimum>=2);cases++;}
+function partitions(n,max=n,parts=[]){if(!n){check(parts);return;}for(let i=Math.min(n,max);i>=1;i--)partitions(n-i,i,[...parts,i]);}for(let n=1;n<=16;n++)partitions(n);
+let seed=173;function next(n){seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed%n;}
+for(let i=0;i<300;i++)check(Array.from({length:1+next(44)},()=>1+next(99)));check(Array(44).fill(99));assert(cases>1000);
+});
+

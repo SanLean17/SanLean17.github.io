@@ -1,0 +1,11 @@
+{
+  "key": "[KEY]",
+  "name": "[NOMBRE]",
+  "image": "[RUTA]",
+  "aliases": [
+    "[ALIAS]"
+  ],
+  "ownerKey": "[OWNER_KEY]",
+  "enabled": false,
+  "updateId": "[UPDATE_ID]"
+}

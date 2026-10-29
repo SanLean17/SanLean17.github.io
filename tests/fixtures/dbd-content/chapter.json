@@ -1,0 +1,102 @@
+{
+  "killers": [
+    {
+      "key": "fixturekiller",
+      "name": "Asesino de Prueba",
+      "image": "assets/killers/catalog-fixture.webp",
+      "aliases": [
+        "English Test Killer",
+        "Valkyrie’s Rage",
+        "valquiria",
+        "Propietario Nuevo"
+      ],
+      "enabled": false,
+      "updateId": "catalog-fixture"
+    }
+  ],
+  "survivors": [
+    {
+      "key": "fixturesurvivor",
+      "name": "Superviviente de Prueba",
+      "image": "survivors/catalog-fixture.webp",
+      "aliases": [
+        "English Test Survivor",
+        "Súper apodo"
+      ],
+      "enabled": false,
+      "updateId": "catalog-fixture"
+    }
+  ],
+  "perks-killer": [
+    {
+      "key": "901_fixture1",
+      "name": "Habilidad de Prueba 1",
+      "image": "killer/catalog-fixture.webp",
+      "aliases": [
+        "English Perk 1",
+        "alias-de-prueba"
+      ],
+      "ownerKey": "fixturekiller",
+      "enabled": false,
+      "updateId": "catalog-fixture"
+    },
+    {
+      "key": "902_fixture2",
+      "name": "Habilidad de Prueba 2",
+      "aliases": [
+        "English Perk 2",
+        "alias-de-prueba"
+      ],
+      "ownerKey": "fixturekiller",
+      "enabled": false,
+      "updateId": "catalog-fixture"
+    },
+    {
+      "key": "903_fixture3",
+      "name": "Habilidad de Prueba 3",
+      "aliases": [
+        "English Perk 3",
+        "alias-de-prueba"
+      ],
+      "ownerKey": "fixturekiller",
+      "enabled": false,
+      "updateId": "catalog-fixture"
+    }
+  ],
+  "perks-survivor": [
+    {
+      "key": "901_fixture1",
+      "name": "Habilidad de Prueba 1",
+      "image": "survivor/catalog-fixture.webp",
+      "aliases": [
+        "English Perk 1",
+        "alias-de-prueba"
+      ],
+      "ownerKey": "fixturesurvivor",
+      "enabled": false,
+      "updateId": "catalog-fixture"
+    },
+    {
+      "key": "902_fixture2",
+      "name": "Habilidad de Prueba 2",
+      "aliases": [
+        "English Perk 2",
+        "alias-de-prueba"
+      ],
+      "ownerKey": "fixturesurvivor",
+      "enabled": false,
+      "updateId": "catalog-fixture"
+    },
+    {
+      "key": "903_fixture3",
+      "name": "Habilidad de Prueba 3",
+      "aliases": [
+        "English Perk 3",
+        "alias-de-prueba"
+      ],
+      "ownerKey": "fixturesurvivor",
+      "enabled": false,
+      "updateId": "catalog-fixture"
+    }
+  ]
+}
