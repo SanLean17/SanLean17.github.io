@@ -441,6 +441,10 @@ Ejemplos: `FINALIZAR SORTEO`, `FINALIZAR META`, `FINALIZAR WIN STREAK`, `FINALIZ
 - La confirmación queda a la derecha.
 - `Esc` y backdrop cancelan de forma segura.
 
+### Scroll y confirmaciones anidadas
+
+La referencia visual sigue siendo FINALIZAR ALL KILLER CHALLENGE. Los modales de USUARIO, Gestor y Streamer Tools usan el controlador compartido de confirmaciones: backdrop fijo, altura limitada al viewport y scroll dentro del contenido. El body conserva su posición mientras exista algún modal visible y vuelve a su posición anterior al cerrar el último. Una confirmación anidada no desbloquea la página de fondo. Las acciones permanecen accesibles; foco inicial en CANCELAR, acción segura a la izquierda y confirmación a la derecha (apiladas en pantallas angostas).
+
 ## 14. ROLES DE USUARIO Y PERMISOS
 
 USUARIO distingue tres niveles de acceso:

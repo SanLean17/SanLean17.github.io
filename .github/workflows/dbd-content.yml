@@ -19,20 +19,26 @@ jobs:
         run: ./maintenance/dbd-content/ContentTools.ps1 -Mode Validate
       - name: Test shared model, errors, ZIP contents and local progress migration
         run: node --test tests/dbd-catalog.test.cjs tests/dbd-maintenance.test.cjs tests/dbd-streamer-model.test.cjs
-      - name: Preserve private settings and roulette behavior
-        run: |
-          node tests/private-settings.cjs
-          node tests/killer-repeat-controller.cjs
+      - name: Preserve private settings
+        run: node tests/private-settings.cjs
+      - name: Preserve roulette behavior
+        run: node tests/killer-repeat-controller.cjs
       - name: Install browser test dependency
         run: npm install --no-save --package-lock=false playwright@1.62.1 sharp@0.35.5 jszip@3.10.1
       - name: Test local content manager without publishing
         run: node --test tests/dbd-manager.test.cjs tests/dbd-manager-v2.test.cjs tests/dbd-manager-v3.test.cjs tests/dbd-publication-v4.test.cjs
+      - name: DBD CONTENT RELEASE REGRESSION
+        run: node --test tests/dbd-content-release-regression.test.cjs tests/roulette-tickets.test.cjs
       - name: Install test browser
         run: npx playwright install chromium
       - name: Test real public and private screens with staged and active fixtures
-        run: |
-          node tests/dbd-catalog-browser.cjs
-          node tests/all-challenges.cjs
+        run: node tests/dbd-catalog-browser.cjs
+      - name: Test challenge screens and keyed progress
+        run: node tests/all-challenges.cjs
+      - name: DBD CONTENT RELEASE REGRESSION - publication UI and modals
+        run: node tests/dbd-release-browser.cjs
+      - name: DBD CONTENT RELEASE REGRESSION - real server PANEL and OBS
+        run: node tests/dbd-streamer-release-browser.cjs
       - name: Preserve test evidence
         if: always()
         uses: actions/upload-artifact@v4

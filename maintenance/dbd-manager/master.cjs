@@ -12,13 +12,13 @@ async function updateMaster(m,id,input){
  const root=path.resolve(m.streamer),normal=path.resolve(m.home,'../SanLean Streamer Tools');if(root!==normal&&!m.testMode)throw Error('El destino no es la carpeta MASTER configurada.');if(fs.lstatSync(root).isSymbolicLink())throw Error('El MASTER debe ser una carpeta real.');
  if(fs.existsSync(path.join(root,'datos'))&&fs.readdirSync(path.join(root,'datos')).length)throw Error('El MASTER contiene datos personales. Conservá esa instalación y elegí una distribución limpia antes de actualizar.');
  const running=await fetch('http://127.0.0.1:4175/health',{signal:AbortSignal.timeout(700)}).then(r=>r.json()).catch(()=>null);if(running&&path.resolve(running.root)===root)throw Error('Cerrá Streamer Tools MASTER antes de aplicar el parche.');
- const delta=m.delta(d),rel='data/actualizaciones/'+delta.id+'.json',files=[...deltaRuntime.types.map(t=>'data/'+t+'.json'),'data/perk-conflicts.json','data/catalog-updates-state.json','data/catalog-update-journal.json',rel,'catalog-delta.cjs','catalog-store.cjs','server.cjs',...delta.assets.map(f=>f.path)];
+ const program=require('./release-files.cjs')(m),delta=m.delta(d),rel='data/actualizaciones/'+delta.id+'.json',files=[...deltaRuntime.types.map(t=>'data/'+t+'.json'),'data/perk-conflicts.json','data/catalog-updates-state.json','data/catalog-update-journal.json',rel,...program.map(p=>p.file),...delta.assets.map(f=>f.path)];
  const backup=inside(m.data,'respaldos/master/'+delta.id+'-'+Date.now()),before={};mkdir(backup);
  for(const f of files){const target=inside(root,f);before[f]=fs.existsSync(target)?hash(fs.readFileSync(target)):null;if(before[f])copy(target,inside(backup,'antes/'+f));}
  atomic(path.join(backup,'respaldo.json'),{root,manifestHash:d.build.manifestHash,before});
  try{for(const asset of delta.assets){const target=inside(root,asset.path);if(fs.existsSync(target)&&hash(fs.readFileSync(target))!==asset.sha256)throw Error('El MASTER ya contiene otro asset en '+asset.path);copy(inside(a.root,asset.path),target);}
-  for(const f of ['catalog-delta.cjs','catalog-store.cjs','server.cjs'])copy(path.resolve(__dirname,'../dbd-content/streamer-runtime',f),inside(root,f));atomic(inside(root,rel),delta);deltaRuntime.applyPending(root);
-  const result=await smoke(root,inside(m.data,'temp/master-check-'+delta.id));d.master={...result,backup,manifestHash:d.build.manifestHash};return m.write(d);
+  for(const {file,source}of program)copy(source,inside(root,file));atomic(inside(root,rel),delta);deltaRuntime.applyPending(root);
+  const temp=inside(m.data,'temp/master-check-'+delta.id);let result;try{result=await smoke(root,temp);}finally{if(path.dirname(temp)!==path.resolve(m.data,'temp')||!path.basename(temp).startsWith('master-check-'))throw Error('Carpeta temporal inválida.');fs.rmSync(temp,{recursive:true,force:true});}d.master={...result,backup,manifestHash:d.build.manifestHash};return m.write(d);
  }catch(error){for(const f of files){const target=inside(root,f);if(before[f])copy(inside(backup,'antes/'+f),target);else if(fs.existsSync(target))fs.unlinkSync(target);}throw Error('No se completó la actualización; se restauró el respaldo. '+error.message);}
 }
 module.exports={updateMaster,smoke};

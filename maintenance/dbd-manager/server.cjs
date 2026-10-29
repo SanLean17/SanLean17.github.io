@@ -12,6 +12,8 @@ function createServer({home,port=4180,webPort=4181,streamerPort=4182,manager}={}
  if(url.pathname==='/api/editor')return send(res,200,m.editorRead(url.searchParams.get('id')));
  if(url.pathname==='/api/publication-plan')return send(res,200,await gh.publicationPlan(url.searchParams.get('id')));
  if(url.pathname==='/api/publication-status')return send(res,200,await gh.progress(url.searchParams.get('id')));
+ if(url.pathname==='/api/github-status')return send(res,200,await gh.status());
+ if(url.pathname==='/api/publication-watch')return send(res,200,await gh.watch(url.searchParams.get('id')));
  if(url.pathname==='/api/history')return send(res,200,m.history());
  if(url.pathname==='/api/catalogs')return send(res,200,url.searchParams.get('id')?(url.searchParams.get('includeDraft')==='1'?m.analyze(m.read(url.searchParams.get('id'))).all:m.effectiveCatalogs(m.read(url.searchParams.get('id')))):m.catalogs);
  if(url.pathname==='/api/audit')return send(res,200,auditor.scan());
@@ -24,15 +26,18 @@ function createServer({home,port=4180,webPort=4181,streamerPort=4182,manager}={}
  if(url.pathname==='/api/auth')return send(res,200,auth||{running:false,output:''});
  if(url.pathname==='/asset'){const d=m.read(url.searchParams.get('id')),item=d.items.find(i=>i.id===url.searchParams.get('item'));if(!item?.asset)throw Error('Imagen no disponible.');return serveFile(req,res,inside(m.draftDir(d.id),item.asset.file));}
  if(url.pathname==='/download'){const kind=url.searchParams.get('kind');let file;if(kind==='initial')file=path.join(home,'SanLean-Streamer-Tools-Catalog-System-PATCH.zip');else {const d=m.read(url.searchParams.get('id'));const artifact=kind==='patch'?d.patch:kind==='export'?d.export:null;if(!artifact)throw Error('Primero generá el archivo.');file=inside(m.data,artifact.file);if(hash(fs.readFileSync(file))!==artifact.sha256)throw Error('El archivo exportado cambió en disco. No se descargó. Volvé a preparar la actualización.');}res.setHeader('Content-Disposition','attachment; filename="'+path.basename(file)+'"');return serveFile(req,res,file);}
- const assets={'/':'index.html','/app.js':'app.js','/style.css':'style.css','/catalog.js':null,'/font.ttf':null};if(Object.hasOwn(assets,url.pathname)){let file=assets[url.pathname]?path.join(__dirname,'ui',assets[url.pathname]):url.pathname==='/catalog.js'?path.join(m.base,'js/dbd-catalog.js'):path.join(__dirname,'ui/font.ttf');return serveFile(req,res,file);}return send(res,404,{error:'No encontrado.'});}
+ const assets={'/':'index.html','/app.js':'app.js','/publication-view.js':'publication-view.js','/style.css':'style.css','/catalog.js':null,'/font.ttf':null};if(Object.hasOwn(assets,url.pathname)){let file=assets[url.pathname]?path.join(__dirname,'ui',assets[url.pathname]):url.pathname==='/catalog.js'?path.join(m.base,'js/dbd-catalog.js'):path.join(__dirname,'ui/font.ttf');return serveFile(req,res,file);}return send(res,404,{error:'No encontrado.'});}
  if(req.method!=='POST')return send(res,405,{error:'Método no permitido.'});if(req.headers.origin!=='http://127.0.0.1:'+port||req.headers['x-sanlean-manager']!==token||req.headers['content-type']!=='application/json')return send(res,403,{error:'La sesión no es válida. Recargá el Gestor.'});let raw='';for await(const chunk of req){raw+=chunk;if(Buffer.byteLength(raw)>29*1024*1024)return send(res,413,{error:'El archivo supera el tamaño permitido.'});}const body=JSON.parse(raw);const action=async()=>{switch(url.pathname){
  case '/api/new':return m.create(body);
+ case '/api/catalog-correction':return m.saveCorrection(body);
+ case '/api/conflicts':return m.setConflicts(body.id,body);
  case '/api/catalog-save':return m.saveCatalogChange(body);
  case '/api/catalog-owner-save':{const d=body.destination?m.read(body.destination):m.create(body);if(body.destination)m.checkRevision(d,body.destinationRevision);return m.catalogOwner(d.id,{...body,revision:d.revision});}
  case '/api/combine':return m.combine(body);
  case '/api/editor':return m.editorCheckpoint(body.id,body);
  case '/api/check-all':return m.checkAll(body.id,body);
  case '/api/master':return require('./master.cjs').updateMaster(m,body.id,body);
+ case '/api/retry-ci':return gh.retryCI(body.id,body);
  case '/api/production-pr':return gh.productionPR(body.id,body);
  case '/api/production':return gh.production(body.id,body);
  case '/api/catalog-owner':if(preview.active?.id===body.id)await preview.stop();return m.catalogOwner(body.id,body);

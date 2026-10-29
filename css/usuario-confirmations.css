@@ -1,4 +1,10 @@
 /* SANLEAN — confirmación canónica: acción segura izquierda, finalización/destructiva derecha. */
+/* Scroll belongs to the dialog. Shared by USUARIO, the local manager and Streamer Tools. */
+.user-page .profile-modal{position:fixed;inset:0;overscroll-behavior:contain;padding:16px;box-sizing:border-box;overflow:hidden}
+.user-page .profile-modal .profile-dialog,.user-page .profile-modal .confirm-dialog{max-height:calc(100dvh - 32px);min-height:0;box-sizing:border-box;overflow-y:auto;overscroll-behavior:contain;overflow-wrap:anywhere}
+.user-page .sl-system-confirm .confirm-dialog{display:flex;flex-direction:column;overflow:hidden}
+.user-page .sl-system-confirm .confirm-dialog>.eyebrow,.user-page .sl-system-confirm .confirm-dialog>h2,.user-page .sl-system-confirm .confirm-actions{flex-shrink:0}
+.user-page .sl-system-confirm .reset-warning{overflow-y:auto;overscroll-behavior:contain;min-height:0;white-space:pre-line}
 .user-page .profile-modal .profile-dialog{border:1px solid rgba(255,0,60,.65);border-radius:16px;box-shadow:0 18px 60px rgba(0,0,0,.6)}
 .user-page .sl-system-confirm .confirm-dialog{width:min(560px,100%)}
 .user-page .sl-system-confirm-actions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:12px!important}

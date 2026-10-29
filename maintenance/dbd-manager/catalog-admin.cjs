@@ -9,7 +9,7 @@ function install(Manager) {
     return Object.fromEntries(TYPES.map(type => [type, this.catalogs[type].flatMap(entry => {
       const change = (d.catalogChanges || []).find(c => c.type === type && c.key === entry.key);
       if (change?.action === 'delete') return [];
-      return [{ ...entry, ...(change?.action === 'enabled' ? { enabled: change.enabled } : {}), ...(change?.ownerKey ? { ownerKey: change.ownerKey } : {}) }];
+      return [{ ...entry, ...(change?.fields||{}), ...(change?.action === 'enabled' ? { enabled: change.enabled } : {}), ...(change?.ownerKey ? { ownerKey: change.ownerKey } : {}) }];
     })]));
   };
 
@@ -62,14 +62,15 @@ function install(Manager) {
       const pending=d.items.find(i=>i.type===item.type&&i.key===item.key);
       if(pending){if(plan.action==='delete')d.items=d.items.filter(i=>i.id!==pending.id);else pending.enabled=plan.action==='enable';continue;}
       const index = changes.findIndex(c => c.type === item.type && c.key === item.key);
-      const ownerKey = index !== -1 ? changes[index].ownerKey : undefined;
+      const previous=index!==-1?changes[index]:{};
+      const ownerKey = previous.ownerKey;
       const wasDisabled = index !== -1 && changes[index].action==='enabled' && changes[index].enabled===false;
       if (index !== -1) changes.splice(index, 1);
       const original = this.catalogs[item.type].find(i => i.key === item.key);
       if (plan.action === 'delete') changes.push({ ...item, action: 'delete' });
-      else if ((original.enabled !== false) !== (plan.action === 'enable')) changes.push({ ...item, action: 'enabled', enabled: plan.action === 'enable', ...(ownerKey ? { ownerKey } : {}) });
-      else if (plan.action==='enable' && input.retainActivation===true && wasDisabled) changes.push({...item,action:'enabled',enabled:true,restoresPreviousPatch:true,...(ownerKey?{ownerKey}:{})});
-      else if (ownerKey) changes.push({ ...item, action: 'owner', ownerKey });
+      else if ((original.enabled !== false) !== (plan.action === 'enable')) changes.push({ ...previous, ...item, action: 'enabled', enabled: plan.action === 'enable', ...(ownerKey ? { ownerKey } : {}) });
+      else if (plan.action==='enable' && input.retainActivation===true && wasDisabled) changes.push({...previous,...item,action:'enabled',enabled:true,restoresPreviousPatch:true,...(ownerKey?{ownerKey}:{})});
+      else if (ownerKey||previous.fields) changes.push({ ...previous, ...item, action: ownerKey?'owner':'metadata', ...(ownerKey?{ownerKey}:{}) });
     }
     d.catalogChanges = changes;
     return this.changed(d);

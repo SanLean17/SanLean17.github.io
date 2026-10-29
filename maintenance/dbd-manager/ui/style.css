@@ -101,11 +101,31 @@
 .manager-page .module-box>button,.manager-page .module-box>p+.field{margin-top:var(--sl-section-gap)}
 .manager-page .catalog-card .cards-segmented{min-width:0}
 
-/* v4: layout rhythm; the controls themselves remain canonical USUARIO components. */
+/* Layout rhythm; the controls themselves remain canonical USUARIO components. */
 .manager-page .actions{margin-block:24px}
 .manager-page .stage-actions{padding-block:4px;margin-block:24px 28px}
 .manager-page .module-box+.module-box,.manager-page .module-box+.preview-group{margin-top:28px}
 .manager-page .dashboard-card .actions{margin-bottom:0}
+.manager-page .settings-cards{align-items:stretch;margin-block:28px}
+.manager-page .settings-cards>.module-box{margin:0;display:flex;flex-direction:column;gap:19px;min-width:0}
+.manager-page .settings-cards>.module-box>h3,.manager-page .settings-cards>.module-box>p{margin:0}
+.manager-page .settings-cards .filename{order:2;overflow-wrap:anywhere}
+.manager-page .settings-cards .actions{order:3;margin:0;margin-top:auto;padding-top:9px}
+.manager-page .settings-cards #authOutput{order:4}
+.manager-page .settings-ports{margin-top:28px}
+.manager-page #modalBody{display:flex;flex-direction:column;overflow:hidden}
+.manager-page:has(.profile-modal:not([hidden])) #notice{visibility:hidden}
+.manager-page #modalBody>.modal-top{justify-content:center}
+.manager-page #modalBody>.eyebrow,.manager-page #modalBody>.modal-top,.manager-page #modalBody>.modal-bottom{flex-shrink:0}
+.manager-page .modal-content{overflow-y:auto;overscroll-behavior:contain;min-height:0;text-align:left;padding-right:6px}
+.manager-page .modal-content>p{line-height:1.55;margin-bottom:24px}
+.manager-page .modal-content>.field,.manager-page .modal-content>#changeNew{width:min(460px,100%);margin-inline:auto}
+.manager-page .modal-content>.field+.field{margin-top:19px}
+.manager-page .publication-details{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;margin-block:24px;overflow-wrap:anywhere}
+.manager-page .publication-details dd{margin:0}
+.manager-page .publication-heading{overflow-wrap:anywhere}
+.manager-page .publication-heading.error{color:var(--sl-accent,#ff003c)}
+.manager-page .publication-heading.success{color:#62d98e}
 .manager-page .modal-bottom{margin-top:48px;gap:12px;justify-content:center}
 .manager-page #modalBody>.eyebrow{margin-bottom:14px}
 .manager-page #modalBody>p{margin-bottom:24px;line-height:1.55}
@@ -120,3 +140,4 @@
 .manager-page #modalBody>.field+.field,.manager-page #changeNew{margin-top:19px}
 @media(max-width:1000px){.manager-page .catalog-toolbar{grid-template-columns:1fr}.manager-page .catalog-stats{max-width:460px}}
 @media(max-width:560px){.manager-page .modal-bottom{display:grid;grid-template-columns:1fr}.manager-page .catalog-stats{gap:7px}.manager-page .catalog-stats .ui-metric-card{padding:14px 10px}.manager-page #modalBody .modal-top h2{font-size:27px}}
+@media(max-width:360px){.manager-page .section-context{padding:24px 12px!important;--sl-title-size:36px;--sl-section-title-size:36px}}

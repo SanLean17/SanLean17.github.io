@@ -73,7 +73,7 @@ function validate(raw){
     const s=t.state;if(!s||!['idle','ready','spinning','result'].includes(s.status)||typeof s.visible!=='boolean'||!Array.isArray(s.items))throw Error('Estado de ruleta inválido.');
     for(const list of [s.items,s.targets||[]]){
       if(list.length>d.count||list.some(i=>!validEntry(i))||new Set(list.map(i=>i.key)).size!==list.length)throw Error('Resultado inválido o repetido.');
-      if(key!=='killer-wheel'&&(conflicts[d.folder]||[]).some(g=>list.filter(i=>g.includes(i.key)).length>1))throw Error('Build incompatible.');
+      // A saved result may predate today's conflict rules. New draws enforce the current rules in select().
     }
     if(s.status==='spinning'&&(!Number.isFinite(Date.parse(s.startedAt))||s.durationMs!==d.duration||s.targets?.length!==d.count||!Array.isArray(s.spinPool)||s.spinPool.some(i=>!validEntry(i))||s.targets.some(target=>!s.spinPool.some(e=>e.entryId===target.entryId&&e.key===target.key&&e.donor===target.donor))))throw Error('Giro inválido.');
     const targets=s.targets?.length?s.targets:s.items;let visualPool=s.entryPool||s.spinPool||pool(key,t);
@@ -121,7 +121,7 @@ function select(key,entries){
   const unique=[...new Map(entries.map(e=>[e.key,e])).values()];
   function complete(chosen,start){if(chosen.length===d.count)return chosen;for(let i=start;i<=unique.length-(d.count-chosen.length);i++){if(!compatible(unique[i].key,chosen,groups))continue;const found=complete([...chosen,unique[i]],i+1);if(found)return found;}return null;}
   const fallback=complete([],0);if(fallback)return fallback.map(i=>{const candidates=entries.filter(e=>e.key===i.key);return {...candidates[crypto.randomInt(candidates.length)],emptySlot:!!i.emptySlot};});
-  throw Error(key==='killer-wheel'?'No quedan killers disponibles. Restablecé los usados o agregá opciones.':'NO SE PUDO FORMAR UNA BUILD VÁLIDA CON LA CONFIGURACIÓN ACTUAL.');
+  throw Error(key==='killer-wheel'?'No quedan killers disponibles. Restablecé los usados o agregá opciones.':'NO SE PUEDE GENERAR UNA BUILD VÁLIDA CON LA CONFIGURACIÓN ACTUAL.');
 }
 function settle(input,key,now=Date.now()){
   const t=input.tools[key],s=t?.state;if(s?.status!=='spinning'||now<Date.parse(s.startedAt)+s.durationMs)return input;

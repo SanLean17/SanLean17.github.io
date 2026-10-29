@@ -3,7 +3,7 @@ const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypt
 const {TYPES,CHECKS,atomic,inside,mkdir,json,hash,copy,run}=require('./core.cjs');
 const deltaRuntime=require('../dbd-content/streamer-runtime/catalog-delta.cjs');
 const same=(a,b)=>deltaRuntime.canonical(a)===deltaRuntime.canonical(b);
-function kind(d){return d.items.length?'NUEVO CONTENIDO':d.catalogChanges?.length&&d.catalogChanges.every(c=>c.action==='enabled'&&!c.ownerKey)?'CAMBIO DE ESTADO':'CORRECCIÓN';}
+function kind(d){return d.items.length?'NUEVO CONTENIDO':d.catalogChanges?.length&&d.catalogChanges.every(c=>c.action==='enabled'&&!c.ownerKey&&!c.fields)&&!d.conflictChanges?'CAMBIO DE ESTADO':'CORRECCIÓN';}
 function install(Manager){
  Manager.prototype.kind=kind;
  Manager.prototype.configureV4=function({testMode=false,dataRoot}={}){
@@ -13,6 +13,8 @@ function install(Manager){
   const current=path.join(this.data,'catalogo-actual','catalogos.json');if(fs.existsSync(current)){this.rawCatalogs=json(current);this.catalogs=require('./associations.cjs').enrich(this.rawCatalogs);}
   return this;
  };
+ const create=Manager.prototype.create;
+ Manager.prototype.create=function(input){if(input.fixture&&!this.testMode)throw Error('Los fixtures requieren modo de prueba aislado.');const d=create.call(this,input);if(this.testMode){d.fixture=true;return this.write(d);}return d;};
  const plan=Manager.prototype.catalogPlan;
  Manager.prototype.catalogPlan=function(id,input){if(id)return plan.call(this,id,input);const read=this.read;try{this.read=()=>({revision:0,items:[],catalogChanges:[]});return plan.call(this,'current',input);}finally{this.read=read;}};
  Manager.prototype.saveCatalogChange=async function(input){
@@ -63,15 +65,15 @@ function install(Manager){
   // Carry audited historical associations only as additive metadata.
   for(const type of TYPES)for(const e of this.catalogs[type]){const raw=this.rawCatalogs[type].find(x=>x.key===e.key);if(raw&&(e.ownerKey&&!raw.ownerKey||!same(e.aliases||[],raw.aliases||[])))changes.push({type,key:e.key,action:'fill',...(e.ownerKey?{ownerKey:e.ownerKey}:{}),aliases:e.aliases||[]});}
   for(const i of d.items)changes.push({type:i.type,key:i.key,action:'add',entry:this.entry(i,d)});
-  for(const c of d.catalogChanges||[]){const before=this.catalogs[c.type].find(i=>i.key===c.key);if(c.action==='delete')changes.push({type:c.type,key:c.key,action:'delete',before});if(c.action==='enabled')changes.push({type:c.type,key:c.key,action:'enabled',value:c.enabled});if(c.ownerKey)changes.push({type:c.type,key:c.key,action:'owner',before:before.ownerKey,value:c.ownerKey});}
-  return {format:'sanlean-dbd-delta-v1',id:d.updateId+'-'+d.build.manifestHash.slice(0,8),updateId:d.updateId,name:d.name,createdAt:a.manifest.createdAt,changes,assets:a.manifest.files.filter(f=>f.kind==='new').map(f=>({path:f.path,sha256:f.sha256}))};
+  for(const c of d.catalogChanges||[]){if(c.fields)changes.push({type:c.type,key:c.key,action:'metadata',before:c.fieldsBefore,fields:c.fields});const before=this.catalogs[c.type].find(i=>i.key===c.key);if(c.action==='delete')changes.push({type:c.type,key:c.key,action:'delete',before});if(c.action==='enabled')changes.push({type:c.type,key:c.key,action:'enabled',value:c.enabled});if(c.ownerKey)changes.push({type:c.type,key:c.key,action:'owner',before:before.ownerKey,value:c.ownerKey});}
+  return {format:'sanlean-dbd-delta-v1',id:d.updateId+'-'+d.build.manifestHash.slice(0,8),updateId:d.updateId,name:d.name,createdAt:a.manifest.createdAt,changes,...(d.conflictChanges?{conflicts:d.conflictChanges}:{}),assets:a.manifest.files.filter(f=>['new','replacement'].includes(f.kind)).map(f=>({path:f.path,sha256:f.sha256}))};
  };
  const patch=Manager.prototype.patch;
  Manager.prototype.patch=async function(id){if(!this.v4)return patch.call(this,id);const d=this.read(id),a=this.artifact(d),delta=this.delta(d),out=path.join(a.dir,'parche-v4'),staging=path.join(out,'contenido');mkdir(staging);const rel='data/actualizaciones/'+delta.id+'.json';atomic(inside(staging,rel),delta);for(const f of delta.assets)copy(inside(a.root,f.path),inside(staging,f.path));
   // Bootstrap delta support even on the previous catalog-aware Streamer release.
-  for(const file of ['catalog-delta.cjs','catalog-store.cjs'])copy(path.resolve(__dirname,'../dbd-content/streamer-runtime',file),path.join(staging,file));
+  for(const {file,source}of require('./release-files.cjs')(this))copy(source,path.join(staging,file));
   fs.writeFileSync(path.join(staging,'README-PATCH.txt'),'SANLEAN — PARCHE LOCAL\r\n1. Cerrar Streamer Tools.\r\n2. Extraer sobre su carpeta y aceptar reemplazar.\r\n3. Volver a abrir.\r\nLos cambios se aplican al catálogo actual al arrancar, conservando otras actualizaciones, progreso y preferencias. OBS reconecta automáticamente. Refrescar la fuente sólo es una contingencia.\r\nNo contiene datos personales. Streamer Tools se actualiza por este parche local, no desde GitHub.\r\n');
-  const zip=path.join(out,'SanLean-'+d.updateId+'-PATCH.zip');if(!fs.existsSync(zip))await run('powershell.exe',['-NoProfile','-ExecutionPolicy','Bypass','-Command',`Compress-Archive -Path '${staging.replaceAll("'","''")}/*' -DestinationPath '${zip.replaceAll("'","''")}'`]);d.patch={file:path.relative(this.data,zip).split(path.sep).join('/'),sha256:hash(fs.readFileSync(zip)),manifestHash:d.build.manifestHash,format:delta.format};return this.write(d);
+  const zip=path.join(out,'SanLean-'+d.updateId+'-PATCH.zip');await run('powershell.exe',['-NoProfile','-ExecutionPolicy','Bypass','-Command',`Compress-Archive -Path '${staging.replaceAll("'","''")}/*' -DestinationPath '${zip.replaceAll("'","''")}' -Force`]);d.patch={file:path.relative(this.data,zip).split(path.sep).join('/'),sha256:hash(fs.readFileSync(zip)),manifestHash:d.build.manifestHash,format:delta.format};return this.write(d);
  };
 }
 module.exports={install,kind,same};

@@ -6,6 +6,8 @@ let dir,appFactory,wheel;
 function reload(){for(const key of Object.keys(require.cache))if(key.startsWith(dir+path.sep))delete require.cache[key];appFactory=require(path.join(dir,'application.cjs'));wheel=appFactory.models.wheel;}
 before(()=>{dir=fs.mkdtempSync(path.join(os.tmpdir(),'sanlean-ticket-test-'));fs.cpSync(runtime,dir,{recursive:true});fs.mkdirSync(path.join(dir,'data'));
 for(const name of ['killers','survivors','perks-killer','perks-survivor','perk-conflicts'])fs.copyFileSync(path.join(root,'data',name+'.json'),path.join(dir,'data',name+'.json'));
+// Controlled 44/45-ticket scenarios never depend on the production roster or activate real content.
+fs.writeFileSync(path.join(dir,'data/killers.json'),JSON.stringify(Array.from({length:44},(_,n)=>({key:n?'ticketfixture'+n:'trapper',name:'Ticket fixture '+n,image:'assets/killers/fixture.png',enabled:true}))));
 fs.copyFileSync(path.join(root,'js/dbd-catalog.js'),path.join(dir,'public/js/dbd-catalog.js'));reload();});
 after(()=>{assert(path.resolve(dir).startsWith(path.resolve(os.tmpdir())+path.sep+'sanlean-ticket-test-'));fs.rmSync(dir,{recursive:true,force:true});});
 function add(state,key='trapper',n=10,tool='killer-wheel'){for(let i=0;i<n;i++)state=wheel.reduce(state,{tool,type:'weight',key,delta:1});return state;}

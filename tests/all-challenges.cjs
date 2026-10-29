@@ -1,6 +1,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
 const root=path.resolve(__dirname,'..');
+const totals=Object.fromEntries(['killers','survivors'].map(t=>[t,JSON.parse(fs.readFileSync(path.join(root,'data',t+'.json'))).filter(i=>i.enabled!==false&&!i.emptySlot).length]));
 (async()=>{
  const browser=await chromium.launch({headless:true,...(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{})});
  try{
@@ -40,10 +41,10 @@ const root=path.resolve(__dirname,'..');
   const show=async()=>{
    await page.waitForSelector('#allSurvivorOpen',{state:'attached'});
    await page.evaluate(()=>{document.getElementById('loginView').hidden=true;document.getElementById('panelView').hidden=false;window.SanLeanUsuarioNavigation.show('challenges')});
-   await page.waitForFunction(total=>document.getElementById('allSurvivorTotalLabel').textContent.startsWith(String(total)),54+(chapterActive?1:0));
+   await page.waitForFunction(total=>document.getElementById('allSurvivorTotalLabel').textContent.startsWith(String(total)),totals.survivors+(chapterActive?chapter.survivors.length:0));
   };
   await page.goto('https://fixture.test/Usuario/index.html#challenges');await show();
-  for(const [prefix,kind,total,alignment,other] of [['allKiller','challenge_all_killers',44,'left','challenge_all_survivors'],['allSurvivor','challenge_all_survivors',54,'right','challenge_all_killers']]){
+  for(const [prefix,kind,total,alignment,other] of [['allKiller','challenge_all_killers',totals.killers,'left','challenge_all_survivors'],['allSurvivor','challenge_all_survivors',totals.survivors,'right','challenge_all_killers']]){
    await page.locator('#'+prefix+'Open').click();
    await page.locator(`#${prefix}Alignment [data-alignment="${alignment}"]`).click();
    await page.waitForFunction(({kind,alignment})=>fixture.overlays.find(o=>o.kind===kind).settings.lastRowAlignment===alignment,{kind,alignment});
@@ -92,7 +93,7 @@ const root=path.resolve(__dirname,'..');
    sessionStorage.setItem('all-challenge-fixture',JSON.stringify(fixture.db));
   });
   chapterActive=true;await page.reload();await show();
-  for(const [prefix,total,key] of [['allKiller',45,'fixturekiller'],['allSurvivor',55,'fixturesurvivor']]){
+  for(const [prefix,total,key] of [['allKiller',totals.killers+chapter.killers.length,'fixturekiller'],['allSurvivor',totals.survivors+chapter.survivors.length,'fixturesurvivor']]){
    await page.locator('#'+prefix+'Open').click();
    assert.equal(await page.locator('#'+prefix+'Grid .all-challenge-card').count(),total);
    assert.equal(await page.locator('#'+prefix+'Grid .is-completed').count(),1);
