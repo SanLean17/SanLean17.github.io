@@ -17,7 +17,7 @@ function setVisibility(s,mode,t){
   s.visibilityMode=mode;s.autoPhase='hidden';s.autoDeadline=mode==='auto'?t+duration(s,'Interval'):null;
   s.autoCycleStartedAt=mode==='auto'?t:null;s.visible=mode==='show';s.reveal=null;
 }
-function fresh(){return {format:format,version:2,revision:0,entries:Object.fromEntries(keys.map(k=>[k,'pending'])),currentKey:null,currentPrevious:null,status:'idle',visible:false,visibilityMode:'hide',autoPhase:'hidden',autoDeadline:null,autoCycleStartedAt:null,alignment:'center',selectionDuration:10,resultCardScale:70,resultCardDuration:6,...audioDefaults,...autoDefaults,...foldDefaults,startedAt:null,runningSince:null,accumulatedMs:0,updatedAt:iso(Date.now()),selection:null,reveal:null};}
+function fresh(){return {format:format,version:2,revision:0,entries:Object.fromEntries(allCatalog.map(k=>[k.key,'pending'])),currentKey:null,currentPrevious:null,status:'idle',visible:false,visibilityMode:'hide',autoPhase:'hidden',autoDeadline:null,autoCycleStartedAt:null,alignment:'center',selectionDuration:10,resultCardScale:70,resultCardDuration:6,...audioDefaults,...autoDefaults,...foldDefaults,startedAt:null,runningSince:null,accumulatedMs:0,updatedAt:iso(Date.now()),selection:null,reveal:null};}
 // One atomic document, two explicit domains. Reset never discards preferences.
 // The flat state sent to existing OBS clients remains backward compatible.
 function serialize(state){
@@ -38,7 +38,7 @@ function validate(input){
   if(!input||input.format!==format||![1,2].includes(input.version)||!input.entries||typeof input.entries!=='object')fail();
   for(const key of preferenceKeys)if(input[key]!==undefined&&!validPreference(key,input[key]))fail();
   if(input.selectionSeconds!==undefined&&!validPreference('selectionDuration',input.selectionSeconds))fail();
-  if(Array.isArray(input.entries)||!Object.keys(input.entries).length||Object.values(input.entries).some(v=>!states.includes(v)))fail();
+  if(Array.isArray(input.entries)||(!Object.keys(input.entries).length&&allCatalog.length)||Object.values(input.entries).some(v=>!states.includes(v)))fail();
   // New catalog entries start pending; removed characters do not remain in the total.
   input=clone(input);input.entries={...input.entries,...Object.fromEntries(allCatalog.map(k=>[k.key,input.entries[k.key]||'pending']))};
   if(input.currentKey&&!keys.includes(input.currentKey)){input.currentKey=null;input.currentPrevious=null;}
