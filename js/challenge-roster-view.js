@@ -8,7 +8,7 @@
     if(catalogs[role])return catalogs[role];
     if(loading[role])return loading[role];
     loading[role]=Promise.all([
-      fetch(`../data/${role}.json`,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('No se pudo cargar el catálogo.');return r.json()}),
+      SanLeanDBDCatalog.load(role),
       fetch('../data/challenge-roster-bounds.json?v=20261002-2').then(r=>r.ok?r.json():{}).catch(()=>({}))
     ]).then(([rows,bounds])=>{
       catalogs[role]=rows.filter(x=>x?.key&&x?.image).map(x=>{const source=String(x.image).replace(/^\.\.\//,'').replace(/^\//,'');return {...x,image:'../'+source,portraitBounds:bounds[source]}});

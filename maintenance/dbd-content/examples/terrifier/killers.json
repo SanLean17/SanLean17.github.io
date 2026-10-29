@@ -1,0 +1,16 @@
+[
+  {
+    "key": "terrifier",
+    "name": "CONFIRMAR EN LANZAMIENTO — nombre oficial en español",
+    "image": "assets/killers/T_UI_K45_TheTerrifier_Portrait.png",
+    "aliases": [
+      "Art",
+      "Art the Clown",
+      "The Terrifier",
+      "Terrifier",
+      "payaso"
+    ],
+    "enabled": false,
+    "updateId": "terrifier-2026"
+  }
+]

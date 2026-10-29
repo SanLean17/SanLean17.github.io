@@ -19,14 +19,13 @@
   const isPaused=o=>o?.state?.status==='paused';
   const isSession=o=>['active','paused'].includes(o?.state?.status);
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[_-]+/g,' ').replace(/[^a-z0-9ñ ]/g,' ').replace(/\s+/g,' ').trim();
+  const norm=v=>SanLeanDBDCatalog.normalizeSearch(v);
   const aliases={trapper:'trampero evan macmillan',wraith:'espectro philip ojomo',hillbilly:'pueblerino max thompson',nurse:'enfermera sally smithson',myers:'michael myers shape forma',hag:'bruja lisa sherwood',doctor:'herman carter',huntress:'cazadora anna',leatherface:'cannibal canibal bubba sawyer',freddy:'nightmare pesadilla freddy krueger',pig:'cerda amanda young',clown:'payaso kenneth chase',spirit:'espiritu rin yamaoka',legion:'frank julie susie joey',plague:'plaga adiris',ghostface:'ghost face cara fantasma danny johnson',demogorgon:'demo',oni:'kazan yamaoka',deathslinger:'arponero caleb quinn',pyramidhead:'pyramid head executioner verdugo',blight:'deterioro talbot grimes',twins:'gemelos charlotte victor',trickster:'traicionero ji woon',nemesis:'nemesis',cenobite:'pinhead cenobita',artist:'artista carmina mora',onryo:'sadako',dredge:'draga',wesker:'mastermind albert wesker',knight:'caballero',skullmerchant:'comerciante calaveras',singularity:'singularidad',xenomorph:'xenomorfo alien',chucky:'good guy',unknown:'desconocido',vecna:'lich liche',dracula:'dark lord señor oscuro',houndmaster:'adiestradora canina',ghoul:'kaneki',animatronic:'springtrap animatronico',krasue:'krasue',lich:'first primero',jason:'voorhees slasher',judgment:'sentencia'};
 
   async function loadCatalog(){
     if(catalog.length)return catalog;
-    const r=await fetch(`../data/${role}.json`,{cache:'no-store'});if(!r.ok)throw new Error('No se pudo cargar el catálogo de Killers.');
-    const rows=await r.json();
-    catalog=rows.filter(x=>x?.key&&x?.image).map(x=>({...x,image:'../'+String(x.image).replace(/^\.\.\//,'').replace(/^\//,''),search:norm(`${x.key} ${x.name||''} ${role==='killers'?aliases[x.key]||'':''}`)}));
+    const rows=await SanLeanDBDCatalog.load(role);
+    catalog=rows.filter(x=>x?.key&&x?.image).map(x=>({...x,image:'../'+String(x.image).replace(/^\.\.\//,'').replace(/^\//,''),search:SanLeanDBDCatalog.buildSearchText(x,{type:role,legacy:role==='killers'?aliases[x.key]||'':''})}));
     return catalog;
   }
 

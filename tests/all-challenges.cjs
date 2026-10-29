@@ -6,11 +6,16 @@ const root=path.resolve(__dirname,'..');
  try{
   const page=await browser.newPage({viewport:{width:1440,height:1100}}),errors=[];
   page.on('pageerror',e=>errors.push(e.message));
-  const allowed=new Set(['usuario-stream-tabs.js','usuario-stream-tabs-core.js','usuario-canonical-selects.js','usuario-desafios.js','usuario-all-killer-challenge.js']);
+  const allowed=new Set(['dbd-catalog.js','usuario-stream-tabs.js','usuario-stream-tabs-core.js','usuario-canonical-selects.js','usuario-desafios.js','usuario-all-killer-challenge.js']);
+  let chapterActive=false;
+  const chapter=require('./fixtures/dbd-content/chapter.json');
   await page.route('**/*',route=>{
    const u=new URL(route.request().url()),f=path.join(root,decodeURIComponent(u.pathname));
    if(u.hostname!=='fixture.test')return route.abort();
    if(path.extname(f)==='.js'&&!allowed.has(path.basename(f)))return route.fulfill({contentType:'text/javascript',body:''});
+   const type=u.pathname.match(/\/data\/(killers|survivors)\.json$/)?.[1];
+   if(type)return route.fulfill({json:[...JSON.parse(fs.readFileSync(f)),...chapter[type].map(item=>({...item,enabled:chapterActive}))]});
+   if(u.pathname.endsWith('/catalog-fixture.webp'))return route.fulfill({path:path.join(root,'survivors',fs.readdirSync(path.join(root,'survivors')).find(n=>n.endsWith('.webp'))),contentType:'image/webp'});
    if(!fs.existsSync(f))return route.fulfill({status:404,body:''});
    return route.fulfill({path:f,contentType:({'.css':'text/css','.js':'text/javascript','.html':'text/html','.png':'image/png','.webp':'image/webp','.json':'application/json'})[path.extname(f)]});
   });
@@ -35,7 +40,7 @@ const root=path.resolve(__dirname,'..');
   const show=async()=>{
    await page.waitForSelector('#allSurvivorOpen',{state:'attached'});
    await page.evaluate(()=>{document.getElementById('loginView').hidden=true;document.getElementById('panelView').hidden=false;window.SanLeanUsuarioNavigation.show('challenges')});
-   await page.waitForFunction(()=>document.getElementById('allSurvivorTotalLabel').textContent.startsWith('54'));
+   await page.waitForFunction(total=>document.getElementById('allSurvivorTotalLabel').textContent.startsWith(String(total)),54+(chapterActive?1:0));
   };
   await page.goto('https://fixture.test/Usuario/index.html#challenges');await show();
   for(const [prefix,kind,total,alignment,other] of [['allKiller','challenge_all_killers',44,'left','challenge_all_survivors'],['allSurvivor','challenge_all_survivors',54,'right','challenge_all_killers']]){
@@ -80,6 +85,18 @@ const root=path.resolve(__dirname,'..');
    await page.locator('#'+prefix+'Start').click();
    await page.waitForFunction(kind=>fixture.overlays.find(o=>o.kind===kind).state.status==='active',kind);
    assert(await page.evaluate(kind=>Object.values(fixture.overlays.find(o=>o.kind===kind).state.entries).every(v=>v==='pending'),kind));
+  }
+  // Activating only JSON adds a pending character and preserves keyed progress.
+  await page.evaluate(()=>{
+   for(const row of fixture.overlays){const first=Object.keys(row.state.entries)[0];row.state.entries[first]='completed';fixture.db.a.find(o=>o.id===row.id).state=structuredClone(row.state);}
+   sessionStorage.setItem('all-challenge-fixture',JSON.stringify(fixture.db));
+  });
+  chapterActive=true;await page.reload();await show();
+  for(const [prefix,total,key] of [['allKiller',45,'fixturekiller'],['allSurvivor',55,'fixturesurvivor']]){
+   await page.locator('#'+prefix+'Open').click();
+   assert.equal(await page.locator('#'+prefix+'Grid .all-challenge-card').count(),total);
+   assert.equal(await page.locator('#'+prefix+'Grid .is-completed').count(),1);
+   assert(await page.locator('#'+prefix+'Grid [data-key="'+key+'"]').evaluate(e=>e.classList.contains('is-pending')));
   }
   // Reload round-trips both independent states, histories and alignment choices.
   await page.reload();await show();
