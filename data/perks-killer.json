@@ -1,10 +1,1684 @@
 [
-{"key":"slot_vacio","name":"Slot Vacio","image":"rombo.png","emptySlot":true},
-{"key":"00_aNursesCalling","name":"Vocación de enfermera"},{"key":"01_agitation","name":"Agitación"},{"key":"02_bamboozle","name":"Desconcierto"},{"key":"03_barbecueAndChilli","name":"Barbacoa y chile"},{"key":"04_beastOfPrey","name":"Bestia de presa"},{"key":"05_bitterMurmur","name":"Murmullo amargo"},{"key":"06_bloodWarden","name":"Guardián de sangre"},{"key":"07_bloodhound","name":"Sabueso de sangre"},{"key":"08_brutalStrength","name":"Fuerza brutal"},{"key":"09_corruptIntervention","name":"Intervención corrupta"},{"key":"10_coulrophobia","name":"Coulrofobia"},{"key":"11_darkDevotion","name":"Devoción oscura"},{"key":"12_deerstalker","name":"Acechador de ciervos"},{"key":"13_discordance","name":"Discordancia"},{"key":"14_distressing","name":"Desasosiego"},
-{"key":"15_dyingLight","name":"Luz que agoniza","aliases":"Luz extinta Dying Light"},{"key":"16_enduring","name":"Resistente"},{"key":"17_fireUp","name":"Enfurecimiento"},{"key":"18_franklinsDemise","name":"Muerte de Franklin"},{"key":"19_hangmansTrick","name":"Gancho Flagelante: Truco del verdugo","aliases":"Truco del verdugo Hangman's Trick Hangmans Trick Scourge Hook"},{"key":"20_hexDevourHope","name":"Maleficio: Devoradora de esperanza","aliases":"Devorador de esperanza Devour Hope Hex Devour Hope"},{"key":"21_hexHauntedGround","name":"Tierra embrujada"},{"key":"22_hexHuntressLullaby","name":"Nana de la cazadora"},{"key":"23_hexNoOneEscapesDeath","name":"Maleficio: Nadie escapa de la muerte","aliases":"Nadie escapa de la muerte Hex No One Escapes Death NOED"},{"key":"24_hexRuin","name":"Maleficio: Ruina","aliases":"Ruina Hex Ruin"},{"key":"25_hexTheThirdSeal","name":"Maleficio: El tercer sello","aliases":"El tercer sello Hex The Third Seal"},{"key":"26_hexThrillOfTheHunt","name":"Maleficio: La emoción de la caza","aliases":"Emoción de la caza Emocion de la caza Hex Thrill of the Hunt"},
-{"key":"27_infectiousFright","name":"Terror contagioso"},{"key":"28_insidious","name":"Insidioso"},{"key":"29_ironGrasp","name":"Apretón de hierro"},{"key":"30_ironMaiden","name":"Doncella de hierro"},{"key":"31_knockOut","name":"Noqueo"},{"key":"32_lightborn","name":"Hijo de la luz"},{"key":"33_madGrit","name":"Furia ciega"},{"key":"34_makeYourChoice","name":"Toma una decisión"},{"key":"35_monitorAndAbuse","name":"Monitorización y abuso"},{"key":"36_monstrousShrine","name":"Gancho Flagelante: Santuario monstruoso","aliases":"Santuario monstruoso Monstrous Shrine Scourge Hook"},{"key":"37_overcharge","name":"Sobrecarga"},{"key":"38_overwhelmingPresence","name":"Presencia abrumadora"},{"key":"39_playWithYourFood","name":"Juega con la comida"},{"key":"40_popGoesTheWeasel","name":"Pim Pam Pum"},{"key":"41_predator","name":"Depredación","aliases":"Depredador Predator"},{"key":"42_rancor","name":"Rencor"},{"key":"43_rememberMe","name":"Recuérdame"},{"key":"44_saveTheBestForLast","name":"Lo mejor para el final","aliases":"Deja lo mejor para el final Save the Best for Last"},
-{"key":"45_shadowborn","name":"Hijo de las sombras"},{"key":"46_sloppyButcher","name":"Carnicero chapucero"},{"key":"47_spiesFromTheShadows","name":"Espía de las sombras"},{"key":"48_spiritFury","name":"Furia espiritual"},{"key":"49_stridor","name":"Aliento"},{"key":"50_surveillance","name":"Supervisión"},{"key":"51_territorialImperative","name":"Instinto territorial"},{"key":"52_thanatophobia","name":"Tanatofobia"},{"key":"53_tinkerer","name":"Manitas"},{"key":"54_unnervingPresence","name":"Presencia perturbadora"},{"key":"55_unrelenting","name":"Implacable"},{"key":"56_whispers","name":"Murmullos"},{"key":"57_imAllEars","name":"Soy todo oídos"},{"key":"58_thrillingTremors","name":"Temblores trepidantes"},{"key":"59_furtiveChase","name":"Persecución furtiva"},
-{"key":"60_cruelLimits","name":"Restricción cruel","aliases":"Claustrofobia Cruel Limits"},{"key":"61_mindbreaker","name":"Quebrantamentes","aliases":"Hacedor de miedo Fearmonger Mindbreaker"},{"key":"62_surge","name":"Sobretensión","aliases":"Sacudida Surge Jolt"},{"key":"63_bloodEcho","name":"Eco sangriento"},{"key":"64_nemesis","name":"Némesis"},{"key":"65_zanshinTactics","name":"Tácticas de Zanshin"},{"key":"66_gearhead","name":"Oído para la maquinaria"},{"key":"67_deadMansSwitch","name":"Interruptor del hombre muerto"},{"key":"68_hexRetribution","name":"Maleficio: Represalias","aliases":"Represalias Hex Retribution"},{"key":"69_forcedPenance","name":"Imposición de penitencia"},{"key":"70_trailOfTorment","name":"Rastro de tormento"},{"key":"71_deathbound","name":"Vínculo mortal"},{"key":"72_hexBloodFavour","name":"Maleficio: Favor de sangre","aliases":"Favor de sangre Hex Blood Favour Blood Favor"},{"key":"73_hexUndying","name":"Inmortal"},{"key":"74_dragonsGrip","name":"Agarre del dragón"},{"key":"75_hoarder","name":"Acaparadora","aliases":"Acaparador Hoarder"},{"key":"76_oppression","name":"Opresión"},{"key":"77_coupDeGrace","name":"Golpe de gracia"},{"key":"78_starstruck","name":"Deslumbrado"},{"key":"79_hexCrowdControl","name":"Maleficio: Control de masas","aliases":"Control de masas Hex Crowd Control"},{"key":"80_noWayOut","name":"Sin escapatoria"},{"key":"81_eruption","name":"Erupción"},{"key":"82_hysteria","name":"Histeria"},{"key":"83_lethalPursuer","name":"Acecho letal"},{"key":"84_deadlock","name":"Candado"},{"key":"85_hexPlaything","name":"Maleficio: Juguete","aliases":"Juguete Hex Plaything"},{"key":"86_scourgeHookGiftOfPain","name":"Gancho Flagelante: Obsequio doloroso","aliases":"Obsequio doloroso Scourge Hook Gift of Pain"},{"key":"87_grimEmbrace","name":"Acogida nefasta"},{"key":"88_pentimento","name":"Maleficio: Pentimento","aliases":"Pentimento Hex Pentimento"},{"key":"89_painResonance","name":"Gancho Flagelante: Dolor retumbante","aliases":"Dolor retumbante Scourge Hook Pain Resonance"},{"key":"90_callOfBrine","name":"Salmuera"},{"key":"91_floodOfRage","name":"Gancho Flagelante: Oleada de ira","aliases":"Oleada de ira Scourge Hook Floods of Rage Flood of Rage"},
-{"key":"92_mercilessStorm","name":"Tormenta vil"},{"key":"93_dissolution","name":"Disolución"},{"key":"94_darknessRevelated","name":"Oscuridad expuesta"},{"key":"95_septicTouch","name":"Toque séptico"},{"key":"96_boonDestroyer","name":"Esperanza destruida"},{"key":"97_awakenedAwarenesss","name":"Percepciòn activada"},{"key":"98_superiorAnatomy","name":"Anatomía superior"},{"key":"99_terminus","name":"Terminal"},{"key":"100_nowhereToHide","name":"Sin escondite"},{"key":"101_faceTheDarkness","name":"Maleficio: Enfréntate a la oscuridad","aliases":"Enfréntate a la oscuridad Enfrentate a la oscuridad Hex Face the Darkness"},{"key":"102_hubris","name":"Soberbia"},{"key":"103_gameAfoot","name":"Veda abierta"},{"key":"104_leverage","name":"Influencia"},{"key":"105_thwack","name":"¡PLAF!"},{"key":"106_forcedHesitation","name":"Duda impuesta"},{"key":"107_geneticLimits","name":"Limitaciones Genéticas"},{"key":"108_machineLearning","name":"Aprendizaje de Máquina"},{"key":"109_alienInstinct","name":"Instinto Alienígena"},{"key":"110_rapidBrutality","name":"Brutalidad Veloz"},{"key":"111_ultimateWeapon","name":"Arma definitiva"},
-{"key":"112_batteriesIncluded","name":"Pilas incluidas","aliases":"Baterías incluidas Baterias incluidas Batteries Included"},{"key":"113_friendsTilTheEnd","name":"Amigos para siempre","aliases":"Amigos hasta el fin Friends Til the End Friends 'Til the End"},{"key":"114_hexTwoCanPlay","name":"Maleficio: Dos pueden jugar","aliases":"Yo también puedo jugar Yo tambien puedo jugar Hex Two Can Play"},{"key":"115_unbound","name":"Separación","aliases":"Desatado Unbound Separacion"},{"key":"116_undone","name":"Incompleto","aliases":"Inacabado Undone"},{"key":"117_unforeseen","name":"Imprevisto"},{"key":"118_darkArrogance","name":"Arrogancia tenebrosa","aliases":"Arrogancia oscura Dark Arrogance"},{"key":"119_languidTouch","name":"Toque Lánguido"},{"key":"120_weaveAttunement","name":"Sintonía con la urdimbre","aliases":"Armonización de Tejido Armonizacion de Tejido Weave Attunement"},{"key":"121_dominance","name":"Dominación"},{"key":"122_hexWretchedFate","name":"Maleficio: Destino desdichado","aliases":"Destino miserable Hex Wretched Fate"},{"key":"123_humanGreed","name":"Codicia Humana"},{"key":"124_allShakingThunder","name":"Trueno ensordecedor","aliases":"Trueno sísmico Trueno sismico All-Shaking Thunder All Shaking Thunder"},{"key":"125_noQuarter","name":"Sin descanso","aliases":"Sin piedad No Quarter"},{"key":"126_jaggedCompass","name":"Gancho Flagelante: Brújula cerrada","aliases":"Brújula irregular Brujula irregular Scourge Hook Jagged Compass"},{"key":"127_noneAreFree","name":"Nadie es Libre"},{"key":"128_foreverEntwined","name":"Unidos eternamente","aliases":"Unidos por siempre Forever Entwined"},{"key":"129_nothingButMisery","name":"Maleficio: Solo hay miseria","aliases":"Pura miseria Nothing But Misery Hex"},{"key":"130_haywire","name":"Avería","aliases":"Caos Haywire Averia"},{"key":"131_helpWanted","name":"Empleo disponible","aliases":"Pedido de ayuda Help Wanted"},{"key":"132_phantomFear","name":"Miedo Fantasmal"},{"key":"133_hexOvertureOfDoom","name":"Maleficio: Obertura del mal","aliases":"Obertura de la perdición Obertura de la perdicion Hex Overture of Doom"},{"key":"134_ravenous","name":"Voraz","aliases":"Voracidad Ravenous"},{"key":"135_wanderingEye","name":"Mirada errante","aliases":"Ojo errante Wandering Eye"},{"key":"136_hiveMind","name":"Maleficio: Mente colmena","aliases":"Mente colmena Hive Mind Hex"},{"key":"137_secretProject","name":"Proyecto Secreto"},{"key":"138_turnBackTheClock","name":"Retrasa el reloj","aliases":"Retrocede el tiempo Turn Back the Clock"},{"key":"139_rampage","name":"Desbocamiento","aliases":"Rampage"},{"key":"140_scaredToDeath","name":"Maleficio: Susto de muerte","aliases":"Scared To Death Scared to Death Hex"},{"key":"141_silentShadow","name":"Sombra silenciosa","aliases":"Silent Shadow"},{"key":"142_layWaste","name":"Aniquilación","aliases":"Lay Waste Aniquilacion"},{"key":"143_underYourThumb","name":"Maleficio: A tu merced","aliases":"Under Your Thumb Hex"},{"key":"144_celestialWitness","name":"Testigo Celestial","aliases":"Celestial Witness"}
+  {
+    "key": "slot_vacio",
+    "name": "Slot Vacio",
+    "image": "rombo.png",
+    "emptySlot": true
+  },
+  {
+    "key": "00_aNursesCalling",
+    "name": "Vocación de enfermera",
+    "ownerKey": "nurse",
+    "aliases": []
+  },
+  {
+    "key": "01_agitation",
+    "name": "Agitación",
+    "ownerKey": "trapper",
+    "aliases": []
+  },
+  {
+    "key": "02_bamboozle",
+    "name": "Desconcierto",
+    "ownerKey": "clown",
+    "aliases": []
+  },
+  {
+    "key": "03_barbecueAndChilli",
+    "name": "Barbacoa y chile",
+    "ownerKey": "leatherface",
+    "aliases": []
+  },
+  {
+    "key": "04_beastOfPrey",
+    "name": "Bestia de presa",
+    "ownerKey": "huntress",
+    "aliases": []
+  },
+  {
+    "key": "05_bitterMurmur",
+    "name": "Murmullo amargo"
+  },
+  {
+    "key": "06_bloodWarden",
+    "name": "Guardián de sangre",
+    "ownerKey": "freddy",
+    "aliases": []
+  },
+  {
+    "key": "07_bloodhound",
+    "name": "Sabueso de sangre",
+    "ownerKey": "wraith",
+    "aliases": []
+  },
+  {
+    "key": "08_brutalStrength",
+    "name": "Fuerza brutal",
+    "ownerKey": "trapper",
+    "aliases": []
+  },
+  {
+    "key": "09_corruptIntervention",
+    "name": "Intervención corrupta",
+    "ownerKey": "plague",
+    "aliases": []
+  },
+  {
+    "key": "10_coulrophobia",
+    "name": "Coulrofobia",
+    "ownerKey": "clown",
+    "aliases": []
+  },
+  {
+    "key": "11_darkDevotion",
+    "name": "Devoción oscura",
+    "ownerKey": "plague",
+    "aliases": []
+  },
+  {
+    "key": "12_deerstalker",
+    "name": "Acechador de ciervos"
+  },
+  {
+    "key": "13_discordance",
+    "name": "Discordancia",
+    "ownerKey": "legion",
+    "aliases": []
+  },
+  {
+    "key": "14_distressing",
+    "name": "Desasosiego"
+  },
+  {
+    "key": "15_dyingLight",
+    "name": "Luz que agoniza",
+    "aliases": [
+      "Luz extinta Dying Light",
+      "L",
+      "u",
+      "z",
+      " ",
+      "e",
+      "x",
+      "t",
+      "i",
+      "n",
+      "a",
+      "D",
+      "y",
+      "g",
+      "h"
+    ],
+    "ownerKey": "myers"
+  },
+  {
+    "key": "16_enduring",
+    "name": "Resistente",
+    "ownerKey": "hillbilly",
+    "aliases": []
+  },
+  {
+    "key": "17_fireUp",
+    "name": "Enfurecimiento",
+    "ownerKey": "freddy",
+    "aliases": []
+  },
+  {
+    "key": "18_franklinsDemise",
+    "name": "Muerte de Franklin",
+    "ownerKey": "leatherface",
+    "aliases": []
+  },
+  {
+    "key": "19_hangmansTrick",
+    "name": "Gancho Flagelante: Truco del verdugo",
+    "aliases": [
+      "Truco del verdugo Hangman's Trick Hangmans Trick Scourge Hook",
+      "T",
+      "r",
+      "u",
+      "c",
+      "o",
+      " ",
+      "d",
+      "e",
+      "l",
+      "v",
+      "g",
+      "H",
+      "a",
+      "n",
+      "m",
+      "'",
+      "s",
+      "i",
+      "k",
+      "S"
+    ],
+    "ownerKey": "pig"
+  },
+  {
+    "key": "20_hexDevourHope",
+    "name": "Maleficio: Devoradora de esperanza",
+    "aliases": [
+      "Devorador de esperanza Devour Hope Hex Devour Hope",
+      "D",
+      "e",
+      "v",
+      "o",
+      "r",
+      "a",
+      "d",
+      " ",
+      "s",
+      "p",
+      "n",
+      "z",
+      "u",
+      "H",
+      "x"
+    ],
+    "ownerKey": "hag"
+  },
+  {
+    "key": "21_hexHauntedGround",
+    "name": "Tierra embrujada",
+    "ownerKey": "spirit",
+    "aliases": []
+  },
+  {
+    "key": "22_hexHuntressLullaby",
+    "name": "Nana de la cazadora",
+    "ownerKey": "huntress",
+    "aliases": []
+  },
+  {
+    "key": "23_hexNoOneEscapesDeath",
+    "name": "Maleficio: Nadie escapa de la muerte",
+    "aliases": "Nadie escapa de la muerte Hex No One Escapes Death NOED"
+  },
+  {
+    "key": "24_hexRuin",
+    "name": "Maleficio: Ruina",
+    "aliases": [
+      "Ruina Hex Ruin",
+      "R",
+      "u",
+      "i",
+      "n",
+      "a",
+      " ",
+      "H",
+      "e",
+      "x"
+    ],
+    "ownerKey": "hag"
+  },
+  {
+    "key": "25_hexTheThirdSeal",
+    "name": "Maleficio: El tercer sello",
+    "aliases": [
+      "El tercer sello Hex The Third Seal",
+      "E",
+      "l",
+      " ",
+      "t",
+      "e",
+      "r",
+      "c",
+      "s",
+      "o",
+      "H",
+      "x",
+      "T",
+      "h",
+      "i",
+      "d",
+      "S",
+      "a"
+    ],
+    "ownerKey": "hag"
+  },
+  {
+    "key": "26_hexThrillOfTheHunt",
+    "name": "Maleficio: La emoción de la caza",
+    "aliases": "Emoción de la caza Emocion de la caza Hex Thrill of the Hunt"
+  },
+  {
+    "key": "27_infectiousFright",
+    "name": "Terror contagioso",
+    "ownerKey": "plague",
+    "aliases": []
+  },
+  {
+    "key": "28_insidious",
+    "name": "Insidioso"
+  },
+  {
+    "key": "29_ironGrasp",
+    "name": "Apretón de hierro"
+  },
+  {
+    "key": "30_ironMaiden",
+    "name": "Doncella de hierro",
+    "ownerKey": "legion",
+    "aliases": []
+  },
+  {
+    "key": "31_knockOut",
+    "name": "Noqueo",
+    "ownerKey": "leatherface",
+    "aliases": []
+  },
+  {
+    "key": "32_lightborn",
+    "name": "Hijo de la luz",
+    "ownerKey": "hillbilly",
+    "aliases": []
+  },
+  {
+    "key": "33_madGrit",
+    "name": "Furia ciega",
+    "ownerKey": "legion",
+    "aliases": []
+  },
+  {
+    "key": "34_makeYourChoice",
+    "name": "Toma una decisión",
+    "ownerKey": "pig",
+    "aliases": []
+  },
+  {
+    "key": "35_monitorAndAbuse",
+    "name": "Monitorización y abuso",
+    "ownerKey": "doctor",
+    "aliases": []
+  },
+  {
+    "key": "36_monstrousShrine",
+    "name": "Gancho Flagelante: Santuario monstruoso",
+    "aliases": "Santuario monstruoso Monstrous Shrine Scourge Hook"
+  },
+  {
+    "key": "37_overcharge",
+    "name": "Sobrecarga",
+    "ownerKey": "doctor",
+    "aliases": []
+  },
+  {
+    "key": "38_overwhelmingPresence",
+    "name": "Presencia abrumadora",
+    "ownerKey": "doctor",
+    "aliases": []
+  },
+  {
+    "key": "39_playWithYourFood",
+    "name": "Juega con la comida",
+    "ownerKey": "myers",
+    "aliases": []
+  },
+  {
+    "key": "40_popGoesTheWeasel",
+    "name": "Pim Pam Pum",
+    "ownerKey": "clown",
+    "aliases": []
+  },
+  {
+    "key": "41_predator",
+    "name": "Depredación",
+    "aliases": [
+      "Depredador Predator",
+      "D",
+      "e",
+      "p",
+      "r",
+      "d",
+      "a",
+      "o",
+      " ",
+      "P",
+      "t"
+    ],
+    "ownerKey": "wraith"
+  },
+  {
+    "key": "42_rancor",
+    "name": "Rencor",
+    "ownerKey": "spirit",
+    "aliases": []
+  },
+  {
+    "key": "43_rememberMe",
+    "name": "Recuérdame",
+    "ownerKey": "freddy",
+    "aliases": []
+  },
+  {
+    "key": "44_saveTheBestForLast",
+    "name": "Lo mejor para el final",
+    "aliases": [
+      "Deja lo mejor para el final Save the Best for Last",
+      "D",
+      "e",
+      "j",
+      "a",
+      " ",
+      "l",
+      "o",
+      "m",
+      "r",
+      "p",
+      "f",
+      "i",
+      "n",
+      "S",
+      "v",
+      "t",
+      "h",
+      "B",
+      "s",
+      "L"
+    ],
+    "ownerKey": "myers"
+  },
+  {
+    "key": "45_shadowborn",
+    "name": "Hijo de las sombras",
+    "ownerKey": "wraith",
+    "aliases": []
+  },
+  {
+    "key": "46_sloppyButcher",
+    "name": "Carnicero chapucero"
+  },
+  {
+    "key": "47_spiesFromTheShadows",
+    "name": "Espía de las sombras"
+  },
+  {
+    "key": "48_spiritFury",
+    "name": "Furia espiritual",
+    "ownerKey": "spirit",
+    "aliases": []
+  },
+  {
+    "key": "49_stridor",
+    "name": "Aliento",
+    "ownerKey": "nurse",
+    "aliases": []
+  },
+  {
+    "key": "50_surveillance",
+    "name": "Supervisión",
+    "ownerKey": "pig",
+    "aliases": []
+  },
+  {
+    "key": "51_territorialImperative",
+    "name": "Instinto territorial",
+    "ownerKey": "huntress",
+    "aliases": []
+  },
+  {
+    "key": "52_thanatophobia",
+    "name": "Tanatofobia",
+    "ownerKey": "nurse",
+    "aliases": []
+  },
+  {
+    "key": "53_tinkerer",
+    "name": "Manitas",
+    "ownerKey": "hillbilly",
+    "aliases": []
+  },
+  {
+    "key": "54_unnervingPresence",
+    "name": "Presencia perturbadora",
+    "ownerKey": "trapper",
+    "aliases": []
+  },
+  {
+    "key": "55_unrelenting",
+    "name": "Implacable"
+  },
+  {
+    "key": "56_whispers",
+    "name": "Murmullos"
+  },
+  {
+    "key": "57_imAllEars",
+    "name": "Soy todo oídos",
+    "ownerKey": "ghostface",
+    "aliases": []
+  },
+  {
+    "key": "58_thrillingTremors",
+    "name": "Temblores trepidantes",
+    "ownerKey": "ghostface",
+    "aliases": []
+  },
+  {
+    "key": "59_furtiveChase",
+    "name": "Persecución furtiva",
+    "ownerKey": "ghostface",
+    "aliases": []
+  },
+  {
+    "key": "60_cruelLimits",
+    "name": "Restricción cruel",
+    "aliases": [
+      "Claustrofobia Cruel Limits",
+      "C",
+      "l",
+      "a",
+      "u",
+      "s",
+      "t",
+      "r",
+      "o",
+      "f",
+      "b",
+      "i",
+      " ",
+      "e",
+      "L",
+      "m"
+    ],
+    "ownerKey": "demogorgon"
+  },
+  {
+    "key": "61_mindbreaker",
+    "name": "Quebrantamentes",
+    "aliases": [
+      "Hacedor de miedo Fearmonger Mindbreaker",
+      "H",
+      "a",
+      "c",
+      "e",
+      "d",
+      "o",
+      "r",
+      " ",
+      "m",
+      "i",
+      "F",
+      "n",
+      "g",
+      "M",
+      "b",
+      "k"
+    ],
+    "ownerKey": "demogorgon"
+  },
+  {
+    "key": "62_surge",
+    "name": "Sobretensión",
+    "aliases": [
+      "Sacudida Surge Jolt",
+      "S",
+      "a",
+      "c",
+      "u",
+      "d",
+      "i",
+      " ",
+      "r",
+      "g",
+      "e",
+      "J",
+      "o",
+      "l",
+      "t"
+    ],
+    "ownerKey": "demogorgon"
+  },
+  {
+    "key": "63_bloodEcho",
+    "name": "Eco sangriento",
+    "ownerKey": "oni",
+    "aliases": []
+  },
+  {
+    "key": "64_nemesis",
+    "name": "Némesis",
+    "ownerKey": "oni",
+    "aliases": []
+  },
+  {
+    "key": "65_zanshinTactics",
+    "name": "Tácticas de Zanshin",
+    "ownerKey": "oni",
+    "aliases": []
+  },
+  {
+    "key": "66_gearhead",
+    "name": "Oído para la maquinaria",
+    "ownerKey": "deathslinger",
+    "aliases": []
+  },
+  {
+    "key": "67_deadMansSwitch",
+    "name": "Interruptor del hombre muerto",
+    "ownerKey": "deathslinger",
+    "aliases": []
+  },
+  {
+    "key": "68_hexRetribution",
+    "name": "Maleficio: Represalias",
+    "aliases": [
+      "Represalias Hex Retribution",
+      "R",
+      "e",
+      "p",
+      "r",
+      "s",
+      "a",
+      "l",
+      "i",
+      " ",
+      "H",
+      "x",
+      "t",
+      "b",
+      "u",
+      "o",
+      "n"
+    ],
+    "ownerKey": "deathslinger"
+  },
+  {
+    "key": "69_forcedPenance",
+    "name": "Imposición de penitencia",
+    "ownerKey": "pyramidhead",
+    "aliases": []
+  },
+  {
+    "key": "70_trailOfTorment",
+    "name": "Rastro de tormento",
+    "ownerKey": "pyramidhead",
+    "aliases": []
+  },
+  {
+    "key": "71_deathbound",
+    "name": "Vínculo mortal",
+    "ownerKey": "pyramidhead",
+    "aliases": []
+  },
+  {
+    "key": "72_hexBloodFavour",
+    "name": "Maleficio: Favor de sangre",
+    "aliases": [
+      "Favor de sangre Hex Blood Favour Blood Favor",
+      "F",
+      "a",
+      "v",
+      "o",
+      "r",
+      " ",
+      "d",
+      "e",
+      "s",
+      "n",
+      "g",
+      "H",
+      "x",
+      "B",
+      "l",
+      "u"
+    ],
+    "ownerKey": "blight"
+  },
+  {
+    "key": "73_hexUndying",
+    "name": "Inmortal",
+    "ownerKey": "blight",
+    "aliases": []
+  },
+  {
+    "key": "74_dragonsGrip",
+    "name": "Agarre del dragón",
+    "ownerKey": "blight",
+    "aliases": []
+  },
+  {
+    "key": "75_hoarder",
+    "name": "Acaparadora",
+    "aliases": [
+      "Acaparador Hoarder",
+      "A",
+      "c",
+      "a",
+      "p",
+      "r",
+      "d",
+      "o",
+      " ",
+      "H",
+      "e"
+    ],
+    "ownerKey": "twins"
+  },
+  {
+    "key": "76_oppression",
+    "name": "Opresión",
+    "ownerKey": "twins",
+    "aliases": []
+  },
+  {
+    "key": "77_coupDeGrace",
+    "name": "Golpe de gracia",
+    "ownerKey": "twins",
+    "aliases": []
+  },
+  {
+    "key": "78_starstruck",
+    "name": "Deslumbrado",
+    "ownerKey": "trickster",
+    "aliases": []
+  },
+  {
+    "key": "79_hexCrowdControl",
+    "name": "Maleficio: Control de masas",
+    "aliases": [
+      "Control de masas Hex Crowd Control",
+      "C",
+      "o",
+      "n",
+      "t",
+      "r",
+      "l",
+      " ",
+      "d",
+      "e",
+      "m",
+      "a",
+      "s",
+      "H",
+      "x",
+      "w"
+    ],
+    "ownerKey": "trickster"
+  },
+  {
+    "key": "80_noWayOut",
+    "name": "Sin escapatoria",
+    "ownerKey": "trickster",
+    "aliases": []
+  },
+  {
+    "key": "81_eruption",
+    "name": "Erupción",
+    "ownerKey": "nemesis",
+    "aliases": []
+  },
+  {
+    "key": "82_hysteria",
+    "name": "Histeria",
+    "ownerKey": "nemesis",
+    "aliases": []
+  },
+  {
+    "key": "83_lethalPursuer",
+    "name": "Acecho letal",
+    "ownerKey": "nemesis",
+    "aliases": []
+  },
+  {
+    "key": "84_deadlock",
+    "name": "Candado",
+    "ownerKey": "cenobite",
+    "aliases": []
+  },
+  {
+    "key": "85_hexPlaything",
+    "name": "Maleficio: Juguete",
+    "aliases": [
+      "Juguete Hex Plaything",
+      "J",
+      "u",
+      "g",
+      "e",
+      "t",
+      " ",
+      "H",
+      "x",
+      "P",
+      "l",
+      "a",
+      "y",
+      "h",
+      "i",
+      "n"
+    ],
+    "ownerKey": "cenobite"
+  },
+  {
+    "key": "86_scourgeHookGiftOfPain",
+    "name": "Gancho Flagelante: Obsequio doloroso",
+    "aliases": [
+      "Obsequio doloroso Scourge Hook Gift of Pain",
+      "O",
+      "b",
+      "s",
+      "e",
+      "q",
+      "u",
+      "i",
+      "o",
+      " ",
+      "d",
+      "l",
+      "r",
+      "S",
+      "c",
+      "g",
+      "H",
+      "k",
+      "G",
+      "f",
+      "t",
+      "P",
+      "a",
+      "n"
+    ],
+    "ownerKey": "cenobite"
+  },
+  {
+    "key": "87_grimEmbrace",
+    "name": "Acogida nefasta",
+    "ownerKey": "artist",
+    "aliases": []
+  },
+  {
+    "key": "88_pentimento",
+    "name": "Maleficio: Pentimento",
+    "aliases": [
+      "Pentimento Hex Pentimento",
+      "P",
+      "e",
+      "n",
+      "t",
+      "i",
+      "m",
+      "o",
+      " ",
+      "H",
+      "x"
+    ],
+    "ownerKey": "artist"
+  },
+  {
+    "key": "89_painResonance",
+    "name": "Gancho Flagelante: Dolor retumbante",
+    "aliases": [
+      "Dolor retumbante Scourge Hook Pain Resonance",
+      "D",
+      "o",
+      "l",
+      "r",
+      " ",
+      "e",
+      "t",
+      "u",
+      "m",
+      "b",
+      "a",
+      "n",
+      "S",
+      "c",
+      "g",
+      "H",
+      "k",
+      "P",
+      "i",
+      "R",
+      "s"
+    ],
+    "ownerKey": "artist"
+  },
+  {
+    "key": "90_callOfBrine",
+    "name": "Salmuera",
+    "ownerKey": "onryo",
+    "aliases": []
+  },
+  {
+    "key": "91_floodOfRage",
+    "name": "Gancho Flagelante: Oleada de ira",
+    "aliases": [
+      "Oleada de ira Scourge Hook Floods of Rage Flood of Rage",
+      "O",
+      "l",
+      "e",
+      "a",
+      "d",
+      " ",
+      "i",
+      "r",
+      "S",
+      "c",
+      "o",
+      "u",
+      "g",
+      "H",
+      "k",
+      "F",
+      "s",
+      "f",
+      "R"
+    ],
+    "ownerKey": "onryo"
+  },
+  {
+    "key": "92_mercilessStorm",
+    "name": "Tormenta vil",
+    "ownerKey": "onryo",
+    "aliases": []
+  },
+  {
+    "key": "93_dissolution",
+    "name": "Disolución",
+    "ownerKey": "dredge",
+    "aliases": []
+  },
+  {
+    "key": "94_darknessRevelated",
+    "name": "Oscuridad expuesta",
+    "ownerKey": "dredge",
+    "aliases": []
+  },
+  {
+    "key": "95_septicTouch",
+    "name": "Toque séptico",
+    "ownerKey": "dredge",
+    "aliases": []
+  },
+  {
+    "key": "96_boonDestroyer",
+    "name": "Esperanza destruida"
+  },
+  {
+    "key": "97_awakenedAwarenesss",
+    "name": "Percepciòn activada",
+    "ownerKey": "wesker",
+    "aliases": []
+  },
+  {
+    "key": "98_superiorAnatomy",
+    "name": "Anatomía superior",
+    "ownerKey": "wesker",
+    "aliases": []
+  },
+  {
+    "key": "99_terminus",
+    "name": "Terminal",
+    "ownerKey": "wesker",
+    "aliases": []
+  },
+  {
+    "key": "100_nowhereToHide",
+    "name": "Sin escondite",
+    "ownerKey": "knight",
+    "aliases": []
+  },
+  {
+    "key": "101_faceTheDarkness",
+    "name": "Maleficio: Enfréntate a la oscuridad",
+    "aliases": [
+      "Enfréntate a la oscuridad Enfrentate a la oscuridad Hex Face the Darkness",
+      "E",
+      "n",
+      "f",
+      "r",
+      "é",
+      "t",
+      "a",
+      "e",
+      " ",
+      "l",
+      "o",
+      "s",
+      "c",
+      "u",
+      "i",
+      "d",
+      "H",
+      "x",
+      "F",
+      "h",
+      "D",
+      "k"
+    ],
+    "ownerKey": "knight"
+  },
+  {
+    "key": "102_hubris",
+    "name": "Soberbia",
+    "ownerKey": "knight",
+    "aliases": []
+  },
+  {
+    "key": "103_gameAfoot",
+    "name": "Veda abierta",
+    "ownerKey": "skullmerchant",
+    "aliases": []
+  },
+  {
+    "key": "104_leverage",
+    "name": "Influencia",
+    "ownerKey": "skullmerchant",
+    "aliases": []
+  },
+  {
+    "key": "105_thwack",
+    "name": "¡PLAF!",
+    "ownerKey": "skullmerchant",
+    "aliases": []
+  },
+  {
+    "key": "106_forcedHesitation",
+    "name": "Duda impuesta",
+    "ownerKey": "singularity",
+    "aliases": []
+  },
+  {
+    "key": "107_geneticLimits",
+    "name": "Limitaciones Genéticas",
+    "ownerKey": "singularity",
+    "aliases": []
+  },
+  {
+    "key": "108_machineLearning",
+    "name": "Aprendizaje de Máquina",
+    "ownerKey": "singularity",
+    "aliases": []
+  },
+  {
+    "key": "109_alienInstinct",
+    "name": "Instinto Alienígena",
+    "ownerKey": "xenomorph",
+    "aliases": []
+  },
+  {
+    "key": "110_rapidBrutality",
+    "name": "Brutalidad Veloz",
+    "ownerKey": "xenomorph",
+    "aliases": []
+  },
+  {
+    "key": "111_ultimateWeapon",
+    "name": "Arma definitiva",
+    "ownerKey": "xenomorph",
+    "aliases": []
+  },
+  {
+    "key": "112_batteriesIncluded",
+    "name": "Pilas incluidas",
+    "aliases": [
+      "Baterías incluidas Baterias incluidas Batteries Included",
+      "B",
+      "a",
+      "t",
+      "e",
+      "r",
+      "í",
+      "s",
+      " ",
+      "i",
+      "n",
+      "c",
+      "l",
+      "u",
+      "d",
+      "I"
+    ],
+    "ownerKey": "chucky"
+  },
+  {
+    "key": "113_friendsTilTheEnd",
+    "name": "Amigos para siempre",
+    "aliases": [
+      "Amigos hasta el fin Friends Til the End Friends 'Til the End",
+      "A",
+      "m",
+      "i",
+      "g",
+      "o",
+      "s",
+      " ",
+      "h",
+      "a",
+      "t",
+      "e",
+      "l",
+      "f",
+      "n",
+      "F",
+      "r",
+      "d",
+      "T",
+      "E",
+      "'"
+    ],
+    "ownerKey": "chucky"
+  },
+  {
+    "key": "114_hexTwoCanPlay",
+    "name": "Maleficio: Dos pueden jugar",
+    "aliases": [
+      "Yo también puedo jugar Yo tambien puedo jugar Hex Two Can Play",
+      "Y",
+      "o",
+      " ",
+      "t",
+      "a",
+      "m",
+      "b",
+      "i",
+      "é",
+      "n",
+      "p",
+      "u",
+      "e",
+      "d",
+      "j",
+      "g",
+      "r",
+      "H",
+      "x",
+      "T",
+      "w",
+      "C",
+      "P",
+      "l",
+      "y"
+    ],
+    "ownerKey": "chucky"
+  },
+  {
+    "key": "115_unbound",
+    "name": "Separación",
+    "aliases": [
+      "Desatado Unbound Separacion",
+      "D",
+      "e",
+      "s",
+      "a",
+      "t",
+      "d",
+      "o",
+      " ",
+      "U",
+      "n",
+      "b",
+      "u",
+      "S",
+      "p",
+      "r",
+      "c",
+      "i"
+    ],
+    "ownerKey": "unknown"
+  },
+  {
+    "key": "116_undone",
+    "name": "Incompleto",
+    "aliases": [
+      "Inacabado Undone",
+      "I",
+      "n",
+      "a",
+      "c",
+      "b",
+      "d",
+      "o",
+      " ",
+      "U",
+      "e"
+    ],
+    "ownerKey": "unknown"
+  },
+  {
+    "key": "117_unforeseen",
+    "name": "Imprevisto",
+    "ownerKey": "unknown",
+    "aliases": []
+  },
+  {
+    "key": "118_darkArrogance",
+    "name": "Arrogancia tenebrosa",
+    "aliases": [
+      "Arrogancia oscura Dark Arrogance",
+      "A",
+      "r",
+      "o",
+      "g",
+      "a",
+      "n",
+      "c",
+      "i",
+      " ",
+      "s",
+      "u",
+      "D",
+      "k",
+      "e"
+    ],
+    "ownerKey": "vecna"
+  },
+  {
+    "key": "119_languidTouch",
+    "name": "Toque Lánguido",
+    "ownerKey": "vecna",
+    "aliases": []
+  },
+  {
+    "key": "120_weaveAttunement",
+    "name": "Sintonía con la urdimbre",
+    "aliases": [
+      "Armonización de Tejido Armonizacion de Tejido Weave Attunement",
+      "A",
+      "r",
+      "m",
+      "o",
+      "n",
+      "i",
+      "z",
+      "a",
+      "c",
+      "ó",
+      " ",
+      "d",
+      "e",
+      "T",
+      "j",
+      "W",
+      "v",
+      "t",
+      "u"
+    ],
+    "ownerKey": "vecna"
+  },
+  {
+    "key": "121_dominance",
+    "name": "Dominación",
+    "ownerKey": "dracula",
+    "aliases": []
+  },
+  {
+    "key": "122_hexWretchedFate",
+    "name": "Maleficio: Destino desdichado",
+    "aliases": [
+      "Destino miserable Hex Wretched Fate",
+      "D",
+      "e",
+      "s",
+      "t",
+      "i",
+      "n",
+      "o",
+      " ",
+      "m",
+      "r",
+      "a",
+      "b",
+      "l",
+      "H",
+      "x",
+      "W",
+      "c",
+      "h",
+      "d",
+      "F"
+    ],
+    "ownerKey": "dracula"
+  },
+  {
+    "key": "123_humanGreed",
+    "name": "Codicia Humana",
+    "ownerKey": "dracula",
+    "aliases": []
+  },
+  {
+    "key": "124_allShakingThunder",
+    "name": "Trueno ensordecedor",
+    "aliases": [
+      "Trueno sísmico Trueno sismico All-Shaking Thunder All Shaking Thunder",
+      "T",
+      "r",
+      "u",
+      "e",
+      "n",
+      "o",
+      " ",
+      "s",
+      "í",
+      "m",
+      "i",
+      "c",
+      "A",
+      "l",
+      "-",
+      "S",
+      "h",
+      "a",
+      "k",
+      "g",
+      "d"
+    ],
+    "ownerKey": "houndmaster"
+  },
+  {
+    "key": "125_noQuarter",
+    "name": "Sin descanso",
+    "aliases": [
+      "Sin piedad No Quarter",
+      "S",
+      "i",
+      "n",
+      " ",
+      "p",
+      "e",
+      "d",
+      "a",
+      "N",
+      "o",
+      "Q",
+      "u",
+      "r",
+      "t"
+    ],
+    "ownerKey": "houndmaster"
+  },
+  {
+    "key": "126_jaggedCompass",
+    "name": "Gancho Flagelante: Brújula cerrada",
+    "aliases": [
+      "Brújula irregular Brujula irregular Scourge Hook Jagged Compass",
+      "B",
+      "r",
+      "ú",
+      "j",
+      "u",
+      "l",
+      "a",
+      " ",
+      "i",
+      "e",
+      "g",
+      "S",
+      "c",
+      "o",
+      "H",
+      "k",
+      "J",
+      "d",
+      "C",
+      "m",
+      "p",
+      "s"
+    ],
+    "ownerKey": "houndmaster"
+  },
+  {
+    "key": "127_noneAreFree",
+    "name": "Nadie es Libre",
+    "ownerKey": "ghoul",
+    "aliases": []
+  },
+  {
+    "key": "128_foreverEntwined",
+    "name": "Unidos eternamente",
+    "aliases": [
+      "Unidos por siempre Forever Entwined",
+      "U",
+      "n",
+      "i",
+      "d",
+      "o",
+      "s",
+      " ",
+      "p",
+      "r",
+      "e",
+      "m",
+      "F",
+      "v",
+      "E",
+      "t",
+      "w"
+    ],
+    "ownerKey": "ghoul"
+  },
+  {
+    "key": "129_nothingButMisery",
+    "name": "Maleficio: Solo hay miseria",
+    "aliases": [
+      "Pura miseria Nothing But Misery Hex",
+      "P",
+      "u",
+      "r",
+      "a",
+      " ",
+      "m",
+      "i",
+      "s",
+      "e",
+      "N",
+      "o",
+      "t",
+      "h",
+      "n",
+      "g",
+      "B",
+      "M",
+      "y",
+      "H",
+      "x"
+    ],
+    "ownerKey": "ghoul"
+  },
+  {
+    "key": "130_haywire",
+    "name": "Avería",
+    "aliases": [
+      "Caos Haywire Averia",
+      "C",
+      "a",
+      "o",
+      "s",
+      " ",
+      "H",
+      "y",
+      "w",
+      "i",
+      "r",
+      "e",
+      "A",
+      "v"
+    ],
+    "ownerKey": "animatronic"
+  },
+  {
+    "key": "131_helpWanted",
+    "name": "Empleo disponible",
+    "aliases": [
+      "Pedido de ayuda Help Wanted",
+      "P",
+      "e",
+      "d",
+      "i",
+      "o",
+      " ",
+      "a",
+      "y",
+      "u",
+      "H",
+      "l",
+      "p",
+      "W",
+      "n",
+      "t"
+    ],
+    "ownerKey": "animatronic"
+  },
+  {
+    "key": "132_phantomFear",
+    "name": "Miedo Fantasmal",
+    "ownerKey": "animatronic",
+    "aliases": []
+  },
+  {
+    "key": "133_hexOvertureOfDoom",
+    "name": "Maleficio: Obertura del mal",
+    "aliases": [
+      "Obertura de la perdición Obertura de la perdicion Hex Overture of Doom",
+      "O",
+      "b",
+      "e",
+      "r",
+      "t",
+      "u",
+      "a",
+      " ",
+      "d",
+      "l",
+      "p",
+      "i",
+      "c",
+      "ó",
+      "n",
+      "o",
+      "H",
+      "x",
+      "v",
+      "f",
+      "D",
+      "m"
+    ],
+    "ownerKey": "krasue"
+  },
+  {
+    "key": "134_ravenous",
+    "name": "Voraz",
+    "aliases": [
+      "Voracidad Ravenous",
+      "V",
+      "o",
+      "r",
+      "a",
+      "c",
+      "i",
+      "d",
+      " ",
+      "R",
+      "v",
+      "e",
+      "n",
+      "u",
+      "s"
+    ],
+    "ownerKey": "krasue"
+  },
+  {
+    "key": "135_wanderingEye",
+    "name": "Mirada errante",
+    "aliases": [
+      "Ojo errante Wandering Eye",
+      "O",
+      "j",
+      "o",
+      " ",
+      "e",
+      "r",
+      "a",
+      "n",
+      "t",
+      "W",
+      "d",
+      "i",
+      "g",
+      "E",
+      "y"
+    ],
+    "ownerKey": "krasue"
+  },
+  {
+    "key": "136_hiveMind",
+    "name": "Maleficio: Mente colmena",
+    "aliases": [
+      "Mente colmena Hive Mind Hex",
+      "M",
+      "e",
+      "n",
+      "t",
+      " ",
+      "c",
+      "o",
+      "l",
+      "m",
+      "a",
+      "H",
+      "i",
+      "v",
+      "d",
+      "x"
+    ],
+    "ownerKey": "lich"
+  },
+  {
+    "key": "137_secretProject",
+    "name": "Proyecto Secreto",
+    "ownerKey": "lich",
+    "aliases": []
+  },
+  {
+    "key": "138_turnBackTheClock",
+    "name": "Retrasa el reloj",
+    "aliases": [
+      "Retrocede el tiempo Turn Back the Clock",
+      "R",
+      "e",
+      "t",
+      "r",
+      "o",
+      "c",
+      "d",
+      " ",
+      "l",
+      "i",
+      "m",
+      "p",
+      "T",
+      "u",
+      "n",
+      "B",
+      "a",
+      "k",
+      "h",
+      "C"
+    ],
+    "ownerKey": "lich"
+  },
+  {
+    "key": "139_rampage",
+    "name": "Desbocamiento",
+    "aliases": [
+      "Rampage",
+      "R",
+      "a",
+      "m",
+      "p",
+      "g",
+      "e"
+    ],
+    "ownerKey": "jason"
+  },
+  {
+    "key": "140_scaredToDeath",
+    "name": "Maleficio: Susto de muerte",
+    "aliases": [
+      "Scared To Death Scared to Death Hex",
+      "S",
+      "c",
+      "a",
+      "r",
+      "e",
+      "d",
+      " ",
+      "T",
+      "o",
+      "D",
+      "t",
+      "h",
+      "H",
+      "x"
+    ],
+    "ownerKey": "jason"
+  },
+  {
+    "key": "141_silentShadow",
+    "name": "Sombra silenciosa",
+    "aliases": [
+      "Silent Shadow",
+      "S",
+      "i",
+      "l",
+      "e",
+      "n",
+      "t",
+      " ",
+      "h",
+      "a",
+      "d",
+      "o",
+      "w"
+    ],
+    "ownerKey": "jason"
+  },
+  {
+    "key": "142_layWaste",
+    "name": "Aniquilación",
+    "aliases": [
+      "Lay Waste Aniquilacion",
+      "L",
+      "a",
+      "y",
+      " ",
+      "W",
+      "s",
+      "t",
+      "e",
+      "A",
+      "n",
+      "i",
+      "q",
+      "u",
+      "l",
+      "c",
+      "o"
+    ],
+    "ownerKey": "judgment"
+  },
+  {
+    "key": "143_underYourThumb",
+    "name": "Maleficio: A tu merced",
+    "aliases": [
+      "Under Your Thumb Hex",
+      "U",
+      "n",
+      "d",
+      "e",
+      "r",
+      " ",
+      "Y",
+      "o",
+      "u",
+      "T",
+      "h",
+      "m",
+      "b",
+      "H",
+      "x"
+    ],
+    "ownerKey": "judgment"
+  },
+  {
+    "key": "144_celestialWitness",
+    "name": "Testigo Celestial",
+    "aliases": [
+      "Celestial Witness",
+      "C",
+      "e",
+      "l",
+      "s",
+      "t",
+      "i",
+      "a",
+      " ",
+      "W",
+      "n"
+    ],
+    "ownerKey": "judgment"
+  }
 ]
