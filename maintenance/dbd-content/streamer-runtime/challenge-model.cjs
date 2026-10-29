@@ -40,10 +40,11 @@ function validate(input){
   if(input.selectionSeconds!==undefined&&!validPreference('selectionDuration',input.selectionSeconds))fail();
   if(Array.isArray(input.entries)||!Object.keys(input.entries).length||Object.values(input.entries).some(v=>!states.includes(v)))fail();
   // New catalog entries start pending; removed characters do not remain in the total.
-  input=clone(input);input.entries=Object.fromEntries(allCatalog.map(k=>[k.key,input.entries[k.key]||'pending']));
+  input=clone(input);input.entries={...input.entries,...Object.fromEntries(allCatalog.map(k=>[k.key,input.entries[k.key]||'pending']))};
   if(input.currentKey&&!keys.includes(input.currentKey)){input.currentKey=null;input.currentPrevious=null;}
   if(input.selection&&(!keys.includes(input.selection.target)||input.selection.steps.some(step=>!keys.includes(step.key))))input.selection=null;
   if(input.reveal&&!keys.includes(input.reveal.key))input.reveal=null;
+  if(['active','paused'].includes(input.status)&&!eligible(input).length){input.status='completed';input.runningSince=null;input.visible=false;input.visibilityMode='hide';input.autoDeadline=null;input.autoPhase='hidden';input.autoCycleStartedAt=null;}
   if(['completed','finished'].includes(input.status)&&eligible(input).length){input.status='paused';input.runningSince=null;input.visible=false;input.visibilityMode='hide';input.autoDeadline=null;input.autoPhase='hidden';input.autoCycleStartedAt=null;}
   if(!['show','hide','auto'].includes(input.visibilityMode)||!['hidden','entering','visible','exiting'].includes(input.autoPhase))fail();
   if(input.visibilityMode==='auto'){

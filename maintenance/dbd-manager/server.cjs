@@ -3,14 +3,19 @@ const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),
 const {Manager,json,inside,run,hash}=require('./core.cjs'),{GitHub}=require('./github.cjs'),{Preview,serveFile}=require('./preview.cjs');
 function createServer({home,port=4180,webPort=4181,streamerPort=4182,manager}={}){
  home=path.resolve(home||path.join(__dirname,'../..'));const config=json(path.join(home,'base-manifest.json'));
- const m=manager||new Manager({home,baseRoot:path.join(home,'base/web'),streamerRoot:path.join(home,'base/streamer'),baseCommit:config.commit});const gh=new GitHub(m),preview=new Preview(m,{webPort,streamerPort});const token=crypto.randomBytes(32).toString('hex');let queue=Promise.resolve(),auth=null;
+ const m=manager||new Manager({home,baseRoot:path.join(home,'base/web'),streamerRoot:path.join(home,'base/streamer'),baseCommit:config.commit});const gh=new GitHub(m),preview=new Preview(m,{webPort,streamerPort});const token=crypto.randomBytes(32).toString('hex');const auditor=new (require('./audit.cjs').Auditor)(home);let queue=Promise.resolve(),auth=null;
  const send=(res,status,data)=>{res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify(data));};
  const server=http.createServer(async(req,res)=>{res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('X-Frame-Options','DENY');res.setHeader('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' blob: data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'");if(req.headers.host!=='127.0.0.1:'+port||req.headers['sec-fetch-site']==='cross-site')return send(res,403,{error:'Origen no permitido.'});let url;try{url=new URL(req.url,'http://127.0.0.1:'+port);}catch{return send(res,400,{error:'URL no válida.'});}
  try{if(req.method==='GET'){
  if(url.pathname==='/health')return send(res,200,{app:'sanlean-dbd-manager',root:home});
- if(url.pathname==='/api/session')return send(res,200,{token,repo:m.repo,branch:m.branch,commit:m.baseCommit,data:m.data,github:await gh.status(),auth,drafts:m.list(),preview:preview.active,config});
+ if(url.pathname==='/api/session')return send(res,200,{token,repo:m.repo,branch:m.branch,commit:m.baseCommit,data:m.data,github:await gh.status(),auth,drafts:m.list(),preview:preview.active,config,ports:{manager:port,web:webPort,streamer:streamerPort}});
  if(url.pathname==='/api/history')return send(res,200,m.history());
- if(url.pathname==='/api/catalogs')return send(res,200,m.catalogs);
+ if(url.pathname==='/api/catalogs')return send(res,200,url.searchParams.get('id')?m.effectiveCatalogs(m.read(url.searchParams.get('id'))):m.catalogs);
+ if(url.pathname==='/api/audit')return send(res,200,auditor.scan());
+ if(url.pathname==='/catalog-asset'){const type=url.searchParams.get('type'),key=url.searchParams.get('key'),entry=m.catalogs[type]?.find(i=>i.key===key);if(!entry)throw Error('Contenido no encontrado.');return serveFile(req,res,inside(m.base,m.catalog.resolveItemImage(entry,type)));}
+ if(url.pathname.startsWith('/canonical/')){const rel=decodeURIComponent(url.pathname.slice(11));const approved=['css/style.css','css/usuario.css','css/usuario-shell-v2.css','css/usuario-stream-modules.css','css/usuario-polish-v4.css','css/usuario-design-system.css','css/usuario-canonical-selects.css','css/usuario-confirmations.css','css/usuario-roulette-tools.css','js/usuario-canonical-selects.js','js/usuario-confirmations.js','logo.png','fondo-final-2.png','fondo-negro-textura-2.png'];if(!approved.includes(rel))throw Error('Componente no disponible.');const f=inside(m.base,rel);if(rel==='css/style.css'){res.writeHead(200,{'Content-Type':'text/css; charset=utf-8'});return res.end(fs.readFileSync(f,'utf8').replace(/^@import.*$/m,''));}return serveFile(req,res,f);}
+ if(url.pathname==='/local-fonts.css')return serveFile(req,res,path.join(m.streamer,'public/css/fonts.css'));
+ if(url.pathname.startsWith('/assets/fonts/')&&/^font-[0-9]\.ttf$/.test(path.basename(url.pathname)))return serveFile(req,res,path.join(m.streamer,'public',url.pathname.slice(1)));
  if(url.pathname==='/api/draft'){const d=m.read(url.searchParams.get('id'));return send(res,200,{draft:d,analysis:m.analyze(d),search:m.search(d.id,'')});}
  if(url.pathname==='/api/search')return send(res,200,m.search(url.searchParams.get('id'),url.searchParams.get('q')||''));
  if(url.pathname==='/api/auth')return send(res,200,auth||{running:false,output:''});
@@ -19,6 +24,12 @@ function createServer({home,port=4180,webPort=4181,streamerPort=4182,manager}={}
  const assets={'/':'index.html','/app.js':'app.js','/style.css':'style.css','/catalog.js':null,'/font.ttf':null};if(Object.hasOwn(assets,url.pathname)){let file=assets[url.pathname]?path.join(__dirname,'ui',assets[url.pathname]):url.pathname==='/catalog.js'?path.join(m.base,'js/dbd-catalog.js'):path.join(__dirname,'ui/font.ttf');return serveFile(req,res,file);}return send(res,404,{error:'No encontrado.'});}
  if(req.method!=='POST')return send(res,405,{error:'Método no permitido.'});if(req.headers.origin!=='http://127.0.0.1:'+port||req.headers['x-sanlean-manager']!==token||req.headers['content-type']!=='application/json')return send(res,403,{error:'La sesión no es válida. Recargá el Gestor.'});let raw='';for await(const chunk of req){raw+=chunk;if(Buffer.byteLength(raw)>29*1024*1024)return send(res,413,{error:'El archivo supera el tamaño permitido.'});}const body=JSON.parse(raw);const action=async()=>{switch(url.pathname){
  case '/api/new':return m.create(body);
+ case '/api/catalog-owner':await preview.stop();return m.catalogOwner(body.id,body);
+ case '/api/catalog-plan':return m.catalogPlan(body.id,body);
+ case '/api/catalog-apply':await preview.stop();return m.catalogApply(body.id,body);
+ case '/api/catalog-undo':await preview.stop();return m.catalogUndo(body.id,body);
+ case '/api/audit-plan':return auditor.plan(body.ids);
+ case '/api/audit-recycle':return auditor.execute(body);
  case '/api/save':await preview.stop();return m.save(body.id,body);
  case '/api/upload':await preview.stop();return m.upload(body.id,body);
  case '/api/propose':return {key:m.propose(body.type,body.name,body.items)};

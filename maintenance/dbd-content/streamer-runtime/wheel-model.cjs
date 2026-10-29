@@ -56,6 +56,8 @@ function validate(raw){
     if(!Number.isFinite(t.soundVolume)||t.soundVolume<0||t.soundVolume>100||!d.sounds.includes(t.soundType)||!['keep','remove'].includes(t.repeatMode))throw Error('Configuración de ruleta inválida.');
     for(const p of ['soundEnabled','soundCollapsed','optionsCollapsed'])if(typeof t[p]!=='boolean')throw Error('Configuración de ruleta inválida.');
     if(!Array.isArray(t.entries)||!Array.isArray(t.usedKillerEntries))throw Error('Entradas inválidas.');
+    // Retain retired identities and donations in storage. Active pools still come only from catalogs.
+    for(const entry of t.entries){if(typeof entry?.key!=='string'||entry.key.length>500||!/^[a-zA-Z0-9][a-zA-Z0-9_-]*$/.test(entry.key))throw Error('Identidad de catálogo inválida.');ids.add(entry.key);}
     // Add only missing base tickets. Keep every donation, disabled choice and used identity.
     const savedDefaults=new Set(t.entries.filter(e=>e?.type==='default').map(e=>e.key));
     t.entries.push(...tickets.defaults(allCatalogs[key]).filter(e=>!savedDefaults.has(e.key)));
@@ -79,7 +81,7 @@ function validate(raw){
     if(s.spinSequence){
       const seq=s.spinSequence;if(!Array.isArray(seq))throw Error('Secuencia inválida.');
       if(key==='killer-wheel'){
-        if(seq.length<100||seq.length>allCatalogs[key].length*10+100||!Number.isInteger(s.targetIndex)||s.targetIndex<5||s.targetIndex>seq.length-5||s.startIndex!==5||seq.some(e=>!ids.has(e?.killer?.key)||typeof e.entryId!=='string'))throw Error('Secuencia inválida.');
+        if(seq.length<100||seq.length>ids.size*10+100||!Number.isInteger(s.targetIndex)||s.targetIndex<5||s.targetIndex>seq.length-5||s.startIndex!==5||seq.some(e=>!ids.has(e?.killer?.key)||typeof e.entryId!=='string'))throw Error('Secuencia inválida.');
         if(targets[0]&&(seq[s.targetIndex].entryId!==targets[0].entryId||seq[s.targetIndex].donor!==targets[0].donor))throw Error('Ventana final inválida.');
         if(!validKillerSequence(seq,s.spinPool||seq.map(e=>({key:e.killer.key}))))throw Error('Separación visual inválida.');
       }else if(seq.length!==targets.length||s.targetIndex!==36||seq.some((slot,i)=>!Array.isArray(slot)||slot.length!==37||slot.some(e=>!ids.has(e?.key))||slot[36].entryId!==targets[i].entryId||slot[36].donor!==targets[i].donor))throw Error('Secuencia de perks inválida.');

@@ -1,1 +1,40 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SanLean — Gestor de contenido DBD</title><link rel="stylesheet" href="/style.css"><script defer src="/catalog.js"></script><script defer src="/app.js"></script></head><body><header><a class="brand" href="#home">SAN<span>LEAN</span><small>ESTUDIO LOCAL</small></a><nav aria-label="Principal"><a href="#home">INICIO</a><a href="#updates">ACTUALIZACIONES</a><a href="#history">HISTORIAL</a><a href="#settings">CONFIGURACIÓN</a></nav><span class="local-dot">EN TU PC</span></header><div id="notice" role="status" aria-live="polite" hidden></div><main id="app"></main><dialog id="modal"><div id="modalBody"></div></dialog><footer>GESTOR DE CONTENIDO DBD <span>·</span> Tu contenido, a tu ritmo. Borradores privados en esta PC.</footer></body></html>
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SanLean — Gestor de contenido DBD</title>
+  <link rel="icon" href="/canonical/logo.png">
+  <link rel="stylesheet" href="/canonical/css/style.css">
+  <link rel="stylesheet" href="/canonical/css/usuario.css">
+  <link rel="stylesheet" href="/canonical/css/usuario-stream-modules.css">
+  <link rel="stylesheet" href="/canonical/css/usuario-shell-v2.css">
+  <link rel="stylesheet" href="/canonical/css/usuario-polish-v4.css">
+  <link rel="stylesheet" href="/canonical/css/usuario-design-system.css">
+  <link rel="stylesheet" href="/canonical/css/usuario-roulette-tools.css">
+  <link rel="stylesheet" href="/canonical/css/usuario-canonical-selects.css">
+  <link rel="stylesheet" href="/canonical/css/usuario-confirmations.css">
+  <link rel="stylesheet" href="/local-fonts.css">
+  <link rel="stylesheet" href="/style.css">
+  <script defer src="/catalog.js"></script>
+  <script defer src="/canonical/js/usuario-canonical-selects.js"></script>
+  <script defer src="/canonical/js/usuario-confirmations.js"></script>
+  <script defer src="/app.js"></script>
+</head>
+<body class="user-page manager-page">
+  <header class="site-header user-site-header"><div class="header-inner">
+    <a class="logo" href="#home" aria-label="SanLean inicio"><img src="/canonical/logo.png" alt="SanLean"><span class="logo-text">SAN<span class="accent">LEAN</span></span></a>
+    <span class="ui-badge" data-state="waiting" data-dot="true">GESTOR LOCAL · v2</span>
+  </div></header>
+  <div class="user-shell"><div class="panel-view">
+    <nav class="panel-tabs" aria-label="Principal">
+      <button type="button" data-nav="home">INICIO</button>
+      <button type="button" data-nav="updates">ACTUALIZACIONES</button>
+      <button type="button" data-nav="history">HISTORIAL</button>
+      <button type="button" data-nav="settings">CONFIGURACIÓN</button>
+    </nav>
+    <main id="app" class="stream-module"></main>
+  </div></div>
+  <div id="notice" class="module-box" role="status" aria-live="polite" hidden></div>
+  <div id="modal" class="profile-modal" hidden><div id="modalBody" class="profile-dialog stream-module" role="dialog" aria-modal="true" aria-labelledby="modalTitle"></div></div>
+</body>
+</html>
