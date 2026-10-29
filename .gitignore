@@ -2,3 +2,10 @@
 /test-results/
 /node_modules/
 *.log
+/datos/
+/base/
+/runtime/
+/base-manifest.json
+**/dbd-manager/datos/
+
+/maintenance/dbd-manager/ui/font.ttf

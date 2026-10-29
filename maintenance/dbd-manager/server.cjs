@@ -1,0 +1,40 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),crypto=require('node:crypto'),cp=require('node:child_process');
+const {Manager,json,inside,run,hash}=require('./core.cjs'),{GitHub}=require('./github.cjs'),{Preview,serveFile}=require('./preview.cjs');
+function createServer({home,port=4180,webPort=4181,streamerPort=4182,manager}={}){
+ home=path.resolve(home||path.join(__dirname,'../..'));const config=json(path.join(home,'base-manifest.json'));
+ const m=manager||new Manager({home,baseRoot:path.join(home,'base/web'),streamerRoot:path.join(home,'base/streamer'),baseCommit:config.commit});const gh=new GitHub(m),preview=new Preview(m,{webPort,streamerPort});const token=crypto.randomBytes(32).toString('hex');let queue=Promise.resolve(),auth=null;
+ const send=(res,status,data)=>{res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify(data));};
+ const server=http.createServer(async(req,res)=>{res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('X-Frame-Options','DENY');res.setHeader('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' blob: data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'");if(req.headers.host!=='127.0.0.1:'+port||req.headers['sec-fetch-site']==='cross-site')return send(res,403,{error:'Origen no permitido.'});let url;try{url=new URL(req.url,'http://127.0.0.1:'+port);}catch{return send(res,400,{error:'URL no válida.'});}
+ try{if(req.method==='GET'){
+ if(url.pathname==='/health')return send(res,200,{app:'sanlean-dbd-manager',root:home});
+ if(url.pathname==='/api/session')return send(res,200,{token,repo:m.repo,branch:m.branch,commit:m.baseCommit,data:m.data,github:await gh.status(),auth,drafts:m.list(),preview:preview.active,config});
+ if(url.pathname==='/api/history')return send(res,200,m.history());
+ if(url.pathname==='/api/catalogs')return send(res,200,m.catalogs);
+ if(url.pathname==='/api/draft'){const d=m.read(url.searchParams.get('id'));return send(res,200,{draft:d,analysis:m.analyze(d),search:m.search(d.id,'')});}
+ if(url.pathname==='/api/search')return send(res,200,m.search(url.searchParams.get('id'),url.searchParams.get('q')||''));
+ if(url.pathname==='/api/auth')return send(res,200,auth||{running:false,output:''});
+ if(url.pathname==='/asset'){const d=m.read(url.searchParams.get('id')),item=d.items.find(i=>i.id===url.searchParams.get('item'));if(!item?.asset)throw Error('Imagen no disponible.');return serveFile(req,res,inside(m.draftDir(d.id),item.asset.file));}
+ if(url.pathname==='/download'){const kind=url.searchParams.get('kind');let file;if(kind==='initial')file=path.join(home,'SanLean-Streamer-Tools-Catalog-System-PATCH.zip');else {const d=m.read(url.searchParams.get('id'));const artifact=kind==='patch'?d.patch:kind==='export'?d.export:null;if(!artifact)throw Error('Primero generá el archivo.');file=inside(m.data,artifact.file);if(hash(fs.readFileSync(file))!==artifact.sha256)throw Error('El archivo exportado cambió en disco. No se descargó. Volvé a preparar la actualización.');}res.setHeader('Content-Disposition','attachment; filename="'+path.basename(file)+'"');return serveFile(req,res,file);}
+ const assets={'/':'index.html','/app.js':'app.js','/style.css':'style.css','/catalog.js':null,'/font.ttf':null};if(Object.hasOwn(assets,url.pathname)){let file=assets[url.pathname]?path.join(__dirname,'ui',assets[url.pathname]):url.pathname==='/catalog.js'?path.join(m.base,'js/dbd-catalog.js'):path.join(__dirname,'ui/font.ttf');return serveFile(req,res,file);}return send(res,404,{error:'No encontrado.'});}
+ if(req.method!=='POST')return send(res,405,{error:'Método no permitido.'});if(req.headers.origin!=='http://127.0.0.1:'+port||req.headers['x-sanlean-manager']!==token||req.headers['content-type']!=='application/json')return send(res,403,{error:'La sesión no es válida. Recargá el Gestor.'});let raw='';for await(const chunk of req){raw+=chunk;if(Buffer.byteLength(raw)>29*1024*1024)return send(res,413,{error:'El archivo supera el tamaño permitido.'});}const body=JSON.parse(raw);const action=async()=>{switch(url.pathname){
+ case '/api/new':return m.create(body);
+ case '/api/save':await preview.stop();return m.save(body.id,body);
+ case '/api/upload':await preview.stop();return m.upload(body.id,body);
+ case '/api/propose':return {key:m.propose(body.type,body.name,body.items)};
+ case '/api/prepare':await preview.stop();return m.prepare(body.id);
+ case '/api/preview':return preview.open(body.id);
+ case '/api/simulate':return m.simulate(body.id);
+ case '/api/check':return m.check(body.id,body);
+ case '/api/ready':return m.ready(body.id);
+ case '/api/patch':return m.patch(body.id);
+ case '/api/export':return m.exportManual(body.id);
+ case '/api/publish':return gh.publish(body.id,body.confirmation,{revision:body.revision,manifestHash:body.manifestHash});
+ case '/api/connect':{if(auth?.running)return auth;await run('powershell.exe',['-NoProfile','-ExecutionPolicy','Bypass','-File',path.join(__dirname,'check-credential-store.ps1')]);auth={running:true,output:''};const p=cp.spawn(gh.exe,['auth','login','--hostname','github.com','--git-protocol','https','--web','--skip-ssh-key'],{windowsHide:true,stdio:['pipe','pipe','pipe']});const collect=b=>{auth.output=(auth.output+b.toString('utf8')).slice(-6000);};p.stdout.on('data',collect);p.stderr.on('data',collect);p.on('error',e=>{auth.running=false;auth.output='No se pudo abrir GitHub CLI. Extraé el paquete completo. '+e.code;});p.on('close',code=>{auth.running=false;auth.success=code===0;});p.stdin.end();return auth;}
+ case '/api/folder':if(process.platform==='win32')cp.spawn('explorer.exe',[m.data],{windowsHide:true,stdio:'ignore'}).on('error',()=>{});return {ok:true};
+ default:throw Error('Acción no disponible.');}};const job=queue.then(action);queue=job.catch(()=>{});return send(res,200,await job);
+ }catch(e){return send(res,400,{error:e.message});}});
+ return {server,manager:m,preview,close:async()=>{await preview.stop();server.closeAllConnections();await new Promise(r=>server.close(r));}};
+}
+module.exports={createServer};
+if(require.main===module){const home=process.argv[2]||path.resolve(__dirname,'../..');const app=createServer({home});app.server.on('error',e=>{console.error('No se pudo abrir el Gestor. El puerto 4180 puede estar ocupado. '+e.message);process.exitCode=1;});app.server.listen(4180,'127.0.0.1',()=>{console.log('SANLEAN — GESTOR DE CONTENIDO DBD\nhttp://127.0.0.1:4180/\nLos borradores se guardan sólo en esta PC. Dejá esta ventana abierta.');if(process.platform==='win32'&&process.env.SANLEAN_OPEN_BROWSER!=='0')cp.spawn('rundll32.exe',['url.dll,FileProtocolHandler','http://127.0.0.1:4180/'],{windowsHide:true,stdio:'ignore'}).on('error',()=>{});});for(const sig of ['SIGINT','SIGTERM'])process.on(sig,()=>app.close().then(()=>process.exit()));}
