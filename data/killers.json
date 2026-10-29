@@ -1,5 +1,5 @@
 [
-{"key":"trapper","name":"El Trampero","image":"assets/killers/K01_TheTrapper_Portrait.png"},
+{"key":"trapper","name":"El Trampero","image":"assets/killers/K01_TheTrapper_Portrait.png","enabled":false},
 {"key":"wraith","name":"El Espectro","image":"assets/killers/K02_TheWraith_Portrait.png"},
 {"key":"hillbilly","name":"El Pueblerino","image":"assets/killers/K03_TheHillbilly_Portrait.png"},
 {"key":"nurse","name":"La Enfermera","image":"assets/killers/K04_TheNurse_Portrait.png"},
