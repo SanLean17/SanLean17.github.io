@@ -9,7 +9,7 @@ const mime={'.js':'text/javascript','.html':'text/html','.css':'text/css','.json
   const context=await browser.newContext({viewport:{width,height:1000}}),errors=[],extra=releaseChapter(),data=Object.fromEntries(names.map(n=>[n,[...read(n),...extra[n].map(i=>({...i,enabled}))]]));context.setDefaultTimeout(15000);
   await context.route('**/*',async route=>{const u=new URL(route.request().url());if(u.hostname!=='fixture.test')return route.abort();const relative=decodeURIComponent(u.pathname).replace(/^\//,'');
    if(relative==='Usuario/catalog-harness.html')return route.fulfill({body:require('./roulette-harness.cjs'),contentType:'text/html'});
-   const name=relative.match(/^data\/(.+)\.json$/)?.[1];if(data[name])return route.fulfill({json:data[name]});
+   const name=relative.match(/^data\/(.+)\.json$/)?.[1];if(data[name]){if(name==='perks-killer')await new Promise(r=>setTimeout(r,250));return route.fulfill({json:data[name]});}
    const fixtureItem=Object.entries(extra).flatMap(([type,items])=>items.map(i=>[catalog.resolveItemImage(i,type),i])).find(([image])=>image===relative);
    const f=path.join(root,fixtureItem?(relative.endsWith('.webp')?read('survivors').find(i=>i.image.endsWith('.webp')).image:'rombo.png'):relative);
    if(fs.existsSync(f)&&fs.statSync(f).isFile())return route.fulfill({path:f,contentType:mime[path.extname(f)]||'application/octet-stream'});return route.fulfill({status:404,body:'Not found'});

@@ -16,6 +16,8 @@ La primera corrección produjo el commit `a8512a2099f20c67aec43c22422924cb2e4339
 
 Al incorporar toda la regresión del Gestor a PR #11, el run 40965776716 detectó una expectativa adicional de `dbd-manager-v2.test.cjs`: exigía cuatro catálogos modificados aun cuando tres ya estaban normalizados y no cambiaban. La prueba ahora contrasta los hashes del archivo original y preparado, exige Killers entre los cambios y verifica que el manifiesto incluya exactamente los archivos modificados. El ZIP del formato anterior se comprueba por separado como paquete completo y sin datos personales; el parche actual V4 aplica sólo su delta sobre el catálogo instalado.
 
+La revisión de todas las ejecuciones, incluidas push y pull_request, detectó además un fallo intermitente real en `js/search-aliases.js`: su carga asíncrona enriquecía siempre `#cfgGrid` con perks de Killer, también en la página de Superviviente. Si terminaba después de construir la grilla, reemplazaba el índice de búsqueda con el propietario del rol incorrecto. Cada grilla carga ahora su propio rol. Una prueba de carga tardía con keys idénticas entre roles impide que reaparezca; las pruebas del navegador también retrasan deliberadamente la respuesta del catálogo Killer.
+
 ## Cambios del sistema
 
 - `publication.cjs`, `server.cjs`, `ui/app.js`, `ui/publication-view.js`: fases reales, duración congelada, diagnóstico de CI, reintento explícito, consultas secuenciales, vigilancia ligera de PR/main, conexión automática y protección de producción.

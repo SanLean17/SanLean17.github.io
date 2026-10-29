@@ -5,7 +5,10 @@ const earlyOwners={'00_aNursesCalling':'nurse enfermera','01_agitation':'trapper
 function n(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/([a-z])([A-Z])/g,'$1 $2').toLowerCase().replace(/[_-]+/g,' ').replace(/[^a-z0-9ñ ]/g,' ').replace(/\s+/g,' ').trim()}function num(k){const m=String(k).match(/^(\d+)_/);return m?+m[1]:-1}function perkExtra(item){const k=item.key||'',i=num(k),a=[];if(earlyOwners[k])a.push(earlyOwners[k]);const g=ownerRanges.find(([,s])=>i>=s&&i<=s+2);if(g)a.push(g[0]);if(k.toLowerCase().includes('hex'))a.push('hex maleficio');if(k.includes('scourgeHook')||[86,89,91,126].includes(i))a.push('scourge hook gancho flagelante');return a.join(' ')}
 function enrich(grid,items,type){if(!grid)return;grid.querySelectorAll('.config-item[data-key]').forEach(el=>{const item=items&&items.find(x=>x.key===el.dataset.key);const key=el.dataset.key;let extra='';if(type==='killer')extra=item?perkExtra(item):'';if(type==='killers')extra=killerNames[key]||key;el.dataset.search=SanLeanDBDCatalog.buildSearchText(item||{key},{type,legacy:item?.ownerKey?'':`${el.dataset.search||''} ${extra}`})})}
 const base=window.initConfigGrid;if(typeof base==='function')window.initConfigGrid=function(grid,items,type,disabled){base(grid,items,type,disabled);enrich(grid,items,type)};
-Promise.all([SanLeanDBDCatalog.loadKillers().catch(()=>[]),SanLeanDBDCatalog.loadKillerPerks().catch(()=>[])]).then(([killers,perks])=>{enrich(document.getElementById('cfgKillersGrid'),killers,'killers');enrich(document.getElementById('cfgPerksGrid'),perks,'killer');enrich(document.getElementById('cfgGrid'),perks,'killer')});
+// Each grid keeps its own role, even when another catalog finishes loading later.
+for(const [id,type]of [['cfgKillersGrid','killers'],['cfgPerksGrid','killer'],['cfgGrid',location.pathname.toLowerCase().includes('superviviente')?'survivor':'killer']]){
+ const grid=document.getElementById(id);if(grid)SanLeanDBDCatalog.load(type).then(items=>enrich(grid,items,type)).catch(()=>{});
+}
 
 // Ruleta de Killers: el engranaje debe funcionar aunque falle o tarde cualquier otra inicialización.
 if(location.pathname.toLowerCase().includes('ruleta-killer')){

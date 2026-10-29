@@ -10,7 +10,7 @@ Ejecutar esta matriz antes de cambiar catálogos, ruletas, Tierlist, challenges,
 | Capítulos futuros A–H | 1 Killer + 3 perks; 1 Survivor + 3; ambos + 6; 2 Survivors + 6; 2 Killers; perks para propietario existente; personaje sin perks; 2 Killers + 3 Survivors | `dbd-content-release-regression.test.cjs` |
 | Imágenes | PNG/WebP decodificables; rechazo de vacíos, corruptos, extensión falsa, ruta ajena, repetidos y archivo alterado tras preparar | `dbd-content-release-regression.test.cjs`, `dbd-manager.test.cjs` |
 | Identidades | Key estable; siguiente prefijo según máximo por rol; huecos no reutilizados; duplicado numérico con ceros iniciales rechazado | `dbd-content-release-regression.test.cjs` |
-| Propietarios | Existentes y del rol correcto; búsqueda por nombre/aliases del propietario, incluso si su personaje fue desactivado explícitamente | `dbd-catalog.test.cjs`, `dbd-manager-v3.test.cjs` |
+| Propietarios | Existentes y del rol correcto; búsqueda por nombre/aliases del propietario, incluso desactivado; una carga tardía de otro rol no puede sobrescribir la búsqueda | `dbd-catalog.test.cjs`, `dbd-catalog-browser.cjs`, `dbd-manager-v3.test.cjs` |
 | Activación | Personaje, perk individual, todas las perks y paquete son acciones explícitas; desactivar conserva los objetos | `dbd-content-release-regression.test.cjs`, `dbd-manager-v2.test.cjs` |
 | Correcciones | Nombre/aliases/imagen conservan key; nueva imagen tiene ruta versionada; cambio de key publicado requiere migración aparte | `dbd-content-release-regression.test.cjs` |
 | Incompatibilidades | Keys válidas, grupos sin repetidos, cuatro perks distintas y compatibles; imposibilidad explicada sin duplicar perks | `dbd-content-release-regression.test.cjs`, `roulette-tickets.test.cjs` |
