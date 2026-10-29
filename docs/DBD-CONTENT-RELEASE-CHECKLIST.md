@@ -53,7 +53,7 @@ Pruebas: `dbd-publication-v4.test.cjs` (GitHub simulado, incluidos fallos y recu
 
 | Control | Resultado obligatorio |
 | --- | --- |
-| Contenido | Catálogos completos para compatibilidad, delta de la actualización, sólo sus assets nuevos/reemplazados y archivos de programa permitidos. |
+| Contenido | El parche actual V4 incluye el delta JSON, sólo sus assets nuevos/reemplazados y archivos de programa permitidos; se aplica sobre los catálogos instalados. Las exportaciones y el formato anterior usan catálogos completos. |
 | Privacidad | Sin datos, preferencias, sesión, progreso, historial, respaldos personales ni configuración de OBS del streamer. |
 | Orden | Borrador A preparado antes de B conserva B al publicar. Runtime registra campos y fechas aplicados y rechaza retroceder una modificación conocida. |
 | Sustitución de imagen | Ruta con hash del contenido; un parche antiguo no pisa los bytes de una imagen nueva. No borrar la imagen anterior del disco. |
