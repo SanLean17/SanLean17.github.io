@@ -82,3 +82,27 @@ test('a changed main blocks the reviewed PR and requires a newly confirmed base 
  const status=await f.gh.progress('fixture');assert.equal(status.canProduction,false);assert.equal(status.canPrepareProduction,true);assert.equal(status.currentBase,'base2');
  await assert.rejects(f.gh.production('fixture',{confirmation:'isolated-state',commit:'head1'}),/main cambió/);head='base3';await assert.rejects(f.gh.productionPR('fixture',{confirmation:'isolated-state',baseCommit:'base2'}),/rama destino cambió/);assert(!f.requests.some(r=>r.url.endsWith('/merge')));
 });
+
+test('confirmation uses the reviewed delta and verification links appear only after live confirmation',async()=>{
+ const f=fixture();await f.gh.publish('fixture','isolated-state',{revision:1,manifestHash:'abc123'});
+ const status=await f.gh.progress('fixture'),view=require('../maintenance/dbd-manager/ui/publication-view.js');
+ assert.deepEqual(status.summary.disabled,['A']);assert.equal(status.summary.totals.killers.before,1);assert.equal(status.summary.totals.killers.after,0);
+ const prompt=view.confirmation({name:'El Trampero — Desactivar'},{summary:{totals:{killers:{before:44,after:43,disabled:1}},disabled:['El Trampero']}});
+ assert.equal(prompt.title,'PUBLICAR EL TRAMPERO — DESACTIVAR');assert.match(prompt.text,/KILLERS\n44 → 43/);assert.match(prompt.text,/Desactivados:\nEl Trampero/);assert.match(prompt.text,/imagen, aliases, key ni progreso guardado/);
+ assert.equal(prompt.cancelLabel,'CANCELAR');assert.equal(prompt.confirmLabel,'PUBLICAR');
+ assert(!view.html(status).includes('ABRIR RULETA DE KILLERS'));
+ const done=view.html({completed:true});for(const url of ['ruleta-killer.html','tierlist-dbd.html','Usuario/'])assert(done.includes('href="https://sanlean.com.ar/'+url+'"'));
+});
+
+test('Pages creation and CDN delay keep polling, while actual failure or expired wait stops safely',async()=>{
+ const f=fixture();await f.gh.publish('fixture','isolated-state',{revision:1,manifestHash:'abc123'});await f.gh.production('fixture',{confirmation:'isolated-state',commit:'head1'});
+ f.state.pages='built';f.state.pagesCommit='older';let status=await f.gh.progress('fixture');
+ assert.equal(status.state,'PR FUSIONADO');assert.equal(status.waiting,true);assert.equal(status.active,false);assert.equal(status.canProduction,false);
+ const request=f.gh.request;f.gh.request=async(method,url,body)=>{if(url.endsWith('/pages/builds/latest'))throw Error('404 Not Found');return request(method,url,body);};
+ status=await f.gh.progress('fixture');assert.equal(status.state,'PR FUSIONADO');assert.equal(status.waiting,true);
+ f.gh.request=request;f.state.pagesCommit='merge1';status=await f.gh.progress('fixture');assert.equal(status.state,'VERIFICANDO PRODUCCIÓN');assert.equal(status.waiting,true);assert(!status.completed);
+ f.state.pages='errored';status=await f.gh.progress('fixture');assert.equal(status.state,'ERROR DE PUBLICACIÓN');assert.equal(status.waiting,false);
+ f.state.pages='built';f.state.live=true;status=await f.gh.progress('fixture');assert.equal(status.completed,true);assert.equal(status.waiting,false);assert.equal(status.active,false);
+ const g=fixture();await g.gh.publish('fixture','isolated-state',{revision:1,manifestHash:'abc123'});await g.gh.production('fixture',{confirmation:'isolated-state',commit:'head1'});const d=g.m.read();d.deployment.at=new Date(Date.now()-960000).toISOString();g.m.write(d);g.state.pagesCommit='older';
+ status=await g.gh.progress('fixture');assert.equal(status.state,'ERROR DE PUBLICACIÓN');assert.equal(status.waiting,false);assert(!status.completed);
+});

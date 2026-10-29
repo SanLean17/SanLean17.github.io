@@ -72,7 +72,17 @@ const mime={'.js':'text/javascript','.css':'text/css','.html':'text/html','.ttf'
    else assert(clock.startsWith('Tiempo transcurrido:'));
    await page.screenshot({path:path.join(output,'release-state-'+state.toLowerCase().replaceAll(' ','-')+'.png'),fullPage:true});
   }
-  status={...status,state:'CI FALLÓ',completed:false,error:'Fallo de prueba',active:false};await page.reload();await page.locator('.steps [data-step="3"]').click();await page.waitForFunction(()=>document.querySelector('#publicationStatus h3')?.textContent==='CI FALLÓ');assert.equal(await page.locator('#publicationClock').innerText(),'Duración: 00:38');
+  for(const [label,url] of [['ABRIR RULETA DE KILLERS','ruleta-killer.html'],['ABRIR TIERLIST','tierlist-dbd.html'],['ABRIR MI PANEL','Usuario/']])assert.equal(await page.getByRole('link',{name:label,exact:true}).getAttribute('href'),'https://sanlean.com.ar/'+url);
+  d.name='El Trampero — Desactivar';status={...status,state:'LISTO PARA PUBLICAR',ciState:'CI APROBADA',completed:false,canProduction:true,summary:{totals:{killers:{before:44,after:43,disabled:1}},disabled:['El Trampero']}};
+  await page.reload();await page.locator('.steps [data-step="3"]').click();await page.waitForFunction(()=>document.querySelector('#publicationStatus h3')?.textContent==='LISTO PARA PUBLICAR');
+  for(const width of [1440,390,320]){
+   await page.setViewportSize({width,height:900});await page.locator('[data-action=production]').click();await page.locator('#sanleanSystemConfirm').waitFor({state:'visible'});
+   const modal=page.locator('#sanleanSystemConfirm'),text=await modal.innerText();assert(text.includes('PUBLICAR EL TRAMPERO — DESACTIVAR'));assert(text.includes('44 → 43'));assert(text.includes('Desactivados:'));assert(text.includes('imagen, aliases, key ni progreso guardado'));
+   await page.waitForFunction(()=>document.activeElement.id==='slSystemConfirmCancel');
+   const bounds=await modal.locator('.confirm-dialog').boundingBox();assert(bounds&&bounds.x>=0&&bounds.x+bounds.width<=width+1);
+   await page.screenshot({path:path.join(output,'production-confirmation-'+width+'.png')});await page.getByRole('button',{name:'CANCELAR',exact:true}).click();await modal.waitFor({state:'hidden'});
+  }
+  status={...status,state:'CI FALLÓ',completed:false,canProduction:false,error:'Fallo de prueba',active:false};await page.reload();await page.locator('.steps [data-step="3"]').click();await page.waitForFunction(()=>document.querySelector('#publicationStatus h3')?.textContent==='CI FALLÓ');assert.equal(await page.locator('#publicationClock').innerText(),'Duración: 00:38');
   const terminalCalls=calls.filter(p=>p==='/api/publication-status').length;await page.waitForTimeout(11000);assert.equal(calls.filter(p=>p==='/api/publication-status').length,terminalCalls,'terminal CI polling stops');
   assert.equal(await page.evaluate(()=>window.__fixtureScript===true),false);assert.deepEqual(errors,[]);assert.deepEqual(forbidden,[]);
   fs.writeFileSync(path.join(output,'release-ui-report.json'),JSON.stringify({passed:true,widths:[1440,390,320],states:6,authAutoRefresh:true,modalScroll:true,bodyLock:true,nestedEscape:true,backdrop:true,cardsAligned:true,reload:true,terminalPollingStopped:true,productionRequests:0},null,2));
