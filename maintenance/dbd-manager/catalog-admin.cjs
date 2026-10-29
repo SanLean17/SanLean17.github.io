@@ -17,8 +17,11 @@ function install(Manager) {
     const d = this.read(id);
     this.checkRevision(d, input.revision);
     const all = this.effectiveCatalogs(d), ownerType = OWNER[input.type];
+    for(const pending of d.items)all[pending.type].push(this.entry(pending,d));
     const entry = all[input.type]?.find(i => i.key === input.key && !i.emptySlot);
     if (!ownerType || !entry || !all[ownerType].some(i => i.key === input.ownerKey)) throw Error('Elegí una perk y un personaje existente del mismo rol.');
+    const pending=d.items.find(i=>i.type===input.type&&i.key===input.key);
+    if(pending){pending.ownerKey=input.ownerKey;return this.changed(d);}
     d.catalogChanges ||= [];
     const change = d.catalogChanges.find(c => c.type === input.type && c.key === input.key);
     if (change) change.ownerKey = input.ownerKey;
@@ -31,6 +34,7 @@ function install(Manager) {
     const { type, key, scope = 'item', action } = input;
     if (!TYPES.includes(type) || !['item', 'perks', 'package'].includes(scope) || !['disable', 'enable', 'delete'].includes(action)) throw Error('Acción de catálogo no válida.');
     const all = this.effectiveCatalogs(d);
+    for (const pending of d.items) all[pending.type].push(this.entry(pending,d));
     const item = all[type].find(i => i.key === key && !i.emptySlot);
     if (!item) throw Error('El contenido no existe en esta preparación.');
     if (OWNER[type] && scope !== 'item') throw Error('Una perk se administra individualmente.');
@@ -40,8 +44,11 @@ function install(Manager) {
     if (!affected.length) throw Error('No hay perks asociadas a este personaje.');
     if (action === 'delete' && scope === 'item' && perks.length) throw Error('Este personaje tiene ' + perks.length + ' perks. Eliminá sus perks explícitamente o elegí ELIMINAR PAQUETE COMPLETO para revisar la lista.');
     const pendingPerks = d.items.filter(i => i.ownerKey === key && OWNER[i.type] === type);
-    if (action === 'delete' && scope !== 'perks' && pendingPerks.length) throw Error('Hay perks nuevas asociadas en este borrador. Cambiá su propietario o quitalas antes de eliminar el personaje.');
-    return { revision: d.revision, type, key, scope, action, name: item.name, affected };
+    if (action === 'delete' && scope === 'item' && pendingPerks.length) throw Error('Hay perks nuevas asociadas en este borrador. Revisá el paquete completo o quitalas antes de eliminar el personaje.');
+    const assets=affected.map(i=>({path:this.catalog.resolveItemImage(all[i.type].find(x=>x.key===i.key),i.type),action:'CONSERVAR ARCHIVO'}));
+    const conflicts=json(path.join(this.base,'data/perk-conflicts.json'));
+    const references=affected.flatMap(i=>{const role=i.type==='perks-killer'?'killer':i.type==='perks-survivor'?'survivor':null;return role?(conflicts[role]||[]).filter(group=>group.includes(i.key)).map(group=>({file:'data/perk-conflicts.json',keys:group})):[];});
+    return { revision: d.revision, type, key, scope, action, name: item.name, affected, assets, references };
   };
 
   Manager.prototype.catalogApply = function(id, input) {
@@ -52,12 +59,16 @@ function install(Manager) {
     if (plan.action === 'delete' && input.confirmation !== 'ELIMINAR') throw Error('Confirmá la eliminación de los objetos indicados.');
     const changes = [...(d.catalogChanges || [])];
     for (const item of plan.affected) {
+      const pending=d.items.find(i=>i.type===item.type&&i.key===item.key);
+      if(pending){if(plan.action==='delete')d.items=d.items.filter(i=>i.id!==pending.id);else pending.enabled=plan.action==='enable';continue;}
       const index = changes.findIndex(c => c.type === item.type && c.key === item.key);
       const ownerKey = index !== -1 ? changes[index].ownerKey : undefined;
+      const wasDisabled = index !== -1 && changes[index].action==='enabled' && changes[index].enabled===false;
       if (index !== -1) changes.splice(index, 1);
       const original = this.catalogs[item.type].find(i => i.key === item.key);
       if (plan.action === 'delete') changes.push({ ...item, action: 'delete' });
       else if ((original.enabled !== false) !== (plan.action === 'enable')) changes.push({ ...item, action: 'enabled', enabled: plan.action === 'enable', ...(ownerKey ? { ownerKey } : {}) });
+      else if (plan.action==='enable' && input.retainActivation===true && wasDisabled) changes.push({...item,action:'enabled',enabled:true,restoresPreviousPatch:true,...(ownerKey?{ownerKey}:{})});
       else if (ownerKey) changes.push({ ...item, action: 'owner', ownerKey });
     }
     d.catalogChanges = changes;

@@ -468,3 +468,6 @@ USUARIO distingue tres niveles de acceso:
 `OVERLAYS OBS`, `CARTAS`, `DESAFÍOS`, `SORTEOS`, `BITS / ALERTAS`, `TWITCH / KICK`, `KILLERS`, `PERKS DE KILLERS`, `PERKS DE SUPERVIVIENTES` y `TORNEO 1VS1`.
 
 Los permisos se almacenan por espacio/colaborador en `workspace_members`; no deben depender de `localStorage` como fuente de verdad.
+
+### Composición de controles dentro de cards
+Las cards respetan la variante explícita de cada acción: secundaria, destructiva o primaria. Los controles segmentados con aria-pressed conservan su geometría propia dentro de una card; las reglas genéricas de acciones de la card no deben convertirlos en botones pill ni pintar todas sus opciones de rojo.

@@ -26,7 +26,7 @@ jobs:
       - name: Install browser test dependency
         run: npm install --no-save --package-lock=false playwright@1.62.1 sharp@0.35.5 jszip@3.10.1
       - name: Test local content manager without publishing
-        run: node --test tests/dbd-manager.test.cjs tests/dbd-manager-v2.test.cjs
+        run: node --test tests/dbd-manager.test.cjs tests/dbd-manager-v2.test.cjs tests/dbd-manager-v3.test.cjs
       - name: Install test browser
         run: npx playwright install chromium
       - name: Test real public and private screens with staged and active fixtures

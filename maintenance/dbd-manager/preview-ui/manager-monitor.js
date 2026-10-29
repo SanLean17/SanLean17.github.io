@@ -5,6 +5,8 @@
   document.getElementById('title').textContent=names[key];
   document.getElementById('control').href='/#'+key;
   document.getElementById('raw').href='/obs/'+key;
+  document.getElementById('obsDimensions').textContent='Fuente de navegador temporal · '+(key.startsWith('all-')?'1920 × 300':'1920 × 1080')+' px. No reemplaces tus fuentes habituales. Al terminar, eliminá la fuente temporal.';
+  document.getElementById('copyObs').onclick=async()=>{try{await navigator.clipboard.writeText(location.origin+'/obs/'+key);document.getElementById('copyObs').textContent='URL COPIADA';}catch{document.getElementById('copyObs').textContent='Abrí SALIDA OBS y copiá su dirección';}};
   const frame=document.getElementById('overlay');frame.src='/obs/'+key;
   const container=frame.parentElement,height=key.startsWith('all-')?360:1080;
   frame.style.height=height+'px';

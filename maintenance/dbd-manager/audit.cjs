@@ -30,11 +30,17 @@ class Auditor {
   constructor(home, { roots, protectedPaths, recycle } = {}) {
     this.home = path.resolve(home);
     const project = path.join(os.homedir(), '.codex', '.chatgpt-projects', 'g-p-6ab548a8c5d08191b7b59a6ef5977ea5');
+    const programs = path.join(os.homedir(), 'Documents', 'Programa SanLean');
     this.roots = roots || [
-      { path: path.join(project, 'exports'), pattern: /^(?:gestor|dbd-manager|dbd-catalog-review|SanLean-.*(?:DBD|Catalog|PATCH))/i, type: 'EXPORT' },
-      { path: path.join(project, 'repo', 'dbd-content-test', 'test-results'), pattern: /^(?:manager|gestor)/i, type: 'TEMPORAL' }
+      { path: path.join(project, 'exports'), pattern: /^(?:gestor|dbd-manager|dbd-catalog-review|SanLean-USUARIO-COMPLETO|SanLean-.*(?:DBD|Catalog|PATCH))/i, type: 'EXPORT' },
+      { path: path.join(project, 'repo', 'dbd-content-test', 'test-results'), pattern: /^(?:manager|gestor)/i, type: 'TEMPORAL' },
+      { path: path.join(project, 'repo', 'dbd-content-test', 'exports'), pattern: /^gestor-v3-trabajo$/, type: 'TEMPORAL' },
+      { path: programs, pattern: /^(?:Gestor de contenido DBD|SanLean Streamer Tools|SanLean Local|SanLean Usuario)$/, type: 'MASTER ACTUAL' },
+      { path: path.join(this.home, 'datos', 'preparados'), pattern: /^[a-f0-9-]{36}$/i, type: 'TEMPORAL' },
+      { path: path.join(this.home, 'datos', 'vista-streamer'), pattern: /^[a-f0-9-]{36}$/i, type: 'TEMPORAL' },
+      { path: path.join(os.homedir(), 'Desktop'), pattern: /^Programa para cargar Superviviente-Killer$/, type: 'RESPALDO' }
     ];
-    this.protected = (protectedPaths || [this.home, path.join(project, 'standalone', 'streamer-tools-local'), path.join(project, 'repo'), path.join(os.homedir(), 'AppData'), path.join(os.homedir(), 'Desktop', 'Programa para cargar Superviviente-Killer')]).map(p => path.resolve(p));
+    this.protected = (protectedPaths || [this.home, programs, path.join(project, 'standalone', 'streamer-tools-local'), path.join(project, 'repo'), path.join(os.homedir(), 'AppData'), path.join(os.homedir(), 'Desktop', 'Programa para cargar Superviviente-Killer')]).map(p => path.resolve(p));
     // The repository is protected as an object. Only explicitly listed test-results children may be recycled.
     this.recycle = recycle || (async file => {
       if (process.platform !== 'win32') throw Error('La Papelera sólo está disponible en Windows. No se borró nada.');
@@ -47,7 +53,7 @@ class Auditor {
     if (path.dirname(file).toLowerCase() !== path.resolve(root.path).toLowerCase() || !root.pattern.test(path.basename(file))) return false;
     // Cannot select a current installation, its parent, or any of its descendants.
     if (within(file, this.home) || within(this.home, file)) return false;
-    return !this.protected.some(p => within(p, file) || (within(file, p) && !(root.type === 'TEMPORAL' && path.basename(root.path) === 'test-results' && !within(this.home, file))));
+    return !this.protected.some(p => within(p, file) || (within(file, p) && !(root.type === 'TEMPORAL' && ['test-results','exports'].includes(path.basename(root.path)) && !within(this.home, file))));
   }
   scan() {
     this.records.clear(); this.plans.clear();
@@ -61,8 +67,13 @@ class Auditor {
         const isCurrent = within(this.home, file) || within(file, this.home);
         let version = '';
         try { version = json(path.join(file, 'base-manifest.json')).version || ''; } catch {}
-        const row = { id, path: file, type: fs.lstatSync(file).isDirectory() ? 'Carpeta' : 'Archivo', date: fs.lstatSync(file).mtime.toISOString(), bytes: stats?.bytes || 0, files: stats?.files || 0, version, status: isCurrent ? 'ACTUAL' : /\.zip$/i.test(name) ? 'ZIP' : root.type === 'TEMPORAL' ? 'TEMPORAL' : version ? 'ANTIGUA' : 'EXPORT', selectable: !error && this.allowed(file, root), reason: error || (isCurrent ? 'Contiene el Gestor actual y sus datos.' : ''), selected: false };
+        if(!version)try{version=json(path.join(file,'MASTER-DISTRIBUCION.json')).version||'';}catch{}
+        if(!version && fs.lstatSync(file).isDirectory())for(const child of fs.readdirSync(file,{withFileTypes:true}).filter(e=>e.isDirectory()&&!e.isSymbolicLink())){try{version=json(path.join(file,child.name,'base-manifest.json')).version||'';}catch{}if(version)break;}
+        const row = { id, path: file, type: fs.lstatSync(file).isDirectory() ? 'Carpeta' : 'Archivo', date: fs.lstatSync(file).mtime.toISOString(), bytes: stats?.bytes || 0, files: stats?.files || 0, version, status: isCurrent ? (root.type === 'TEMPORAL' ? 'TEMPORAL' : 'MASTER ACTUAL') : /\.zip$/i.test(name) ? 'ZIP' : root.type === 'TEMPORAL' ? 'TEMPORAL' : version ? 'ANTIGUA' : 'EXPORT', selectable: !error && this.allowed(file, root), reason: error || (isCurrent ? 'Contiene el Gestor actual y sus datos.' : ''), selected: false };
         entries.push(row);
+        if(root.type==='MASTER ACTUAL')row.status='MASTER ACTUAL';
+        else if(root.type==='RESPALDO')row.status='RESPALDO';
+        if(fs.existsSync(path.join(file,'datos','actualizaciones'))&&!isCurrent&&root.type!=='MASTER ACTUAL'&&root.type!=='TEMPORAL')row.status='RESPALDO';
         this.records.set(id, { row, root, fingerprint: stats?.fingerprint });
       }
     }

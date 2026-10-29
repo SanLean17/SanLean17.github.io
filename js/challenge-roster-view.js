@@ -41,6 +41,7 @@
     columns=columns===5?5:19;
     const state=data?.state||{},catalog=catalogs[data?.kind==='challenge_all_survivors'?'survivors':'killers']||[];
     if(!preview&&(state.visible===false||!['active','paused'].includes(state.status))){target.innerHTML='';return}
+    if(!preview&&data.settings?.obsPresentation?.mode==='auto'&&data.settings.obsPresentation.compact){const completed=catalog.filter(i=>stateFor(data,i.key)==='completed').length;target.innerHTML=`<div class="sl-goal-view"><strong class="sl-goal-title">${data.kind==='challenge_all_survivors'?'ALL SURVIVOR':'ALL KILLER'}</strong><div class="sl-goal-main"><div class="sl-goal-counter"><span>${completed}</span><i>/</i><b>${catalog.length}</b></div></div></div>`;return;}
     const current=state.currentKey||'',rows=preview?rowsBalanced(catalog,3):rowsForObs(catalog,columns),maxCols=preview?Math.max(1,...rows.map(r=>r.length)):columns;
     const alignment=['left','center','right'].includes(data?.settings?.lastRowAlignment)?data.settings.lastRowAlignment:'center';
     target.innerHTML=`<div class="sl-roster-view${preview?' is-preview':''}" data-last-row-alignment="${alignment}" style="--roster-cols:${maxCols};--roster-rows:${Math.max(1,rows.length)}">

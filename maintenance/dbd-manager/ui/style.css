@@ -9,9 +9,9 @@
 .manager-page .dashboard-card .actions{margin-top:auto;padding-top:var(--sl-space-3)}
 .manager-page .dashboard-card h3,.manager-page .section-context h2{overflow-wrap:anywhere}
 .manager-page .ui-btn{display:inline-flex;align-items:center;justify-content:center;text-align:center;max-width:100%;white-space:normal}
-.manager-page .field{display:grid;align-content:start;gap:var(--sl-field-label-gap);min-width:0}
-.manager-page .field label{display:block}
-.manager-page .field .ui-field-help{margin-top:0!important}
+.manager-page .field{display:grid;align-content:start;gap:0;min-width:0}
+.manager-page .field label{display:block;margin-bottom:var(--sl-field-label-gap)}
+.manager-page .field .ui-field-help{margin-top:var(--sl-field-help-gap)!important}
 .manager-page textarea.ui-field{height:auto!important;min-height:104px;padding-block:12px;resize:vertical}
 .manager-page .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--sl-field-row-gap)}
 .manager-page .stack{display:grid;gap:var(--sl-section-gap)}
@@ -63,3 +63,40 @@
 .manager-page details[open]>summary:after{content:'−'}
 @media(max-width:1180px){.manager-page .perk-list{grid-template-columns:1fr}}
 @media(max-width:760px){.manager-page .grid2{grid-template-columns:1fr;gap:var(--sl-field-group-gap)}.manager-page .row{align-items:flex-start}.manager-page .drop{grid-template-columns:1fr}.manager-page .steps{display:grid;grid-template-columns:1fr}.manager-page .item{align-items:flex-start}.manager-page .item-visual{width:66px;flex-basis:66px}.manager-page .item-visual img{height:80px}.manager-page #modal{padding:12px}.manager-page #modalBody{padding:24px 20px}.manager-page .modal-top{flex-wrap:wrap}.manager-page .check-grid{display:grid;gap:0}}
+
+/* v3 layout: canonical components, shared spacing, and image dimensions only. */
+.manager-page .steps{display:grid;align-items:stretch;gap:0}
+.manager-page .item-state{margin-block:var(--sl-space-3)}
+.manager-page .character-card{gap:var(--sl-section-gap)}
+.manager-page .character-card .item-visual{width:180px;flex-basis:180px}
+.manager-page .character-card .item-visual img{height:220px}
+.manager-page .perk-list,.manager-page .catalog-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--sl-card-gap);margin-block:var(--sl-section-gap)}
+.manager-page .perk-card.item{display:flex;flex-direction:column;align-items:stretch}
+.manager-page .perk-card .item-visual{width:100%;flex-basis:auto}
+.manager-page .perk-card .item-visual img{height:112px;width:112px}
+.manager-page .perk-card .item-body{display:flex;flex-direction:column;width:100%}
+.manager-page .perk-card .item-body .actions{margin-top:auto;padding-top:var(--sl-space-3)}
+.manager-page .catalog-card{min-width:0;align-items:stretch}
+.manager-page .catalog-card h3{overflow-wrap:anywhere}
+.manager-page .catalog-image{display:grid;place-items:center;margin-bottom:var(--sl-space-3)}
+.manager-page .catalog-image img{width:100%;height:170px;object-fit:contain}
+.manager-page .catalog-card.perk-card .catalog-image img{height:112px}
+.manager-page .catalog-tabs{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:var(--sl-section-gap);height:auto}
+.manager-page .catalog-tabs button{height:auto;min-height:40px;line-height:1.3}
+.manager-page .managed-heading{display:grid;grid-template-columns:220px minmax(0,460px);align-items:center;gap:var(--sl-section-gap)}
+.manager-page .managed-heading>img{height:240px;width:100%;object-fit:contain}
+.manager-page .editor-actions{margin-top:var(--sl-section-gap)}
+.manager-page #itemEditor .drop .module-help{margin-bottom:var(--sl-section-gap)}
+.manager-page .review-grid{display:grid;gap:var(--sl-section-gap)}
+.manager-page .review-heading{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:var(--sl-section-gap);align-items:center}
+.manager-page .review-open{display:flex;gap:var(--sl-space-2);justify-content:flex-end;flex-wrap:wrap}
+.manager-page .review-tool .ui-field-help{margin-top:var(--sl-section-gap)}
+.manager-page .auto-checks{display:flex;flex-wrap:wrap;gap:var(--sl-space-3);list-style:none;padding:0;margin-block:var(--sl-space-3)}
+.manager-page .obs-actions{display:flex;flex-wrap:wrap;gap:var(--sl-space-3);align-items:center;margin-block:var(--sl-section-gap)}
+.manager-page .check-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--sl-space-3)}
+.manager-page .check-grid .check{align-items:flex-start}
+@media(max-width:1180px){.manager-page .catalog-grid,.manager-page .perk-list{grid-template-columns:repeat(2,minmax(0,1fr))}.manager-page .review-heading{grid-template-columns:1fr}.manager-page .review-open{justify-content:flex-start}.manager-page .check-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){.manager-page .catalog-grid,.manager-page .perk-list{grid-template-columns:1fr}.manager-page .character-card{flex-direction:column}.manager-page .character-card .item-visual{width:100%;flex-basis:auto}.manager-page .character-card .item-visual img{height:180px}.manager-page .managed-heading{grid-template-columns:1fr}.manager-page .catalog-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.manager-page .check-grid{grid-template-columns:1fr 1fr}.manager-page .steps{grid-template-columns:1fr}}
+
+.manager-page .module-box>button,.manager-page .module-box>p+.field{margin-top:var(--sl-section-gap)}
+.manager-page .catalog-card .cards-segmented{min-width:0}

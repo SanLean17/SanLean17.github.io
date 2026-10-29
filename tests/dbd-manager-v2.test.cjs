@@ -26,13 +26,13 @@ test('desactivar/reactivar conserva exactamente identidad, imagen, aliases y own
  let d=create();const original=m.catalogs.killers.find(i=>i.key==='plague');
  d=apply(d,'killers','plague','disable');const entry=m.effectiveCatalogs(d).killers.find(i=>i.key==='plague');
  assert.deepEqual(entry,{...original,enabled:false});d=await m.prepare(d.id);assert(d.validation.ok,JSON.stringify(d.validation));
- const a=m.artifact(d);assert.equal(a.manifest.files.length,1);assert.equal(a.manifest.totals.killers.after,a.manifest.totals.killers.before-1);
+ const a=m.artifact(d);assert.deepEqual(a.manifest.files.map(f=>f.path).sort(),TYPES.map(t=>'data/'+t+'.json').sort());assert.equal(a.manifest.totals.killers.after,a.manifest.totals.killers.before-1);
  d=await m.patch(d.id);const JSZip=require('jszip'),zip=await JSZip.loadAsync(fs.readFileSync(path.join(m.data,d.patch.file)));assert.equal(Object.values(zip.files).filter(f=>!f.dir).length,6);assert(!Object.keys(zip.files).some(f=>/datos|AppData/i.test(f)));
  d=apply(d,'killers','plague','enable');assert.equal(d.catalogChanges.length,0);assert.deepEqual(m.effectiveCatalogs(d).killers.find(i=>i.key==='plague'),original);
 });
 
 test('acciones por paquete: scope explícito, lista exacta, sin eliminación automática de perks',async()=>{
- let d=create();const type='killers',key='trapper',perks=m.catalogs['perks-killer'].filter(i=>!i.emptySlot).slice(0,3);
+ let d=create();const type='killers',key='trapper',perks=m.catalogs['perks-killer'].filter(i=>i.ownerKey===key);
  for(const perk of perks)d=m.catalogOwner(d.id,{revision:d.revision,type:'perks-killer',key:perk.key,ownerKey:key});
  assert(perks.length);const plan=m.catalogPlan(d.id,{type,key,action:'disable',scope:'package'});assert.equal(plan.affected.length,perks.length+1);
  assert.throws(()=>m.catalogApply(d.id,{...plan,affected:plan.affected.slice(1)}),/lista/);

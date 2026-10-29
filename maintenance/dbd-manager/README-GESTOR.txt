@@ -1,95 +1,71 @@
-SANLEAN — GESTOR DE CONTENIDO DBD · v2
+SANLEAN — GESTOR DE CONTENIDO DBD · v3
 Prueba local para Windows 10/11 de 64 bits
 
-ABRIR
-Abrí INICIAR GESTOR DE CONTENIDO DBD.bat desde la carpeta extraída.
-Dejá abierta la ventana del servidor mientras usás el Gestor.
-No requiere instalar Node, VS Code ni servicios pagos.
-Si ya tenés esta entrega guardada en la PC, no necesitás descargar otra copia.
+UBICACIÓN Y APERTURA
+Documents\Programa SanLean\Gestor de contenido DBD
+Abrí INICIAR GESTOR DE CONTENIDO DBD.bat y conservá abierta su ventana.
+Ya está instalado en esa carpeta: no necesitás descargar ni extraer otra copia.
+El programa incluye su runtime; no requiere instalar Node ni servicios pagos.
 
-PUERTOS
-Gestor: 127.0.0.1:4180
-WEB / USUARIO preview: 127.0.0.1:4181
-Streamer Tools preview: 127.0.0.1:4182
-NINGUNO MODIFICA PRODUCCIÓN.
-
-ESTA ENTREGA
-Incluye una copia del borrador TERRIFIER — 2026 y las ocho imágenes que cargaste
-en Programa para cargar Superviviente-Killer, en el Escritorio.
-Se conserva el progreso local de esa vista Streamer. La carpeta original no se modifica.
-Las preparaciones y copias de programa regenerables no se duplican en la migración.
-Abrí el borrador, VALIDAR ACTUALIZACIÓN y ABRIR VISTA PREVIA para regenerarlas.
-El contenido permanece exclusivamente local. No se publicó Terrifier, no se mezcló
-el PR #10 ni se modificó main.
+CONSERVAR
+datos/ contiene borradores, imágenes, historial y progreso de las previews.
+TERRIFIER — 2026 conserva las ocho imágenes y tus cambios de catálogo anteriores.
+PRUEBA-DESACTIVAR-CHUCKY es una prueba separada, exclusivamente local.
+Las copias anteriores siguen disponibles. Consultá COPIAS-LOCALES-AUDITORIA.md.
 
 FLUJO
-1. Nueva actualización: nombre, ID sugerido a partir del nombre y año, fecha opcional.
-2. Agregá Killers, Supervivientes o perks. Los personajes agrupan sus propias perks.
-3. Cargá PNG/WebP. Los nombres extraños se confirman en una ventana SanLean.
-   Sólo cambia el nombre técnico; se conservan los bytes de la imagen.
-4. Usá OTROS NOMBRES / TÉRMINOS DE BÚSQUEDA, uno por línea. Inglés es opcional.
-5. Validá. El Gestor comprueba catálogo, assets, búsquedas, propietarios y totales.
-6. Abrí las herramientas reales y revisá imagen, nombre, desktop, móvil y animación.
-7. Simulá la publicación. Generá el parche Streamer o la exportación manual.
-8. La publicación real de rama/commit/PR queda para la prueba posterior autorizada.
-   El Gestor muestra un resumen y pide escribir el ID antes de subir. No hace merge.
+01 CONTENIDO: personajes y sus perks, formularios en página y aliases de búsqueda.
+02 VALIDAR Y PROBAR: validación automática, herramientas reales, desktop/móvil y OBS.
+03 PUBLICAR: resumen de movimientos, simulación, parche, exportación y revisión GitHub.
+Los checks visuales no bloquean VALIDAR. Sí son necesarios para marcar LISTO.
+Las imágenes originales conservan sus bytes aunque se confirme otro nombre técnico.
 
-STREAMER Y OVERLAYS
-ABRIR HERRAMIENTA lleva a su panel, incluyendo enlaces directos a cada sección.
-Los MONITORES DE OVERLAYS muestran la salida real sobre una cuadrícula transparente.
-Un overlay inactivo u oculto puede estar vacío. El monitor informa su estado y permite
-volver a la herramienta para iniciarla, mostrarla o generar/girar una ruleta.
-Estas URLs de prueba no reemplazan las fuentes OBS del programa habitual.
-MI PANEL LOCAL usa la copia aislada incluida, no otras instalaciones de la PC.
+CATÁLOGO
+La administración visual permite desactivar personaje, perk, todas sus perks o paquete.
+Reactivar conserva key, imagen, aliases, propietario e historial.
+Las asociaciones históricas se consolidaron desde fuentes existentes del proyecto.
+Las perks generales sin propietario registrado se identifican sin asignarles uno ficticio.
+La eliminación avanzada muestra objetos, assets conservados y referencias afectadas.
+Eliminar del catálogo no borra imágenes ni datos del streamer; exige confirmación.
+Los parches también sirven para desactivaciones/reactivaciones sin imágenes nuevas.
+El resumen distingue movimientos respecto de la base y restituciones sin cambio neto.
 
-ADMINISTRAR CATÁLOGO
-Elegí una actualización para guardar los cambios. Buscá en los cuatro catálogos.
-DESACTIVAR oculta el contenido manteniendo key, imagen, aliases y propietario.
-REACTIVAR recupera esa identidad; no borra progreso, preferencias ni historial.
-Las acciones por paquete incluyen exclusivamente las perks con propietario registrado.
-Las perks históricas no tienen ownerKey: asociá explícitamente cada perk a su personaje
-con ASOCIAR A UN PERSONAJE antes de usar acciones por paquete. No se deducen dueños.
-ELIMINAR exige una lista exacta y confirmación. No elimina perks automáticamente,
-archivos de imagen ni datos del streamer. DESHACER CAMBIO revierte el borrador.
-Para compartir cualquier cambio hay que volver a validar y revisar.
+PREVIEW Y OBS
+Gestor: http://127.0.0.1:4180/
+WEB y USUARIO: http://127.0.0.1:4181/
+Streamer: http://127.0.0.1:4182/
+Primero validá una actualización y pulsá ABRIR VISTA PREVIA.
+Cada herramienta tiene accesos desktop/móvil. Los overlays incluyen COPIAR URL OBS
+DE PRUEBA y un monitor que indica si la herramienta está activa, oculta o sin iniciar.
+En OBS agregá una Fuente de navegador temporal y pegá esa URL.
+All Killer / All Survivor: 1920 × 300. Las demás: 1920 × 1080.
+No reemplaces tus fuentes habituales. La preview no instala loaders ni utiliza AppData.
+USUARIO local incluye Mostrar, Ocultar y Automático para los cuatro desafíos.
+Automático permite intervalo, duración, cuatro efectos y progreso compacto opcional.
+Los ajustes y el progreso pertenecen a cada herramienta y propietario.
 
-PARCHE STREAMER ACTUALIZADO
-Antes de aplicar cambios de catálogo al programa habitual, cerralo y respaldalo.
-Aplicá el SanLean-Streamer-Tools-Catalog-System-PATCH.zip incluido en ESTA v2,
-incluso si instalaste el parche inicial de v1. Actualiza la compatibilidad de rachas
-y entradas guardadas cuando un personaje se desactiva o elimina.
-Después aplicá el parche de contenido. No borres datos/ ni reconfigures OBS.
-La copia de prueba del Gestor ya tiene esta corrección. No se modifica automáticamente
-tu programa habitual. No apliques un parche viejo después de uno nuevo.
+MASTER STREAMER
+Documents\Programa SanLean\SanLean Streamer Tools es la distribución limpia.
+El Gestor utiliza su programa y guarda sus pruebas por separado en Gestor/datos.
+Para probar sin agregar datos a la MASTER, usá la preview del Gestor.
+Si ejecutás la MASTER directamente, creará datos/; no distribuyas datos personales.
+SanLean Local y SanLean Usuario son accesos a la misma preview, sin duplicar programas.
+Conservá las dos carpetas principales juntas si trasladás Programa SanLean.
+La instalación personal habitual del streamer es independiente y no se modificó.
 
 AUDITAR COPIAS LOCALES
-Revisa sólo ubicaciones conocidas de exports y temporales de pruebas del proyecto.
-No recorre toda la PC. Todas las casillas comienzan sin seleccionar.
-Protege el Gestor actual y sus datos, el programa habitual, AppData, el repositorio
-y tu carpeta Programa para cargar Superviviente-Killer. Documentos personales no se
-incluyen en la búsqueda. Los temporales identificados dentro de test-results se muestran
-por separado; el repositorio nunca se ofrece como carpeta para borrar.
-Seleccioná manualmente, revisá la lista y el espacio, y confirmá MOVER A LA PAPELERA.
-Si una carpeta cambió o contiene enlaces, la operación se bloquea y requiere otra auditoría.
-No hay borrado permanente como alternativa. El espacio se libera al vaciar la Papelera.
-
-CONSERVAR / MIGRAR DATOS
-Esta entrega ya contiene una copia de tu borrador e imágenes: no hace falta recargarlos.
-Tu v1 del Escritorio queda intacta y podés conservarla como respaldo hasta aprobar v2.
-Para migraciones futuras: cerrá ambos gestores, extraé v2 en una carpeta nueva y vacía,
-y copiá la carpeta datos/ completa de v1 allí. No combines dos carpetas datos distintas
-sin conservar antes un respaldo de ambas. No extraigas un paquete sobre datos activos.
-Los datos v1 se leen conservando los campos anteriores. La revisión visual se reinicia
-para verificar los nuevos controles. Las preparaciones ausentes se vuelven a generar.
-datos/ contiene actualizaciones e imágenes, historial, respaldos y progreso local.
-Las pruebas de USUARIO usan almacenamiento del navegador en el puerto 4181.
+Sólo revisa rutas conocidas: versiones, exports, ZIPs y pruebas del proyecto.
+Las casillas empiezan vacías. El Gestor actual, datos, MASTER e instalación personal
+están protegidos. Cualquier limpieza futura requiere selección y confirmación explícita.
+Esta revisión no ejecutó la utilidad de limpieza ni eliminó copias de programas.
 
 GITHUB
-GitHub CLI oficial. Conexión en navegador, sin pedir contraseñas o tokens al Gestor.
-Repositorio: SanLean17/SanLean17.github.io. Rama base: codex/dbd-content-catalogs.
-La base de contenido está fijada al commit aprobado. Si la rama cambia, la subida
-se bloquea para evitar reemplazar contenido nuevo; conservá datos al actualizar la base.
-PUBLICADO significa subido para revisión, no producción. Nunca se hace merge automático.
+Repositorio: SanLean17/SanLean17.github.io. Base: codex/dbd-content-catalogs.
+El modal muestra objetos, assets, archivos, rama y base antes de crear un PR.
+La base fijada se comprueba antes de subir para evitar reemplazar cambios ajenos.
+Nunca se hace merge automático. Esta entrega no realizó publicaciones reales.
+Terrifier y Chucky permanecen locales. La prueba real de GitHub queda pendiente
+de tu aprobación en una tarea posterior.
 
-No se creó una guía Word. El detalle de cambios y pruebas está en
-GESTOR-CONTENIDO-DBD-REVIEW-v2.md.
+Detalle: GESTOR-CONTENIDO-DBD-REVIEW-v3.md y LEER-UBICACIONES.txt, en Programa SanLean.
+No se creó guía Word.
