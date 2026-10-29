@@ -471,3 +471,7 @@ Los permisos se almacenan por espacio/colaborador en `workspace_members`; no deb
 
 ### Composición de controles dentro de cards
 Las cards respetan la variante explícita de cada acción: secundaria, destructiva o primaria. Los controles segmentados con aria-pressed conservan su geometría propia dentro de una card; las reglas genéricas de acciones de la card no deben convertirlos en botones pill ni pintar todas sus opciones de rojo.
+
+### Confirmaciones compartidas en programas locales (Gestor v4)
+
+Gestor, SanLean Local/Usuario y Streamer Tools reutilizan `usuario-confirmations.css`: borde rojo fino de 1 px, panel de 16 px, kicker rojo, título separado de la descripción y acciones de 44 px. La acción segura precede a la confirmación; en mobile se apilan en ese orden. Los formularios conservan 19 px entre grupos y ancho máximo de 460 px. No se agregan diálogos nativos ni filas de botones para elegir una actualización: se utiliza el select canónico. En el Gestor el bloque de acciones de cada etapa tiene 24 px de separación y 28 px antes de la siguiente caja.

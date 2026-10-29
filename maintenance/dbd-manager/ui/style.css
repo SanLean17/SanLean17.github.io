@@ -100,3 +100,23 @@
 
 .manager-page .module-box>button,.manager-page .module-box>p+.field{margin-top:var(--sl-section-gap)}
 .manager-page .catalog-card .cards-segmented{min-width:0}
+
+/* v4: layout rhythm; the controls themselves remain canonical USUARIO components. */
+.manager-page .actions{margin-block:24px}
+.manager-page .stage-actions{padding-block:4px;margin-block:24px 28px}
+.manager-page .module-box+.module-box,.manager-page .module-box+.preview-group{margin-top:28px}
+.manager-page .dashboard-card .actions{margin-bottom:0}
+.manager-page .modal-bottom{margin-top:48px;gap:12px;justify-content:center}
+.manager-page #modalBody>.eyebrow{margin-bottom:14px}
+.manager-page #modalBody>p{margin-bottom:24px;line-height:1.55}
+.manager-page #modalBody .modal-top h2{font-size:32px;line-height:1.2}
+.manager-page .catalog-toolbar{display:grid;grid-template-columns:minmax(260px,460px) minmax(280px,1fr);gap:35px;align-items:start}
+.manager-page .catalog-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.manager-page .catalog-stats .ui-metric-value{font-size:24px;font-weight:800;display:block;margin-top:10px}
+.manager-page .update-dates{display:grid;gap:7px;margin-top:22px}
+.manager-page .update-dates dt{font-size:11px;font-weight:800;color:var(--sl-text-secondary)}
+.manager-page .update-dates dd{margin:0 0 10px;font-size:14px}
+.manager-page #modalBody>.field,.manager-page #modalBody>#changeNew{width:min(460px,100%);margin-inline:auto;text-align:left}
+.manager-page #modalBody>.field+.field,.manager-page #changeNew{margin-top:19px}
+@media(max-width:1000px){.manager-page .catalog-toolbar{grid-template-columns:1fr}.manager-page .catalog-stats{max-width:460px}}
+@media(max-width:560px){.manager-page .modal-bottom{display:grid;grid-template-columns:1fr}.manager-page .catalog-stats{gap:7px}.manager-page .catalog-stats .ui-metric-card{padding:14px 10px}.manager-page #modalBody .modal-top h2{font-size:27px}}

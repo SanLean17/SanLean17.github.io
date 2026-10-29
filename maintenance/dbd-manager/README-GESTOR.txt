@@ -1,71 +1,54 @@
-SANLEAN — GESTOR DE CONTENIDO DBD · v3
-Prueba local para Windows 10/11 de 64 bits
+SANLEAN — GESTOR DE CONTENIDO DBD · v4
+Local para Windows 10/11 de 64 bits
 
-UBICACIÓN Y APERTURA
+YA ESTÁ INSTALADO
 Documents\Programa SanLean\Gestor de contenido DBD
-Abrí INICIAR GESTOR DE CONTENIDO DBD.bat y conservá abierta su ventana.
-Ya está instalado en esa carpeta: no necesitás descargar ni extraer otra copia.
-El programa incluye su runtime; no requiere instalar Node ni servicios pagos.
+Abrí INICIAR GESTOR DE CONTENIDO DBD.bat. No hace falta descargar otra copia.
+Incluye el runtime. No requiere suscripciones ni servicios pagos.
 
-CONSERVAR
-datos/ contiene borradores, imágenes, historial y progreso de las previews.
-TERRIFIER — 2026 conserva las ocho imágenes y tus cambios de catálogo anteriores.
-PRUEBA-DESACTIVAR-CHUCKY es una prueba separada, exclusivamente local.
-Las copias anteriores siguen disponibles. Consultá COPIAS-LOCALES-AUDITORIA.md.
+CATÁLOGO ACTUAL
+Abrí ADMINISTRAR CATÁLOGO sin elegir una actualización.
+Después de cambiar un personaje o perk, elegí una actualización nueva o existente.
+Cada actualización guarda sus cambios; abrirla no cambia la base ni otros borradores.
+COMBINAR ACTUALIZACIONES crea una copia nueva explícita y señala conflictos.
 
-FLUJO
-01 CONTENIDO: personajes y sus perks, formularios en página y aliases de búsqueda.
-02 VALIDAR Y PROBAR: validación automática, herramientas reales, desktop/móvil y OBS.
-03 PUBLICAR: resumen de movimientos, simulación, parche, exportación y revisión GitHub.
-Los checks visuales no bloquean VALIDAR. Sí son necesarios para marcar LISTO.
-Las imágenes originales conservan sus bytes aunque se confirme otro nombre técnico.
+DOS RECORRIDOS
+ACTIVAR / DESACTIVAR / REACTIVAR: validación automática de catálogo, referencias,
+totales, filtro y progreso. Estado CAMBIO LISTO PARA PUBLICAR. Preview opcional.
+CONTENIDO NUEVO: contenido, validación, preview, revisión visual y MARCAR COMO
+PREPARADA. Estado PREPARADA PARA PUBLICAR. Los checks se conservan al reabrir.
+Los formularios se guardan localmente mientras editás. GUARDAR ELEMENTO los
+incorpora al contenido. Podés continuar o descartar una edición pendiente.
 
-CATÁLOGO
-La administración visual permite desactivar personaje, perk, todas sus perks o paquete.
-Reactivar conserva key, imagen, aliases, propietario e historial.
-Las asociaciones históricas se consolidaron desde fuentes existentes del proyecto.
-Las perks generales sin propietario registrado se identifican sin asignarles uno ficticio.
-La eliminación avanzada muestra objetos, assets conservados y referencias afectadas.
-Eliminar del catálogo no borra imágenes ni datos del streamer; exige confirmación.
-Los parches también sirven para desactivaciones/reactivaciones sin imágenes nuevas.
-El resumen distingue movimientos respecto de la base y restituciones sin cambio neto.
+TERRIFIER
+Es la única actualización real conservada. Mantiene ocho imágenes, aliases,
+estado VALIDADO, dos herramientas aprobadas, fechas y revisión anteriores.
+No fue publicada ni se completaron checks visuales por vos.
+Las pruebas técnicas están separadas en datos/tests; los temporales en datos/temp.
 
-PREVIEW Y OBS
-Gestor: http://127.0.0.1:4180/
-WEB y USUARIO: http://127.0.0.1:4181/
-Streamer: http://127.0.0.1:4182/
-Primero validá una actualización y pulsá ABRIR VISTA PREVIA.
-Cada herramienta tiene accesos desktop/móvil. Los overlays incluyen COPIAR URL OBS
-DE PRUEBA y un monitor que indica si la herramienta está activa, oculta o sin iniciar.
-En OBS agregá una Fuente de navegador temporal y pegá esa URL.
-All Killer / All Survivor: 1920 × 300. Las demás: 1920 × 1080.
-No reemplaces tus fuentes habituales. La preview no instala loaders ni utiliza AppData.
-USUARIO local incluye Mostrar, Ocultar y Automático para los cuatro desafíos.
-Automático permite intervalo, duración, cuatro efectos y progreso compacto opcional.
-Los ajustes y el progreso pertenecen a cada herramienta y propietario.
+PUBLICACIÓN
+GitHub: CONECTAR GITHUB utiliza el acceso oficial de GitHub CLI y el almacén
+seguro de Windows. Debés completar el inicio de sesión en tu navegador.
+PUBLICAR PARA REVISIÓN crea rama, commit y PR. No realiza merge automático.
+PUBLICAR EN PRODUCCIÓN requiere PR hacia main, CI aprobada y tu confirmación.
+Si la arquitectura compartida aún no existe en main, se explica el requisito y
+la producción queda bloqueada. No se inventa una hora de finalización.
+ACTUALIZADO exige comprobar el commit de Pages y los archivos servidos por la WEB.
+La próxima prueba real de GitHub queda para después de tu revisión de UX/UI.
 
-MASTER STREAMER
-Documents\Programa SanLean\SanLean Streamer Tools es la distribución limpia.
-El Gestor utiliza su programa y guarda sus pruebas por separado en Gestor/datos.
-Para probar sin agregar datos a la MASTER, usá la preview del Gestor.
-Si ejecutás la MASTER directamente, creará datos/; no distribuyas datos personales.
-SanLean Local y SanLean Usuario son accesos a la misma preview, sin duplicar programas.
-Conservá las dos carpetas principales juntas si trasladás Programa SanLean.
-La instalación personal habitual del streamer es independiente y no se modificó.
+STREAMER
+Se actualiza con PATCH LOCAL; GitHub no modifica las instalaciones de los streamers.
+GENERAR PARCHE funciona también para cambios de estado sin imágenes nuevas.
+Streamer existente: cerrar, extraer encima, aceptar reemplazar y volver a abrir.
+Los loaders OBS reconectan sin cambiar sus rutas. Refresco manual: contingencia.
+ACTUALIZAR STREAMER TOOLS MASTER aplica el parche, respalda antes y prueba el arranque.
+MASTER limpia: Documents\Programa SanLean\SanLean Streamer Tools.
+Puede comprimirse para entregar. Ejecutar su BAT directamente crea datos personales;
+para mantener la MASTER limpia usá la preview del Gestor para las pruebas.
 
-AUDITAR COPIAS LOCALES
-Sólo revisa rutas conocidas: versiones, exports, ZIPs y pruebas del proyecto.
-Las casillas empiezan vacías. El Gestor actual, datos, MASTER e instalación personal
-están protegidos. Cualquier limpieza futura requiere selección y confirmación explícita.
-Esta revisión no ejecutó la utilidad de limpieza ni eliminó copias de programas.
-
-GITHUB
-Repositorio: SanLean17/SanLean17.github.io. Base: codex/dbd-content-catalogs.
-El modal muestra objetos, assets, archivos, rama y base antes de crear un PR.
-La base fijada se comprueba antes de subir para evitar reemplazar cambios ajenos.
-Nunca se hace merge automático. Esta entrega no realizó publicaciones reales.
-Terrifier y Chucky permanecen locales. La prueba real de GitHub queda pendiente
-de tu aprobación en una tarea posterior.
-
-Detalle: GESTOR-CONTENIDO-DBD-REVIEW-v3.md y LEER-UBICACIONES.txt, en Programa SanLean.
-No se creó guía Word.
+UBICACIONES
+Gestor: 127.0.0.1:4180. Preview WEB/USUARIO: 4181. Preview Streamer: 4182.
+SanLean Local y SanLean Usuario son launchers de esa misma preview temporal.
+Su base real vive en Gestor/base/web; no dependen de .codex para ejecutarse.
+Conservá datos/ y la MASTER actual. COPIAS-LOCALES-LIMPIEZA.md detalla lo retirado.
+Los elementos enviados a la Papelera ocupan espacio hasta que vos la vacíes.

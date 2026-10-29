@@ -10,7 +10,7 @@ const screenshot=async(page,name)=>{await page.screenshot({path:path.join(out,na
 const settled=page=>page.waitForFunction(()=>!document.body.classList.contains('busy'));
 async function noOverflow(page,label){assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),label+' overflow');}
 (async()=>{try{
- session=await(await fetch(base+'/api/session')).json();
+ session=await(await fetch(base+'/api/session')).json();assert.equal(session.testMode,true,'PRUEBA BLOQUEADA: datos operativos; usar servidor aislado.');
  browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
  const context=await browser.newContext({viewport:{width:1440,height:1000}});context.setDefaultTimeout(20000);await context.route('https://**/*',r=>r.abort());
  const page=await context.newPage();page.on('pageerror',e=>report.errors.push(e.message));page.on('dialog',d=>{report.errors.push('Diálogo nativo: '+d.message());d.dismiss();});

@@ -3,12 +3,15 @@ const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),
 const {Manager,json,inside,run,hash}=require('./core.cjs'),{GitHub}=require('./github.cjs'),{Preview,serveFile}=require('./preview.cjs');
 function createServer({home,port=4180,webPort=4181,streamerPort=4182,manager}={}){
  home=path.resolve(home||path.join(__dirname,'../..'));const config=json(path.join(home,'base-manifest.json'));
- const m=manager||new Manager({home,baseRoot:path.join(home,'base/web'),streamerRoot:config.streamerRelative?path.resolve(home,config.streamerRelative):path.join(home,'base/streamer'),baseCommit:config.commit});const gh=new GitHub(m),preview=new Preview(m,{webPort,streamerPort});const token=crypto.randomBytes(32).toString('hex');const auditor=new (require('./audit.cjs').Auditor)(home);let queue=Promise.resolve(),auth=null;
+ const m=manager||new Manager({home,baseRoot:path.join(home,'base/web'),streamerRoot:config.streamerRelative?path.resolve(home,config.streamerRelative):path.join(home,'base/streamer'),baseCommit:config.commit});if(!manager)m.configureV4();const gh=new GitHub(m),preview=new Preview(m,{webPort,streamerPort});const token=crypto.randomBytes(32).toString('hex');const auditor=new (require('./audit.cjs').Auditor)(home);let queue=Promise.resolve(),auth=null;
  const send=(res,status,data)=>{res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify(data));};
  const server=http.createServer(async(req,res)=>{res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('X-Frame-Options','DENY');res.setHeader('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' blob: data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'");if(req.headers.host!=='127.0.0.1:'+port||req.headers['sec-fetch-site']==='cross-site')return send(res,403,{error:'Origen no permitido.'});let url;try{url=new URL(req.url,'http://127.0.0.1:'+port);}catch{return send(res,400,{error:'URL no válida.'});}
  try{if(req.method==='GET'){
  if(url.pathname==='/health')return send(res,200,{app:'sanlean-dbd-manager',root:home});
- if(url.pathname==='/api/session')return send(res,200,{token,repo:m.repo,branch:m.branch,commit:m.baseCommit,data:m.data,github:await gh.status(),auth,drafts:m.list(),preview:preview.active,config,ports:{manager:port,web:webPort,streamer:streamerPort}});
+ if(url.pathname==='/api/session')return send(res,200,{token,repo:m.repo,branch:m.branch,commit:m.baseCommit,data:m.data,github:await gh.status(),testMode:m.testMode===true,auth,drafts:m.list().map(d=>({...d,updateKind:m.kind(d)})),preview:preview.active,config,ports:{manager:port,web:webPort,streamer:streamerPort}});
+ if(url.pathname==='/api/editor')return send(res,200,m.editorRead(url.searchParams.get('id')));
+ if(url.pathname==='/api/publication-plan')return send(res,200,await gh.publicationPlan(url.searchParams.get('id')));
+ if(url.pathname==='/api/publication-status')return send(res,200,await gh.progress(url.searchParams.get('id')));
  if(url.pathname==='/api/history')return send(res,200,m.history());
  if(url.pathname==='/api/catalogs')return send(res,200,url.searchParams.get('id')?(url.searchParams.get('includeDraft')==='1'?m.analyze(m.read(url.searchParams.get('id'))).all:m.effectiveCatalogs(m.read(url.searchParams.get('id')))):m.catalogs);
  if(url.pathname==='/api/audit')return send(res,200,auditor.scan());
@@ -24,23 +27,31 @@ function createServer({home,port=4180,webPort=4181,streamerPort=4182,manager}={}
  const assets={'/':'index.html','/app.js':'app.js','/style.css':'style.css','/catalog.js':null,'/font.ttf':null};if(Object.hasOwn(assets,url.pathname)){let file=assets[url.pathname]?path.join(__dirname,'ui',assets[url.pathname]):url.pathname==='/catalog.js'?path.join(m.base,'js/dbd-catalog.js'):path.join(__dirname,'ui/font.ttf');return serveFile(req,res,file);}return send(res,404,{error:'No encontrado.'});}
  if(req.method!=='POST')return send(res,405,{error:'Método no permitido.'});if(req.headers.origin!=='http://127.0.0.1:'+port||req.headers['x-sanlean-manager']!==token||req.headers['content-type']!=='application/json')return send(res,403,{error:'La sesión no es válida. Recargá el Gestor.'});let raw='';for await(const chunk of req){raw+=chunk;if(Buffer.byteLength(raw)>29*1024*1024)return send(res,413,{error:'El archivo supera el tamaño permitido.'});}const body=JSON.parse(raw);const action=async()=>{switch(url.pathname){
  case '/api/new':return m.create(body);
- case '/api/catalog-owner':await preview.stop();return m.catalogOwner(body.id,body);
+ case '/api/catalog-save':return m.saveCatalogChange(body);
+ case '/api/catalog-owner-save':{const d=body.destination?m.read(body.destination):m.create(body);if(body.destination)m.checkRevision(d,body.destinationRevision);return m.catalogOwner(d.id,{...body,revision:d.revision});}
+ case '/api/combine':return m.combine(body);
+ case '/api/editor':return m.editorCheckpoint(body.id,body);
+ case '/api/check-all':return m.checkAll(body.id,body);
+ case '/api/master':return require('./master.cjs').updateMaster(m,body.id,body);
+ case '/api/production-pr':return gh.productionPR(body.id,body);
+ case '/api/production':return gh.production(body.id,body);
+ case '/api/catalog-owner':if(preview.active?.id===body.id)await preview.stop();return m.catalogOwner(body.id,body);
  case '/api/catalog-plan':return m.catalogPlan(body.id,body);
- case '/api/catalog-apply':await preview.stop();return m.catalogApply(body.id,body);
- case '/api/catalog-undo':await preview.stop();return m.catalogUndo(body.id,body);
+ case '/api/catalog-apply':if(preview.active?.id===body.id)await preview.stop();return m.catalogApply(body.id,body);
+ case '/api/catalog-undo':if(preview.active?.id===body.id)await preview.stop();return m.catalogUndo(body.id,body);
  case '/api/audit-plan':return auditor.plan(body.ids);
  case '/api/audit-recycle':return auditor.execute(body);
- case '/api/save':await preview.stop();return m.save(body.id,body);
- case '/api/upload':await preview.stop();return m.upload(body.id,body);
+ case '/api/save':if(preview.active?.id===body.id)await preview.stop();return m.save(body.id,body);
+ case '/api/upload':if(preview.active?.id===body.id)await preview.stop();return m.upload(body.id,body);
  case '/api/propose':return {key:m.propose(body.type,body.name,body.items)};
- case '/api/prepare':await preview.stop();return m.prepare(body.id);
+ case '/api/prepare':if(preview.active?.id===body.id)await preview.stop();return m.prepare(body.id);
  case '/api/preview':return preview.open(body.id);
  case '/api/simulate':return m.simulate(body.id);
  case '/api/check':return m.check(body.id,body);
  case '/api/ready':return m.ready(body.id);
  case '/api/patch':return m.patch(body.id);
  case '/api/export':return m.exportManual(body.id);
- case '/api/publish':return gh.publish(body.id,body.confirmation,{revision:body.revision,manifestHash:body.manifestHash});
+ case '/api/publish':return gh.publish(body.id,body.confirmation,{revision:body.revision,manifestHash:body.manifestHash,baseBranch:body.baseBranch,baseCommit:body.baseCommit});
  case '/api/connect':{if(auth?.running)return auth;await run('powershell.exe',['-NoProfile','-ExecutionPolicy','Bypass','-File',path.join(__dirname,'check-credential-store.ps1')]);auth={running:true,output:''};const p=cp.spawn(gh.exe,['auth','login','--hostname','github.com','--git-protocol','https','--web','--skip-ssh-key'],{windowsHide:true,stdio:['pipe','pipe','pipe']});const collect=b=>{auth.output=(auth.output+b.toString('utf8')).slice(-6000);};p.stdout.on('data',collect);p.stderr.on('data',collect);p.on('error',e=>{auth.running=false;auth.output='No se pudo abrir GitHub CLI. Extraé el paquete completo. '+e.code;});p.on('close',code=>{auth.running=false;auth.success=code===0;});p.stdin.end();return auth;}
  case '/api/folder':if(process.platform==='win32')cp.spawn('explorer.exe',[m.data],{windowsHide:true,stdio:'ignore'}).on('error',()=>{});return {ok:true};
  default:throw Error('Acción no disponible.');}};const job=queue.then(action);queue=job.catch(()=>{});return send(res,200,await job);

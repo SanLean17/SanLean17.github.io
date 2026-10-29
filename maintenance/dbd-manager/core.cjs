@@ -43,3 +43,4 @@ class Manager{
 function copyBuffer(bytes,file){mkdir(path.dirname(file));fs.writeFileSync(file,bytes,{flag:'wx'});}
 module.exports={Manager,TYPES,FOLDERS,OWNER,CHECKS,hash,json,mkdir,atomic,inside,copy,run};
 require('./catalog-admin.cjs').install(Manager);
+require('./updates.cjs').install(Manager);

@@ -1,7 +1,7 @@
 'use strict';
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path');
-const root=__dirname,publicRoot=path.join(root,'public'),port=4175;
-const app=require('./application.cjs')(path.join(root,'datos')),clients=new Map();let timer,notice='';
+const root=__dirname,publicRoot=path.join(root,'public'),port=Number(process.env.SANLEAN_PORT)||4175;
+const app=require('./application.cjs')(process.env.SANLEAN_DATA_DIR||path.join(root,'datos')),clients=new Map();let timer,notice='';
 const valid={challenges:['all-killer','all-survivor'],counters:['meta','win-streak'],tools:['']};
 function packet(scope,key){return {state:app.get(scope,key),serverTime:Date.now(),notice,...(scope==='counters'&&key==='win-streak'?{history:app.history()}:{}),...(scope==='tools'?{overlayListeners:Object.fromEntries(['killer-wheel','perks-killer','perks-survivor'].map(k=>[k,[...clients.values()].filter(c=>c.overlay===k).length]))}:{})};}
 function broadcast(){for(const [res,c] of clients){const p=packet(c.scope,c.key);if(c.websocket)res.send(p);else res.write('data: '+JSON.stringify(p)+'\n\n');}}
@@ -9,9 +9,9 @@ function schedule(){clearTimeout(timer);const d=app.due()[0];if(d)timer=setTimeo
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json; charset=utf-8','.png':'image/png','.webp':'image/webp','.woff2':'font/woff2','.ttf':'font/ttf','.svg':'image/svg+xml','.wav':'audio/wav','.mp3':'audio/mpeg'};
 const server=http.createServer(async(req,res)=>{
  const send=(status,data)=>{res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify(data));};
- if(!['127.0.0.1:4175','localhost:4175'].includes(req.headers.host))return send(403,{error:'Host no permitido'});
+ if(!['127.0.0.1:'+port,'localhost:'+port].includes(req.headers.host))return send(403,{error:'Host no permitido'});
 
- let url;try{url=new URL(req.url,'http://127.0.0.1:4175');}catch{return send(400,{error:'URL inválida'});}const p=url.pathname;
+ let url;try{url=new URL(req.url,'http://127.0.0.1:'+port);}catch{return send(400,{error:'URL inválida'});}const p=url.pathname;
  const localOverlay=/^\/obs\/(meta|win-streak|all-killer|all-survivor|killer-wheel|perks-killer|perks-survivor)$/.test(p);
  res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Content-Security-Policy',`default-src 'self'; connect-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; frame-ancestors 'self'${localOverlay?' file: http://absolute':''}; form-action 'self'; base-uri 'none'`);
  if(p==='/health'&&req.method==='GET')return send(200,{app:'sanlean-streamer-tools',root});
@@ -36,8 +36,8 @@ const server=http.createServer(async(req,res)=>{
 });
 server.on('upgrade',(req,socket,head)=>{
  const reject=()=>socket.end('HTTP/1.1 403 Forbidden\r\nConnection: close\r\n\r\n');
- if(!['127.0.0.1:4175','localhost:4175'].includes(req.headers.host)||req.headers.origin!==`http://${req.headers.host}`)return reject();
- let url;try{url=new URL(req.url,'http://127.0.0.1:4175');}catch{return reject();}
+ if(!['127.0.0.1:'+port,'localhost:'+port].includes(req.headers.host)||req.headers.origin!==`http://${req.headers.host}`)return reject();
+ let url;try{url=new URL(req.url,'http://127.0.0.1:'+port);}catch{return reject();}
  const m=url.pathname.match(/^\/events\/(tools|challenges|counters)(?:\/([^/]+))?$/);if(!m||!valid[m[1]].includes(m[2]||''))return reject();
  const scope=m[1],key=m[2]||'',overlay=scope==='tools'&&url.searchParams.get('surface')==='overlay'?url.searchParams.get('tool'):null;
  if(require('./local-events.cjs')(req,socket,head,()=>{clients.delete(socket);broadcast();})){clients.set(socket,{scope,key,overlay,websocket:true});broadcast();}

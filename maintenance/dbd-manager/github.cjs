@@ -18,3 +18,4 @@ class GitHub{
  record(p){atomic(path.join(this.m.data,'historial',p.id+'.json'),p);}
 }
 module.exports={GitHub};
+require('./publication.cjs').install(GitHub);
