@@ -34,7 +34,7 @@
  }
  function renderSummary(key,t){
    const remove=key==='killer-wheel'&&t.repeatMode==='remove',stats=SanLeanRouletteEntries.stats(catalogs[key],t,remove);
-   const boxes=remove?[['ENTRADAS TOTALES',stats.total,'total'],['ELIMINADOS',stats.eliminated.length+' / '+stats.total,'eliminated'],['DISPONIBLES',stats.available,'available'],['DONACIONES ACTIVAS',stats.activeDonations,'donations']]:[['ENTRADAS EN RULETA',stats.total+' / '+stats.base,'total'],['DONACIONES',stats.donations,'donations']];
+   const boxes=remove?[['ENTRADAS TOTALES',stats.total,'total'],['ELIMINADOS',stats.eliminated.length+' / '+stats.total,'eliminated'],['DISPONIBLES',stats.available,'available'],['ENTRADAS AGREGADAS ACTIVAS',stats.activeExtras,'donations']]:[['ENTRADAS EN RULETA',stats.total+' / '+stats.base,'total'],['ENTRADAS AGREGADAS',stats.extras,'donations']];
    $(key+'-stats').innerHTML=boxes.map(([label,value,id])=>'<div><span>'+label+'</span><strong id="'+key+'-'+id+'">'+value+'</strong></div>').join('');
    const eliminatedById=new Map(stats.eliminated.map(e=>[e.entryId,e]));
    const usedEntries=key==='killer-wheel'?t.usedKillerEntries.map(id=>eliminatedById.get(id)).filter(Boolean):stats.eliminated;

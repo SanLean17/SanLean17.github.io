@@ -1,6 +1,6 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
-const {makeSequence,validKillerSequence}=require('./spin-sequence.cjs');
+const {makeSequence,validKillerSequence,SEQUENCE_VERSION}=require('./spin-sequence.cjs');
 const tickets=require('./public/js/roulette-entries.js');
 const definitions={
   'killer-wheel':{name:'RULETA DE KILLERS',kind:'roulette_killers',catalog:'killers',folder:'killers',sounds:['digital','dry','round','deep'],duration:8000,count:1},
@@ -76,15 +76,32 @@ function validate(raw){
       if(key!=='killer-wheel'&&(conflicts[d.folder]||[]).some(g=>list.filter(i=>g.includes(i.key)).length>1))throw Error('Build incompatible.');
     }
     if(s.status==='spinning'&&(!Number.isFinite(Date.parse(s.startedAt))||s.durationMs!==d.duration||s.targets?.length!==d.count||!Array.isArray(s.spinPool)||s.spinPool.some(i=>!validEntry(i))||s.targets.some(target=>!s.spinPool.some(e=>e.entryId===target.entryId&&e.key===target.key&&e.donor===target.donor))))throw Error('Giro inválido.');
-    const targets=s.targets?.length?s.targets:s.items,visualPool=s.spinPool||pool(key,t);
-    if(s.status!=='idle'&&!s.spinSequence&&visualPool.length)Object.assign(s,makeSequence(key,visualPool,targets));
+    const targets=s.targets?.length?s.targets:s.items;let visualPool=s.entryPool||s.spinPool||pool(key,t);
+    // A legacy ready deck may survive disabling every option. Recover its
+    // historical tickets by ID without re-enabling any configured option.
+    if(s.sequenceVersion!==SEQUENCE_VERSION&&!visualPool.length&&s.spinSequence?.length){
+      const cards=key==='killer-wheel'?s.spinSequence.map(e=>({...e.killer,entryId:e.entryId,type:e.type,donor:e.donor,enabled:true})):s.spinSequence.flat();
+      const history=new Map(cards.map(e=>[e.entryId,e])),keys=new Set(cards.map(e=>e.key));
+      for(const e of t.entries.filter(e=>keys.has(e.key)))history.set(e.entryId,{...allCatalogs[key].find(i=>i.key===e.key),...e,enabled:true});
+      visualPool=[...history.values()];
+    }
+    // Upgrade only the presentation of legacy saves. Keep their exact winner,
+    // ticket identities, donor, spinId and timing; never draw another winner.
+    if(s.status!=='idle'&&(!s.spinSequence||s.sequenceVersion!==SEQUENCE_VERSION)&&visualPool.length)Object.assign(s,makeSequence(key,visualPool,targets));
     if(s.spinSequence){
       const seq=s.spinSequence;if(!Array.isArray(seq))throw Error('Secuencia inválida.');
+      if(!Array.isArray(s.entryPool)||!s.entryPool.length||s.entryPool.some(e=>!validEntry(e)||e.killerKey!==e.key||e.source!==e.type)||new Set(s.entryPool.map(e=>e.entryId)).size!==s.entryPool.length)throw Error('Pool visual inválido.');
+      const sameTicket=(a,b)=>a?.entryId===b?.entryId&&a?.key===b?.key&&a?.donor===b?.donor&&a?.type===b?.type;
+      if(s.spinPool&&(s.spinPool.length!==s.entryPool.length||s.spinPool.some((e,i)=>!sameTicket(e,s.entryPool[i]))))throw Error('El pool del giro no coincide.');
       if(key==='killer-wheel'){
-        if(seq.length<100||seq.length>ids.size*10+100||!Number.isInteger(s.targetIndex)||s.targetIndex<5||s.targetIndex>seq.length-5||s.startIndex!==5||seq.some(e=>!ids.has(e?.killer?.key)||typeof e.entryId!=='string'))throw Error('Secuencia inválida.');
-        if(targets[0]&&(seq[s.targetIndex].entryId!==targets[0].entryId||seq[s.targetIndex].donor!==targets[0].donor))throw Error('Ventana final inválida.');
-        if(!validKillerSequence(seq,s.spinPool||seq.map(e=>({key:e.killer.key}))))throw Error('Separación visual inválida.');
-      }else if(seq.length!==targets.length||s.targetIndex!==36||seq.some((slot,i)=>!Array.isArray(slot)||slot.length!==37||slot.some(e=>!ids.has(e?.key))||slot[36].entryId!==targets[i].entryId||slot[36].donor!==targets[i].donor))throw Error('Secuencia de perks inválida.');
+        if(seq.length<100||seq.length>3*s.entryPool.length+107||!Number.isInteger(s.targetIndex)||s.targetIndex<5||s.targetIndex>seq.length-5||s.startIndex!==5||seq.some(e=>!ids.has(e?.killer?.key)||typeof e.entryId!=='string'))throw Error('Secuencia inválida.');
+        if(targets[0]&&(seq[s.targetIndex].entryId!==targets[0].entryId||seq[s.targetIndex].donor!==targets[0].donor||s.winnerEntryId!==targets[0].entryId||!sameTicket(s.winner,targets[0])||s.winner.killerKey!==targets[0].key||s.winner.source!==targets[0].type))throw Error('Ventana final inválida.');
+        if(!Array.isArray(s.visualDeck)||s.visualDeck.length!==s.entryPool.length||!validKillerSequence(s.visualDeck,s.entryPool)||!validKillerSequence(seq,s.entryPool)||s.visualDeck.some((e,i)=>e.entryId!==seq[i].entryId))throw Error('Tickets o separación visual inválidos.');
+      }else {
+        if(!Array.isArray(s.visualDeck)||s.visualDeck.length!==s.entryPool.length||s.visualDeck.some((e,i)=>!sameTicket(e,s.entryPool[i])))throw Error('Tickets de perks inválidos.');
+        const byEntry=new Map(s.entryPool.map(e=>[e.entryId,e]));
+        if(seq.length!==targets.length||s.targetIndex!==36||seq.some((slot,i)=>!Array.isArray(slot)||slot.length!==37||slot.some(e=>!sameTicket(e,byEntry.get(e?.entryId)))||slot[36].entryId!==targets[i].entryId||slot[36].donor!==targets[i].donor))throw Error('Secuencia de perks inválida.');
+      }
     }
     out.tools[key]=t;
   }

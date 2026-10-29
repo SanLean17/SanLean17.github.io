@@ -3,11 +3,11 @@
   'use strict';
   const baseId=key=>key+':default';
   const defaults=catalog=>catalog.map(i=>({entryId:baseId(i.key),key:i.key,donor:null,type:'default',enabled:true}));
-  function configured(catalog,tool){const byKey=new Map(catalog.map(i=>[i.key,i]));return tool.entries.filter(e=>e.enabled&&byKey.has(e.key)).map(e=>({...byKey.get(e.key),...e,weight:1}));}
+  function configured(catalog,tool){const byKey=new Map(catalog.map(i=>[i.key,i]));return tool.entries.filter(e=>e.enabled&&byKey.has(e.key)).map(e=>({...byKey.get(e.key),...e,killerKey:e.key,source:e.type,weight:1}));}
   function pool(catalog,tool,remove=false){const used=new Set(remove?tool.usedKillerEntries:[]);return configured(catalog,tool).filter(e=>!used.has(e.entryId));}
   function stats(catalog,tool,remove=false){
     const all=configured(catalog,tool),available=pool(catalog,tool,remove),remaining=new Set(available.map(e=>e.entryId));
-    return {base:catalog.length,total:all.length,available:available.length,eliminated:all.filter(e=>!remaining.has(e.entryId)),donations:all.filter(e=>e.type==='donation').length,activeDonations:available.filter(e=>e.type==='donation').length};
+    return {base:catalog.length,total:all.length,available:available.length,eliminated:all.filter(e=>!remaining.has(e.entryId)),extras:all.filter(e=>e.type!=='default').length,activeExtras:available.filter(e=>e.type!=='default').length,donations:all.filter(e=>e.type==='donation').length,activeDonations:available.filter(e=>e.type==='donation').length};
   }
   function options(catalog,tool){
     const grouped=new Map(catalog.map(i=>[i.key,[]]));for(const e of tool.entries)grouped.get(e.key)?.push(e);

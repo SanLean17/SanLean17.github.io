@@ -2,63 +2,64 @@
 const {randomInt}=require('node:crypto');
 const FINAL_RADIUS=4;
 const VISIBLE_UNIQUE_SPAN=7;
-const entry=item=>({killer:{key:item.key,name:item.name,image:item.image},donor:item.donor||null,id:item.entryId,entryId:item.entryId,type:item.type});
+const SEQUENCE_VERSION=2;
+const identity=item=>({...item,killerKey:item.key,source:item.type});
+const entry=item=>({killer:{key:item.key,name:item.name,image:item.image},killerKey:item.key,source:item.type,donor:item.donor||null,id:item.entryId,entryId:item.entryId,type:item.type});
 function shuffled(items){const copy=[...items];for(let i=copy.length-1;i>0;i--){const j=randomInt(i+1);[copy[i],copy[j]]=[copy[j],copy[i]];}return copy;}
+function spacingBound(pool){const counts=new Map();for(const i of pool)counts.set(i.key,(counts.get(i.key)||0)+1);return pool.length?Math.floor(pool.length/Math.max(...counts.values())):0;}
+// M copies of the most frequent key divide a circular deck of N tickets into
+// M gaps: no arrangement can have a minimum gap greater than floor(N / M).
+// Deal descending groups across M rows, then read the rows. Each row has
+// floor(N/M) or ceil(N/M) tickets. Full groups start at column zero; a partial
+// group occupies consecutive rows at one column (one later after wrapping).
+// Consecutive occurrences are therefore at least floor(N/M) apart, including
+// the last-to-first boundary. Every ticket is dealt once; none are deduplicated.
+function balancedCycle(pool){
+  const groups=new Map();for(const item of pool){if(!groups.has(item.key))groups.set(item.key,[]);groups.get(item.key).push(item);}
+  const ordered=shuffled([...groups.values()]).sort((a,b)=>b.length-a.length),m=ordered[0].length;
+  let rows=Array.from({length:m},()=>[]),cursor=0;
+  for(const group of ordered)for(const ticket of shuffled(group))rows[cursor++%m].push(ticket);
+  // When one key is a majority, adjacent copies are unavoidable. Spread the
+  // intervening tickets evenly instead of concentrating the unavoidable pairs.
+  if(Math.floor(pool.length/m)===1){
+    const long=rows.filter(r=>r.length===2),short=rows.filter(r=>r.length===1),count=long.length;
+    rows=Array.from({length:m},(_,i)=>Math.floor((i+1)*count/m)>Math.floor(i*count/m)?long.shift():short.shift());
+  }
+  let deck=rows.flat();if(randomInt(2))deck.reverse();const offset=randomInt(deck.length);
+  return [...deck.slice(offset),...deck.slice(0,offset)].map(entry);
+}
 function validKillerSequence(sequence,pool){
-  const ids=new Set(pool.map(i=>i.key)),span=Math.min(VISIBLE_UNIQUE_SPAN,ids.size),last=new Map();
-  if(!span||!Array.isArray(sequence)||!sequence.length)return false;
+  if(!pool?.length||!Array.isArray(sequence)||sequence.length<pool.length)return false;
+  const tickets=new Map(pool.map(i=>[i.entryId,i])),seen=new Set(),last=new Map(),span=spacingBound(pool);
+  if(tickets.size!==pool.length)return false;
   for(let i=0;i<sequence.length;i++){
-    const key=sequence[i]?.killer?.key;
-    if(!ids.has(key)||i-(last.get(key)??-Infinity)<span)return false;
+    const card=sequence[i],ticket=tickets.get(card?.entryId),key=card?.killer?.key;
+    if(!ticket||ticket.key!==key||ticket.donor!==card.donor||ticket.type!==card.type||card.killerKey!==key||card.source!==ticket.type||i-(last.get(key)??-Infinity)<span)return false;
+    if(i<pool.length){if(seen.has(card.entryId))return false;seen.add(card.entryId);}
+    else if(card.entryId!==sequence[i%pool.length].entryId)return false;
     last.set(key,i);
   }
-  return true;
+  // Check the circular boundary even when only the base cycle is supplied.
+  const first=new Map();for(let i=0;i<pool.length;i++){const key=sequence[i].killer.key;if(!first.has(key))first.set(key,i);last.set(key,i);}
+  return [...first].every(([key,index])=>pool.length+index-last.get(key)>=span);
 }
-// Walk shuffled cycles without replacement, carrying the last six keys across
-// cycle boundaries. For small pools, use n-1 recent keys: repeats are n apart.
-// Winner selection (including weights) happens before this visual-only step.
 function prepareKillerDeck(pool,winner){
-  const unique=[...new Map(pool.map(i=>[i.key,i])).values()];
-  if(!unique.length||!unique.some(i=>i.key===winner?.key))throw Error('La ruleta no tiene opciones válidas.');
-  const length=Math.max(100,unique.length*10),targetIndex=length-7,deck=[],recent=[],cooldown=Math.min(VISIBLE_UNIQUE_SPAN-1,unique.length-1);
-  while(deck.length<length){
-    const cycle=shuffled(unique);
-    while(cycle.length&&deck.length<length){
-      const index=cycle.findIndex(i=>!recent.includes(i.key));
-      // A candidate always exists: used keys in this cycle are already removed,
-      // and previous-cycle exclusions expire faster than candidates are consumed.
-      if(index<0)throw Error('No se pudo construir la secuencia visual.');
-      const item=cycle.splice(index,1)[0];deck.push(entry(item));recent.push(item.key);
-      if(recent.length>cooldown)recent.shift();
-    }
-  }
-  // Pin by exchanging the two identities EVERYWHERE, a bijection that preserves
-  // every cooldown and complete cycle. Never overwrite just the center/neighbors,
-  // and never reroll the already chosen winner.
-  const displaced=deck[targetIndex].killer;
-  for(let i=0;i<deck.length;i++){
-    const key=deck[i].killer.key;
-    if(key===displaced.key)deck[i]=entry({...winner,donor:null});
-    else if(key===winner.key)deck[i]=entry(displaced);
-  }
-  // Character cooldown and ticket identity are independent. Deal actual tickets
-  // for each character only after fixing the visual keys, then pin the winner.
-  const queues=new Map();
-  for(const item of pool){if(!queues.has(item.key))queues.set(item.key,[]);queues.get(item.key).push(item);}
-  const available=new Map([...queues].map(([key,items])=>[key,shuffled(items)])),positions=new Map();
-  for(let i=0;i<deck.length;i++){const key=deck[i].killer.key,items=available.get(key),position=positions.get(key)||0;deck[i]=entry(items[position%items.length]);positions.set(key,position+1);}
-  deck[targetIndex]=entry(winner);
-  return {spinSequence:deck,targetIndex,startIndex:5};
+  if(!pool.length||new Set(pool.map(i=>i.entryId)).size!==pool.length||!pool.some(i=>i.entryId===winner?.entryId))throw Error('La ruleta no tiene entradas válidas.');
+  const visualDeck=balancedCycle(pool),winnerIndex=visualDeck.findIndex(i=>i.entryId===winner.entryId);
+  // Land on the existing winning ticket. Never replace a card or exchange keys.
+  const targetIndex=Math.ceil(Math.max(80,pool.length)/pool.length)*pool.length+winnerIndex;
+  const length=Math.ceil(Math.max(100,targetIndex+7)/pool.length)*pool.length;
+  return {sequenceVersion:SEQUENCE_VERSION,entryPool:pool.map(identity),visualDeck,spinSequence:Array.from({length},(_,i)=>visualDeck[i%pool.length]),targetIndex,startIndex:5};
 }
 function makeSequence(key,pool,targets){
-  if(key==='killer-wheel')return prepareKillerDeck(pool,targets[0]||pool[0]);
-  return {spinSequence:targets.map(target=>{
+  if(key==='killer-wheel')return {...prepareKillerDeck(pool,targets[0]||pool[0]),...(targets[0]?{winner:identity(targets[0]),winnerEntryId:targets[0].entryId}:{})};
+  return {sequenceVersion:SEQUENCE_VERSION,entryPool:pool.map(identity),visualDeck:pool.map(identity),spinSequence:targets.map(target=>{
     const usable=pool.filter(i=>!i.emptySlot&&i.key!=='slot_vacio');
     const sequence=Array.from({length:36},()=>{
       const item=usable.length?usable[randomInt(usable.length)]:target;
-      return {...item,emptySlot:!!item.emptySlot};
-    });return [...sequence,target];
+      return {...identity(item),emptySlot:!!item.emptySlot};
+    });return [...sequence,identity(target)];
   }),targetIndex:36,startIndex:0};
 }
 function finalWindow(state){return state.spinSequence.slice(state.targetIndex-FINAL_RADIUS,state.targetIndex+FINAL_RADIUS+1);}
-module.exports={makeSequence,prepareKillerDeck,finalWindow,FINAL_RADIUS,validKillerSequence,VISIBLE_UNIQUE_SPAN};
+module.exports={makeSequence,prepareKillerDeck,finalWindow,FINAL_RADIUS,validKillerSequence,VISIBLE_UNIQUE_SPAN,SEQUENCE_VERSION,spacingBound};
