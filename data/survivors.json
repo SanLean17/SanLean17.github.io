@@ -440,7 +440,7 @@
       "Terrifier"
     ],
     "image": "survivors/siennashaw.png",
-    "enabled": true,
+    "enabled": false,
     "updateId": "terrifier-2026"
   }
 ]

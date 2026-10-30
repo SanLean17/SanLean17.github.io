@@ -363,7 +363,7 @@
       "payaso"
     ],
     "image": "assets/killers/terrifier.png",
-    "enabled": true,
+    "enabled": false,
     "updateId": "terrifier-2026"
   }
 ]
