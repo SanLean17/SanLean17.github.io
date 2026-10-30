@@ -3,7 +3,7 @@
     "key": "trapper",
     "name": "El Trampero",
     "image": "assets/killers/K01_TheTrapper_Portrait.png",
-    "enabled": false,
+    "enabled": true,
     "aliases": [
       "trapper trampero evan macmillan el trampero"
     ]
