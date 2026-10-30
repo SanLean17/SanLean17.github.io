@@ -1692,7 +1692,7 @@
     ],
     "ownerKey": "terrifier",
     "image": "killer/145_laughingstock.png",
-    "enabled": true,
+    "enabled": false,
     "updateId": "terrifier-2026"
   },
   {
@@ -1705,7 +1705,7 @@
     ],
     "ownerKey": "terrifier",
     "image": "killer/146_killSpree.png",
-    "enabled": true,
+    "enabled": false,
     "updateId": "terrifier-2026"
   },
   {
@@ -1718,7 +1718,7 @@
     ],
     "ownerKey": "terrifier",
     "image": "killer/147_funnyBusiness.png",
-    "enabled": true,
+    "enabled": false,
     "updateId": "terrifier-2026"
   }
 ]

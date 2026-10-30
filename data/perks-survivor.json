@@ -1708,7 +1708,7 @@
     ],
     "ownerKey": "siennashaw",
     "image": "survivor/176_valkyriesRage.png",
-    "enabled": true,
+    "enabled": false,
     "updateId": "terrifier-2026"
   },
   {
@@ -1721,7 +1721,7 @@
     ],
     "ownerKey": "siennashaw",
     "image": "survivor/177_sharedTrauma.png",
-    "enabled": true,
+    "enabled": false,
     "updateId": "terrifier-2026"
   },
   {
@@ -1736,7 +1736,7 @@
     ],
     "ownerKey": "siennashaw",
     "image": "survivor/178_bestGiftEver.png",
-    "enabled": true,
+    "enabled": false,
     "updateId": "terrifier-2026"
   }
 ]
