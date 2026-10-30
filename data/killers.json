@@ -1,46 +1,355 @@
 [
-{"key":"trapper","name":"El Trampero","image":"assets/killers/K01_TheTrapper_Portrait.png","enabled":false},
-{"key":"wraith","name":"El Espectro","image":"assets/killers/K02_TheWraith_Portrait.png"},
-{"key":"hillbilly","name":"El Pueblerino","image":"assets/killers/K03_TheHillbilly_Portrait.png"},
-{"key":"nurse","name":"La Enfermera","image":"assets/killers/K04_TheNurse_Portrait.png"},
-{"key":"myers","name":"Myers","image":"assets/killers/K06_TheShape_Portrait.png"},
-{"key":"hag","name":"La Bruja","image":"assets/killers/K05_TheHag_Portrait.png"},
-{"key":"doctor","name":"El Doctor","image":"assets/killers/K07_TheDoctor_Portrait.png"},
-{"key":"huntress","name":"La Cazadora","image":"assets/killers/K08_TheHuntress_Portrait.png"},
-{"key":"leatherface","name":"El Caníbal","image":"assets/killers/K09_TheCannibal_Portrait.png"},
-{"key":"freddy","name":"La Pesadilla","image":"assets/killers/K10_TheNightmare_Portrait.png"},
-{"key":"pig","name":"La Cerda","image":"assets/killers/K11_ThePig_Portrait.png"},
-{"key":"clown","name":"El Payaso","image":"assets/killers/K12_TheClown_Portrait.png"},
-{"key":"spirit","name":"La Espíritu","image":"assets/killers/K13_TheSpirit_Portrait.png"},
-{"key":"legion","name":"La Legión","image":"assets/killers/K14_TheLegion_Portrait.png"},
-{"key":"plague","name":"La Plaga","image":"assets/killers/K15_ThePlague_Portrait.png"},
-{"key":"ghostface","name":"Ghost Face","image":"assets/killers/K16_TheGhostface_Portrait.png"},
-{"key":"demogorgon","name":"Demogorgon","image":"assets/killers/K17_TheDemogorgon_Portrait.png"},
-{"key":"oni","name":"Oni","image":"assets/killers/K18_TheOni_Portrait.png"},
-{"key":"deathslinger","name":"El Arponero","image":"assets/killers/K19_TheDeathslinger_Portrait.png"},
-{"key":"pyramidhead","name":"El Verdugo","image":"assets/killers/K20_TheExecutioner_Portrait.png"},
-{"key":"blight","name":"El Deterioro","image":"assets/killers/K21_TheBlight_Portrait.png"},
-{"key":"twins","name":"Los Gemelos","image":"assets/killers/K22_TheTwins_Portrait.png"},
-{"key":"trickster","name":"El Traicionero","image":"assets/killers/K23_TheTrickster_Portrait.png"},
-{"key":"nemesis","name":"Némesis","image":"assets/killers/K24_TheNemesis_Portrait.png"},
-{"key":"cenobite","name":"El Cenobita","image":"assets/killers/K25_TheCenobite_Portrait.png"},
-{"key":"artist","name":"La Artista","image":"assets/killers/K26_TheArtist_Portrait.png"},
-{"key":"onryo","name":"Onryo","image":"assets/killers/K27_TheOnryo_Portrait.png"},
-{"key":"dredge","name":"La Draga","image":"assets/killers/K28_TheDredge_Portrait.png"},
-{"key":"wesker","name":"Wesker","image":"assets/killers/K29_TheMasterMind_Portrait.png"},
-{"key":"knight","name":"El Caballero","image":"assets/killers/K30_TheKnight_Portrait.png"},
-{"key":"singularity","name":"Singularidad","image":"assets/killers/K32_TheSingularity_Portrait.png"},
-{"key":"xenomorph","name":"Xenomorfo","image":"assets/killers/K33_TheXenomorph_Portrait.png"},
-{"key":"chucky","name":"Chucky","image":"assets/killers/K34_TheYerkes_Portrait.png"},
-{"key":"unknown","name":"Lo Desconocido","image":"assets/killers/K35_TheUnknown_Portrait.png"},
-{"key":"vecna","name":"Vecna","image":"assets/killers/K36_TheLich_Portrait.png"},
-{"key":"dracula","name":"Drácula","image":"assets/killers/K37_TheDracula_Portrait.png"},
-{"key":"houndmaster","name":"La Adiestradora Canina","image":"assets/killers/K38_TheHoundmaster_Portrait.png"},
-{"key":"skullmerchant","name":"La Comerciante de Calaveras","image":"assets/killers/K31_TheSkullMerchant_Portrait.png"},
-{"key":"animatronic","name":"El Animatrónico","image":"assets/killers/K40_TheAnimatronic_Portrait.png"},
-{"key":"lich","name":"El Liche","image":"assets/killers/T_UI_K42_TheFirst_Portrait.png"},
-{"key":"ghoul","name":"El Ghoul","image":"assets/killers/K39_TheGhoul_Portrait.png"},
-{"key":"jason","name":"Jason","image":"assets/killers/T_UI_K43_TheSlasher_Portrait.png"},
-{"key":"judgment","name":"La Sentencia","image":"assets/killers/T_UI_K44_TheJudgment_Portrait.png"},
-{"key":"krasue","name":"La Krasue","image":"assets/killers/T_UI_K41_TheKrasue_Portrait.png"}
+  {
+    "key": "trapper",
+    "name": "El Trampero",
+    "image": "assets/killers/K01_TheTrapper_Portrait.png",
+    "enabled": false,
+    "aliases": [
+      "trapper trampero evan macmillan el trampero"
+    ]
+  },
+  {
+    "key": "wraith",
+    "name": "El Espectro",
+    "image": "assets/killers/K02_TheWraith_Portrait.png",
+    "aliases": [
+      "wraith espectro philip ojomo el espectro"
+    ]
+  },
+  {
+    "key": "hillbilly",
+    "name": "El Pueblerino",
+    "image": "assets/killers/K03_TheHillbilly_Portrait.png",
+    "aliases": [
+      "hillbilly pueblerino max thompson el pueblerino"
+    ]
+  },
+  {
+    "key": "nurse",
+    "name": "La Enfermera",
+    "image": "assets/killers/K04_TheNurse_Portrait.png",
+    "aliases": [
+      "nurse enfermera sally smithson la enfermera"
+    ]
+  },
+  {
+    "key": "myers",
+    "name": "Myers",
+    "image": "assets/killers/K06_TheShape_Portrait.png",
+    "aliases": [
+      "myers shape forma michael myers la forma"
+    ]
+  },
+  {
+    "key": "hag",
+    "name": "La Bruja",
+    "image": "assets/killers/K05_TheHag_Portrait.png",
+    "aliases": [
+      "hag bruja lisa sherwood la bruja"
+    ]
+  },
+  {
+    "key": "doctor",
+    "name": "El Doctor",
+    "image": "assets/killers/K07_TheDoctor_Portrait.png",
+    "aliases": [
+      "doctor herman carter el doctor"
+    ]
+  },
+  {
+    "key": "huntress",
+    "name": "La Cazadora",
+    "image": "assets/killers/K08_TheHuntress_Portrait.png",
+    "aliases": [
+      "huntress cazadora anna la cazadora"
+    ]
+  },
+  {
+    "key": "leatherface",
+    "name": "El Caníbal",
+    "image": "assets/killers/K09_TheCannibal_Portrait.png",
+    "aliases": [
+      "leatherface cannibal canibal bubba el canibal"
+    ]
+  },
+  {
+    "key": "freddy",
+    "name": "La Pesadilla",
+    "image": "assets/killers/K10_TheNightmare_Portrait.png",
+    "aliases": [
+      "freddy nightmare pesadilla la pesadilla freddy krueger"
+    ]
+  },
+  {
+    "key": "pig",
+    "name": "La Cerda",
+    "image": "assets/killers/K11_ThePig_Portrait.png",
+    "aliases": [
+      "pig cerda amanda young la cerda"
+    ]
+  },
+  {
+    "key": "clown",
+    "name": "El Payaso",
+    "image": "assets/killers/K12_TheClown_Portrait.png",
+    "aliases": [
+      "clown payaso kenneth chase el payaso"
+    ]
+  },
+  {
+    "key": "spirit",
+    "name": "La Espíritu",
+    "image": "assets/killers/K13_TheSpirit_Portrait.png",
+    "aliases": [
+      "spirit espiritu rin yamaoka el espiritu la espiritu"
+    ]
+  },
+  {
+    "key": "legion",
+    "name": "La Legión",
+    "image": "assets/killers/K14_TheLegion_Portrait.png",
+    "aliases": [
+      "legion frank julie susie joey la legion el legion"
+    ]
+  },
+  {
+    "key": "plague",
+    "name": "La Plaga",
+    "image": "assets/killers/K15_ThePlague_Portrait.png",
+    "aliases": [
+      "plague plaga adiris la plaga"
+    ]
+  },
+  {
+    "key": "ghostface",
+    "name": "Ghost Face",
+    "image": "assets/killers/K16_TheGhostface_Portrait.png",
+    "aliases": [
+      "ghost face ghostface cara fantasma el ghost face"
+    ]
+  },
+  {
+    "key": "demogorgon",
+    "name": "Demogorgon",
+    "image": "assets/killers/K17_TheDemogorgon_Portrait.png",
+    "aliases": [
+      "demogorgon demo el demogorgon"
+    ]
+  },
+  {
+    "key": "oni",
+    "name": "Oni",
+    "image": "assets/killers/K18_TheOni_Portrait.png",
+    "aliases": [
+      "oni kazan yamaoka el oni"
+    ]
+  },
+  {
+    "key": "deathslinger",
+    "name": "El Arponero",
+    "image": "assets/killers/K19_TheDeathslinger_Portrait.png",
+    "aliases": [
+      "deathslinger arponero caleb quinn el arponero"
+    ]
+  },
+  {
+    "key": "pyramidhead",
+    "name": "El Verdugo",
+    "image": "assets/killers/K20_TheExecutioner_Portrait.png",
+    "aliases": [
+      "pyramid head executioner verdugo el verdugo pyramidhead"
+    ]
+  },
+  {
+    "key": "blight",
+    "name": "El Deterioro",
+    "image": "assets/killers/K21_TheBlight_Portrait.png",
+    "aliases": [
+      "blight deterioro talbot grimes el deterioro"
+    ]
+  },
+  {
+    "key": "twins",
+    "name": "Los Gemelos",
+    "image": "assets/killers/K22_TheTwins_Portrait.png",
+    "aliases": [
+      "twins gemelos charlotte victor los gemelos"
+    ]
+  },
+  {
+    "key": "trickster",
+    "name": "El Traicionero",
+    "image": "assets/killers/K23_TheTrickster_Portrait.png",
+    "aliases": [
+      "trickster traicionero ji woon hak el traicionero"
+    ]
+  },
+  {
+    "key": "nemesis",
+    "name": "Némesis",
+    "image": "assets/killers/K24_TheNemesis_Portrait.png",
+    "aliases": [
+      "nemesis el nemesis"
+    ]
+  },
+  {
+    "key": "cenobite",
+    "name": "El Cenobita",
+    "image": "assets/killers/K25_TheCenobite_Portrait.png",
+    "aliases": [
+      "cenobite pinhead cenobita el cenobita"
+    ]
+  },
+  {
+    "key": "artist",
+    "name": "La Artista",
+    "image": "assets/killers/K26_TheArtist_Portrait.png",
+    "aliases": [
+      "artist artista carmina mora la artista"
+    ]
+  },
+  {
+    "key": "onryo",
+    "name": "Onryo",
+    "image": "assets/killers/K27_TheOnryo_Portrait.png",
+    "aliases": [
+      "onryo sadako la onryo el onryo"
+    ]
+  },
+  {
+    "key": "dredge",
+    "name": "La Draga",
+    "image": "assets/killers/K28_TheDredge_Portrait.png",
+    "aliases": [
+      "dredge draga la draga"
+    ]
+  },
+  {
+    "key": "wesker",
+    "name": "Wesker",
+    "image": "assets/killers/K29_TheMasterMind_Portrait.png",
+    "aliases": [
+      "wesker mastermind mente maestra albert wesker la mente maestra"
+    ]
+  },
+  {
+    "key": "knight",
+    "name": "El Caballero",
+    "image": "assets/killers/K30_TheKnight_Portrait.png",
+    "aliases": [
+      "knight caballero tarhos kovacs el caballero"
+    ]
+  },
+  {
+    "key": "singularity",
+    "name": "Singularidad",
+    "image": "assets/killers/K32_TheSingularity_Portrait.png",
+    "aliases": [
+      "singularity singularidad hux la singularidad"
+    ]
+  },
+  {
+    "key": "xenomorph",
+    "name": "Xenomorfo",
+    "image": "assets/killers/K33_TheXenomorph_Portrait.png",
+    "aliases": [
+      "xenomorph alien xenomorfo el xenomorfo"
+    ]
+  },
+  {
+    "key": "chucky",
+    "name": "Chucky",
+    "image": "assets/killers/K34_TheYerkes_Portrait.png",
+    "aliases": [
+      "chucky good guy chico bueno el chico bueno"
+    ]
+  },
+  {
+    "key": "unknown",
+    "name": "Lo Desconocido",
+    "image": "assets/killers/K35_TheUnknown_Portrait.png",
+    "aliases": [
+      "unknown the unknown desconocido lo desconocido el desconocido"
+    ]
+  },
+  {
+    "key": "vecna",
+    "name": "Vecna",
+    "image": "assets/killers/K36_TheLich_Portrait.png",
+    "aliases": [
+      "vecna lich liche el liche"
+    ]
+  },
+  {
+    "key": "dracula",
+    "name": "Drácula",
+    "image": "assets/killers/K37_TheDracula_Portrait.png",
+    "aliases": [
+      "dracula dark lord señor oscuro el señor oscuro"
+    ]
+  },
+  {
+    "key": "houndmaster",
+    "name": "La Adiestradora Canina",
+    "image": "assets/killers/K38_TheHoundmaster_Portrait.png",
+    "aliases": [
+      "houndmaster adiestradora canina la adiestradora canina"
+    ]
+  },
+  {
+    "key": "skullmerchant",
+    "name": "La Comerciante de Calaveras",
+    "image": "assets/killers/K31_TheSkullMerchant_Portrait.png",
+    "aliases": [
+      "skull merchant comerciante de calaveras adriana imai la comerciante de calaveras"
+    ]
+  },
+  {
+    "key": "animatronic",
+    "name": "El Animatrónico",
+    "image": "assets/killers/K40_TheAnimatronic_Portrait.png",
+    "aliases": [
+      "animatronic springtrap animatronico el animatronico"
+    ]
+  },
+  {
+    "key": "lich",
+    "name": "El Liche",
+    "image": "assets/killers/T_UI_K42_TheFirst_Portrait.png",
+    "aliases": [
+      "first lich primer liche el primer liche"
+    ]
+  },
+  {
+    "key": "ghoul",
+    "name": "El Ghoul",
+    "image": "assets/killers/K39_TheGhoul_Portrait.png",
+    "aliases": [
+      "ghoul kaneki el ghoul"
+    ]
+  },
+  {
+    "key": "jason",
+    "name": "Jason",
+    "image": "assets/killers/T_UI_K43_TheSlasher_Portrait.png",
+    "aliases": [
+      "jason slasher el slasher"
+    ]
+  },
+  {
+    "key": "judgment",
+    "name": "La Sentencia",
+    "image": "assets/killers/T_UI_K44_TheJudgment_Portrait.png",
+    "aliases": [
+      "judgment sentencia la sentencia"
+    ]
+  },
+  {
+    "key": "krasue",
+    "name": "La Krasue",
+    "image": "assets/killers/T_UI_K41_TheKrasue_Portrait.png",
+    "aliases": [
+      "krasue la krasue"
+    ]
+  }
 ]

@@ -1,10 +1,1701 @@
 [
-{"key":"slot_vacio","name":"Slot Vacio","image":"rombo.png","emptySlot":true},
-{"key":"00_aceInTheHole","name":"As en la manga"},{"key":"01_adrenaline","name":"Adrenalina"},{"key":"02_aftercare","name":"Postratamiento"},{"key":"03_alert","name":"Alerta"},{"key":"04_autodidact","name":"Autodidacta"},{"key":"05_balancedLanding","name":"Caída equilibrada"},{"key":"06_boilOver","name":"Arrebato"},{"key":"07_bond","name":"Vínculo"},{"key":"08_borrowedTime","name":"Tiempo prestado"},{"key":"09_botanyKnowledge","name":"Conocimientos de botánica"},{"key":"10_breakdown","name":"Ruptura"},{"key":"11_calmSpirit","name":"Espíritu calmado"},{"key":"12_danceWithMe","name":"Baila conmigo"},{"key":"13_darkSense","name":"Percepción oscura"},{"key":"14_deadHard","name":"Fajador"},{"key":"15_decisiveStrike","name":"Golpe decisivo"},{"key":"16_dejaVu","name":"Déjà Vu"},{"key":"17_deliverance","name":"Liberación"},{"key":"18_detectivesHunch","name":"Corazonada"},{"key":"19_distortion","name":"Distorsión"},{"key":"20_diversion","name":"Distracción"},{"key":"21_empathy","name":"Empatía"},{"key":"22_headOn","name":"De frente"},{"key":"23_hope","name":"Esperanza"},{"key":"24_ironWill","name":"Voluntad de hierro"},{"key":"25_kindred","name":"Familia"},{"key":"26_leader","name":"Líder"},{"key":"27_leftBehind","name":"Abandonado a tu suerte"},{"key":"28_lightweight","name":"De pies ligeros"},{"key":"29_lithe","name":"Agilidad"},{"key":"30_noMither","name":"Me la pela"},{"key":"31_noOneLeftBehind","name":"Nadie se queda atrás"},{"key":"32_objectOfObsession","name":"Objeto de obsesión"},{"key":"33_open-Handed","name":"A mano descubierta"},{"key":"34_pharmacy","name":"Farmacia"},{"key":"35_plunderersInstinct","name":"Instinto de saqueador"},{"key":"36_poised","name":"Serenidad"},{"key":"37_premonition","name":"Premonición"},{"key":"38_proveThyself","name":"Demuestra lo que vales"},{"key":"39_quickAndQuiet","name":"Velocidad silenciosa"},{"key":"40_resilience","name":"Resiliencia"},{"key":"41_saboteur","name":"Sabotear"},{"key":"42_selfCare","name":"Autocuración"},{"key":"43_slipperyMeat","name":"Carne resbaladiza"},{"key":"44_smallGame","name":"Caza menor"},{"key":"45_soleSurvivor","name":"Solo quedo yo"},{"key":"46_solidarity","name":"Solidaridad"},{"key":"47_spineChill","name":"Escalofríos"},{"key":"48_sprintBurst","name":"Esprint"},{"key":"49_stakeOut","name":"Bajo vigilancia"},{"key":"50_streetwise","name":"Con calle"},{"key":"51_technician","name":"Pericia técnica"},{"key":"52_tenacity","name":"Tenacidad"},{"key":"53_thisIsNotHappening","name":"Esto no puede estar pasando"},{"key":"54_unbreakable","name":"Inquebrantable"},{"key":"55_upTheAnte","name":"Subir las apuestas"},{"key":"56_urbanEvasion","name":"Evasión urbana"},{"key":"57_vigil","name":"Vigilia"},{"key":"58_wakeUp","name":"¡Despierta!"},{"key":"59_wellMakeIt","name":"Lo conseguiremos"},{"key":"60_wereGonnaLiveForever","name":"Vamos a vivir para siempre"},{"key":"61_windowsOfOpportunity","name":"Oportunidades"},{"key":"62_buckleUp","name":"Sujétate"},{"key":"63_flipFlop","name":"Hasta otra"},{"key":"64_mettleOfMan","name":"El temple del hombre"},
-{"key":"65_babySitter","name":"Canguro","aliases":"Guardián Guardian Babysitter Baby Sitter"},{"key":"66_camaraderie","name":"Camaradería","aliases":"Alianza Camaraderie"},{"key":"67_secondWind","name":"Segundo aliento","aliases":"Renovación Renovacion Second Wind"},{"key":"68_betterTogether","name":"Mejor juntos","aliases":"Percepción situacional Percepcion situacional Better Together Situational Awareness"},{"key":"69_fixated","name":"Fijación","aliases":"Conciencia Fijacion Fixated Self-Aware Self Aware"},{"key":"70_innerStrength","name":"Fuerza interior","aliases":"Curación interior Curacion interior Inner Strength Inner Healing"},
-{"key":"71_breakout","name":"Fuga"},{"key":"72_anyMeansNecessary","name":"Cueste lo que cueste"},{"key":"73_luckyBreak","name":"Golpe de suerte"},{"key":"74_offTheRecord","name":"Extraoficial"},{"key":"75_redHerring","name":"Bulo"},{"key":"76_forThePeople","name":"Por los demás"},{"key":"77_soulGuard","name":"Salvaguarda de alma"},{"key":"78_bloodPact","name":"Pacto de sangre"},{"key":"79_repressedAlliance","name":"Supresión de alianza"},{"key":"80_desperateMeasures","name":"Medidas desesperadas"},{"key":"81_builtToLast","name":"Construcción duradera"},{"key":"82_visionary","name":"Visión de futuro"},{"key":"83_appraisal","name":"Evaluación"},{"key":"84_deception","name":"Engaño"},{"key":"85_powerStruggle","name":"Lucha intensa"},{"key":"86_fastTrack","name":"Primera línea"},{"key":"87_selfPreservation","name":"Autoconservación"},{"key":"88_smashHit","name":"Éxito aplastante"},{"key":"89_biteTheBullet","name":"De tripas corazón"},{"key":"90_blastMine","name":"Mina explosiva"},{"key":"91_counterforce","name":"Contrafuerza"},{"key":"92_flashbang","name":"Granada aturdidora"},{"key":"93_resurgence","name":"Resurgimiento"},{"key":"94_rookieSpirit","name":"Espíritu de novato"},
-{"key":"95_circleOfHealing","name":"Bendición: Círculo de curación","aliases":"Círculo de curación Circulo de curacion Circle of Healing Boon Circle of Healing Bendicion"},{"key":"96_shadowStep","name":"Bendición: Paso sombrío","aliases":"Paso sombrío Paso sombrio Shadow Step Boon Shadow Step Bendicion"},{"key":"97_clairvoyance","name":"Clarividencia"},{"key":"98_exponential","name":"Bendición: Exponencial","aliases":"Exponencial Boon Exponential Bendicion"},{"key":"99_correctiveAction","name":"Medida correctiva"},{"key":"100_overcome","name":"Sobreponerse"},{"key":"101_darkTheory","name":"Bendición: Teoría oscura","aliases":"Teoría oscura Teoria oscura Dark Theory Boon Dark Theory Bendicion"},
-{"key":"102_empathicConnection","name":"Conexión empática"},{"key":"103_parentalGuidance","name":"Consejo paterno"},{"key":"104_innerFocus","name":"Concentración interna"},{"key":"105_residualManifest","name":"Manifestación residual"},{"key":"106_overzealous","name":"Pasión"},{"key":"107_betterThanNew","name":"Mejor que nuevo"},{"key":"108_hyperfocus","name":"Hiperconcentración"},{"key":"109_lowProfile","name":"Perfil bajo"},{"key":"110_reactiveHealing","name":"Curación reactiva"},{"key":"111_reassurance","name":"Reafirmación"},{"key":"112_wiretap","name":"Interceptor"},{"key":"113_potentialEnergy","name":"Energía potencial"},{"key":"114_fogwise","name":"Neblinoso"},{"key":"115_quickGambit","name":"Táctica veloz"},{"key":"116_backgroundPlayer","name":"Jugador secundario"},{"key":"117_bloodRush","name":"Torrente de sangre"},{"key":"118_cutLoose","name":"Desátame"},{"key":"119_friendlyCompetition","name":"Rivalidad Amistosa"},{"key":"120_teamworkCollectiveStealth","name":"Sigilo colectivo"},{"key":"121_teamworkPowerOfTwo","name":"Poder Dual"},{"key":"122_madeForThis","name":"Hecho para esto"},{"key":"123_scavenger","name":"Buscador"},{"key":"124_troubleshooter","name":"Solucionador de Problemas"},{"key":"125_dramaturgy","name":"Dramaturgia"},{"key":"126_scenePartner","name":"Compañero de escena"},{"key":"127_plotTwist","name":"Giro Argumental"},{"key":"128_chemicalTrap","name":"Trampa química"},{"key":"129_light-Footed","name":"Ligera de pies"},{"key":"130_luckyStar","name":"Estrella de la suerte"},
-{"key":"131_boonIllumination","name":"Bendición: Iluminación","aliases":"Iluminación Iluminacion Boon Illumination Bendicion"},{"key":"132_championOfLight","name":"Campeón de la Luz"},{"key":"133_deadline","name":"Fecha Límite"},{"key":"134_invocationWeavingSpiders","name":"Invocación: Arañas tejedoras","aliases":"Arañas tejedoras Aranas tejedoras Invocation Weaving Spiders"},{"key":"135_strengthInShadows","name":"Fuerza en las sombras","aliases":"Fortaleza en las sombras Strength in Shadows"},{"key":"136_wicked","name":"Embrujada","aliases":"Malicia Wicked"},{"key":"137_bardicInspiration","name":"Inspiración Bárdica"},{"key":"138_mirroredIllusion","name":"Espejismo","aliases":"Ilusión reflejada Ilusion reflejada Mirrored Illusion"},{"key":"139_stillSight","name":"Visión estática","aliases":"Mirada fija Vision estatica Still Sight"},{"key":"140_specialist","name":"Especialista"},{"key":"141_finesse","name":"Sutileza","aliases":"Elegancia Finesse"},{"key":"142_hardened","name":"Curtida","aliases":"Endurecida Hardened"},{"key":"143_exultation","name":"Exultación"},{"key":"144_eyesOfBelmont","name":"Ojos de Belmont"},{"key":"145_momentOfGlory","name":"Momento de Gloria"},{"key":"146_cleanBreak","name":"Separación limpia","aliases":"Punto y aparte Punto y Aparte Separacion limpia Clean Break"},{"key":"147_treacherousCrows","name":"Invocación: Cuervos traicioneros","aliases":"Cuervos traicioneros Invocation Treacherous Crows"},{"key":"148_shoulderTheBurden","name":"Carga sobre los hombros","aliases":"Cargar a cuestas Shoulder the Burden"},{"key":"149_doNoHarm","name":"No hacer daño","aliases":"No hagas daño Do No Harm"},{"key":"150_dutyOfCare","name":"Deber de socorro","aliases":"El deber de cuidar Duty of Care"},
-{"key":"151_rapidResponse","name":"Respuesta Rápida"},{"key":"152_apocalypticIngenuity","name":"Ingenio Apocalíptico"},{"key":"153_comeAndGetMe","name":"¡Ven Por Mí!"},{"key":"154_teamworkToughenUp","name":"Trabajo en equipo: Al derribo","aliases":"Entereza Teamwork Toughen Up"},{"key":"155_conviction","name":"Convicción"},{"key":"156_lastStand","name":"Última defensa","aliases":"Último enfrentamiento Ultimo enfrentamiento Last Stand"},{"key":"157_teamworkThrowDown","name":"Trabajo en equipo: Curtirse","aliases":"Lanzamiento Teamwork Throw Down"},{"key":"158_ghostNotes","name":"Notas Fantasma"},{"key":"159_oneTwoThreeFour","name":"¡Uno-Dos-Tres-Cuatro!"},{"key":"160_roadLife","name":"Vida en la carretera","aliases":"Vida Itinerante Road Life"},{"key":"161_badaBadaBoom","name":"Bada, Bada, Bum"},{"key":"162_changeOfPlan","name":"Cambio de Planes"},{"key":"163_teamworkFullCircuit","name":"Trabajo en equipo: Circuito completo","aliases":"Circuito completo Teamwork Full Circuit"},{"key":"164_extrasensoryPerception","name":"Percepción Extrasensorial"},{"key":"165_teamworkSoftSpoken","name":"Trabajo en equipo: Tono suave","aliases":"Tono gentil Teamwork Soft Spoken"},{"key":"166_weSeeYou","name":"Te Vemos"},{"key":"167_aPlaceForUs","name":"Un Lugar Para Nosotros"},{"key":"168_fiveMovesAhead","name":"Cinco pasos por delante","aliases":"Cinco movimientos adelante Five Moves Ahead"},{"key":"169_flowState","name":"Estado fluido","aliases":"Estado de flujo Flow State"},{"key":"170_crossExamination","name":"Contrainterrogatorio","aliases":"Interrogatorio Cross Examination"},{"key":"171_lendaHand","name":"Echar una Mano"},{"key":"172_wideOpenThrottle","name":"Acelerador a fondo","aliases":"Máxima velocidad Maxima velocidad Wide Open Throttle"},{"key":"173_steadfast","name":"Bendición: Decisión","aliases":"Steadfast Bendicion Decision Boon Steadfast"},{"key":"174_salvationsCry","name":"Grito de salvación","aliases":"Salvation's Cry Salvations Cry Grito de salvacion"},{"key":"175_fruitsOfYourLabor","name":"Frutos de tu esfuerzo","aliases":"Fruits of Your Labor Frutos de tu esfuerzo"}
+  {
+    "key": "slot_vacio",
+    "name": "Slot Vacio",
+    "image": "rombo.png",
+    "emptySlot": true
+  },
+  {
+    "key": "00_aceInTheHole",
+    "name": "As en la manga",
+    "ownerKey": "acevisconti",
+    "aliases": [],
+    "enabled": false
+  },
+  {
+    "key": "01_adrenaline",
+    "name": "Adrenalina",
+    "ownerKey": "megthomas",
+    "aliases": []
+  },
+  {
+    "key": "02_aftercare",
+    "name": "Postratamiento",
+    "ownerKey": "jeffjohansen",
+    "aliases": []
+  },
+  {
+    "key": "03_alert",
+    "name": "Alerta",
+    "ownerKey": "fengmin",
+    "aliases": []
+  },
+  {
+    "key": "04_autodidact",
+    "name": "Autodidacta",
+    "ownerKey": "adamfrancis",
+    "aliases": []
+  },
+  {
+    "key": "05_balancedLanding",
+    "name": "Caída equilibrada",
+    "ownerKey": "neakarlsson",
+    "aliases": []
+  },
+  {
+    "key": "06_boilOver",
+    "name": "Arrebato",
+    "ownerKey": "katedenson",
+    "aliases": []
+  },
+  {
+    "key": "07_bond",
+    "name": "Vínculo",
+    "ownerKey": "dwightfairfield",
+    "aliases": []
+  },
+  {
+    "key": "08_borrowedTime",
+    "name": "Tiempo prestado",
+    "ownerKey": "williambilloverbeck",
+    "aliases": []
+  },
+  {
+    "key": "09_botanyKnowledge",
+    "name": "Conocimientos de botánica",
+    "ownerKey": "claudettemorel",
+    "aliases": []
+  },
+  {
+    "key": "10_breakdown",
+    "name": "Ruptura",
+    "ownerKey": "jeffjohansen",
+    "aliases": []
+  },
+  {
+    "key": "11_calmSpirit",
+    "name": "Espíritu calmado",
+    "ownerKey": "jakepark",
+    "aliases": []
+  },
+  {
+    "key": "12_danceWithMe",
+    "name": "Baila conmigo",
+    "ownerKey": "katedenson",
+    "aliases": []
+  },
+  {
+    "key": "13_darkSense",
+    "name": "Percepción oscura"
+  },
+  {
+    "key": "14_deadHard",
+    "name": "Fajador",
+    "ownerKey": "davidking",
+    "aliases": []
+  },
+  {
+    "key": "15_decisiveStrike",
+    "name": "Golpe decisivo",
+    "ownerKey": "lauriestrode",
+    "aliases": []
+  },
+  {
+    "key": "16_dejaVu",
+    "name": "Déjà Vu"
+  },
+  {
+    "key": "17_deliverance",
+    "name": "Liberación",
+    "ownerKey": "adamfrancis",
+    "aliases": []
+  },
+  {
+    "key": "18_detectivesHunch",
+    "name": "Corazonada",
+    "ownerKey": "detectivedavidtapp",
+    "aliases": []
+  },
+  {
+    "key": "19_distortion",
+    "name": "Distorsión",
+    "ownerKey": "jeffjohansen",
+    "aliases": []
+  },
+  {
+    "key": "20_diversion",
+    "name": "Distracción",
+    "ownerKey": "adamfrancis",
+    "aliases": []
+  },
+  {
+    "key": "21_empathy",
+    "name": "Empatía",
+    "ownerKey": "claudettemorel",
+    "aliases": []
+  },
+  {
+    "key": "22_headOn",
+    "name": "De frente",
+    "ownerKey": "janeromero",
+    "aliases": []
+  },
+  {
+    "key": "23_hope",
+    "name": "Esperanza"
+  },
+  {
+    "key": "24_ironWill",
+    "name": "Voluntad de hierro",
+    "ownerKey": "jakepark",
+    "aliases": []
+  },
+  {
+    "key": "25_kindred",
+    "name": "Familia"
+  },
+  {
+    "key": "26_leader",
+    "name": "Líder",
+    "ownerKey": "dwightfairfield",
+    "aliases": []
+  },
+  {
+    "key": "27_leftBehind",
+    "name": "Abandonado a tu suerte",
+    "ownerKey": "williambilloverbeck",
+    "aliases": []
+  },
+  {
+    "key": "28_lightweight",
+    "name": "De pies ligeros"
+  },
+  {
+    "key": "29_lithe",
+    "name": "Agilidad",
+    "ownerKey": "fengmin",
+    "aliases": []
+  },
+  {
+    "key": "30_noMither",
+    "name": "Me la pela",
+    "ownerKey": "davidking",
+    "aliases": []
+  },
+  {
+    "key": "31_noOneLeftBehind",
+    "name": "Nadie se queda atrás"
+  },
+  {
+    "key": "32_objectOfObsession",
+    "name": "Objeto de obsesión",
+    "ownerKey": "lauriestrode",
+    "aliases": []
+  },
+  {
+    "key": "33_open-Handed",
+    "name": "A mano descubierta",
+    "ownerKey": "acevisconti",
+    "aliases": []
+  },
+  {
+    "key": "34_pharmacy",
+    "name": "Farmacia",
+    "ownerKey": "quentinsmith",
+    "aliases": []
+  },
+  {
+    "key": "35_plunderersInstinct",
+    "name": "Instinto de saqueador"
+  },
+  {
+    "key": "36_poised",
+    "name": "Serenidad",
+    "ownerKey": "janeromero",
+    "aliases": []
+  },
+  {
+    "key": "37_premonition",
+    "name": "Premonición"
+  },
+  {
+    "key": "38_proveThyself",
+    "name": "Demuestra lo que vales",
+    "ownerKey": "dwightfairfield",
+    "aliases": []
+  },
+  {
+    "key": "39_quickAndQuiet",
+    "name": "Velocidad silenciosa",
+    "ownerKey": "megthomas",
+    "aliases": []
+  },
+  {
+    "key": "40_resilience",
+    "name": "Resiliencia"
+  },
+  {
+    "key": "41_saboteur",
+    "name": "Sabotear",
+    "ownerKey": "jakepark",
+    "aliases": []
+  },
+  {
+    "key": "42_selfCare",
+    "name": "Autocuración",
+    "ownerKey": "claudettemorel",
+    "aliases": []
+  },
+  {
+    "key": "43_slipperyMeat",
+    "name": "Carne resbaladiza"
+  },
+  {
+    "key": "44_smallGame",
+    "name": "Caza menor"
+  },
+  {
+    "key": "45_soleSurvivor",
+    "name": "Solo quedo yo",
+    "ownerKey": "lauriestrode",
+    "aliases": []
+  },
+  {
+    "key": "46_solidarity",
+    "name": "Solidaridad",
+    "ownerKey": "janeromero",
+    "aliases": []
+  },
+  {
+    "key": "47_spineChill",
+    "name": "Escalofríos"
+  },
+  {
+    "key": "48_sprintBurst",
+    "name": "Esprint",
+    "ownerKey": "megthomas",
+    "aliases": []
+  },
+  {
+    "key": "49_stakeOut",
+    "name": "Bajo vigilancia",
+    "ownerKey": "detectivedavidtapp",
+    "aliases": []
+  },
+  {
+    "key": "50_streetwise",
+    "name": "Con calle",
+    "ownerKey": "neakarlsson",
+    "aliases": []
+  },
+  {
+    "key": "51_technician",
+    "name": "Pericia técnica",
+    "ownerKey": "fengmin",
+    "aliases": []
+  },
+  {
+    "key": "52_tenacity",
+    "name": "Tenacidad",
+    "ownerKey": "detectivedavidtapp",
+    "aliases": []
+  },
+  {
+    "key": "53_thisIsNotHappening",
+    "name": "Esto no puede estar pasando"
+  },
+  {
+    "key": "54_unbreakable",
+    "name": "Inquebrantable",
+    "ownerKey": "williambilloverbeck",
+    "aliases": []
+  },
+  {
+    "key": "55_upTheAnte",
+    "name": "Subir las apuestas",
+    "ownerKey": "acevisconti",
+    "aliases": []
+  },
+  {
+    "key": "56_urbanEvasion",
+    "name": "Evasión urbana",
+    "ownerKey": "neakarlsson",
+    "aliases": []
+  },
+  {
+    "key": "57_vigil",
+    "name": "Vigilia",
+    "ownerKey": "quentinsmith",
+    "aliases": []
+  },
+  {
+    "key": "58_wakeUp",
+    "name": "¡Despierta!",
+    "ownerKey": "quentinsmith",
+    "aliases": []
+  },
+  {
+    "key": "59_wellMakeIt",
+    "name": "Lo conseguiremos"
+  },
+  {
+    "key": "60_wereGonnaLiveForever",
+    "name": "Vamos a vivir para siempre",
+    "ownerKey": "davidking",
+    "aliases": []
+  },
+  {
+    "key": "61_windowsOfOpportunity",
+    "name": "Oportunidades",
+    "ownerKey": "katedenson",
+    "aliases": []
+  },
+  {
+    "key": "62_buckleUp",
+    "name": "Sujétate",
+    "ownerKey": "ashleyjwilliams",
+    "aliases": []
+  },
+  {
+    "key": "63_flipFlop",
+    "name": "Hasta otra",
+    "ownerKey": "ashleyjwilliams",
+    "aliases": []
+  },
+  {
+    "key": "64_mettleOfMan",
+    "name": "El temple del hombre",
+    "ownerKey": "ashleyjwilliams",
+    "aliases": []
+  },
+  {
+    "key": "65_babySitter",
+    "name": "Canguro",
+    "aliases": [
+      "Guardián Guardian Babysitter Baby Sitter",
+      "G",
+      "u",
+      "a",
+      "r",
+      "d",
+      "i",
+      "á",
+      "n",
+      " ",
+      "B",
+      "b",
+      "y",
+      "s",
+      "t",
+      "e",
+      "S"
+    ],
+    "ownerKey": "steveharrington"
+  },
+  {
+    "key": "66_camaraderie",
+    "name": "Camaradería",
+    "aliases": [
+      "Alianza Camaraderie",
+      "A",
+      "l",
+      "i",
+      "a",
+      "n",
+      "z",
+      " ",
+      "C",
+      "m",
+      "r",
+      "d",
+      "e"
+    ],
+    "ownerKey": "steveharrington"
+  },
+  {
+    "key": "67_secondWind",
+    "name": "Segundo aliento",
+    "aliases": [
+      "Renovación Renovacion Second Wind",
+      "R",
+      "e",
+      "n",
+      "o",
+      "v",
+      "a",
+      "c",
+      "i",
+      "ó",
+      " ",
+      "S",
+      "d",
+      "W"
+    ],
+    "ownerKey": "steveharrington"
+  },
+  {
+    "key": "68_betterTogether",
+    "name": "Mejor juntos",
+    "aliases": [
+      "Percepción situacional Percepcion situacional Better Together Situational Awareness",
+      "P",
+      "e",
+      "r",
+      "c",
+      "p",
+      "i",
+      "ó",
+      "n",
+      " ",
+      "s",
+      "t",
+      "u",
+      "a",
+      "o",
+      "l",
+      "B",
+      "T",
+      "g",
+      "h",
+      "S",
+      "A",
+      "w"
+    ],
+    "ownerKey": "nancywheeler"
+  },
+  {
+    "key": "69_fixated",
+    "name": "Fijación",
+    "aliases": [
+      "Conciencia Fijacion Fixated Self-Aware Self Aware",
+      "C",
+      "o",
+      "n",
+      "c",
+      "i",
+      "e",
+      "a",
+      " ",
+      "F",
+      "j",
+      "x",
+      "t",
+      "d",
+      "S",
+      "l",
+      "f",
+      "-",
+      "A",
+      "w",
+      "r"
+    ],
+    "ownerKey": "nancywheeler"
+  },
+  {
+    "key": "70_innerStrength",
+    "name": "Fuerza interior",
+    "aliases": [
+      "Curación interior Curacion interior Inner Strength Inner Healing",
+      "C",
+      "u",
+      "r",
+      "a",
+      "c",
+      "i",
+      "ó",
+      "n",
+      " ",
+      "t",
+      "e",
+      "o",
+      "I",
+      "S",
+      "g",
+      "h",
+      "H",
+      "l"
+    ],
+    "ownerKey": "nancywheeler"
+  },
+  {
+    "key": "71_breakout",
+    "name": "Fuga",
+    "ownerKey": "yuikimura",
+    "aliases": []
+  },
+  {
+    "key": "72_anyMeansNecessary",
+    "name": "Cueste lo que cueste",
+    "ownerKey": "yuikimura",
+    "aliases": []
+  },
+  {
+    "key": "73_luckyBreak",
+    "name": "Golpe de suerte",
+    "ownerKey": "yuikimura",
+    "aliases": []
+  },
+  {
+    "key": "74_offTheRecord",
+    "name": "Extraoficial",
+    "ownerKey": "zarinakassir",
+    "aliases": []
+  },
+  {
+    "key": "75_redHerring",
+    "name": "Bulo",
+    "ownerKey": "zarinakassir",
+    "aliases": []
+  },
+  {
+    "key": "76_forThePeople",
+    "name": "Por los demás",
+    "ownerKey": "zarinakassir",
+    "aliases": []
+  },
+  {
+    "key": "77_soulGuard",
+    "name": "Salvaguarda de alma",
+    "ownerKey": "cherylmason",
+    "aliases": []
+  },
+  {
+    "key": "78_bloodPact",
+    "name": "Pacto de sangre",
+    "ownerKey": "cherylmason",
+    "aliases": []
+  },
+  {
+    "key": "79_repressedAlliance",
+    "name": "Supresión de alianza",
+    "ownerKey": "cherylmason",
+    "aliases": []
+  },
+  {
+    "key": "80_desperateMeasures",
+    "name": "Medidas desesperadas",
+    "ownerKey": "felixrichter",
+    "aliases": []
+  },
+  {
+    "key": "81_builtToLast",
+    "name": "Construcción duradera",
+    "ownerKey": "felixrichter",
+    "aliases": []
+  },
+  {
+    "key": "82_visionary",
+    "name": "Visión de futuro",
+    "ownerKey": "felixrichter",
+    "aliases": []
+  },
+  {
+    "key": "83_appraisal",
+    "name": "Evaluación",
+    "ownerKey": "elodierakoto",
+    "aliases": []
+  },
+  {
+    "key": "84_deception",
+    "name": "Engaño",
+    "ownerKey": "elodierakoto",
+    "aliases": []
+  },
+  {
+    "key": "85_powerStruggle",
+    "name": "Lucha intensa",
+    "ownerKey": "elodierakoto",
+    "aliases": []
+  },
+  {
+    "key": "86_fastTrack",
+    "name": "Primera línea",
+    "ownerKey": "yunjinlee",
+    "aliases": []
+  },
+  {
+    "key": "87_selfPreservation",
+    "name": "Autoconservación",
+    "ownerKey": "yunjinlee",
+    "aliases": []
+  },
+  {
+    "key": "88_smashHit",
+    "name": "Éxito aplastante",
+    "ownerKey": "yunjinlee",
+    "aliases": []
+  },
+  {
+    "key": "89_biteTheBullet",
+    "name": "De tripas corazón",
+    "ownerKey": "jillvalentine",
+    "aliases": []
+  },
+  {
+    "key": "90_blastMine",
+    "name": "Mina explosiva",
+    "ownerKey": "jillvalentine",
+    "aliases": []
+  },
+  {
+    "key": "91_counterforce",
+    "name": "Contrafuerza",
+    "ownerKey": "jillvalentine",
+    "aliases": []
+  },
+  {
+    "key": "92_flashbang",
+    "name": "Granada aturdidora",
+    "ownerKey": "leonskennedy",
+    "aliases": []
+  },
+  {
+    "key": "93_resurgence",
+    "name": "Resurgimiento",
+    "ownerKey": "leonskennedy",
+    "aliases": []
+  },
+  {
+    "key": "94_rookieSpirit",
+    "name": "Espíritu de novato",
+    "ownerKey": "leonskennedy",
+    "aliases": []
+  },
+  {
+    "key": "95_circleOfHealing",
+    "name": "Bendición: Círculo de curación",
+    "aliases": [
+      "Círculo de curación Circulo de curacion Circle of Healing Boon Circle of Healing Bendicion",
+      "C",
+      "í",
+      "r",
+      "c",
+      "u",
+      "l",
+      "o",
+      " ",
+      "d",
+      "e",
+      "a",
+      "i",
+      "ó",
+      "n",
+      "f",
+      "H",
+      "g",
+      "B"
+    ],
+    "ownerKey": "mikaelareid"
+  },
+  {
+    "key": "96_shadowStep",
+    "name": "Bendición: Paso sombrío",
+    "aliases": [
+      "Paso sombrío Paso sombrio Shadow Step Boon Shadow Step Bendicion",
+      "P",
+      "a",
+      "s",
+      "o",
+      " ",
+      "m",
+      "b",
+      "r",
+      "í",
+      "i",
+      "S",
+      "h",
+      "d",
+      "w",
+      "t",
+      "e",
+      "p",
+      "B",
+      "n",
+      "c"
+    ],
+    "ownerKey": "mikaelareid"
+  },
+  {
+    "key": "97_clairvoyance",
+    "name": "Clarividencia",
+    "ownerKey": "mikaelareid",
+    "aliases": []
+  },
+  {
+    "key": "98_exponential",
+    "name": "Bendición: Exponencial",
+    "aliases": [
+      "Exponencial Boon Exponential Bendicion",
+      "E",
+      "x",
+      "p",
+      "o",
+      "n",
+      "e",
+      "c",
+      "i",
+      "a",
+      "l",
+      " ",
+      "B",
+      "t",
+      "d"
+    ],
+    "ownerKey": "jonahvasquez"
+  },
+  {
+    "key": "99_correctiveAction",
+    "name": "Medida correctiva",
+    "ownerKey": "jonahvasquez",
+    "aliases": []
+  },
+  {
+    "key": "100_overcome",
+    "name": "Sobreponerse",
+    "ownerKey": "jonahvasquez",
+    "aliases": []
+  },
+  {
+    "key": "101_darkTheory",
+    "name": "Bendición: Teoría oscura",
+    "aliases": [
+      "Teoría oscura Teoria oscura Dark Theory Boon Dark Theory Bendicion",
+      "T",
+      "e",
+      "o",
+      "r",
+      "í",
+      "a",
+      " ",
+      "s",
+      "c",
+      "u",
+      "i",
+      "D",
+      "k",
+      "h",
+      "y",
+      "B",
+      "n",
+      "d"
+    ],
+    "ownerKey": "yoichiasakawa"
+  },
+  {
+    "key": "102_empathicConnection",
+    "name": "Conexión empática",
+    "ownerKey": "yoichiasakawa",
+    "aliases": []
+  },
+  {
+    "key": "103_parentalGuidance",
+    "name": "Consejo paterno",
+    "ownerKey": "yoichiasakawa",
+    "aliases": []
+  },
+  {
+    "key": "104_innerFocus",
+    "name": "Concentración interna",
+    "ownerKey": "haddiekaur",
+    "aliases": []
+  },
+  {
+    "key": "105_residualManifest",
+    "name": "Manifestación residual",
+    "ownerKey": "haddiekaur",
+    "aliases": []
+  },
+  {
+    "key": "106_overzealous",
+    "name": "Pasión",
+    "ownerKey": "haddiekaur",
+    "aliases": []
+  },
+  {
+    "key": "107_betterThanNew",
+    "name": "Mejor que nuevo",
+    "ownerKey": "rebeccachambers",
+    "aliases": []
+  },
+  {
+    "key": "108_hyperfocus",
+    "name": "Hiperconcentración",
+    "ownerKey": "rebeccachambers",
+    "aliases": []
+  },
+  {
+    "key": "109_lowProfile",
+    "name": "Perfil bajo",
+    "ownerKey": "rebeccachambers",
+    "aliases": []
+  },
+  {
+    "key": "110_reactiveHealing",
+    "name": "Curación reactiva",
+    "ownerKey": "adawong",
+    "aliases": []
+  },
+  {
+    "key": "111_reassurance",
+    "name": "Reafirmación",
+    "ownerKey": "adawong",
+    "aliases": []
+  },
+  {
+    "key": "112_wiretap",
+    "name": "Interceptor",
+    "ownerKey": "adawong",
+    "aliases": []
+  },
+  {
+    "key": "113_potentialEnergy",
+    "name": "Energía potencial",
+    "ownerKey": "vittoriotoscano",
+    "aliases": []
+  },
+  {
+    "key": "114_fogwise",
+    "name": "Neblinoso",
+    "ownerKey": "vittoriotoscano",
+    "aliases": []
+  },
+  {
+    "key": "115_quickGambit",
+    "name": "Táctica veloz",
+    "ownerKey": "vittoriotoscano",
+    "aliases": []
+  },
+  {
+    "key": "116_backgroundPlayer",
+    "name": "Jugador secundario",
+    "ownerKey": "renatolyra",
+    "aliases": []
+  },
+  {
+    "key": "117_bloodRush",
+    "name": "Torrente de sangre",
+    "ownerKey": "renatolyra",
+    "aliases": []
+  },
+  {
+    "key": "118_cutLoose",
+    "name": "Desátame",
+    "ownerKey": "renatolyra",
+    "aliases": []
+  },
+  {
+    "key": "119_friendlyCompetition",
+    "name": "Rivalidad Amistosa",
+    "ownerKey": "thalitalyra",
+    "aliases": []
+  },
+  {
+    "key": "120_teamworkCollectiveStealth",
+    "name": "Sigilo colectivo",
+    "ownerKey": "thalitalyra",
+    "aliases": []
+  },
+  {
+    "key": "121_teamworkPowerOfTwo",
+    "name": "Poder Dual",
+    "ownerKey": "thalitalyra",
+    "aliases": []
+  },
+  {
+    "key": "122_madeForThis",
+    "name": "Hecho para esto",
+    "ownerKey": "gabrielsoma",
+    "aliases": []
+  },
+  {
+    "key": "123_scavenger",
+    "name": "Buscador",
+    "ownerKey": "gabrielsoma",
+    "aliases": []
+  },
+  {
+    "key": "124_troubleshooter",
+    "name": "Solucionador de Problemas",
+    "ownerKey": "gabrielsoma",
+    "aliases": []
+  },
+  {
+    "key": "125_dramaturgy",
+    "name": "Dramaturgia",
+    "ownerKey": "nicolascage",
+    "aliases": []
+  },
+  {
+    "key": "126_scenePartner",
+    "name": "Compañero de escena",
+    "ownerKey": "nicolascage",
+    "aliases": []
+  },
+  {
+    "key": "127_plotTwist",
+    "name": "Giro Argumental",
+    "ownerKey": "nicolascage",
+    "aliases": []
+  },
+  {
+    "key": "128_chemicalTrap",
+    "name": "Trampa química",
+    "ownerKey": "ellenripley",
+    "aliases": []
+  },
+  {
+    "key": "129_light-Footed",
+    "name": "Ligera de pies",
+    "ownerKey": "ellenripley",
+    "aliases": []
+  },
+  {
+    "key": "130_luckyStar",
+    "name": "Estrella de la suerte",
+    "ownerKey": "ellenripley",
+    "aliases": []
+  },
+  {
+    "key": "131_boonIllumination",
+    "name": "Bendición: Iluminación",
+    "aliases": [
+      "Iluminación Iluminacion Boon Illumination Bendicion",
+      "I",
+      "l",
+      "u",
+      "m",
+      "i",
+      "n",
+      "a",
+      "c",
+      "ó",
+      " ",
+      "o",
+      "B",
+      "t",
+      "e",
+      "d"
+    ],
+    "ownerKey": "alanwake"
+  },
+  {
+    "key": "132_championOfLight",
+    "name": "Campeón de la Luz",
+    "ownerKey": "alanwake",
+    "aliases": []
+  },
+  {
+    "key": "133_deadline",
+    "name": "Fecha Límite",
+    "ownerKey": "alanwake",
+    "aliases": []
+  },
+  {
+    "key": "134_invocationWeavingSpiders",
+    "name": "Invocación: Arañas tejedoras",
+    "aliases": [
+      "Arañas tejedoras Aranas tejedoras Invocation Weaving Spiders",
+      "A",
+      "r",
+      "a",
+      "ñ",
+      "s",
+      " ",
+      "t",
+      "e",
+      "j",
+      "d",
+      "o",
+      "n",
+      "I",
+      "v",
+      "c",
+      "i",
+      "W",
+      "g",
+      "S",
+      "p"
+    ],
+    "ownerKey": "sableward"
+  },
+  {
+    "key": "135_strengthInShadows",
+    "name": "Fuerza en las sombras",
+    "aliases": [
+      "Fortaleza en las sombras Strength in Shadows",
+      "F",
+      "o",
+      "r",
+      "t",
+      "a",
+      "l",
+      "e",
+      "z",
+      " ",
+      "n",
+      "s",
+      "m",
+      "b",
+      "S",
+      "g",
+      "h",
+      "i",
+      "d",
+      "w"
+    ],
+    "ownerKey": "sableward"
+  },
+  {
+    "key": "136_wicked",
+    "name": "Embrujada",
+    "aliases": [
+      "Malicia Wicked",
+      "M",
+      "a",
+      "l",
+      "i",
+      "c",
+      " ",
+      "W",
+      "k",
+      "e",
+      "d"
+    ],
+    "ownerKey": "sableward"
+  },
+  {
+    "key": "137_bardicInspiration",
+    "name": "Inspiración Bárdica",
+    "ownerKey": "thetroupe",
+    "aliases": []
+  },
+  {
+    "key": "138_mirroredIllusion",
+    "name": "Espejismo",
+    "aliases": [
+      "Ilusión reflejada Ilusion reflejada Mirrored Illusion",
+      "I",
+      "l",
+      "u",
+      "s",
+      "i",
+      "ó",
+      "n",
+      " ",
+      "r",
+      "e",
+      "f",
+      "j",
+      "a",
+      "d",
+      "o",
+      "M"
+    ],
+    "ownerKey": "thetroupe"
+  },
+  {
+    "key": "139_stillSight",
+    "name": "Visión estática",
+    "aliases": [
+      "Mirada fija Vision estatica Still Sight",
+      "M",
+      "i",
+      "r",
+      "a",
+      "d",
+      " ",
+      "f",
+      "j",
+      "V",
+      "s",
+      "o",
+      "n",
+      "e",
+      "t",
+      "c",
+      "S",
+      "l",
+      "g",
+      "h"
+    ],
+    "ownerKey": "thetroupe"
+  },
+  {
+    "key": "140_specialist",
+    "name": "Especialista",
+    "ownerKey": "laracroft",
+    "aliases": []
+  },
+  {
+    "key": "141_finesse",
+    "name": "Sutileza",
+    "aliases": [
+      "Elegancia Finesse",
+      "E",
+      "l",
+      "e",
+      "g",
+      "a",
+      "n",
+      "c",
+      "i",
+      " ",
+      "F",
+      "s"
+    ],
+    "ownerKey": "laracroft"
+  },
+  {
+    "key": "142_hardened",
+    "name": "Curtida",
+    "aliases": [
+      "Endurecida Hardened",
+      "E",
+      "n",
+      "d",
+      "u",
+      "r",
+      "e",
+      "c",
+      "i",
+      "a",
+      " ",
+      "H"
+    ],
+    "ownerKey": "laracroft"
+  },
+  {
+    "key": "143_exultation",
+    "name": "Exultación",
+    "ownerKey": "trevorbelmont",
+    "aliases": []
+  },
+  {
+    "key": "144_eyesOfBelmont",
+    "name": "Ojos de Belmont",
+    "ownerKey": "trevorbelmont",
+    "aliases": []
+  },
+  {
+    "key": "145_momentOfGlory",
+    "name": "Momento de Gloria",
+    "ownerKey": "trevorbelmont",
+    "aliases": []
+  },
+  {
+    "key": "146_cleanBreak",
+    "name": "Separación limpia",
+    "aliases": [
+      "Punto y aparte Punto y Aparte Separacion limpia Clean Break",
+      "P",
+      "u",
+      "n",
+      "t",
+      "o",
+      " ",
+      "y",
+      "a",
+      "p",
+      "r",
+      "e",
+      "A",
+      "S",
+      "c",
+      "i",
+      "l",
+      "m",
+      "C",
+      "B",
+      "k"
+    ],
+    "ownerKey": "tauriecain"
+  },
+  {
+    "key": "147_treacherousCrows",
+    "name": "Invocación: Cuervos traicioneros",
+    "aliases": [
+      "Cuervos traicioneros Invocation Treacherous Crows",
+      "C",
+      "u",
+      "e",
+      "r",
+      "v",
+      "o",
+      "s",
+      " ",
+      "t",
+      "a",
+      "i",
+      "c",
+      "n",
+      "I",
+      "T",
+      "h",
+      "w"
+    ],
+    "ownerKey": "tauriecain"
+  },
+  {
+    "key": "148_shoulderTheBurden",
+    "name": "Carga sobre los hombros",
+    "aliases": [
+      "Cargar a cuestas Shoulder the Burden",
+      "C",
+      "a",
+      "r",
+      "g",
+      " ",
+      "c",
+      "u",
+      "e",
+      "s",
+      "t",
+      "S",
+      "h",
+      "o",
+      "l",
+      "d",
+      "B",
+      "n"
+    ],
+    "ownerKey": "tauriecain"
+  },
+  {
+    "key": "149_doNoHarm",
+    "name": "No hacer daño",
+    "aliases": [
+      "No hagas daño Do No Harm",
+      "N",
+      "o",
+      " ",
+      "h",
+      "a",
+      "g",
+      "s",
+      "d",
+      "ñ",
+      "D",
+      "H",
+      "r",
+      "m"
+    ],
+    "ownerKey": "orelarose"
+  },
+  {
+    "key": "150_dutyOfCare",
+    "name": "Deber de socorro",
+    "aliases": [
+      "El deber de cuidar Duty of Care",
+      "E",
+      "l",
+      " ",
+      "d",
+      "e",
+      "b",
+      "r",
+      "c",
+      "u",
+      "i",
+      "a",
+      "D",
+      "t",
+      "y",
+      "o",
+      "f",
+      "C"
+    ],
+    "ownerKey": "orelarose"
+  },
+  {
+    "key": "151_rapidResponse",
+    "name": "Respuesta Rápida",
+    "ownerKey": "orelarose",
+    "aliases": []
+  },
+  {
+    "key": "152_apocalypticIngenuity",
+    "name": "Ingenio Apocalíptico",
+    "ownerKey": "rickgrimes",
+    "aliases": []
+  },
+  {
+    "key": "153_comeAndGetMe",
+    "name": "¡Ven Por Mí!",
+    "ownerKey": "rickgrimes",
+    "aliases": []
+  },
+  {
+    "key": "154_teamworkToughenUp",
+    "name": "Trabajo en equipo: Al derribo",
+    "aliases": [
+      "Entereza Teamwork Toughen Up",
+      "E",
+      "n",
+      "t",
+      "e",
+      "r",
+      "z",
+      "a",
+      " ",
+      "T",
+      "m",
+      "w",
+      "o",
+      "k",
+      "u",
+      "g",
+      "h",
+      "U",
+      "p"
+    ],
+    "ownerKey": "rickgrimes"
+  },
+  {
+    "key": "155_conviction",
+    "name": "Convicción",
+    "ownerKey": "michonnegrimes",
+    "aliases": []
+  },
+  {
+    "key": "156_lastStand",
+    "name": "Última defensa",
+    "aliases": [
+      "Último enfrentamiento Ultimo enfrentamiento Last Stand",
+      "Ú",
+      "l",
+      "t",
+      "i",
+      "m",
+      "o",
+      " ",
+      "e",
+      "n",
+      "f",
+      "r",
+      "a",
+      "U",
+      "L",
+      "s",
+      "S",
+      "d"
+    ],
+    "ownerKey": "michonnegrimes"
+  },
+  {
+    "key": "157_teamworkThrowDown",
+    "name": "Trabajo en equipo: Curtirse",
+    "aliases": [
+      "Lanzamiento Teamwork Throw Down",
+      "L",
+      "a",
+      "n",
+      "z",
+      "m",
+      "i",
+      "e",
+      "t",
+      "o",
+      " ",
+      "T",
+      "w",
+      "r",
+      "k",
+      "h",
+      "D"
+    ],
+    "ownerKey": "michonnegrimes"
+  },
+  {
+    "key": "158_ghostNotes",
+    "name": "Notas Fantasma",
+    "ownerKey": "veeboonyasak",
+    "aliases": []
+  },
+  {
+    "key": "159_oneTwoThreeFour",
+    "name": "¡Uno-Dos-Tres-Cuatro!",
+    "ownerKey": "veeboonyasak",
+    "aliases": []
+  },
+  {
+    "key": "160_roadLife",
+    "name": "Vida en la carretera",
+    "aliases": [
+      "Vida Itinerante Road Life",
+      "V",
+      "i",
+      "d",
+      "a",
+      " ",
+      "I",
+      "t",
+      "n",
+      "e",
+      "r",
+      "R",
+      "o",
+      "L",
+      "f"
+    ],
+    "ownerKey": "veeboonyasak"
+  },
+  {
+    "key": "161_badaBadaBoom",
+    "name": "Bada, Bada, Bum",
+    "ownerKey": "dustinhenderson",
+    "aliases": []
+  },
+  {
+    "key": "162_changeOfPlan",
+    "name": "Cambio de Planes",
+    "ownerKey": "dustinhenderson",
+    "aliases": []
+  },
+  {
+    "key": "163_teamworkFullCircuit",
+    "name": "Trabajo en equipo: Circuito completo",
+    "aliases": [
+      "Circuito completo Teamwork Full Circuit",
+      "C",
+      "i",
+      "r",
+      "c",
+      "u",
+      "t",
+      "o",
+      " ",
+      "m",
+      "p",
+      "l",
+      "e",
+      "T",
+      "a",
+      "w",
+      "k",
+      "F"
+    ],
+    "ownerKey": "dustinhenderson"
+  },
+  {
+    "key": "164_extrasensoryPerception",
+    "name": "Percepción Extrasensorial",
+    "ownerKey": "eleven",
+    "aliases": []
+  },
+  {
+    "key": "165_teamworkSoftSpoken",
+    "name": "Trabajo en equipo: Tono suave",
+    "aliases": [
+      "Tono gentil Teamwork Soft Spoken",
+      "T",
+      "o",
+      "n",
+      " ",
+      "g",
+      "e",
+      "t",
+      "i",
+      "l",
+      "a",
+      "m",
+      "w",
+      "r",
+      "k",
+      "S",
+      "f",
+      "p"
+    ],
+    "ownerKey": "eleven"
+  },
+  {
+    "key": "166_weSeeYou",
+    "name": "Te Vemos",
+    "ownerKey": "eleven",
+    "aliases": []
+  },
+  {
+    "key": "167_aPlaceForUs",
+    "name": "Un Lugar Para Nosotros",
+    "ownerKey": "kwontaeyoung",
+    "aliases": []
+  },
+  {
+    "key": "168_fiveMovesAhead",
+    "name": "Cinco pasos por delante",
+    "aliases": [
+      "Cinco movimientos adelante Five Moves Ahead",
+      "C",
+      "i",
+      "n",
+      "c",
+      "o",
+      " ",
+      "m",
+      "v",
+      "e",
+      "t",
+      "s",
+      "a",
+      "d",
+      "l",
+      "F",
+      "M",
+      "A",
+      "h"
+    ],
+    "ownerKey": "kwontaeyoung"
+  },
+  {
+    "key": "169_flowState",
+    "name": "Estado fluido",
+    "aliases": [
+      "Estado de flujo Flow State",
+      "E",
+      "s",
+      "t",
+      "a",
+      "d",
+      "o",
+      " ",
+      "e",
+      "f",
+      "l",
+      "u",
+      "j",
+      "F",
+      "w",
+      "S"
+    ],
+    "ownerKey": "kwontaeyoung"
+  },
+  {
+    "key": "170_crossExamination",
+    "name": "Contrainterrogatorio",
+    "aliases": [
+      "Interrogatorio Cross Examination",
+      "I",
+      "n",
+      "t",
+      "e",
+      "r",
+      "o",
+      "g",
+      "a",
+      "i",
+      " ",
+      "C",
+      "s",
+      "E",
+      "x",
+      "m"
+    ],
+    "ownerKey": "shanewiigwaas"
+  },
+  {
+    "key": "171_lendaHand",
+    "name": "Echar una Mano",
+    "ownerKey": "shanewiigwaas",
+    "aliases": []
+  },
+  {
+    "key": "172_wideOpenThrottle",
+    "name": "Acelerador a fondo",
+    "aliases": [
+      "Máxima velocidad Maxima velocidad Wide Open Throttle",
+      "M",
+      "á",
+      "x",
+      "i",
+      "m",
+      "a",
+      " ",
+      "v",
+      "e",
+      "l",
+      "o",
+      "c",
+      "d",
+      "W",
+      "O",
+      "p",
+      "n",
+      "T",
+      "h",
+      "r",
+      "t"
+    ],
+    "ownerKey": "shanewiigwaas"
+  },
+  {
+    "key": "173_steadfast",
+    "name": "Bendición: Decisión",
+    "aliases": [
+      "Steadfast Bendicion Decision Boon Steadfast",
+      "S",
+      "t",
+      "e",
+      "a",
+      "d",
+      "f",
+      "s",
+      " ",
+      "B",
+      "n",
+      "i",
+      "c",
+      "o",
+      "D"
+    ],
+    "ownerKey": "aurora"
+  },
+  {
+    "key": "174_salvationsCry",
+    "name": "Grito de salvación",
+    "aliases": [
+      "Salvation's Cry Salvations Cry Grito de salvacion",
+      "S",
+      "a",
+      "l",
+      "v",
+      "t",
+      "i",
+      "o",
+      "n",
+      "'",
+      "s",
+      " ",
+      "C",
+      "r",
+      "y",
+      "G",
+      "d",
+      "e",
+      "c"
+    ],
+    "ownerKey": "aurora"
+  },
+  {
+    "key": "175_fruitsOfYourLabor",
+    "name": "Frutos de tu esfuerzo",
+    "aliases": [
+      "Fruits of Your Labor Frutos de tu esfuerzo",
+      "F",
+      "r",
+      "u",
+      "i",
+      "t",
+      "s",
+      " ",
+      "o",
+      "f",
+      "Y",
+      "L",
+      "a",
+      "b",
+      "d",
+      "e",
+      "z"
+    ],
+    "ownerKey": "aurora"
+  }
 ]
