@@ -1697,5 +1697,46 @@
       "z"
     ],
     "ownerKey": "aurora"
+  },
+  {
+    "key": "176_valkyriesRage",
+    "name": "Furia de la Valquiria",
+    "aliases": [
+      "Valkyrie's Rage",
+      "Furia",
+      "Valquiria"
+    ],
+    "ownerKey": "siennashaw",
+    "image": "survivor/176_valkyriesRage.png",
+    "enabled": true,
+    "updateId": "terrifier-2026"
+  },
+  {
+    "key": "177_sharedTrauma",
+    "name": "Trauma compartido",
+    "aliases": [
+      "Shared Trauma",
+      "Trauma",
+      "Compartido"
+    ],
+    "ownerKey": "siennashaw",
+    "image": "survivor/177_sharedTrauma.png",
+    "enabled": true,
+    "updateId": "terrifier-2026"
+  },
+  {
+    "key": "178_bestGiftEver",
+    "name": "El mejor regalo del mundo",
+    "aliases": [
+      "Best Gift Ever",
+      "El mejor regalo de todos",
+      "el mejor",
+      "regalo",
+      "de todos"
+    ],
+    "ownerKey": "siennashaw",
+    "image": "survivor/178_bestGiftEver.png",
+    "enabled": true,
+    "updateId": "terrifier-2026"
   }
 ]

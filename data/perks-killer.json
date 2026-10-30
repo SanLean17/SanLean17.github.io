@@ -1680,5 +1680,45 @@
       "n"
     ],
     "ownerKey": "judgment"
+  },
+  {
+    "key": "145_laughingstock",
+    "name": "Hazmerreír",
+    "aliases": [
+      "Laughingstock",
+      "reir",
+      "hazme",
+      "Hazmerreir"
+    ],
+    "ownerKey": "terrifier",
+    "image": "killer/145_laughingstock.png",
+    "enabled": true,
+    "updateId": "terrifier-2026"
+  },
+  {
+    "key": "146_killSpree",
+    "name": "Oleada de asesinatos",
+    "aliases": [
+      "Kill Spree",
+      "Racha de asesinatos",
+      "Oleada de asesinatos"
+    ],
+    "ownerKey": "terrifier",
+    "image": "killer/146_killSpree.png",
+    "enabled": true,
+    "updateId": "terrifier-2026"
+  },
+  {
+    "key": "147_funnyBusiness",
+    "name": "Triquiñuela",
+    "aliases": [
+      "Funny Business",
+      "Bromas pesadas",
+      "bromas"
+    ],
+    "ownerKey": "terrifier",
+    "image": "killer/147_funnyBusiness.png",
+    "enabled": true,
+    "updateId": "terrifier-2026"
   }
 ]
