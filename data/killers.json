@@ -351,5 +351,19 @@
     "aliases": [
       "krasue la krasue"
     ]
+  },
+  {
+    "key": "terrifier",
+    "name": "Terrifier",
+    "aliases": [
+      "The Terrifier",
+      "Art the Clown",
+      "Art",
+      "Terrifier",
+      "payaso"
+    ],
+    "image": "assets/killers/terrifier.png",
+    "enabled": true,
+    "updateId": "terrifier-2026"
   }
 ]

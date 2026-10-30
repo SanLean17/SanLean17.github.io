@@ -430,5 +430,17 @@
     "aliases": [
       "aurora"
     ]
+  },
+  {
+    "key": "siennashaw",
+    "name": "Sienna Shaw",
+    "aliases": [
+      "Sienna",
+      "Sienna Shaw",
+      "Terrifier"
+    ],
+    "image": "survivors/siennashaw.png",
+    "enabled": true,
+    "updateId": "terrifier-2026"
   }
 ]
