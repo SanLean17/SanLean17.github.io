@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-label="The Tower Farm: imagen de mapa pendiente">
+<rect width="1200" height="900" fill="#111114"/>
+<rect x="45" y="45" width="1110" height="810" rx="24" fill="none" stroke="#34343b" stroke-width="2" stroke-dasharray="10 12"/>
+<path d="M570 280h60m-30-30v60" stroke="#ff003c" stroke-width="4"/>
+<text x="600" y="405" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="40" font-weight="700">THE TOWER FARM</text>
+<text x="600" y="475" text-anchor="middle" fill="#bbbcc4" font-family="Arial,sans-serif" font-size="26">IMAGEN DEL MAPA PENDIENTE</text>
+<text x="600" y="525" text-anchor="middle" fill="#8c8c96" font-family="Arial,sans-serif" font-size="22">Este espacio no representa la geografía del juego.</text>
+<text x="600" y="770" text-anchor="middle" fill="#777780" font-family="Arial,sans-serif" font-size="20">SANLEAN / MAPAS INTERACTIVOS / 05</text>
+</svg>

@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "maps": [
+    {
+      "id": "haddonfield-heights",
+      "name": "Haddonfield Heights",
+      "image": "/assets/halloween/maps/haddonfield-heights.svg",
+      "width": 1200,
+      "height": 900,
+      "placeholder": true,
+      "asset": {
+        "origin": "Placeholder vectorial propio de SanLean; no es un mapa del juego.",
+        "permission": "Creado para este proyecto; sin recursos externos."
+      },
+      "markers": [],
+      "labels": []
+    },
+    {
+      "id": "haddonfield-town-center",
+      "name": "Haddonfield Town Center",
+      "image": "/assets/halloween/maps/haddonfield-town-center.svg",
+      "width": 1200,
+      "height": 900,
+      "placeholder": true,
+      "asset": {
+        "origin": "Placeholder vectorial propio de SanLean; no es un mapa del juego.",
+        "permission": "Creado para este proyecto; sin recursos externos."
+      },
+      "markers": [],
+      "labels": []
+    },
+    {
+      "id": "orange-grove-estates",
+      "name": "Orange Grove Estates",
+      "image": "/assets/halloween/maps/orange-grove-estates.svg",
+      "width": 1200,
+      "height": 900,
+      "placeholder": true,
+      "asset": {
+        "origin": "Placeholder vectorial propio de SanLean; no es un mapa del juego.",
+        "permission": "Creado para este proyecto; sin recursos externos."
+      },
+      "markers": [],
+      "labels": []
+    },
+    {
+      "id": "east-haddonfield",
+      "name": "East Haddonfield",
+      "image": "/assets/halloween/maps/east-haddonfield.svg",
+      "width": 1200,
+      "height": 900,
+      "placeholder": true,
+      "asset": {
+        "origin": "Placeholder vectorial propio de SanLean; no es un mapa del juego.",
+        "permission": "Creado para este proyecto; sin recursos externos."
+      },
+      "markers": [],
+      "labels": []
+    },
+    {
+      "id": "tower-farm",
+      "name": "The Tower Farm",
+      "image": "/assets/halloween/maps/tower-farm.svg",
+      "width": 1200,
+      "height": 900,
+      "placeholder": true,
+      "asset": {
+        "origin": "Placeholder vectorial propio de SanLean; no es un mapa del juego.",
+        "permission": "Creado para este proyecto; sin recursos externos."
+      },
+      "markers": [],
+      "labels": []
+    }
+  ]
+}

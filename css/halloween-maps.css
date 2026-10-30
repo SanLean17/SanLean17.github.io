@@ -1,0 +1,69 @@
+/* Exclusive to the public Halloween viewer; shared header/footer remain untouched. */
+#halloweenMaps{width:min(1640px,calc(100% - 48px));margin-inline:auto;padding:28px 0 48px;min-width:0}
+#halloweenMaps [hidden]{display:none!important}
+#halloweenMaps :is(button,input,summary):focus-visible,#halloweenMaps :is(.hm-viewport,.hm-info):focus-visible{outline:2px solid #fff;outline-offset:3px}
+#halloweenMaps button{font-family:var(--body);cursor:pointer;touch-action:manipulation}
+#halloweenMaps button:disabled{opacity:.45;cursor:not-allowed}
+#halloweenMaps .hm-heading{max-width:780px;margin:0 auto 38px;text-align:center}
+#halloweenMaps .hm-kicker{color:#ff003c;font-size:12px;font-weight:800;letter-spacing:.12em;line-height:1.5}
+#halloweenMaps h1{font-size:clamp(48px,6vw,80px);margin:9px 0 18px}
+#halloweenMaps .hm-heading>p:last-child{color:#d0d0d6;font-size:15px;line-height:1.7}
+#halloweenMaps .hm-gallery{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
+#halloweenMaps .hm-card{padding:0;text-align:left;overflow:hidden;background:#111114;border:1px solid #393940;border-radius:14px;color:#fff;transition:border-color .15s}
+#halloweenMaps .hm-card:hover{border-color:#ff003c}
+#halloweenMaps .hm-card img{width:100%;height:auto;aspect-ratio:4/3;object-fit:contain;background:#111114}
+#halloweenMaps .hm-card-copy{display:block;padding:19px}
+#halloweenMaps .hm-card strong{display:block;font-family:var(--head);font-weight:400;font-size:24px;line-height:1.15;text-transform:uppercase}
+#halloweenMaps .hm-card small{display:block;color:#bcbcc5;margin-top:10px;font-size:11px;line-height:1.5}
+#halloweenMaps .hm-card .hm-open{display:block;color:#ff003c;font-size:11px;font-weight:800;letter-spacing:.06em;margin-top:18px}
+#halloweenMaps .hm-view-heading{display:flex;align-items:center;gap:24px;margin:0 0 18px}
+#halloweenMaps h2{font-size:clamp(27px,3vw,42px);line-height:1.1}
+#halloweenMaps .hm-notice{padding:14px 18px;margin-bottom:20px;border-left:2px solid #ff003c;background:#111114;color:#c8c8d0;font-size:13px;line-height:1.6}
+#halloweenMaps .hm-workspace{display:grid;grid-template-columns:minmax(150px,1fr) minmax(0,4fr) minmax(150px,1fr);gap:18px;align-items:start}
+#halloweenMaps :is(.hm-legend,.hm-map-nav){border:1px solid #303037;border-radius:14px;background:#101013;padding:18px;min-width:0}
+#halloweenMaps :is(summary,.hm-map-nav h3){font-size:14px;font-weight:800;line-height:1.5;letter-spacing:.04em}
+#halloweenMaps summary{cursor:pointer;user-select:none}
+#halloweenMaps .hm-filters{display:grid;gap:8px;margin:18px 0}
+#halloweenMaps .hm-filter{display:flex;align-items:center;gap:8px;text-align:left;padding:8px 4px;border:1px solid transparent;border-radius:8px;background:transparent;color:#dedee4;font-size:11px;line-height:1.4;min-height:44px}
+#halloweenMaps .hm-filter[aria-pressed=false]{opacity:.5}
+#halloweenMaps .hm-filter:hover{border-color:#ff003c}
+#halloweenMaps .hm-filter span:last-child{margin-left:auto;font-size:11px}
+#halloweenMaps .hm-icon{display:inline-flex;align-items:center;justify-content:center;color:var(--marker-color);flex:none}
+#halloweenMaps .hm-icon svg{width:22px;height:22px}
+#halloweenMaps .hm-toggle{display:flex;align-items:center;gap:9px;font-size:12px;line-height:1.6;margin:14px 0;cursor:pointer}
+#halloweenMaps input{accent-color:#ff003c;width:17px;height:17px;flex:none}
+#halloweenMaps .hm-small{font-size:11px;line-height:1.7;color:#aaaab6;margin-top:14px}
+#halloweenMaps .hm-center{min-width:0}
+#halloweenMaps .hm-viewport{height:clamp(400px,64dvh,800px);position:relative;overflow:hidden;background:#0c0c0f;border:1px solid #34343e;border-radius:14px;touch-action:none;cursor:grab;isolation:isolate;user-select:none;overscroll-behavior:contain}
+#halloweenMaps .hm-viewport:focus-within{border-color:#8f233b;box-shadow:0 0 16px #ff003c12}
+#halloweenMaps .hm-viewport.is-dragging{cursor:grabbing}
+#halloweenMaps .hm-viewport.is-placing{cursor:crosshair}
+#halloweenMaps .hm-viewport.is-placing:after{content:'+';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:#ff003c;font-size:28px;pointer-events:none}
+#halloweenMaps .hm-scene{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
+#halloweenMaps #hmImage{width:100%;height:100%;max-width:none;pointer-events:none}
+#halloweenMaps :is(#hmMarkers,#hmPinLayer,#hmLabelLayer,.hm-grid){position:absolute;inset:0;pointer-events:none}
+#halloweenMaps .hm-marker{position:absolute;width:36px;height:36px;padding:4px;display:flex;align-items:center;justify-content:center;border:2px solid var(--marker-color);border-radius:50%;background:#101015;color:var(--marker-color);transform:translate(-50%,-50%) scale(var(--marker-scale,1));pointer-events:auto;touch-action:none}
+#halloweenMaps .hm-marker:hover{box-shadow:0 0 9px var(--marker-color);z-index:2}
+#halloweenMaps .hm-marker svg{width:22px;height:22px;pointer-events:none}
+#halloweenMaps .hm-marker.hm-personal{background:#fff;border:3px solid #ff003c;color:#ff003c}
+#halloweenMaps .hm-personal:before{content:'';width:8px;height:8px;border-radius:50%;background:#ff003c}
+#halloweenMaps .hm-label{position:absolute;transform:translate(-50%,-50%);color:#fff;background:#101015cc;padding:3px 6px;font:600 16px/1.3 var(--body);white-space:nowrap;border-radius:4px}
+#halloweenMaps .hm-grid{background-image:linear-gradient(to right,#ffffff25 1px,transparent 1px),linear-gradient(to bottom,#ffffff25 1px,transparent 1px);background-size:10% 10%;border:1px solid #ffffff25}
+#halloweenMaps .hm-grid span{position:absolute;color:#ddd;font:14px monospace;padding:3px}
+#halloweenMaps .hm-image-state{position:absolute;inset:0;display:grid;place-content:center;text-align:center;padding:24px;font-size:13px;color:#ccc;pointer-events:none}
+#halloweenMaps .hm-controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:12px}
+#halloweenMaps .hm-button{min-height:44px;padding:10px 14px;border:1px solid #55555e;border-radius:999px;background:#111114;color:#fff;font-size:11px;font-weight:800;line-height:1.4}
+#halloweenMaps .hm-button:hover,#halloweenMaps .hm-button[aria-pressed=true]{border-color:#ff003c;color:#ff003c}
+#halloweenMaps #hmZoom{min-width:43px;text-align:center;font-size:11px;color:#bbb}
+#halloweenMaps .hm-pin-hint{font-size:12px;color:#fff;line-height:1.6;margin-top:12px}
+#halloweenMaps .hm-map-nav button{display:block;width:100%;text-align:left;padding:14px 10px;border:0;border-left:2px solid transparent;background:none;color:#bdbdc8;font-size:12px;font-weight:700;line-height:1.5}
+#halloweenMaps .hm-map-nav button[aria-current=true]{color:#ff003c;border-color:#ff003c}
+#halloweenMaps .hm-map-nav button:hover{color:#fff}
+#halloweenMaps #hmMapList{margin-top:14px}
+#halloweenMaps .hm-info{padding:20px;margin-top:16px;border:1px solid #5c2533;border-radius:14px;background:#111114;position:relative}
+#halloweenMaps .hm-info h3{font-size:25px;margin:8px 45px 12px 0}
+#halloweenMaps .hm-info>p{font-size:13px;line-height:1.6}
+#halloweenMaps #hmInfoClose{float:right}
+@media(max-width:1200px){#halloweenMaps .hm-gallery{grid-template-columns:repeat(3,minmax(0,1fr))}#halloweenMaps .hm-workspace{gap:10px}#halloweenMaps :is(.hm-legend,.hm-map-nav){padding:12px}}
+@media(max-width:900px){#halloweenMaps .hm-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}#halloweenMaps .hm-workspace{grid-template-columns:1fr}#halloweenMaps .hm-map-nav{grid-row:1}#halloweenMaps .hm-center{grid-row:2}#halloweenMaps .hm-legend{grid-row:3}#halloweenMaps .hm-map-nav h3{display:none}#halloweenMaps #hmMapList{display:flex;overflow-x:auto;gap:6px;margin:0;padding:3px}#halloweenMaps .hm-map-nav button{width:auto;flex:0 0 160px;border-left:0;border-bottom:2px solid transparent}#halloweenMaps .hm-filters{grid-template-columns:repeat(2,minmax(0,1fr))}#halloweenMaps .hm-viewport{height:62svh;min-height:330px}}
+@media(max-width:760px){body.public-site.public-mobile>main#halloweenMaps{width:calc(100% - 28px);height:auto;overflow:visible;min-height:0;padding:22px 0 32px!important}#halloweenMaps .hm-heading{margin-bottom:25px}#halloweenMaps h1{font-size:48px}#halloweenMaps .hm-heading>p:last-child{font-size:13px}#halloweenMaps .hm-gallery{grid-template-columns:1fr;gap:18px}#halloweenMaps .hm-card-copy{padding:18px}#halloweenMaps .hm-view-heading{flex-direction:column;align-items:flex-start;gap:18px}#halloweenMaps .hm-viewport{min-height:310px}#halloweenMaps .hm-notice{font-size:12px;padding:12px}#halloweenMaps .hm-controls{gap:7px}#halloweenMaps .hm-button{padding:10px 12px;font-size:10px}#halloweenMaps .hm-map-nav{padding:6px}#halloweenMaps .hm-marker{width:42px;height:42px}#halloweenMaps .hm-filters{gap:4px}}

@@ -8,9 +8,13 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Halloween — SanLean</title>
+<title>Mapas de Halloween: The Game — SanLean</title>
+<meta name="description" content="Explorá los mapas de Halloween: The Game y consultá posibles salidas, vehículos y puntos de interés.">
+<link rel="canonical" href="https://sanlean.com.ar/halloween.html">
+<script type="module" src="js/halloween-maps.js?v=20261030-1"></script>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/public-mobile.css?v=20261025-mobile-menu"><script defer src="js/public-mobile.js?v=20261025-mobile-menu"></script><link rel="stylesheet" href="css/public-refinements.css?v=20261015-1"><link rel="stylesheet" href="css/public-info.css?v=20261013-8"><script defer src="/js/public-analytics.js?v=20261026-1"></script>
+<link rel="stylesheet" href="css/halloween-maps.css?v=20261030-1">
 </head>
 <body class="public-site desktop-footer-space page-bg">
 
@@ -46,10 +50,38 @@
   </div>
 </header>
 
-<main class="container">
-  <section class="placeholder">
-    <h1>HALLOWEEN</h1>
-    <p>Esta sección todavía está en desarrollo. ¡Pronto vas a poder disfrutarla!</p>
+<main id="halloweenMaps" class="hm-app">
+  <div class="hm-heading"><p class="hm-kicker">THE GAME · MAPAS INTERACTIVOS</p><h1>HALLOWEEN</h1>
+  <p>Recorré los mapas y prepará tu próxima partida. Explorá posibles escapes y puntos de interés, o marcá tu posición para orientarte.</p></div>
+  <p id="hmLoad" class="hm-notice" role="status">CARGANDO MAPAS...</p>
+  <noscript><p>Activá JavaScript para utilizar el visor de mapas.</p></noscript>
+  <section id="hmGallery" class="hm-gallery" aria-label="Elegir un mapa"></section>
+  <section id="hmViewer" hidden aria-label="Visor de mapas">
+    <div class="hm-view-heading"><button id="hmBack" class="hm-button">← VOLVER A MAPAS</button><h2 id="hmMapTitle" tabindex="-1"></h2></div>
+    <p id="hmNotice" class="hm-notice"></p>
+    <div class="hm-workspace">
+      <details id="hmLegend" class="hm-legend" open><summary>LEYENDA Y FILTROS</summary>
+        <div id="hmFilters" class="hm-filters"></div>
+        <label class="hm-toggle"><input id="hmLabels" type="checkbox" checked> Calles y referencias</label>
+        <label class="hm-toggle"><input id="hmGridToggle" type="checkbox"> Cuadrícula A–J / 1–10</label>
+        <p class="hm-small">Las ubicaciones posibles pueden variar según la partida y la actualización del juego.</p>
+      </details>
+      <div class="hm-center">
+        <div id="hmViewport" class="hm-viewport" tabindex="0" role="region" aria-label="Mapa interactivo" aria-describedby="hmHelp">
+          <div id="hmScene" class="hm-scene" hidden><img id="hmImage" alt="" draggable="false"><div id="hmGrid" class="hm-grid" hidden aria-hidden="true"></div><div id="hmLabelLayer"></div><div id="hmMarkers"></div><div id="hmPinLayer"></div></div>
+          <p id="hmImageState" class="hm-image-state" role="status"></p>
+        </div>
+        <div class="hm-controls" aria-label="Controles del mapa">
+          <button id="hmZoomOut" class="hm-button" aria-label="Alejar mapa">−</button><output id="hmZoom" aria-label="Nivel de zoom">100%</output><button id="hmZoomIn" class="hm-button" aria-label="Acercar mapa">+</button>
+          <button id="hmReset" class="hm-button">VER MAPA COMPLETO</button>
+          <button id="hmPlace" class="hm-button" aria-pressed="false">MARCAR MI POSICIÓN</button><button id="hmClear" class="hm-button" hidden>BORRAR POSICIÓN</button>
+        </div>
+        <p id="hmPinHint" class="hm-pin-hint" role="status"></p>
+        <p id="hmHelp" class="hm-small">Arrastrá para mover · rueda o pellizco para zoom. Teclado: flechas para mover, +/− para zoom y 0 para reajustar. Para ubicar tu pin con teclado, mové el mapa y presioná Enter sobre el visor.</p>
+        <section id="hmInfo" class="hm-info" hidden aria-labelledby="hmInfoTitle" tabindex="-1"><button id="hmInfoClose" class="hm-button" aria-label="Cerrar información">×</button><p id="hmInfoType" class="hm-kicker"></p><h3 id="hmInfoTitle"></h3><p id="hmInfoText"></p><p id="hmInfoNotes" class="hm-small"></p></section>
+      </div>
+      <nav class="hm-map-nav" aria-label="Cambiar mapa"><h3>MAPAS</h3><div id="hmMapList"></div></nav>
+    </div>
   </section>
 </main><footer class="public-footer" aria-label="Información de SanLean"><a href="contacto.html">CONTACTO</a><a href="creditos.html">CRÉDITOS Y LICENCIAS</a><a href="aviso-legal.html">AVISO LEGAL</a></footer>
 
