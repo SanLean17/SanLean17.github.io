@@ -319,3 +319,14 @@ body.halloween-page.page-bg{
 @media(prefers-reduced-motion:reduce){
  #halloweenMaps .hm-card{transition:none!important}
 }
+
+/* Modos del visor: son ajustes visuales de los esquemas, no cartografía adicional. */
+#halloweenMaps .hm-viewport.hm-paper #hmImage{
+ filter:sepia(.25) saturate(.66) brightness(1.18) contrast(.98)
+}
+#halloweenMaps .hm-viewport:fullscreen{
+ width:100vw;height:100dvh;max-height:none;
+ border:0;border-radius:0;background:#090d14
+}
+#halloweenMaps .hm-viewport:fullscreen .hm-scene{border:0}
+#halloweenMaps .hm-viewport:fullscreen #hmImage{image-rendering:auto}
