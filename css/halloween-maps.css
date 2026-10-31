@@ -336,3 +336,115 @@
 @media(max-width:760px){
  #halloweenMaps .hm-tooltip{display:none}
 }
+
+/* HALLOWEEN 2026: mapas propios, referencias verificables y componentes de la WEB. */
+#halloweenMaps .hm-map-nav h3,
+#halloweenMaps .hm-verified h3{
+ font-size:15px;font-weight:800;line-height:1.4;
+ letter-spacing:.045em;color:#fff;
+}
+#halloweenMaps .hm-map-nav .hm-map-list button{
+ font-size:13px;line-height:1.45;min-height:44px;
+}
+#halloweenMaps .hm-map-summary{font-size:12px;line-height:1.6;}
+#halloweenMaps .hm-filter-group{
+ font:800 11px/1.4 var(--body);
+ color:#ff315f;letter-spacing:.08em;
+ margin:15px 0 5px;padding:0 4px;
+}
+#halloweenMaps .hm-filter-group:first-child{margin-top:0;}
+#halloweenMaps .hm-filter{
+ position:relative;min-height:45px;padding:7px 8px;
+ border:1px solid #33343c;background:#131316;border-radius:10px;
+ font:700 11px/1.4 var(--body);
+}
+#halloweenMaps .hm-filter-name{flex:1;min-width:0;text-align:left;}
+#halloweenMaps .hm-filter-count{
+ flex:none;font:800 11px/1.3 var(--body);
+ color:#c8c8d0;margin-left:auto;
+}
+#halloweenMaps .hm-filter[aria-pressed="true"]{
+ background:rgba(255,0,60,.085);border-color:rgba(255,0,60,.54);
+}
+#halloweenMaps .hm-filter[aria-pressed="false"]{
+ background:#111114;border-color:#303037;opacity:.72;
+}
+#halloweenMaps .hm-filter:disabled{opacity:.32;}
+#halloweenMaps .hm-filter[data-group="item"]{border-left-width:3px;}
+#halloweenMaps .hm-icon{
+ width:27px;min-width:27px;height:29px;flex:none;
+}
+#halloweenMaps .hm-game-icon{
+ display:block;width:27px;height:27px;
+ object-fit:contain;max-width:100%;max-height:100%;
+}
+#halloweenMaps .hm-marker{
+ width:40px;height:40px;padding:5px;
+ border:2px solid var(--marker-color,#ff003c);
+ background:#0d0f15e8;
+ box-shadow:0 0 0 2px #08090fb8,0 3px 9px #0009;
+ border-radius:999px;
+}
+#halloweenMaps .hm-marker .hm-game-icon{
+ width:27px;height:27px;flex:none;
+ pointer-events:none;
+}
+#halloweenMaps .hm-marker:hover,
+#halloweenMaps .hm-marker:focus-visible{
+ background:#141420;
+ border-color:var(--marker-color,#ff003c);
+ box-shadow:0 0 0 3px #17151b,0 0 16px var(--marker-color,#ff003c);
+ z-index:9;
+}
+#halloweenMaps .hm-marker[title] {cursor:pointer;}
+#halloweenMaps .hm-label{
+ z-index:1;
+ transform:translate(-50%,-50%) rotate(var(--label-rotation,0deg)) scale(var(--marker-scale,1));
+ transform-origin:center;pointer-events:none;
+ font-family:var(--body);font-weight:800;
+ box-shadow:0 3px 11px #000b;
+}
+#halloweenMaps .hm-label.hm-street{
+ padding:4px 8px;border-radius:5px;
+ background:rgba(7,10,17,.87);color:#fff;
+ border:1px solid #ffffff40;
+ font-size:12px;line-height:1.25;
+ letter-spacing:.02em;text-shadow:0 1px 2px #000;
+}
+#halloweenMaps .hm-label.hm-address{
+ padding:2px 5px;border-radius:5px;
+ border:1px solid #e0bd6d73;
+ background:rgba(15,14,12,.9);color:#f3e3c1;
+ font-size:11px;line-height:1.2;
+}
+#halloweenMaps .hm-grid{
+ background-image:
+ linear-gradient(to right,rgba(255,255,255,.31) 1px,transparent 1px),
+ linear-gradient(to bottom,rgba(255,255,255,.31) 1px,transparent 1px);
+ background-size:10% 10%;
+ border:1px solid #ffffff57;
+}
+#halloweenMaps .hm-grid span{
+ color:#fff;background:rgba(0,0,0,.8);border-radius:3px;
+ padding:2px 4px;text-shadow:0 1px 2px #000;
+ font-size:14px;font-weight:800;
+}
+#halloweenMaps .hm-viewport:not(.is-placing){
+ cursor:grab;
+}
+#halloweenMaps .hm-viewport:fullscreen{
+ cursor:grab;
+ background:#08090d;
+}
+#halloweenMaps .hm-viewport:fullscreen .hm-tooltip{
+ max-width:300px;
+}
+@media(max-width:900px){
+ #halloweenMaps .hm-map-nav h3,#halloweenMaps .hm-verified h3{font-size:15px;}
+ #halloweenMaps .hm-filter{font-size:12px;}
+}
+@media(max-width:760px){
+ #halloweenMaps .hm-filter-group{font-size:11px;}
+ #halloweenMaps .hm-marker{width:44px;height:44px;}
+ #halloweenMaps .hm-label.hm-street{font-size:11px;}
+}
