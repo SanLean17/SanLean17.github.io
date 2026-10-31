@@ -116,6 +116,17 @@ def main():
     request = Request(URL, headers={"User-Agent": "SanLeanCodes/1.0 (+https://sanlean.com.ar/codigos/)", "Accept": "text/html"})
     with urlopen(request, timeout=25) as response:
         html = response.read(4_000_000).decode("utf-8", errors="replace")
+    if os.environ.get("NIGHTLIGHT_DEBUG") == "1":
+        soup = BeautifulSoup(html, "html.parser")
+        scripts = soup.find_all("script")
+        print("NIGHTLIGHT DEBUG: HTML length", len(html), "scripts", len(scripts))
+        for i, tag in enumerate(scripts):
+            value = tag.string or tag.get_text() or ""
+            if any(key in value for key in ("FINDERSCREEPERS", "BDGPRIDE", "__NEXT_DATA__", "__next_f", "WARRIORPUPPERS")):
+                for key in ("FINDERSCREEPERS", "BDGPRIDE", "WARRIORPUPPERS", "__NEXT_DATA__", "__next_f"):
+                    pos = value.find(key)
+                    if pos >= 0:
+                        print("SCRIPT", i, "id", tag.get("id"), "type", tag.get("type"), "length", len(value), "key", key, "excerpt", repr(value[max(0, pos-90):pos+140]))
     catalog = parse(html)
     if OUTPUT.exists():
         try:
