@@ -24,6 +24,8 @@ jobs:
           python-version: '3.12'
       - run: python -m pip install 'beautifulsoup4>=4.12,<5'
       - run: python scripts/sync_nightlight_codes.py
+        env:
+          NIGHTLIGHT_DEBUG: '1'
       - name: Publicar catálogo si cambió
         run: |
           git config user.name "github-actions[bot]"
