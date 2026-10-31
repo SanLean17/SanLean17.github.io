@@ -10,10 +10,26 @@ async function initialize(){
  let points=new Map(),gesture=null,moved=false,ignoreClickUntil=0,tapMarker=null;
  let pins={};const storageKey='sanlean.halloween.positions.v1';
  try{const value=JSON.parse(sessionStorage.getItem(storageKey));if(value&&typeof value==='object'&&!Array.isArray(value))for(const [id,p] of Object.entries(value))if(/^[a-z0-9-]+$/.test(id)&&validPoint(p))pins[id]={x:p.x,y:p.y};}catch{/* Storage is optional, never blocks the viewer. */}
- const hiddenTypes=new Set();
+ const hiddenTypes=new Set(Object.entries(categories).filter(([,c])=>!c.defaultVisible).map(([t])=>t));
  const create=(tag,classes,text)=>{const node=document.createElement(tag);if(classes)node.className=classes;if(text!==undefined)node.textContent=text;return node;};
- const detailedMapPath=map=>`/assets/halloween/maps/${map.id}-map.webp`;
- function icon(type){const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 24 24');svg.setAttribute('fill','none');svg.setAttribute('stroke','currentColor');svg.setAttribute('stroke-width','1.7');svg.setAttribute('stroke-linejoin','round');svg.setAttribute('aria-hidden','true');const p=document.createElementNS(svg.namespaceURI,'path');p.setAttribute('d',categories[type].icon);svg.append(p);return svg;}
+ const detailedMapPath=map=>map.image;
+ const backupMapPath=map=>map.fallbackImage||`/assets/halloween/maps/${map.id}.svg`;
+ function vectorIcon(type){
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('viewBox','0 0 24 24');svg.setAttribute('fill','none');
+  svg.setAttribute('stroke','currentColor');svg.setAttribute('stroke-width','1.7');
+  svg.setAttribute('stroke-linejoin','round');svg.setAttribute('aria-hidden','true');
+  const p=document.createElementNS(svg.namespaceURI,'path');
+  p.setAttribute('d',categories[type].icon);svg.append(p);return svg;
+ }
+ function icon(type){
+  const category=categories[type];
+  if(!category.image)return vectorIcon(type);
+  const img=create('img','hm-game-icon');
+  img.src=category.image;img.alt='';img.width=27;img.height=27;img.decoding='async';
+  img.addEventListener('error',()=>img.replaceWith(vectorIcon(type)),{once:true});
+  return img;
+ }
  function announce(text){el('PinHint').textContent=text;}
  function persist(){try{sessionStorage.setItem(storageKey,JSON.stringify(pins));}catch{announce('Tu posición se conserva mientras esta página esté abierta.');}}
  function paint(){
@@ -72,20 +88,47 @@ async function initialize(){
  }
  function renderFilters(){
   el('Filters').replaceChildren();
+  let lastGroup='';
   for(const [type,category] of Object.entries(categories)){
    const count=current.markers.filter(m=>m.type===type).length;
-   // No absent categories on real maps; placeholders preview the supported legend honestly.
-   if(!count&&!current.placeholder)continue;
-   const button=create('button','hm-filter');button.type='button';button.setAttribute('aria-pressed',String(!hiddenTypes.has(type)));button.disabled=!count;button.setAttribute('aria-label',category.name+': '+count+' puntos');
-   const symbol=create('span','hm-icon');symbol.style.setProperty('--marker-color',category.color);symbol.append(icon(type));button.append(symbol,create('span','',category.name),create('span','',String(count)));
-   button.addEventListener('click',()=>{if(hiddenTypes.has(type))hiddenTypes.delete(type);else hiddenTypes.add(type);button.setAttribute('aria-pressed',String(!hiddenTypes.has(type)));closeInfo();renderMarkers();});el('Filters').append(button);
+   if(!count&&category.group!=='item')continue;
+   if(category.group!==lastGroup){
+    lastGroup=category.group;
+    const heading=create('p','hm-filter-group',category.group==='item'?'OBJETOS · OPCIONALES':'SALIDAS Y UBICACIONES');
+    el('Filters').append(heading);
+   }
+   const button=create('button','hm-filter');
+   button.type='button';button.dataset.category=type;
+   button.dataset.group=category.group;
+   button.setAttribute('aria-pressed',String(!hiddenTypes.has(type)));
+   button.disabled=!count;
+   button.title=count?category.name+' · '+count+' ubicaciones posibles':'Todavía no hay ubicaciones identificadas';
+   button.setAttribute('aria-label',category.name+': '+count+' ubicaciones posibles'+(!count?', sin datos disponibles':''));
+   const symbol=create('span','hm-icon');
+   symbol.style.setProperty('--marker-color',category.color);symbol.append(icon(type));
+   button.append(symbol,create('span','hm-filter-name',category.name),create('span','hm-filter-count',String(count)));
+   button.addEventListener('click',()=>{
+    if(hiddenTypes.has(type))hiddenTypes.delete(type);else hiddenTypes.add(type);
+    button.setAttribute('aria-pressed',String(!hiddenTypes.has(type)));
+    closeInfo();renderMarkers();
+   });
+   el('Filters').append(button);
   }
   el('Labels').disabled=!current.labels.length;
  }
- function renderLabels(){el('LabelLayer').replaceChildren();for(const label of current.labels){const node=create('span','hm-label',label.text);position(node,label);el('LabelLayer').append(node);}el('LabelLayer').hidden=!el('Labels').checked;}
+ function renderLabels(){
+  el('LabelLayer').replaceChildren();
+  for(const label of current.labels){
+   const kind=label.kind==='address'?'hm-address':'hm-street';
+   const node=create('span','hm-label '+kind,label.text);
+   node.style.setProperty('--label-rotation',(Number(label.rotation)||0)+'deg');
+   position(node,label);el('LabelLayer').append(node);
+  }
+  el('LabelLayer').hidden=!el('Labels').checked;
+ }
  function stopGesture(){for(const id of points.keys()){if(viewport.hasPointerCapture(id))viewport.releasePointerCapture(id);}points.clear();gesture=null;viewport.classList.remove('is-dragging');}
  function loadMap(map){
-  hideTooltip();stopGesture();current=map;ready=false;const request=++loadId;setPlacing(false);closeInfo();hiddenTypes.clear();gallery.hidden=true;el('GalleryHeading').hidden=true;viewer.hidden=false;scene.hidden=true;
+  hideTooltip();stopGesture();current=map;ready=false;const request=++loadId;setPlacing(false);closeInfo();hiddenTypes.clear();for(const [type,c] of Object.entries(categories))if(!c.defaultVisible)hiddenTypes.add(type);gallery.hidden=true;el('GalleryHeading').hidden=true;viewer.hidden=false;scene.hidden=true;
   el('MapTitle').textContent=map.name;el('MapTitle').focus({preventScroll:true});el('MapTitle').scrollIntoView({block:'start',behavior:'instant'});
   el('Notice').textContent=map.placeholder
     ? 'ESQUEMA ILUSTRATIVO · Las calles y los puntos mostrados todavía no corresponden a un plano contrastado con el juego. Podés usar el visor, el zoom, la cuadrícula y tu posición personal.'
@@ -104,19 +147,21 @@ async function initialize(){
    if(request!==loadId)return;
    const w=image.naturalWidth||map.width,h=image.naturalHeight||map.height;
    // Las coordenadas normalizadas mantienen su referencia al cambiar de resolución.
-   current={...map,width:w,height:h,placeholder:usingIllustration||map.placeholder&&image.src.endsWith('.svg')};
+   current={...map,width:w,height:h,placeholder:usingIllustration,
+    markers:usingIllustration?[]:map.markers,
+    labels:usingIllustration?[]:map.labels};
    scene.style.width=w+'px';scene.style.height=h+'px';
    el('Image').replaceWith(image);ready=true;scene.hidden=false;
    el('ImageState').hidden=true;viewport.setAttribute('aria-busy','false');
    el('Notice').textContent=usingIllustration
-    ? 'ESQUEMA ILUSTRATIVO · Esta imagen es provisional. Las posiciones reales y los nombres de calles se incorporarán con un mapa contrastado con el juego.'
-    : 'MAPA DE REFERENCIA · Podés ampliar y desplazarte libremente. Las salidas y los objetos pueden variar entre partidas.';
+    ? 'ESQUEMA ILUSTRATIVO · El mapa no está disponible; no se muestran ubicaciones sobre la imagen alternativa.'
+    : 'UBICACIONES POSIBLES · Podés ampliar, mover y consultar los marcadores. Las salidas y los objetos pueden cambiar entre partidas.';
    renderFilters();renderLabels();renderMarkers();renderPin();
    for(const id of ['Reset','Place'])el(id).disabled=false;reset();
   };
   image.onerror=()=>{
    if(request!==loadId)return;
-   if(!usingIllustration){usingIllustration=true;image.src=map.image;return;}
+   if(!usingIllustration){usingIllustration=true;image.src=backupMapPath(map);return;}
    el('ImageState').textContent='NO SE PUDO CARGAR EL MAPA · Podés elegir otro mapa.';
    viewport.setAttribute('aria-busy','false');
   };
@@ -167,6 +212,10 @@ async function initialize(){
   if(moved)ignoreClickUntil=performance.now()+350;
   if(tap&&placing)place(local(event));
   else if(tap&&tapMarker){ignoreClickUntil=0;tapMarker.click();ignoreClickUntil=performance.now()+350;}
+  else if(tap&&!placing&&!tapMarker&&viewport.requestFullscreen&&!document.fullscreenElement){
+   // Solo un toque/clic quieto sobre el mapa; no ampliar al arrastrar o pulsar un marcador.
+   viewport.requestFullscreen().catch(()=>{});
+  }
   if(!points.size)tapMarker=null;
  }
  for(const event of ['pointerup','pointercancel','lostpointercapture'])viewport.addEventListener(event,endPointer);
