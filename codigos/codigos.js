@@ -18,8 +18,8 @@ function element(tag,text,className){const n=document.createElement(tag);if(text
 function card(c){
  const article=element('article',undefined,'tier-board code-card');article.dataset.status=c.status;
  const images=c.images||[];
- const hasImage=images.length>0; if(!hasImage)article.classList.add('code-card-text');
- const media=hasImage?createGallery({images:c.status==='active'?images:images.slice(0,1),code:c.code,swipe:c.status==='active',onFailure:()=>logImageFailure(c.code),...(c.status==='active'?{onOpen:(index,button)=>{lightbox.open(images,index,button,c.code);window.sanleanTrack?.('code_image_open',{code:c.code,image_index:index+1,image_count:images.length});}}:{})}).root:null;
+ const hasImage=images.length>0; let failedImages=0; if(!hasImage)article.classList.add('code-card-text');
+ const media=hasImage?createGallery({images:c.status==='active'?images:images.slice(0,1),code:c.code,swipe:c.status==='active',onFailure:()=>{logImageFailure(c.code);failedImages++;if(failedImages>=(c.status==='active'?images.length:1)){article.classList.add('code-card-text');media?.remove();}},...(c.status==='active'?{onOpen:(index,button)=>{lightbox.open(images,index,button,c.code);window.sanleanTrack?.('code_image_open',{code:c.code,image_index:index+1,image_count:images.length});}}:{})}).root:null;
  const content=element('div',undefined,'code-content'),heading=element('div',undefined,'code-heading');
  if(hasImage)heading.append(element('h3',c.code),element('span',c.status==='active'?'ACTIVO':'FINALIZADO','code-state'));
  else {const top=element('div',undefined,'code-topline');top.append(element('span',c.status==='active'?'ACTIVO':'FINALIZADO','code-state'),element('span','CÓDIGO DE RECOMPENSA','code-kind'));heading.append(top,element('h3',c.code));}
