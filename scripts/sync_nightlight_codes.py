@@ -120,6 +120,20 @@ def main():
         soup = BeautifulSoup(html, "html.parser")
         scripts = soup.find_all("script")
         print("NIGHTLIGHT DEBUG: HTML length", len(html), "scripts", len(scripts))
+        script_value = scripts[5].string or scripts[5].get_text() or "" if len(scripts) > 5 else ""
+        found = re.search(r'window\\.__reactRouterContext\\.streamController\\.enqueue\\(("(?:\\\\.|[^"\\\\])*")\\)', script_value)
+        if found:
+            try:
+                flattened = json.loads(json.loads(found.group(1)))
+                print("FLATTENED FIRST", repr(flattened[:15]))
+                codes_index = flattened.index("codes") + 1
+                print("CODES ARRAY", repr(flattened[codes_index][:12]))
+                first_index = flattened[codes_index][0]
+                print("FIRST CODE RECORD", repr(flattened[first_index]))
+                for k, v in flattened[first_index].items():
+                    print("FIRST FIELD", repr(flattened[int(k[1:])]), repr(flattened[v] if isinstance(v,int) and v >= 0 else v))
+            except Exception as error:
+                print("FLATTENED ERROR", str(error))
         print("SCRIPT FIRST 400", repr((scripts[5].string or scripts[5].get_text() or "")[:400]) if len(scripts)>5 else "none")
         for i, tag in enumerate(scripts):
             value = tag.string or tag.get_text() or ""
