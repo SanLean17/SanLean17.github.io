@@ -15,11 +15,10 @@
 <link rel="stylesheet" href="/css/public-mobile.css?v=20261025-mobile-menu">
 <link rel="stylesheet" href="/css/public-refinements.css?v=20261015-1">
 <link rel="stylesheet" href="/css/public-info.css?v=20261013-8">
-<link rel="stylesheet" href="/css/halloween-maps.css?v=20261031-1">
-<link rel="stylesheet" href="/css/halloween-background.css?v=20261031-1">
+<link rel="stylesheet" href="/css/halloween-maps.css?v=20261031-2">
 <script defer src="/js/public-mobile.js?v=20261025-mobile-menu"></script>
 <script defer src="/js/main.js?v=20261028-catalog1"></script>
-<script type="module" src="/js/halloween-maps.js?v=20261031-1"></script>
+<script type="module" src="/js/halloween-maps.js?v=20261031-2"></script>
 <script defer src="/js/public-analytics.js?v=20261026-1"></script>
 </head>
 <body class="public-site desktop-footer-space page-bg halloween-page">
@@ -36,7 +35,7 @@
 <main id="halloweenMaps" class="container halloween-maps-main">
 <section class="placeholder hm-heading halloween-intro">
 <h1>HALLOWEEN</h1>
-<p>Recorré los mapas y preparate tu próxima partida. Explorá posibles escapes y puntos de interés o marcá la posición para orientarte.</p>
+<p>Recorré los mapas y preparate tu próxima partida. Acercate, recorré cada escenario y marcá tu posición para orientarte.</p>
 </section>
 <div id="hmGalleryHeading" class="hm-gallery-heading"><h2>MAPAS</h2><p>CINCO ESCENARIOS DE HALLOWEEN: THE GAME</p></div>
 <section id="hmGallery" class="hm-gallery" aria-label="Seleccioná un mapa">
@@ -62,7 +61,7 @@
 </div>
 </details>
 <div class="hm-center">
-<div id="hmViewport" class="hm-viewport" role="region" tabindex="0" aria-label="Mapa interactivo: arrastrá para mover, usá la rueda o los botones para ampliar. Con teclado, flechas para mover, más y menos para zoom y 0 para centrar.">
+<div id="hmViewport" class="hm-viewport" role="region" tabindex="0" aria-label="Mapa interactivo: arrastrá para mover, usá la rueda del mouse o juntá/separá dos dedos para ampliar o reducir. Con teclado, flechas para mover, más y menos para zoom y 0 para centrar.">
 <div id="hmScene" class="hm-scene" hidden>
 <img id="hmImage" alt="" draggable="false">
 <div id="hmGrid" class="hm-grid" hidden aria-hidden="true"></div>
@@ -73,9 +72,6 @@
 <p id="hmImageState" class="hm-image-state" role="status">CARGANDO MAPA...</p>
 </div>
 <div class="hm-controls" role="group" aria-label="Controles del mapa">
-<button class="hm-button" id="hmZoomOut" type="button" aria-label="Alejar mapa">−</button>
-<span id="hmZoom" class="hm-zoom-value" aria-live="polite">100%</span>
-<button class="hm-button" id="hmZoomIn" type="button" aria-label="Ampliar mapa">+</button>
 <button class="hm-button" id="hmReset" type="button">CENTRAR MAPA</button>
 <button class="hm-button" id="hmStyle" type="button" aria-pressed="false">VISTA CLARA</button>
 <button class="hm-button" id="hmFullscreen" type="button">PANTALLA COMPLETA</button>
@@ -96,11 +92,10 @@
 <h3>REFERENCIAS DEL ESCENARIO</h3>
 <p id="hmMapSummary" class="hm-map-summary"></p>
 <ul id="hmVerified" class="hm-verified-list"></ul>
-<a id="hmOfficial" class="hm-official-link" target="_blank" rel="noopener noreferrer" hidden>VER INFORMACIÓN OFICIAL ↗</a>
 </div>
 </aside>
 </div>
-<p class="hm-view-help">ZOOM: RUEDA, + / − O GESTO DE DOS DEDOS · MOVER: ARRASTRAR · 0: CENTRAR. EL PIN ES PERSONAL Y NO SE COMPARTE.</p>
+<p class="hm-view-help">ZOOM: RUEDA O GESTO DE DOS DEDOS · MOVER: ARRASTRAR · 0: CENTRAR. EL PIN ES PERSONAL Y NO SE COMPARTE.</p>
 </section>
 <p class="hm-site-disclaimer">Las ilustraciones de esta sección son esquemas artísticos propios de SanLean, no reproducciones de los planos reales del juego. Las ubicaciones verificadas se incorporarán únicamente cuando exista cartografía utilizable y evidencia suficiente. Halloween: The Game pertenece a sus respectivos titulares.</p>
 </main>
