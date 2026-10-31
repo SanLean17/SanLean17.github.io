@@ -12,6 +12,7 @@ async function initialize(){
  try{const value=JSON.parse(sessionStorage.getItem(storageKey));if(value&&typeof value==='object'&&!Array.isArray(value))for(const [id,p] of Object.entries(value))if(/^[a-z0-9-]+$/.test(id)&&validPoint(p))pins[id]={x:p.x,y:p.y};}catch{/* Storage is optional, never blocks the viewer. */}
  const hiddenTypes=new Set();
  const create=(tag,classes,text)=>{const node=document.createElement(tag);if(classes)node.className=classes;if(text!==undefined)node.textContent=text;return node;};
+ const detailedMapPath=map=>`/assets/halloween/maps/${map.id}-map.webp`;
  function icon(type){const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 24 24');svg.setAttribute('fill','none');svg.setAttribute('stroke','currentColor');svg.setAttribute('stroke-width','1.7');svg.setAttribute('stroke-linejoin','round');svg.setAttribute('aria-hidden','true');const p=document.createElementNS(svg.namespaceURI,'path');p.setAttribute('d',categories[type].icon);svg.append(p);return svg;}
  function announce(text){el('PinHint').textContent=text;}
  function persist(){try{sessionStorage.setItem(storageKey,JSON.stringify(pins));}catch{announce('Tu posición se conserva mientras esta página esté abierta.');}}
@@ -97,9 +98,29 @@ async function initialize(){
   for(const id of ['Reset','Place'])el(id).disabled=true;
   renderFilters();renderLabels();renderMarkers();renderPin();
   scene.style.width=map.width+'px';scene.style.height=map.height+'px';
-  const image=new Image();image.alt=map.placeholder?map.name+' · imagen del mapa pendiente':map.name;image.draggable=false;image.id='hmImage';
-  image.onload=()=>{if(request!==loadId)return;el('Image').replaceWith(image);ready=true;scene.hidden=false;el('ImageState').hidden=true;viewport.setAttribute('aria-busy','false');for(const id of ['Reset','Place'])el(id).disabled=false;reset();};
-  image.onerror=()=>{if(request!==loadId)return;el('ImageState').textContent='NO SE PUDO CARGAR EL MAPA · Podés elegir otro mapa.';viewport.setAttribute('aria-busy','false');};image.src=map.image;
+  const image=new Image();image.alt=map.name;image.draggable=false;image.id='hmImage';
+  let usingIllustration=false;
+  image.onload=()=>{
+   if(request!==loadId)return;
+   const w=image.naturalWidth||map.width,h=image.naturalHeight||map.height;
+   // Las coordenadas normalizadas mantienen su referencia al cambiar de resolución.
+   current={...map,width:w,height:h,placeholder:usingIllustration||map.placeholder&&image.src.endsWith('.svg')};
+   scene.style.width=w+'px';scene.style.height=h+'px';
+   el('Image').replaceWith(image);ready=true;scene.hidden=false;
+   el('ImageState').hidden=true;viewport.setAttribute('aria-busy','false');
+   el('Notice').textContent=usingIllustration
+    ? 'ESQUEMA ILUSTRATIVO · Esta imagen es provisional. Las posiciones reales y los nombres de calles se incorporarán con un mapa contrastado con el juego.'
+    : 'MAPA DE REFERENCIA · Podés ampliar y desplazarte libremente. Las salidas y los objetos pueden variar entre partidas.';
+   renderFilters();renderLabels();renderMarkers();renderPin();
+   for(const id of ['Reset','Place'])el(id).disabled=false;reset();
+  };
+  image.onerror=()=>{
+   if(request!==loadId)return;
+   if(!usingIllustration){usingIllustration=true;image.src=map.image;return;}
+   el('ImageState').textContent='NO SE PUDO CARGAR EL MAPA · Podés elegir otro mapa.';
+   viewport.setAttribute('aria-busy','false');
+  };
+  image.src=detailedMapPath(map);
  }
  for(let i=0;i<10;i++){const a=create('span','',String.fromCharCode(65+i)),n=create('span','',String(i+1));a.style.left=(i*10+5)+'%';a.style.top='0';n.style.top=(i*10+5)+'%';n.style.left='0';el('Grid').append(a,n);}
  const compact=matchMedia('(max-width:900px)');el('Legend').open=!compact.matches;compact.addEventListener('change',()=>{el('Legend').open=!compact.matches;});
@@ -162,8 +183,16 @@ async function initialize(){
  try{
   const response=await fetch('/data/halloween-maps.json');if(!response.ok)throw Error('No disponible');maps=validateCatalog(await response.json()).maps;
   for(const map of maps){
-   const card=create('button','hm-card');card.type='button';card.dataset.map=map.id;const image=create('img');image.src=map.image;image.alt='';image.loading='lazy';image.width=map.width;image.height=map.height;image.addEventListener('error',()=>{image.hidden=true;});
-   const copy=create('span','hm-card-copy');copy.append(create('strong','',map.name),create('small','',map.placeholder?'PORTADA ILUSTRATIVA · VISOR COMUNITARIO':'VISOR COMUNITARIO · CONSULTÁ TU PARTIDA'),create('span','hm-open','EXPLORAR MAPA →'));card.append(image,copy);card.addEventListener('click',()=>loadMap(map));gallery.append(card);
+   const card=create('button','hm-card');card.type='button';card.dataset.map=map.id;
+   const image=create('img');image.alt='';image.loading='lazy';
+   image.width=map.width;image.height=map.height;
+   let fallbackPreview=false;
+   image.addEventListener('error',()=>{
+    if(!fallbackPreview){fallbackPreview=true;image.src=map.image;}
+    else image.hidden=true;
+   });
+   image.src=detailedMapPath(map);
+   const copy=create('span','hm-card-copy');copy.append(create('strong','',map.name),create('small','',map.placeholder?'MAPA INTERACTIVO · ZOOM Y POSICIÓN':'MAPA INTERACTIVO · ZOOM Y POSICIÓN'),create('span','hm-open','EXPLORAR MAPA →'));card.append(image,copy);card.addEventListener('click',()=>loadMap(map));gallery.append(card);
    const button=create('button','',map.name);button.type='button';button.dataset.map=map.id;
    // A horizontal touch scroller can suppress the compatibility click after a pinch.
    // Handle a deliberate stationary tap, but never a swipe, cancel or second finger.
