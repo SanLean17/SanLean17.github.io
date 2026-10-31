@@ -29,11 +29,11 @@ def extracted_strings(html):
     for element in soup(["script", "style", "noscript", "svg", "header", "footer"]):
         element.decompose()
     root = soup.find("main") or soup
-    return [re.sub(r"\\s+", " ", value).strip() for value in root.stripped_strings]
+    return [re.sub(r"\s+", " ", value).strip() for value in root.stripped_strings]
 
 
 def expiry_date(text, now):
-    match = re.search(r"Expires?:\\s*(\\d{1,2})\\s+([A-Za-z]+)(?:\\s+(\\d{2,4}))?", text, re.I)
+    match = re.search(r"Expires?:\s*(\d{1,2})\s+([A-Za-z]+)(?:\s+(\d{2,4}))?", text, re.I)
     if not match:
         return None
     months = {name.lower(): i for i, name in enumerate(
@@ -76,9 +76,9 @@ def parse(html):
                 continue
             context = " ".join(segment[i + 1:i + 5])
             if category == "expired":
-                valid = bool(re.search(r"\\bExpired\\b", context, re.I))
+                valid = bool(re.search(r"\bExpired\b", context, re.I))
             else:
-                valid = bool(re.search(r"\\bExpires?\\s*:", context, re.I))
+                valid = bool(re.search(r"\bExpires?\s*:", context, re.I))
             if not valid:
                 continue
             reward = segment[i - 1] if i else ""
@@ -120,7 +120,7 @@ def main():
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=OUTPUT.parent, delete=False) as out:
         json.dump(catalog, out, ensure_ascii=False, indent=2)
-        out.write("\\n")
+        out.write("\n")
         tmp = out.name
     os.replace(tmp, OUTPUT)
     print(f"NightLight: {len(catalog['codes'])} códigos sincronizados")
