@@ -18,9 +18,6 @@ async function initialize(){
  function paint(){
   scene.style.transform=`translate(${camera.x}px,${camera.y}px) scale(${camera.scale})`;
   scene.style.setProperty('--marker-scale',1/camera.scale);
-  el('Zoom').textContent=Math.round(camera.scale/baseScale*100)+'%';
-  el('ZoomOut').disabled=!ready||camera.scale<=baseScale+.00001;
-  el('ZoomIn').disabled=!ready||camera.scale>=baseScale*8-.00001;
  }
  function constrain(){
   const w=current.width*camera.scale,h=current.height*camera.scale,vw=viewport.clientWidth,vh=viewport.clientHeight;
@@ -72,11 +69,10 @@ async function initialize(){
   el('Notice').textContent=map.placeholder?'ESQUEMA ARTÍSTICO · La ilustración no representa las calles ni las posiciones reales del juego. Podés explorar los controles de zoom y tu marcador personal; los puntos de escape todavía no tienen coordenadas verificadas.':'Las marcas indican ubicaciones posibles; verificá siempre las condiciones de tu partida.';
   el('MapSummary').textContent=map.summary||'Referencias oficiales del escenario.';
   el('Verified').replaceChildren(...(map.highlights||[]).map(name=>create('li','',name)));
-  const source=el('Official');
-  if(typeof map.officialSourceUrl==='string'&&/^https:\/\/halloweengame\.com\/news\/[a-z0-9-]+\/$/.test(map.officialSourceUrl)){source.href=map.officialSourceUrl;source.hidden=false;}else{source.removeAttribute('href');source.hidden=true;}
+
   for(const button of el('MapList').children)button.setAttribute('aria-current',String(button.dataset.map===map.id));
   el('ImageState').textContent='CARGANDO MAPA...';el('ImageState').hidden=false;viewport.setAttribute('aria-busy','true');
-  for(const id of ['ZoomIn','ZoomOut','Reset','Place'])el(id).disabled=true;
+  for(const id of ['Reset','Place'])el(id).disabled=true;
   renderFilters();renderLabels();renderMarkers();renderPin();
   scene.style.width=map.width+'px';scene.style.height=map.height+'px';
   const image=new Image();image.alt=map.placeholder?map.name+' · imagen del mapa pendiente':map.name;image.draggable=false;image.id='hmImage';
@@ -86,7 +82,7 @@ async function initialize(){
  for(let i=0;i<10;i++){const a=create('span','',String.fromCharCode(65+i)),n=create('span','',String(i+1));a.style.left=(i*10+5)+'%';a.style.top='0';n.style.top=(i*10+5)+'%';n.style.left='0';el('Grid').append(a,n);}
  const compact=matchMedia('(max-width:900px)');el('Legend').open=!compact.matches;compact.addEventListener('change',()=>{el('Legend').open=!compact.matches;});
  el('Labels').addEventListener('change',()=>{el('LabelLayer').hidden=!el('Labels').checked;});el('GridToggle').addEventListener('change',()=>{el('Grid').hidden=!el('GridToggle').checked;});
- el('ZoomIn').addEventListener('click',()=>zoom(1.25));el('ZoomOut').addEventListener('click',()=>zoom(.8));el('Reset').addEventListener('click',reset);
+ el('Reset').addEventListener('click',reset);
  el('Style').addEventListener('click',()=>{
   const next=!viewport.classList.contains('hm-paper');
   viewport.classList.toggle('hm-paper',next);
