@@ -15,10 +15,10 @@
 <link rel="stylesheet" href="/css/public-mobile.css?v=20261025-mobile-menu">
 <link rel="stylesheet" href="/css/public-refinements.css?v=20261015-1">
 <link rel="stylesheet" href="/css/public-info.css?v=20261013-8">
-<link rel="stylesheet" href="/css/halloween-maps.css?v=20261031-2">
+<link rel="stylesheet" href="/css/halloween-maps.css?v=20261031-3">
 <script defer src="/js/public-mobile.js?v=20261025-mobile-menu"></script>
 <script defer src="/js/main.js?v=20261028-catalog1"></script>
-<script type="module" src="/js/halloween-maps.js?v=20261031-2"></script>
+<script type="module" src="/js/halloween-maps.js?v=20261031-3"></script>
 <script defer src="/js/public-analytics.js?v=20261026-1"></script>
 </head>
 <body class="public-site desktop-footer-space page-bg halloween-page">
@@ -47,7 +47,27 @@
 <h2 id="hmMapTitle" tabindex="-1">MAPA</h2>
 </div>
 <p id="hmNotice" class="hm-notice" role="status"></p>
-<div class="hm-workspace">
+<div class="hm-display-modes" role="group" aria-label="Elegir tipo de mapa">
+<button id="hmCommunityTab" class="hm-mode-button is-current" type="button" aria-pressed="true">MAPA DE LA COMUNIDAD</button>
+<button id="hmOwnTab" class="hm-mode-button" type="button" aria-pressed="false">ESQUEMA SANLEAN</button>
+</div>
+<section id="hmCommunity" class="hm-community" aria-label="Visor de mapas comunitarios">
+<p class="hm-community-hint">Estos son mapas recreados por la comunidad a partir del juego, no mapas oficiales. <strong>Elegí el escenario dentro del visor</strong> para consultar sus calles, edificios y marcadores. Las ubicaciones de objetos y escapes pueden variar en cada partida.</p>
+<div id="hmCommunityFrameBox" class="hm-community-framebox">
+<iframe id="hmCommunityFrame" class="hm-community-frame"
+ title="Mapas interactivos comunitarios de Halloween: The Game, proyecto de p8riot"
+ src="https://p8riot.github.io/halloween-maps/"
+ loading="lazy" referrerpolicy="strict-origin-when-cross-origin"
+ sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-downloads"
+ allow="fullscreen" allowfullscreen></iframe>
+</div>
+<div class="hm-community-actions">
+<button id="hmCommunityFullscreen" class="hm-button" type="button">PANTALLA COMPLETA</button>
+<a href="https://p8riot.github.io/halloween-maps/" target="_blank" rel="noopener noreferrer" class="hm-community-source">ABRIR VISOR ORIGINAL DE P8RIOT ↗</a>
+</div>
+<p class="hm-community-note">El visor y sus mapas pertenecen al proyecto externo de p8riot. Se muestran desde su sitio original, sin copiar sus imágenes ni su base de datos a SanLean. Si no se carga aquí, usá «Abrir visor original».</p>
+</section>
+<div id="hmWorkspace" class="hm-workspace" hidden>
 <details id="hmLegend" class="hm-legend" open>
 <summary>LEYENDA Y FILTROS</summary>
 <div class="hm-legend-inner">
@@ -97,7 +117,7 @@
 </div>
 <p class="hm-view-help">ZOOM: RUEDA O GESTO DE DOS DEDOS · MOVER: ARRASTRAR · 0: CENTRAR. EL PIN ES PERSONAL Y NO SE COMPARTE.</p>
 </section>
-<p class="hm-site-disclaimer">Las ilustraciones de esta sección son esquemas artísticos propios de SanLean, no reproducciones de los planos reales del juego. Las ubicaciones verificadas se incorporarán únicamente cuando exista cartografía utilizable y evidencia suficiente. Halloween: The Game pertenece a sus respectivos titulares.</p>
+<p class="hm-site-disclaimer">La vista comunitaria muestra un proyecto independiente de p8riot y sus mapas no son oficiales. La vista «Esquema SanLean» usa ilustraciones conceptuales propias, sin coordenadas verificadas del juego. Las ubicaciones y escapes disponibles pueden variar entre partidas. Halloween: The Game pertenece a sus respectivos titulares.</p>
 </main>
 <footer class="public-footer" aria-label="Información de SanLean"><a href="contacto.html">CONTACTO</a><a href="creditos.html">CRÉDITOS Y LICENCIAS</a><a href="aviso-legal.html">AVISO LEGAL</a></footer>
 </body></html>
