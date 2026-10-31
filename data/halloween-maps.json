@@ -9,11 +9,19 @@
       "height": 900,
       "placeholder": true,
       "asset": {
-        "origin": "Placeholder vectorial propio de SanLean; no es un mapa del juego.",
-        "permission": "Creado para este proyecto; sin recursos externos."
+        "origin": "Ilustración cartográfica conceptual creada para SanLean; no reproduce calles ni edificios en sus coordenadas reales.",
+        "permission": "Recurso original del proyecto SanLean, sin reutilizar planos o datos de terceros."
       },
       "markers": [],
-      "labels": []
+      "labels": [],
+      "summary": "Zona residencial de Haddonfield. Referencias confirmadas por el equipo del juego.",
+      "highlights": [
+        "Casa de los Myers",
+        "Residencia de los Strode",
+        "Torre de agua",
+        "Barrio residencial"
+      ],
+      "officialSourceUrl": "https://halloweengame.com/news/the-locations-of-halloween-the-game/"
     },
     {
       "id": "haddonfield-town-center",
@@ -23,11 +31,20 @@
       "height": 900,
       "placeholder": true,
       "asset": {
-        "origin": "Placeholder vectorial propio de SanLean; no es un mapa del juego.",
-        "permission": "Creado para este proyecto; sin recursos externos."
+        "origin": "Ilustración cartográfica conceptual creada para SanLean; no reproduce calles ni edificios en sus coordenadas reales.",
+        "permission": "Recurso original del proyecto SanLean, sin reutilizar planos o datos de terceros."
       },
       "markers": [],
-      "labels": []
+      "labels": [],
+      "summary": "Centro urbano con comercios y edificios comunitarios. Las ubicaciones no indican apariciones garantizadas.",
+      "highlights": [
+        "Nichols Hardware",
+        "A-Side Music Store",
+        "Hill Garden Center",
+        "Patty’s Pub",
+        "Cementerio de Haddonfield"
+      ],
+      "officialSourceUrl": "https://halloweengame.com/news/haddonfield-town-center/"
     },
     {
       "id": "orange-grove-estates",
@@ -37,11 +54,19 @@
       "height": 900,
       "placeholder": true,
       "asset": {
-        "origin": "Placeholder vectorial propio de SanLean; no es un mapa del juego.",
-        "permission": "Creado para este proyecto; sin recursos externos."
+        "origin": "Ilustración cartográfica conceptual creada para SanLean; no reproduce calles ni edificios en sus coordenadas reales.",
+        "permission": "Recurso original del proyecto SanLean, sin reutilizar planos o datos de terceros."
       },
       "markers": [],
-      "labels": []
+      "labels": [],
+      "summary": "Barrio residencial de casas de varios pisos, patios y garajes.",
+      "highlights": [
+        "Residencia Wallace",
+        "Residencia Doyle",
+        "Zona de juegos",
+        "Garajes independientes"
+      ],
+      "officialSourceUrl": "https://halloweengame.com/news/orange-grove-estates/"
     },
     {
       "id": "east-haddonfield",
@@ -51,11 +76,19 @@
       "height": 900,
       "placeholder": true,
       "asset": {
-        "origin": "Placeholder vectorial propio de SanLean; no es un mapa del juego.",
-        "permission": "Creado para este proyecto; sin recursos externos."
+        "origin": "Ilustración cartográfica conceptual creada para SanLean; no reproduce calles ni edificios en sus coordenadas reales.",
+        "permission": "Recurso original del proyecto SanLean, sin reutilizar planos o datos de terceros."
       },
       "markers": [],
-      "labels": []
+      "labels": [],
+      "summary": "Afueras rurales e industriales con comercios y campos.",
+      "highlights": [
+        "Phelps Garage",
+        "The Rabbit in Red Lounge",
+        "Midwest Feed Company",
+        "Zona agrícola"
+      ],
+      "officialSourceUrl": "https://halloweengame.com/news/the-locations-of-halloween-the-game/"
     },
     {
       "id": "tower-farm",
@@ -65,11 +98,20 @@
       "height": 900,
       "placeholder": true,
       "asset": {
-        "origin": "Placeholder vectorial propio de SanLean; no es un mapa del juego.",
-        "permission": "Creado para este proyecto; sin recursos externos."
+        "origin": "Ilustración cartográfica conceptual creada para SanLean; no reproduce calles ni edificios en sus coordenadas reales.",
+        "permission": "Recurso original del proyecto SanLean, sin reutilizar planos o datos de terceros."
       },
       "markers": [],
-      "labels": []
+      "labels": [],
+      "summary": "El quinto mapa, incorporado el 27 de octubre de 2026. Incluye una nueva modalidad de escape por alcantarilla.",
+      "highlights": [
+        "Estación de servicio",
+        "Graneros y campos de cultivo",
+        "Festival de cosecha",
+        "Parque de casas rodantes",
+        "Escape por alcantarilla (sin posición confirmada)"
+      ],
+      "officialSourceUrl": "https://halloweengame.com/news/towerfarm/"
     }
   ]
 }
