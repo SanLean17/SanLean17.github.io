@@ -117,6 +117,21 @@ def main():
     with urlopen(request, timeout=25) as response:
         html = response.read(4_000_000).decode("utf-8", errors="replace")
     catalog = parse(html)
+    if OUTPUT.exists():
+        try:
+            previous = json.loads(OUTPUT.read_text(encoding="utf-8"))
+            old = {entry["code"]: entry for entry in previous.get("codes", [])}
+            for entry in catalog["codes"]:
+                if entry["code"] in old:
+                    entry["detectedAt"] = old[entry["code"]].get("detectedAt", entry["detectedAt"])
+                    entry["publishedAt"] = old[entry["code"]].get("publishedAt", entry["publishedAt"])
+            previous_codes = {entry["code"]: {k: v for k, v in entry.items() if k not in ("detectedAt", "publishedAt")} for entry in previous.get("codes", [])}
+            current_codes = {entry["code"]: {k: v for k, v in entry.items() if k not in ("detectedAt", "publishedAt")} for entry in catalog["codes"]}
+            if previous_codes == current_codes:
+                print("NightLight: sin cambios; catálogo conservado")
+                return
+        except (OSError, ValueError, KeyError, TypeError):
+            pass
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=OUTPUT.parent, delete=False) as out:
         json.dump(catalog, out, ensure_ascii=False, indent=2)
