@@ -14,22 +14,21 @@ fixture.maps[0].labels=[{x:.5,y:.25,text:'CALLE DE PRUEBA',source:'Test fixture 
  for(const width of (process.env.HALLOWEEN_WIDTHS?process.env.HALLOWEEN_WIDTHS.split(',').map(Number):engine==='webkit'?[430,390,375,320]:[1920,1440,1280,1024,430,390,375,320])){
   const context=await browser.newContext({viewport:{width,height:900},hasTouch:width<760,isMobile:width<760});
   const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
-  await page.route(/googletagmanager|google-analytics/,r=>r.abort());await page.route('https://p8riot.github.io/halloween-maps/**',r=>r.fulfill({status:200,contentType:'text/html',body:'<!doctype html><title>Community map test fixture</title><p>Mapas externos simulados en pruebas</p>'}));
+  await page.route(/googletagmanager|google-analytics/,r=>r.abort());
   await page.goto(base);await page.waitForSelector('.hm-card');assert.equal(await page.locator('.hm-card').count(),5);assert.equal(await page.locator('#hmGalleryHeading').isVisible(),true);
   const preview=await page.locator('.hm-card img').first().boundingBox();assert.ok(Math.abs(preview.width/preview.height-4/3)<.02);
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   if([1440,390].includes(width))await page.screenshot({path:path.join(output,engine+'-gallery-'+width+'.png'),fullPage:true});
   const getScale=()=>page.locator('#hmScene').evaluate(e=>Number(e.style.transform.match(/scale\(([^)]+)\)/)?.[1]||0));
   const activate=async locator=>{await locator.evaluate(node=>node.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'}));await page.waitForTimeout(100);return width<760?locator.tap():locator.click();};
-  await activate(page.locator('.hm-card').first());assert.equal(await page.locator('#hmCommunity').isVisible(),true);assert.equal(await page.locator('#hmWorkspace').isVisible(),false);assert.equal(await page.locator('#hmCommunityFrame').getAttribute('src'),'https://p8riot.github.io/halloween-maps/');assert.equal(await page.locator('.hm-community-source').getAttribute('href'),'https://p8riot.github.io/halloween-maps/');
-  await activate(page.locator('#hmOwnTab'));await page.waitForSelector('#hmScene:not([hidden])');assert.equal(await page.locator('#hmGalleryHeading').isVisible(),false);assert.equal(await page.locator('#hmWorkspace').isVisible(),true);
+  await activate(page.locator('.hm-card').first());await page.waitForSelector('#hmScene:not([hidden])');assert.equal(await page.locator('#hmGalleryHeading').isVisible(),false);assert.equal(await page.locator('#hmViewport').isVisible(),true);assert.equal(await page.locator('iframe').count(),0);
   const fitScale=await getScale();assert.ok(fitScale>0);assert.equal(await page.locator('#hmMarkers button').count(),0);assert.equal(await page.locator('#hmZoomIn').count(),0);assert.equal(await page.locator('#hmZoomOut').count(),0);
   assert.equal(await page.locator('#hmVerified li').count(),4);
   assert.match(await page.locator('#hmMapSummary').textContent(),/residencial/i);
   assert.equal(await page.locator('#hmOfficial').count(),0);
   await page.locator('#hmStyle').click();assert.equal(await page.locator('#hmViewport').evaluate(e=>e.classList.contains('hm-paper')),true);
   await activate(page.locator('#hmStyle'));assert.equal(await page.locator('#hmViewport').evaluate(e=>e.classList.contains('hm-paper')),false);
-  assert.match(await page.locator('#hmNotice').textContent(),/ESQUEMA SANLEAN/);
+  assert.match(await page.locator('#hmNotice').textContent(),/ESQUEMA ILUSTRATIVO/);
   if(width>=1024){const left=await page.locator('#hmLegend').boundingBox(),map=await page.locator('#hmViewport').boundingBox(),right=await page.locator('.hm-map-nav').boundingBox();assert.ok(left.x<map.x&&map.x<right.x);assert.ok(map.width>left.width*3);}
   else{assert.equal(await page.locator('#hmLegend').getAttribute('open'),null);await activate(page.locator('#hmLegend summary'));assert.notEqual(await page.locator('#hmLegend').getAttribute('open'),null);await activate(page.locator('#hmLegend summary'));}
   if([1440,390].includes(width))await page.screenshot({path:path.join(output,engine+'-viewer-'+width+'.png'),fullPage:true});
@@ -55,7 +54,7 @@ fixture.maps[0].labels=[{x:.5,y:.25,text:'CALLE DE PRUEBA',source:'Test fixture 
   const anchored=await page.locator('.hm-personal').evaluate(pin=>{const b=pin.getBoundingClientRect(),s=document.querySelector('#hmScene').getBoundingClientRect();return {x:(b.x+b.width/2-s.x)/s.width,y:(b.y+b.height/2-s.y)/s.height};});assert.ok(Math.abs(anchored.x-stored['haddonfield-heights'].x)<.001&&Math.abs(anchored.y-stored['haddonfield-heights'].y)<.001);
   await activate(page.locator('#hmMapList button').last());await page.waitForFunction(()=>document.querySelector('#hmImage').alt.startsWith('The Tower Farm'));assert.ok(Math.abs((await getScale())-fitScale)<.0001);assert.equal(await page.locator('.hm-personal').count(),0);
   await activate(page.locator('#hmMapList button').first());await page.waitForFunction(()=>document.querySelector('#hmImage').alt.startsWith('Haddonfield Heights'));assert.equal(await page.locator('.hm-personal').count(),1);
-  await page.reload();await page.waitForSelector('.hm-card');await activate(page.locator('.hm-card').first());await activate(page.locator('#hmOwnTab'));await page.waitForSelector('#hmScene:not([hidden])');assert.equal(await page.locator('.hm-personal').count(),1);
+  await page.reload();await page.waitForSelector('.hm-card');await activate(page.locator('.hm-card').first());await page.waitForSelector('#hmScene:not([hidden])');assert.equal(await page.locator('.hm-personal').count(),1);
   await activate(page.locator('#hmPlace'));await page.locator('#hmViewport').press('+');await page.locator('#hmViewport').press('ArrowRight');await page.locator('#hmViewport').press('Enter');assert.equal(await page.locator('.hm-personal').count(),1);
   await activate(page.locator('#hmClear'));assert.equal(await page.locator('.hm-personal').count(),0);
   for(let index=1;index<5;index++){await activate(page.locator('#hmMapList button').nth(index));await page.waitForFunction(name=>document.querySelector('#hmImage').alt.startsWith(name),catalog.maps[index].name);assert.ok(Math.abs((await getScale())-fitScale)<.0001);}
@@ -66,29 +65,16 @@ fixture.maps[0].labels=[{x:.5,y:.25,text:'CALLE DE PRUEBA',source:'Test fixture 
  }
  // Synthetic points are injected only by this test; never written to production JSON.
  for(const width of [1440,390]){
-  const context=await browser.newContext({viewport:{width,height:900},hasTouch:width<760,isMobile:width<760}),page=await context.newPage();await page.route(/googletagmanager|google-analytics/,r=>r.abort());await page.route('https://p8riot.github.io/halloween-maps/**',r=>r.fulfill({status:200,contentType:'text/html',body:'<!doctype html><title>Community map test fixture</title><p>Mapas externos simulados en pruebas</p>'}));await page.route('**/data/halloween-maps.json',r=>r.fulfill({json:fixture}));
-  await page.goto(base);await page.locator('.hm-card').first().click();await page.locator('#hmOwnTab').click();await page.waitForSelector('#hmScene:not([hidden])');assert.equal(await page.locator('#hmMarkers button').count(),7);
+  const context=await browser.newContext({viewport:{width,height:900},hasTouch:width<760,isMobile:width<760}),page=await context.newPage();await page.route(/googletagmanager|google-analytics/,r=>r.abort());await page.route('**/data/halloween-maps.json',r=>r.fulfill({json:fixture}));
+  await page.goto(base);await page.locator('.hm-card').first().click();await page.waitForSelector('#hmScene:not([hidden])');assert.equal(await page.locator('#hmMarkers button').count(),7);
+  if(width>=760){await page.locator('#hmMarkers button').first().hover();assert.ok(await page.locator('#hmTooltip').isVisible());assert.match(await page.locator('#hmTooltip').textContent(),/Puerta de salida/);await page.locator('#hmViewport').hover();assert.equal(await page.locator('#hmTooltip').isVisible(),false);}
   if(width<760)await page.locator('#hmMarkers button').nth(3).tap();else await page.locator('#hmMarkers button').nth(3).click();assert.match(await page.locator('#hmInfoText').textContent(),/Fixture/);assert.match(await page.locator('#hmInfoNotes').textContent(),/orientativa/);await page.locator('#hmInfoClose').click();
   if(width<760)await page.locator('#hmLegend summary').click();await page.locator('.hm-filter').nth(3).click();assert.equal(await page.locator('#hmMarkers button').count(),6);await page.locator('.hm-filter').nth(3).click();assert.equal(await page.locator('#hmMarkers button').count(),7);
   await page.locator('#hmLabels').uncheck();assert.equal(await page.locator('#hmLabelLayer').isVisible(),false);await page.locator('#hmGridToggle').check();assert.ok(await page.locator('#hmGrid').isVisible());
   await page.locator('#hmPlace').click();await page.locator('#hmViewport').press('Enter');assert.equal(await page.locator('.hm-personal').count(),1);await page.locator('#hmViewport').press('+');await page.locator('#hmViewport').press('ArrowRight');await page.locator('#hmViewport').press('0');assert.ok(await page.locator('#hmScene').evaluate(e=>e.style.transform.includes('scale(')));
   await page.setViewportSize({width:900,height:390});await page.waitForTimeout(150);assert.equal(await page.locator('.hm-personal').count(),1);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await context.close();console.log('PASS',engine,width,'fixture filters, marker info, labels, grid, keyboard, rotation');
  }
- const context=await browser.newContext(),page=await context.newPage();await page.route(/googletagmanager|google-analytics/,r=>r.abort());await page.route('https://p8riot.github.io/halloween-maps/**',r=>r.fulfill({status:200,contentType:'text/html',body:'<!doctype html><title>Community map test fixture</title><p>Mapas externos simulados en pruebas</p>'}));await page.route('**/assets/halloween/maps/haddonfield-heights.svg',r=>r.abort());await page.goto(base);await page.locator('.hm-card').first().click();await page.locator('#hmOwnTab').click();await page.waitForFunction(()=>document.querySelector('#hmImageState').textContent.includes('NO SE PUDO'));assert.equal(await page.locator('#hmScene').isVisible(),false);await page.locator('#hmMapList button').last().click();
+ const context=await browser.newContext(),page=await context.newPage();await page.route(/googletagmanager|google-analytics/,r=>r.abort());await page.route('**/assets/halloween/maps/haddonfield-heights.svg',r=>r.abort());await page.goto(base);await page.locator('.hm-card').first().click();await page.waitForFunction(()=>document.querySelector('#hmImageState').textContent.includes('NO SE PUDO'));assert.equal(await page.locator('#hmScene').isVisible(),false);await page.locator('#hmMapList button').last().click();
   await page.waitForSelector('#hmScene:not([hidden])');await context.close();console.log('PASS image failure and navigation recovery');
-  // Prueba informativa separada: el contenido externo puede fallar fuera del control de SanLean.
-  const ext=await browser.newContext({viewport:{width:1440,height:900}}),external=await ext.newPage();
-  try{
-   await external.route(/googletagmanager|google-analytics/,r=>r.abort());
-   await external.goto(base,{waitUntil:'domcontentloaded'});
-   await external.locator('.hm-card').first().click();
-   await external.frameLocator('#hmCommunityFrame').locator('.brand-title').waitFor({state:'visible',timeout:20000});
-   await external.frameLocator('#hmCommunityFrame').locator('#mapTabs button').first().waitFor({state:'visible',timeout:15000});
-   const count=await external.frameLocator('#hmCommunityFrame').locator('#mapTabs button').count();
-   const image=await external.frameLocator('#hmCommunityFrame').locator('#mapImage').evaluate(e=>({src:e.currentSrc||e.src,complete:e.complete,naturalWidth:e.naturalWidth}));
-   if(!image.complete||image.naturalWidth===0)throw Error('Mapa comunitario sin imagen cargada');
-   console.log('COMMUNITY_EMBED_OK: mapa interactivo visible dentro de SanLean; pestañas',count,'imagen',image.naturalWidth);
-  }catch(err){console.log('COMMUNITY_EMBED_UNAVAILABLE: '+String(err).split('\\n')[0]);}
-  finally{await ext.close();}
  }finally{await browser.close();server.close();}
 })().catch(e=>{console.error(e);server.close();process.exitCode=1;});
