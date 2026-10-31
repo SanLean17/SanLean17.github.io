@@ -69,11 +69,22 @@
  color:#ff003c;font:800 12px/1.3 var(--body);letter-spacing:.03em
 }
 #halloweenMaps .hm-viewer{padding-bottom:12px}
+/* El encabezado replica las columnas del visor para centrar el título
+   exactamente sobre la caja del mapa, sin alterar su tipografía. */
 #halloweenMaps .hm-view-heading{
- display:flex;flex-wrap:wrap;align-items:center;gap:22px;
+ display:grid;
+ grid-template-columns:minmax(175px,1fr) minmax(0,4fr) minmax(180px,1.05fr);
+ gap:16px;align-items:center;
  margin:12px 0 20px
 }
-#halloweenMaps .hm-view-heading h2{font-size:clamp(32px,3vw,46px);line-height:1.05}
+#halloweenMaps .hm-view-heading .hm-back{
+ grid-column:1;grid-row:1;justify-self:start
+}
+#halloweenMaps .hm-view-heading h2{
+ grid-column:2;grid-row:1;
+ min-width:0;text-align:center;
+ font-size:clamp(32px,3vw,46px);line-height:1.05
+}
 #halloweenMaps .hm-notice{
  padding:14px 18px;margin-bottom:20px;border-left:4px solid #ff003c;
  background:#111114eb;color:#d1d1d9;
@@ -181,7 +192,7 @@
  color:#ddd;pointer-events:none;background:#10131b
 }
 #halloweenMaps .hm-controls{
- display:flex;flex-wrap:wrap;align-items:center;gap:8px;
+ display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;
  margin-top:14px
 }
 #halloweenMaps .hm-button{
@@ -234,6 +245,10 @@
 #halloweenMaps .hm-info-type{color:#ff003c!important;font-weight:800}
 #halloweenMaps #hmInfoClose{float:right}
 @media(max-width:1200px){
+ #halloweenMaps .hm-view-heading{
+  grid-template-columns:minmax(154px,1fr) minmax(0,3.3fr) minmax(168px,1fr);
+  gap:12px
+ }
  #halloweenMaps .hm-workspace{
   grid-template-columns:minmax(154px,1fr) minmax(0,3.3fr) minmax(168px,1fr);gap:12px
  }
@@ -242,6 +257,9 @@
 }
 @media(max-width:900px){
  #halloweenMaps .hm-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #halloweenMaps .hm-view-heading{display:flex;flex-direction:column;align-items:stretch;gap:14px}
+ #halloweenMaps .hm-view-heading h2{width:100%;text-align:center}
+ #halloweenMaps .hm-view-heading .hm-back{align-self:flex-start}
  #halloweenMaps .hm-workspace{grid-template-columns:minmax(0,1fr);gap:14px}
  #halloweenMaps .hm-map-nav{grid-row:1}
  #halloweenMaps .hm-center{grid-row:2}
