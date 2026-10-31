@@ -76,5 +76,16 @@ fixture.maps[0].labels=[{x:.5,y:.25,text:'CALLE DE PRUEBA',source:'Test fixture 
  }
  const context=await browser.newContext(),page=await context.newPage();await page.route(/googletagmanager|google-analytics/,r=>r.abort());await page.route('https://p8riot.github.io/halloween-maps/**',r=>r.fulfill({status:200,contentType:'text/html',body:'<!doctype html><title>Community map test fixture</title><p>Mapas externos simulados en pruebas</p>'}));await page.route('**/assets/halloween/maps/haddonfield-heights.svg',r=>r.abort());await page.goto(base);await page.locator('.hm-card').first().click();await page.locator('#hmOwnTab').click();await page.waitForFunction(()=>document.querySelector('#hmImageState').textContent.includes('NO SE PUDO'));assert.equal(await page.locator('#hmScene').isVisible(),false);await page.locator('#hmMapList button').last().click();
   await page.waitForSelector('#hmScene:not([hidden])');await context.close();console.log('PASS image failure and navigation recovery');
+  // Prueba informativa separada: el contenido externo puede fallar fuera del control de SanLean.
+  const ext=await browser.newContext({viewport:{width:1440,height:900}}),external=await ext.newPage();
+  try{
+   await external.route(/googletagmanager|google-analytics/,r=>r.abort());
+   await external.goto(base,{waitUntil:'domcontentloaded'});
+   await external.locator('.hm-card').first().click();
+   await external.frameLocator('#hmCommunityFrame').locator('.brand-title').waitFor({state:'visible',timeout:20000});
+   const count=await external.frameLocator('#hmCommunityFrame').locator('#mapTabs button').count();
+   console.log('COMMUNITY_EMBED_OK: proyecto p8riot cargado dentro de SanLean; selector de mapas',count);
+  }catch(err){console.log('COMMUNITY_EMBED_UNAVAILABLE: '+String(err).split('\\n')[0]);}
+  finally{await ext.close();}
  }finally{await browser.close();server.close();}
 })().catch(e=>{console.error(e);server.close();process.exitCode=1;});
