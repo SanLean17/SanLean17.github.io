@@ -6,6 +6,7 @@ async function initialize(){
  const el=id=>app.querySelector('#hm'+id);
  const gallery=el('Gallery'),viewer=el('Viewer'),viewport=el('Viewport'),scene=el('Scene');
  let maps,current,camera={scale:1,x:0,y:0},baseScale=1,ready=false,placing=false,loadId=0,lastInfoTrigger;
+ let fittedViewport={width:0,height:0};
  let points=new Map(),gesture=null,moved=false,ignoreClickUntil=0,tapMarker=null;
  let pins={};const storageKey='sanlean.halloween.positions.v1';
  try{const value=JSON.parse(sessionStorage.getItem(storageKey));if(value&&typeof value==='object'&&!Array.isArray(value))for(const [id,p] of Object.entries(value))if(/^[a-z0-9-]+$/.test(id)&&validPoint(p))pins[id]={x:p.x,y:p.y};}catch{/* Storage is optional, never blocks the viewer. */}
@@ -26,7 +27,7 @@ async function initialize(){
   camera.x=w<=vw?(vw-w)/2:clamp(camera.x,vw-w-24,24);
   camera.y=h<=vh?(vh-h)/2:clamp(camera.y,vh-h-24,24);
  }
- function reset(){if(!current||!ready)return;camera=fit(current.width,current.height,viewport.clientWidth,viewport.clientHeight);baseScale=camera.scale;paint();}
+ function reset(){if(!current||!ready)return;const width=viewport.clientWidth,height=viewport.clientHeight;if(!width||!height)return;camera=fit(current.width,current.height,width,height);baseScale=camera.scale;fittedViewport={width,height};paint();}
  function zoom(factor,point={x:viewport.clientWidth/2,y:viewport.clientHeight/2}){if(!ready)return;camera=zoomAt(camera,point,clamp(camera.scale*factor,baseScale,baseScale*8));constrain();paint();}
  function position(node,p){node.style.left=p.x*100+'%';node.style.top=p.y*100+'%';}
  function setPlacing(active){placing=active;el('Place').setAttribute('aria-pressed',String(active));viewport.classList.toggle('is-placing',active);announce(active?'TOCÁ EL MAPA DONDE ESTÁS · Esc para cancelar.':'');}
@@ -139,7 +140,7 @@ async function initialize(){
   if(event.key==='+'||event.key==='=')zoom(1.25);else if(event.key==='-')zoom(.8);else if(event.key==='0')reset();else if(event.key==='Enter'&&placing)place({x:viewport.clientWidth/2,y:viewport.clientHeight/2});else if(event.key==='Escape')setPlacing(false);else{const delta={ArrowUp:[0,40],ArrowDown:[0,-40],ArrowLeft:[40,0],ArrowRight:[-40,0]}[event.key];if(delta){camera.x+=delta[0];camera.y+=delta[1];constrain();paint();}}
  });
  app.addEventListener('keydown',event=>{if(event.key==='Escape'){setPlacing(false);if(!el('Info').hidden){closeInfo();lastInfoTrigger?.focus({preventScroll:true});}}});
- new ResizeObserver(()=>{if(ready&&!viewer.hidden){stopGesture();reset();}}).observe(viewport);
+ new ResizeObserver(()=>{if(ready&&!viewer.hidden&&(Math.abs(viewport.clientWidth-fittedViewport.width)>1||Math.abs(viewport.clientHeight-fittedViewport.height)>1)){stopGesture();reset();}}).observe(viewport);
  try{
   const response=await fetch('/data/halloween-maps.json');if(!response.ok)throw Error('No disponible');maps=validateCatalog(await response.json()).maps;
   for(const map of maps){
