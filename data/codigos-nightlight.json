@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-31T17:04:23.578303Z",
+  "updatedAt": "2026-10-31T17:06:51.792705Z",
   "source": "https://nightlight.gg/codes",
   "extractionMode": "react-router-stream",
   "codes": [
@@ -16,7 +16,7 @@
       "expiryPolicy": "dated",
       "expiresAt": "2026-12-31T16:00:00Z",
       "detectedAt": "2026-10-31T16:47:00.000Z",
-      "publishedAt": "2026-10-31T16:47:00.000Z"
+      "publishedAt": "2026-10-30T20:14:21.687448Z"
     },
     {
       "code": "DBDXHH",
@@ -30,7 +30,7 @@
       "expiryPolicy": "dated",
       "expiresAt": "2026-12-31T16:00:00Z",
       "detectedAt": "2026-10-31T16:47:00.000Z",
-      "publishedAt": "2026-10-31T16:47:00.000Z"
+      "publishedAt": "2026-10-30T20:13:44.280288Z"
     },
     {
       "code": "DBDDY",
@@ -44,7 +44,7 @@
       "expiryPolicy": "dated",
       "expiresAt": "2026-12-31T16:00:00Z",
       "detectedAt": "2026-10-31T16:47:00.000Z",
-      "publishedAt": "2026-10-31T16:47:00.000Z"
+      "publishedAt": "2026-10-30T20:13:37.378116Z"
     },
     {
       "code": "DIABLO",
@@ -58,7 +58,7 @@
       "expiryPolicy": "dated",
       "expiresAt": "2026-11-25T16:00:00Z",
       "detectedAt": "2026-10-31T16:47:00.000Z",
-      "publishedAt": "2026-10-31T16:47:00.000Z"
+      "publishedAt": "2026-10-24T17:41:26.294681Z"
     },
     {
       "code": "BPFFM2026",
@@ -72,7 +72,7 @@
       "expiryPolicy": "dated",
       "expiresAt": "2026-11-18T16:00:00Z",
       "detectedAt": "2026-10-31T16:47:00.000Z",
-      "publishedAt": "2026-10-31T16:47:00.000Z"
+      "publishedAt": "2026-10-19T14:37:46.714119Z"
     },
     {
       "code": "GROUNDCHUCKHBD",
@@ -86,7 +86,7 @@
       "expiryPolicy": "dated",
       "expiresAt": "2026-10-31T16:00:00Z",
       "detectedAt": "2026-10-31T16:58:25.427786Z",
-      "publishedAt": "2026-10-31T16:58:25.427786Z"
+      "publishedAt": "2026-10-13T18:01:53.527522Z"
     },
     {
       "code": "MACHETE",
@@ -100,7 +100,7 @@
       "expiryPolicy": "dated",
       "expiresAt": "2026-10-31T16:00:00Z",
       "detectedAt": "2026-10-31T16:58:25.427786Z",
-      "publishedAt": "2026-10-31T16:58:25.427786Z"
+      "publishedAt": "2026-10-04T19:09:35.645467Z"
     },
     {
       "code": "ROADTRIP",
@@ -114,7 +114,7 @@
       "expiryPolicy": "dated",
       "expiresAt": "2027-10-01T00:00:00Z",
       "detectedAt": "2026-10-31T16:47:00.000Z",
-      "publishedAt": "2026-10-31T16:47:00.000Z"
+      "publishedAt": "2026-09-21T16:01:08.116467Z"
     },
     {
       "code": "STARSGUIDE",
@@ -128,7 +128,7 @@
       "expiryPolicy": "dated",
       "expiresAt": "2026-10-10T13:00:04Z",
       "detectedAt": "2026-10-31T16:58:25.427786Z",
-      "publishedAt": "2026-10-31T16:58:25.427786Z"
+      "publishedAt": "2026-09-10T15:27:17.414928Z"
     },
     {
       "code": "PLAYXENOMORPHIN2V8",
@@ -142,7 +142,7 @@
       "expiryPolicy": "unknown",
       "expiresAt": null,
       "detectedAt": "2026-10-31T16:58:25.427786Z",
-      "publishedAt": "2026-10-31T16:58:25.427786Z"
+      "publishedAt": "2026-09-08T19:05:43.764252Z"
     },
     {
       "code": "MISSBEHAVIOURGC2026",
@@ -156,7 +156,7 @@
       "expiryPolicy": "unknown",
       "expiresAt": null,
       "detectedAt": "2026-10-31T16:58:25.427786Z",
-      "publishedAt": "2026-10-31T16:58:25.427786Z"
+      "publishedAt": "2026-08-29T12:57:59.123444Z"
     },
     {
       "code": "WORLDPRIDE2026",
@@ -170,7 +170,7 @@
       "expiryPolicy": "dated",
       "expiresAt": "2026-08-17T15:00:00Z",
       "detectedAt": "2026-10-31T16:58:25.427786Z",
-      "publishedAt": "2026-10-31T16:58:25.427786Z"
+      "publishedAt": "2026-08-10T20:22:51.846414Z"
     },
     {
       "code": "MAURICEPRIDE",
@@ -184,7 +184,7 @@
       "expiryPolicy": "dated",
       "expiresAt": "2026-08-17T15:00:00Z",
       "detectedAt": "2026-10-31T16:58:25.427786Z",
-      "publishedAt": "2026-10-31T16:58:25.427786Z"
+      "publishedAt": "2026-08-10T20:22:15.245261Z"
     },
     {
       "code": "SHINEBRIGHT",
@@ -198,7 +198,7 @@
       "expiryPolicy": "dated",
       "expiresAt": "2026-09-10T15:00:00Z",
       "detectedAt": "2026-10-31T16:58:25.427786Z",
-      "publishedAt": "2026-10-31T16:58:25.427786Z"
+      "publishedAt": "2026-08-07T15:05:14.165342Z"
     },
     {
       "code": "ENTITYLOVEFORALL",
@@ -212,7 +212,7 @@
       "expiryPolicy": "dated",
       "expiresAt": "2026-08-17T15:00:00Z",
       "detectedAt": "2026-10-31T16:58:25.427786Z",
-      "publishedAt": "2026-10-31T16:58:25.427786Z"
+      "publishedAt": "2026-08-06T21:01:12.680731Z"
     },
     {
       "code": "RAINBOWTOOLS",
@@ -450,7 +450,7 @@
       "expiryPolicy": "never",
       "expiresAt": null,
       "detectedAt": "2026-10-31T16:47:00.000Z",
-      "publishedAt": "2026-10-31T16:47:00.000Z"
+      "publishedAt": "2025-11-28T19:26:21Z"
     },
     {
       "code": "HAUNTED",
@@ -772,7 +772,7 @@
       "expiryPolicy": "never",
       "expiresAt": null,
       "detectedAt": "2026-10-31T16:47:00.000Z",
-      "publishedAt": "2026-10-31T16:47:00.000Z"
+      "publishedAt": "2024-12-20T18:37:22Z"
     },
     {
       "code": "DBDDAY2024",
@@ -940,7 +940,7 @@
       "expiryPolicy": "never",
       "expiresAt": null,
       "detectedAt": "2026-10-31T16:47:00.000Z",
-      "publishedAt": "2026-10-31T16:47:00.000Z"
+      "publishedAt": "2024-07-03T20:44:28Z"
     },
     {
       "code": "THANKU24",
@@ -1024,7 +1024,7 @@
       "expiryPolicy": "never",
       "expiresAt": null,
       "detectedAt": "2026-10-31T16:47:00.000Z",
-      "publishedAt": "2026-10-31T16:47:00.000Z"
+      "publishedAt": "2024-06-12T19:22:17Z"
     },
     {
       "code": "BDGPRIDE",
@@ -1038,7 +1038,7 @@
       "expiryPolicy": "never",
       "expiresAt": null,
       "detectedAt": "2026-10-31T16:47:00.000Z",
-      "publishedAt": "2026-10-31T16:47:00.000Z"
+      "publishedAt": "2024-06-12T19:22:17Z"
     },
     {
       "code": "BDGPRG",
@@ -1052,7 +1052,7 @@
       "expiryPolicy": "never",
       "expiresAt": null,
       "detectedAt": "2026-10-31T16:47:00.000Z",
-      "publishedAt": "2026-10-31T16:47:00.000Z"
+      "publishedAt": "2024-06-12T19:22:17Z"
     },
     {
       "code": "BDGL",
@@ -1066,7 +1066,7 @@
       "expiryPolicy": "never",
       "expiresAt": null,
       "detectedAt": "2026-10-31T16:47:00.000Z",
-      "publishedAt": "2026-10-31T16:47:00.000Z"
+      "publishedAt": "2024-06-12T19:22:17Z"
     },
     {
       "code": "BDGM",
@@ -1080,7 +1080,7 @@
       "expiryPolicy": "never",
       "expiresAt": null,
       "detectedAt": "2026-10-31T16:47:00.000Z",
-      "publishedAt": "2026-10-31T16:47:00.000Z"
+      "publishedAt": "2024-06-12T19:22:17Z"
     },
     {
       "code": "BDGB",
@@ -1094,7 +1094,7 @@
       "expiryPolicy": "never",
       "expiresAt": null,
       "detectedAt": "2026-10-31T16:47:00.000Z",
-      "publishedAt": "2026-10-31T16:47:00.000Z"
+      "publishedAt": "2024-06-12T19:22:17Z"
     },
     {
       "code": "BDGT",
