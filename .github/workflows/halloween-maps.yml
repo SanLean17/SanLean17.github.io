@@ -11,6 +11,7 @@ on:
       - 'js/halloween-map-model.mjs'
       - 'data/halloween-maps.json'
       - 'assets/halloween/maps/**'
+      - 'assets/halloween/icons/**'
       - 'tests/halloween-maps.test.mjs'
       - 'tests/halloween-maps.browser.cjs'
       - '.github/workflows/halloween-maps.yml'
