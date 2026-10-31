@@ -182,7 +182,7 @@ async function initialize(){
   el('MapTitle').textContent=map.name;el('MapTitle').focus({preventScroll:true});el('MapTitle').scrollIntoView({block:'start',behavior:'instant'});
   el('Notice').textContent=map.placeholder
     ? 'ESQUEMA ILUSTRATIVO · Las calles y los puntos mostrados todavía no corresponden a un plano contrastado con el juego. Podés usar el visor, el zoom, la cuadrícula y tu posición personal.'
-    : 'MAPA INTERACTIVO · Las ubicaciones indicadas son referencias para la partida; algunas salidas y objetos pueden variar.';
+    : 'UBICACIONES POSIBLES · Salidas y objetos pueden variar entre partidas.';
 
   for(const button of el('MapList').children)button.setAttribute('aria-current',String(button.dataset.map===map.id));
   el('ImageState').textContent='CARGANDO MAPA...';el('ImageState').hidden=false;viewport.setAttribute('aria-busy','true');
@@ -203,7 +203,7 @@ async function initialize(){
    el('ImageState').hidden=true;viewport.setAttribute('aria-busy','false');
    el('Notice').textContent=usingIllustration
     ? 'ESQUEMA ILUSTRATIVO · El mapa no está disponible; no se muestran ubicaciones sobre la imagen alternativa.'
-    : 'UBICACIONES POSIBLES · Podés ampliar, mover y consultar los marcadores. Las salidas y los objetos pueden cambiar entre partidas.';
+    : 'UBICACIONES POSIBLES · Salidas y objetos pueden variar entre partidas.';
    renderFilters();renderLabels();renderMarkers();renderPin();
    for(const id of ['Reset','Place'])el(id).disabled=false;reset();
   };
