@@ -33,7 +33,22 @@ const activate=async(locator,width)=>{
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
    await activate(page.locator('.hm-card').first(),width);
    await page.waitForSelector('#hmScene:not([hidden])');
-   assert.match(await page.locator('#hmImage').getAttribute('src'),/haddonfield-heights-map\.webp/);
+   if(width<760){
+    const nav=await page.locator('#hmMapList').evaluate(el=>({
+     display:getComputedStyle(el).display,overflowX:getComputedStyle(el).overflowX,
+     scrollWidth:el.scrollWidth,clientWidth:el.clientWidth
+    }));
+    assert.equal(nav.display,'grid','Mobile debe usar lista vertical, no carrusel horizontal');
+    assert.ok(nav.scrollWidth<=nav.clientWidth+1,'La lista mobile no debe tener desplazamiento horizontal');
+    const positions=await page.locator('#hmMapList button').evaluateAll(els=>
+     els.map(el=>{const r=el.getBoundingClientRect();return {top:r.top,bottom:r.bottom,width:r.width};})
+    );
+    assert.equal(positions.length,5);
+    for(let i=1;i<positions.length;i++)
+     assert.ok(positions[i].top>=positions[i-1].bottom-1,'Los mapas deben estar uno debajo del otro');
+    assert.ok(positions.every(p=>p.width>150),'Los botones deben ser anchos y fáciles de tocar');
+   }
+   assert.match(await page.locator('#hmImage').getAttribute('src'),/haddonfield-heights-map\\.webp/);
    assert.ok(await page.locator('#hmImage').evaluate(e=>e.naturalWidth>0));
    assert.match(await page.locator('#hmNotice').textContent(),/UBICACIONES POSIBLES/);
    const initial=await page.locator('#hmMarkers button').count();
