@@ -1,5 +1,43 @@
 # HALLOWEEN: mapas interactivos de la WEB pública
 
+## 31 de octubre de 2026 — Restauración y publicación
+
+La WEB pública en `/halloween.html` volvió a mostrar los mapas interactivos que estaban
+preparados pero no conectados mientras la portada decía «Próximamente».
+
+- Galería con **3 columnas escritorio**, 2 tablet, 1 móvil y cinco escenarios.
+- Título HALLOWEEN e introducción acordada con el propietario, sin kicker.
+- Diseño oscuro con acento `#FF003C`, fuente y bordes consistentes con la WEB pública.
+- Se recupera el fondo original facilitado por el propietario en una variante WebP
+  comprimida incrustada en `css/halloween-background.css`; cargado exclusivamente
+  por `halloween.html`. Se conserva el fondo de todas las demás páginas.
+- Los cinco SVG provisionales fueron reemplazados por **ilustraciones cartográficas
+  conceptuales originales de SanLean**. Tienen rutas, siluetas y decoración artística;
+  **NO son una representación geográfica del juego** ni deben tomarse como tal. La
+  marca visible «ESQUEMA ARTÍSTICO · SIN COORDENADAS VERIFICADAS» es obligatoria.
+  Tampoco hay marcadores fácticos ni etiquetas geolocalizadas. Nunca usar estos
+  dibujos para fijar ubicaciones sin comprobar una imagen licenciada real.
+- El visor anterior sigue permitiendo zoom, arrastre, pellizco, controles, teclado,
+  una marca personal por mapa en `sessionStorage`, filtros y leyenda. Se añaden
+  vista clara/oscura y pantalla completa cuando el navegador la admite.
+- Barra de datos a la derecha: descripción y referencias **textuales** de cada mapa,
+  con enlaces a artículos oficiales de `halloweengame.com`. Son nombres de lugares,
+  no coordenadas ni promesas de apariciones.
+- Se conservan los 7 tipos de íconos y sus colores hasta que existan posiciones
+  probadas. No se reutilizó ni copió el dataset o arte de repositorios ajenos.
+- `tests/halloween-maps.test.mjs` y `tests/halloween-maps.browser.cjs` actualizados,
+  con workflow exclusivo `.github/workflows/halloween-maps.yml` para verificar
+  sintaxis, datos y experiencia desktop/mobile sin modificar otras secciones.
+
+**Pendiente para mapas reales**: obtener imágenes con permiso compatible, sustituir
+los cinco SVG (manteniendo dimensiones y coordenadas del catálogo) y realizar
+verificación presencial/de fuentes fiables de escapes, objetos y referencias antes
+de publicar los markers. Las ilustraciones actuales sirven para explorar y probar
+la interfaz, no como guía de partida.
+
+---
+
+
 Implementación propia de SanLean, 30 de octubre de 2026. Ruta: `/halloween.html`.
 No cambia navegación, footer, fondos, Analytics, CÓDIGOS ni USUARIO.
 
