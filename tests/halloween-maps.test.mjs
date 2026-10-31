@@ -45,12 +45,22 @@ test('public HTML keeps the canonical heading and loads only Halloween assets',(
  assert.match(html,/Recorré los mapas y preparate tu próxima partida/);
  for(const id of ['hmGallery','hmGalleryHeading','hmViewer','hmViewport','hmLegend','hmMapList','hmPinLayer','hmMapSummary','hmVerified','hmFullscreen','hmStyle'])
   assert.match(html,new RegExp('id="'+id+'"'));
- assert.doesNotMatch(html,/halloween-background\\.css/);
+ assert.doesNotMatch(html,/halloween-background\.css/);
  assert.doesNotMatch(html,/id="hmZoom(?:In|Out)?"/);
  assert.doesNotMatch(html,/id="hmOfficial"/);
  const css=fs.readFileSync(new URL('../css/halloween-maps.css',import.meta.url),'utf8');
- assert.doesNotMatch(css,/body\\.halloween-page\\.page-bg/);
+ assert.doesNotMatch(css,/body\.halloween-page\.page-bg/);
  assert.match(html,/class="public-site desktop-footer-space page-bg halloween-page"/);
  assert.match(html,/halloween-maps\.css/);
  assert.match(html,/halloween-maps\.js/);
+ for(const id of ['hmCommunity','hmCommunityFrame','hmCommunityTab','hmOwnTab','hmCommunityFullscreen','hmWorkspace'])
+  assert.match(html,new RegExp('id="'+id+'"'));
+ assert.match(html,/src="https:\/\/p8riot\.github\.io\/halloween-maps\/"/);
+ assert.match(html,/href="https:\/\/p8riot\.github\.io\/halloween-maps\/"/);
+ assert.match(html,/sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-downloads"/);
+ assert.match(html,/El visor y sus mapas pertenecen al proyecto externo de p8riot/);
+ const js=fs.readFileSync(new URL('../js/halloween-maps.js',import.meta.url),'utf8');
+ assert.match(js,/activeMode='community'/);
+ assert.match(js,/el\('OwnTab'\)\.addEventListener/);
+ assert.match(js,/setMode\(activeMode\)/);
 });
