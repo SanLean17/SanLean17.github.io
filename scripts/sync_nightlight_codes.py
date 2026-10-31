@@ -52,7 +52,7 @@ def expiry_date(text, now):
         return None
 
 
-def parse(html):
+def parse_visible(html):
     lines = extracted_strings(html)
     boundaries = []
     for needle, status in BOUNDARIES:
@@ -112,38 +112,113 @@ def parse(html):
             "source": URL, "codes": list(codes.values())}
 
 
+
+def parse_stream(html):
+    """Extrae el catálogo completo del JSON serializado de React Router.
+
+    NightLight muestra sólo una página de la lista, pero entrega todos los registros
+    en el loaderData público. Nunca se interpreta el JavaScript ni se ejecuta código.
+    """
+    soup = BeautifulSoup(html, "html.parser")
+    needle = "window.__reactRouterContext.streamController.enqueue("
+    now = datetime.now(timezone.utc)
+    stamp = now.isoformat().replace("+00:00", "Z")
+    decoder = json.JSONDecoder()
+    for tag in soup.find_all("script"):
+        text = tag.string or tag.get_text() or ""
+        start = text.find(needle)
+        if start < 0:
+            continue
+        try:
+            payload, _ = decoder.raw_decode(text[start + len(needle):])
+            values = json.loads(payload)
+            if not isinstance(values, list):
+                continue
+            i = values.index("codes")
+            rows = values[i + 1]
+            if not isinstance(rows, list):
+                continue
+            codes = {}
+            for ref in rows:
+                if type(ref) is not int or not 0 <= ref < len(values):
+                    continue
+                item = values[ref]
+                if not isinstance(item, dict):
+                    continue
+                record = {}
+                for key_ref, value_ref in item.items():
+                    if not isinstance(key_ref, str) or not re.fullmatch(r"_\d+", key_ref):
+                        continue
+                    key_pos = int(key_ref[1:])
+                    if not 0 <= key_pos < len(values) or not isinstance(values[key_pos], str):
+                        continue
+                    key = values[key_pos]
+                    if type(value_ref) is int:
+                        value = values[value_ref] if 0 <= value_ref < len(values) else None
+                    else:
+                        value = value_ref
+                    record[key] = value
+                code = record.get("code")
+                if not isinstance(code, str) or not CODE.fullmatch(code):
+                    continue
+                title = record.get("title")
+                reward = re.sub(r"\s+", " ", title).strip()[:300] if isinstance(title, str) else ""
+                created = record.get("created_at")
+                published = created if isinstance(created, str) and re.fullmatch(
+                    r"\d{4}-\d{2}-\d{2}T[\d:.]+Z", created) else stamp
+                expires = record.get("expires_at")
+                if not isinstance(expires, str) or not re.fullmatch(
+                    r"\d{4}-\d{2}-\d{2}T[\d:.]+Z", expires):
+                    expires = None
+                expired = record.get("expired") is True
+                no_expiry = record.get("no_expiry") is True
+                codes[code] = {
+                    "code": code,
+                    "reward": reward or "Consultá la recompensa en NightLight.",
+                    "status": "expired" if expired else "active",
+                    "official": False,
+                    "confidence": "COMMUNITY_VERIFIED",
+                    "source": "nightlight",
+                    "sourceType": "nightlight",
+                    "sourceUrl": URL,
+                    "expiryPolicy": "never" if no_expiry and not expired else "dated" if expires else "unknown",
+                    "expiresAt": expires,
+                    "detectedAt": stamp,
+                    "publishedAt": published,
+                }
+            if len(codes) >= 20 and sum(c["expiryPolicy"] == "never" for c in codes.values()) >= 5:
+                return {
+                    "schemaVersion": 1,
+                    "updatedAt": stamp,
+                    "source": URL,
+                    "extractionMode": "react-router-stream",
+                    "codes": list(codes.values()),
+                }
+        except (TypeError, ValueError, IndexError, KeyError):
+            continue
+    return None
+
+
+def parse(html):
+    all_codes = parse_stream(html)
+    if all_codes is not None:
+        return all_codes
+    fallback = parse_visible(html)
+    fallback["extractionMode"] = "visible-html"
+    return fallback
+
 def main():
     request = Request(URL, headers={"User-Agent": "SanLeanCodes/1.0 (+https://sanlean.com.ar/codigos/)", "Accept": "text/html"})
     with urlopen(request, timeout=25) as response:
         html = response.read(4_000_000).decode("utf-8", errors="replace")
-    if os.environ.get("NIGHTLIGHT_DEBUG") == "1":
-        soup = BeautifulSoup(html, "html.parser")
-        scripts = soup.find_all("script")
-        print("NIGHTLIGHT DEBUG: HTML length", len(html), "scripts", len(scripts))
-        script_value = scripts[5].string or scripts[5].get_text() or "" if len(scripts) > 5 else ""
-        pos = script_value.find("enqueue(")
-        if pos >= 0:
-            try:
-                data, _ = json.JSONDecoder().raw_decode(script_value[pos + len("enqueue("):])
-                flattened = json.loads(data)
-                print("FLATTENED FIRST", repr(flattened[:15]))
-                codes_index = flattened.index("codes") + 1
-                print("CODES ARRAY", repr(flattened[codes_index][:12]))
-                first_index = flattened[codes_index][0]
-                print("FIRST CODE RECORD", repr(flattened[first_index]))
-                for k, v in flattened[first_index].items():
-                    print("FIRST FIELD", repr(flattened[int(k[1:])]), repr(flattened[v] if isinstance(v,int) and v >= 0 else v))
-            except Exception as error:
-                print("FLATTENED ERROR", str(error))
-        print("SCRIPT FIRST 400", repr((scripts[5].string or scripts[5].get_text() or "")[:400]) if len(scripts)>5 else "none")
-        for i, tag in enumerate(scripts):
-            value = tag.string or tag.get_text() or ""
-            if any(key in value for key in ("FINDERSCREEPERS", "BDGPRIDE", "__NEXT_DATA__", "__next_f", "WARRIORPUPPERS")):
-                for key in ("FINDERSCREEPERS", "BDGPRIDE", "WARRIORPUPPERS", "__NEXT_DATA__", "__next_f"):
-                    pos = value.find(key)
-                    if pos >= 0:
-                        print("SCRIPT", i, "id", tag.get("id"), "type", tag.get("type"), "length", len(value), "key", key, "excerpt", repr(value[max(0, pos-350):pos+500]))
     catalog = parse(html)
+    if OUTPUT.exists():
+        try:
+            old_count = len(json.loads(OUTPUT.read_text(encoding="utf-8")).get("codes", []))
+            if old_count > 30 and len(catalog["codes"]) < old_count * 0.6:
+                raise ValueError(f"NightLight devolvió {len(catalog['codes'])} códigos frente a {old_count} anteriores; se protege el catálogo")
+        except (OSError, json.JSONDecodeError):
+            pass
     if OUTPUT.exists():
         try:
             previous = json.loads(OUTPUT.read_text(encoding="utf-8"))
