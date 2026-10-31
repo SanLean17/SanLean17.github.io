@@ -224,6 +224,11 @@ def main():
             previous = json.loads(OUTPUT.read_text(encoding="utf-8"))
             old = {entry["code"]: entry for entry in previous.get("codes", [])}
             for entry in catalog["codes"]:
+                # Solo se conserva en el historial comunitario lo que SanLean vio activo.
+                # Los vencidos antiguos importados de NightLight no se muestran.
+                previously_active = old.get(entry["code"], {}).get("trackedWhileActive") is True
+                if previously_active or (entry["status"] == "active" and entry["expiryPolicy"] != "never"):
+                    entry["trackedWhileActive"] = True
                 if entry["code"] in old:
                     entry["detectedAt"] = old[entry["code"]].get("detectedAt", entry["detectedAt"])
                     if catalog.get("extractionMode") != "react-router-stream":
