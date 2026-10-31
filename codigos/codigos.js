@@ -25,14 +25,25 @@ function card(c){
  if(hasImage)heading.append(element('h3',c.code),element('span',c.status==='active'?'ACTIVO':'FINALIZADO','code-state'));
  else compactHeading();
  const dl=element('dl');const field=(label,value)=>dl.append(element('dt',label),element('dd',value));
- field('RECOMPENSA',c.reward||'Consultá la publicación oficial.');
+ const reward=c.reward||'Consultá la fuente del código.';
+ if(hasImage)field('RECOMPENSA',reward);
+ else {const rewardLine=element('p',undefined,'code-reward');rewardLine.append(element('span','Recompensa: '),document.createTextNode(reward));dl.append(rewardLine);}
  const expiry=expiryLabel(c);if(expiry&&hasImage)field(c.status==='expired'?'FINALIZÓ':'DISPONIBLE HASTA',expiry);
  const actions=element('div',undefined,'code-actions');const button=element('button',c.status==='active'?'COPIAR CÓDIGO':'NO DISPONIBLE','tier-tab active');button.type='button';button.disabled=c.status!=='active';button.setAttribute('aria-label',`${c.status==='active'?'Copiar':'No disponible:'} ${c.code}`);
  const feedback=element('span',undefined,'code-feedback');feedback.setAttribute('role','status');let timer;
  button.addEventListener('click',async()=>{clearTimeout(timer);try{await navigator.clipboard.writeText(c.code);window.sanleanTrack?.('code_copy',{code:c.code,status:c.status,source_type:c.sourceType});button.textContent='COPIADO';feedback.textContent=`${c.code} copiado`;}catch{button.textContent='NO SE PUDO COPIAR';feedback.textContent='Seleccioná el código y copialo manualmente.';}timer=setTimeout(()=>{button.textContent='COPIAR CÓDIGO';feedback.textContent='';},2000);});
- const link=element('a',c.sourceType==='nightlight'?'VER EN NIGHTLIGHT':c.sourceType==='official_wiki'?'VER EN DBD WIKI':'VER PUBLICACIÓN OFICIAL','code-source');link.href=c.sourceUrl;link.target='_blank';link.rel='noopener noreferrer';link.addEventListener('click',()=>window.sanleanTrack?.('code_source_click',{code:c.code,source_type:c.sourceType,source_host:new URL(c.sourceUrl).hostname}));
+ // Una lista comunitaria no es una publicación oficial: nunca etiquetarla como tal.
+ const publication=c.sourceType==='nightlight'
+  ? (typeof c.officialPublicationUrl==='string'&&official.test(c.officialPublicationUrl)?c.officialPublicationUrl:null)
+  : c.sourceUrl;
+ let link=null;
+ if(publication){
+  link=element('a',c.sourceType==='official_wiki'?'VER EN DBD WIKI':'VER PUBLICACIÓN OFICIAL','code-source');
+  link.href=publication;link.target='_blank';link.rel='noopener noreferrer';
+  link.addEventListener('click',()=>window.sanleanTrack?.('code_source_click',{code:c.code,source_type:c.sourceType,source_host:new URL(publication).hostname}));
+ }
  const caption=element('span','Sin imagen disponible','code-missing-image');caption.hidden=hasImage;
- const sourceInfo=element('div',undefined,'code-source-info');sourceInfo.append(caption,link);
+ const sourceInfo=element('div',undefined,'code-source-info');sourceInfo.append(caption);if(link)sourceInfo.append(link);
  if(c.status==='active')actions.append(button,feedback);actions.append(sourceInfo);
  if(!hasImage&&expiry) {const expiryLine=element('p',`${c.status==='expired'?'Finalizó':'Disponible hasta'}: ${expiry}`,'code-expiry-inline');dl.append(expiryLine);}
  content.append(heading,dl,actions);if(media)article.append(media);article.append(content);return article;
@@ -43,8 +54,16 @@ function render(data){
  const unique=[...new Map(codes.sort((a,b)=>Number(b.sourceType==='nightlight')-Number(a.sourceType==='nightlight')).map(c=>[c.code,c])).values()];
  const permanent=unique.filter(c=>c.status==='active'&&c.expiryPolicy==='never').sort(compareCodes);
  const active=unique.filter(c=>c.status==='active'&&c.expiryPolicy!=='never').sort(compareCodes);
- const expired=unique.filter(c=>c.status==='expired').sort(compareCodes);
- for(const [id,list] of [['codes-active',active],['codes-permanent',permanent],['codes-expired',expired]])$(id).replaceChildren(...(list.length?list.map(card):[element('p','No hay códigos en esta categoría.') ]));
+ const expired=unique.filter(c=>c.status==='expired'&&(c.sourceType!=='nightlight'||c.trackedWhileActive===true)).sort(compareCodes);
+ const activeText=active.filter(c=>c.images.length===0).sort(compareCodes);
+ const activeImages=active.filter(c=>c.images.length>0).sort(compareCodes);
+ // Cada grupo tiene su propia grilla: las tarjetas con imagen siempre empiezan en la columna 1.
+ $('codes-active-text').replaceChildren(...activeText.map(card));
+ $('codes-active-images').replaceChildren(...activeImages.map(card));
+ $('codes-active-text').hidden=activeText.length===0;
+ $('codes-active-images').hidden=activeImages.length===0;
+ $('codes-active-empty').hidden=activeText.length+activeImages.length>0;
+ for(const [id,list] of [['codes-permanent',permanent],['codes-expired',expired]])$(id).replaceChildren(...(list.length?list.map(card):[element('p','No hay códigos en esta categoría.') ]));
 
 }
 async function showDebug(data){
