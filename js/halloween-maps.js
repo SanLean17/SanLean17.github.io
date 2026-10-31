@@ -5,7 +5,7 @@ if(app)initialize();
 async function initialize(){
  const el=id=>app.querySelector('#hm'+id);
  const gallery=el('Gallery'),viewer=el('Viewer'),viewport=el('Viewport'),scene=el('Scene');
- let maps,current,camera={scale:1,x:0,y:0},baseScale=1,ready=false,placing=false,loadId=0,lastInfoTrigger;
+ let maps,current,camera={scale:1,x:0,y:0},baseScale=1,ready=false,placing=false,loadId=0,lastInfoTrigger,activeMode='community';
  let fittedViewport={width:0,height:0};
  let points=new Map(),gesture=null,moved=false,ignoreClickUntil=0,tapMarker=null;
  let pins={};const storageKey='sanlean.halloween.positions.v1';
@@ -63,10 +63,41 @@ async function initialize(){
  }
  function renderLabels(){el('LabelLayer').replaceChildren();for(const label of current.labels){const node=create('span','hm-label',label.text);position(node,label);el('LabelLayer').append(node);}el('LabelLayer').hidden=!el('Labels').checked;}
  function stopGesture(){for(const id of points.keys()){if(viewport.hasPointerCapture(id))viewport.releasePointerCapture(id);}points.clear();gesture=null;viewport.classList.remove('is-dragging');}
+ function setMode(mode){
+  activeMode=mode==='sanlean'?'sanlean':'community';
+  const inCommunity=activeMode==='community';
+  el('Community').hidden=!inCommunity;
+  el('Workspace').hidden=inCommunity;
+  el('CommunityTab').setAttribute('aria-pressed',String(inCommunity));
+  el('CommunityTab').classList.toggle('is-current',inCommunity);
+  el('OwnTab').setAttribute('aria-pressed',String(!inCommunity));
+  el('OwnTab').classList.toggle('is-current',!inCommunity);
+  if(current){
+   el('Notice').textContent=inCommunity
+    ? 'MAPA DE LA COMUNIDAD · Elegí el escenario dentro del visor de p8riot. Sus mapas y marcadores se basan en el juego, pero no son publicaciones oficiales y pueden variar entre partidas.'
+    : current.placeholder
+     ? 'ESQUEMA SANLEAN · Esta ilustración no representa las calles ni posiciones reales del juego. Los filtros no tienen marcadores de escape verificados.'
+     : 'Las marcas indican ubicaciones posibles; verificá siempre las condiciones de tu partida.';
+  }
+  if(!inCommunity&&ready)requestAnimationFrame(()=>{if(activeMode==='sanlean'&&!viewer.hidden)reset();});
+ }
+ el('CommunityTab').addEventListener('click',()=>setMode('community'));
+ el('OwnTab').addEventListener('click',()=>setMode('sanlean'));
+ const externalFullscreen=el('CommunityFullscreen');
+ const externalBox=el('CommunityFrameBox');
+ if(!externalBox.requestFullscreen)externalFullscreen.hidden=true;
+ else externalFullscreen.addEventListener('click',async()=>{
+  try{if(document.fullscreenElement===externalBox)await document.exitFullscreen();
+   else await externalBox.requestFullscreen();}
+  catch{announce('La pantalla completa no está disponible en este navegador.');}
+ });
+ document.addEventListener('fullscreenchange',()=>{
+  externalFullscreen.textContent=document.fullscreenElement===externalBox?'SALIR DE PANTALLA COMPLETA':'PANTALLA COMPLETA';
+ });
  function loadMap(map){
   stopGesture();current=map;ready=false;const request=++loadId;setPlacing(false);closeInfo();hiddenTypes.clear();gallery.hidden=true;el('GalleryHeading').hidden=true;viewer.hidden=false;scene.hidden=true;
   el('MapTitle').textContent=map.name;el('MapTitle').focus({preventScroll:true});el('MapTitle').scrollIntoView({block:'start',behavior:'instant'});
-  el('Notice').textContent=map.placeholder?'ESQUEMA ARTÍSTICO · La ilustración no representa las calles ni las posiciones reales del juego. Podés explorar los controles de zoom y tu marcador personal; los puntos de escape todavía no tienen coordenadas verificadas.':'Las marcas indican ubicaciones posibles; verificá siempre las condiciones de tu partida.';
+  setMode(activeMode);
   el('MapSummary').textContent=map.summary||'Referencias oficiales del escenario.';
   el('Verified').replaceChildren(...(map.highlights||[]).map(name=>create('li','',name)));
 
@@ -141,7 +172,7 @@ async function initialize(){
   const response=await fetch('/data/halloween-maps.json');if(!response.ok)throw Error('No disponible');maps=validateCatalog(await response.json()).maps;
   for(const map of maps){
    const card=create('button','hm-card');card.type='button';card.dataset.map=map.id;const image=create('img');image.src=map.image;image.alt='';image.loading='lazy';image.width=map.width;image.height=map.height;image.addEventListener('error',()=>{image.hidden=true;});
-   const copy=create('span','hm-card-copy');copy.append(create('strong','',map.name),create('small','',map.placeholder?'ESQUEMA ILUSTRATIVO · MAPA INTERACTIVO':'POSIBLES UBICACIONES · CONSULTÁ TU PARTIDA'),create('span','hm-open','EXPLORAR MAPA →'));card.append(image,copy);card.addEventListener('click',()=>loadMap(map));gallery.append(card);
+   const copy=create('span','hm-card-copy');copy.append(create('strong','',map.name),create('small','',map.placeholder?'PORTADA ILUSTRATIVA · VISOR COMUNITARIO':'VISOR COMUNITARIO · CONSULTÁ TU PARTIDA'),create('span','hm-open','EXPLORAR MAPA →'));card.append(image,copy);card.addEventListener('click',()=>loadMap(map));gallery.append(card);
    const button=create('button','',map.name);button.type='button';button.dataset.map=map.id;
    // A horizontal touch scroller can suppress the compatibility click after a pinch.
    // Handle a deliberate stationary tap, but never a swipe, cancel or second finger.
