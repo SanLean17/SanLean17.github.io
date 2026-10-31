@@ -448,3 +448,38 @@
  #halloweenMaps .hm-marker{width:44px;height:44px;}
  #halloweenMaps .hm-label.hm-street{font-size:11px;}
 }
+
+/* MOBILE · Cambio de mapas en columna. El carrusel horizontal solo se conserva en tablet. */
+@media(max-width:760px){
+ #halloweenMaps .hm-map-nav > .hm-map-list{
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:6px;
+  margin:12px 0 16px;
+  padding:0;
+  overflow:visible;
+  max-width:100%;
+ }
+ #halloweenMaps .hm-map-nav .hm-map-list button{
+  display:block;
+  width:100%;
+  min-width:0;
+  max-width:none;
+  min-height:44px;
+  flex:none;
+  text-align:left;
+  white-space:normal;
+  overflow-wrap:break-word;
+  border:0;
+  border-left:3px solid transparent;
+  border-radius:8px;
+  padding:11px 13px;
+  background:transparent;
+  color:#c2c2cc;
+ }
+ #halloweenMaps .hm-map-nav .hm-map-list button[aria-current="true"]{
+  border-left-color:#ff003c;
+  background:#2b1821;
+  color:#fff;
+ }
+}
