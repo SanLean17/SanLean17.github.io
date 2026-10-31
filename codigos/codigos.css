@@ -29,9 +29,9 @@
 .codes-page [hidden]{display:none!important}
 @media(max-width:760px){.codes-page .codes-grid{grid-template-columns:1fr}.codes-page .codes-intro{margin-bottom:var(--public-section-gap)}.codes-page .codes-section h2{font-size:30px}.codes-page .code-content{padding:20px}.codes-page .code-card h3{font-size:28px}.codes-page .code-card dl{min-height:112px}}
 /* Shared left edge and spacing are local to the codes page. */
-.codes-page .codes-intro{margin-bottom:40px;align-items:flex-start!important;text-align:left}
+.codes-page .codes-intro{margin-bottom:52px;align-items:flex-start!important;text-align:left}
 .codes-page .codes-intro :is(h1,p){text-align:left!important;margin-left:0!important;margin-right:0!important}
-.codes-page .codes-section{width:100%;margin:0 0 48px}
+.codes-page .codes-section{width:100%;margin:0 0 76px}
 .codes-page .codes-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 .codes-page .code-card{border-radius:14px}
 .codes-page .code-media{border-radius:14px;overflow:hidden}
@@ -55,7 +55,7 @@
 .codes-page .codes-archive.is-dragging *{cursor:grabbing;user-select:none}
 .codes-page .codes-archive:focus-visible{outline:2px solid var(--red);outline-offset:4px}
 @media(max-width:1200px){.codes-page .codes-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:760px){.codes-page .codes-grid{grid-template-columns:1fr}.codes-page .codes-intro{margin-bottom:32px}.codes-page .codes-archive .code-card{flex-basis:min(280px,85%)}.codes-page .code-card dl{min-height:112px}}
+@media(max-width:760px){.codes-page .codes-grid{grid-template-columns:1fr}.codes-page .codes-intro{margin-bottom:38px}.codes-page .codes-archive .code-card{flex-basis:min(280px,85%)}.codes-page .code-card dl{min-height:112px}}
 .codes-page .codes-archive{border-radius:14px}
 .codes-page .code-card[data-status="active"]{transition:border-color .2s,box-shadow .2s}
 @media(hover:hover) and (min-width:761px){.codes-page .code-card[data-status="active"]:hover{border-color:#ff003c;box-shadow:0 0 8px rgba(255,0,60,.45),0 0 20px rgba(255,0,60,.22)}.codes-page [data-status="active"] .code-media img{transition:transform .25s}.codes-page [data-status="active"] .code-media:hover img{transform:scale(1.03)}}
@@ -84,44 +84,110 @@
 
 @media(hover:hover){.codes-page .code-image-prev:hover,.codes-page .code-image-next:hover{color:#ff003c;background:transparent;box-shadow:none}}
 
-/* Tarjetas compactas sin imagen, como el ejemplo aprobado para SanLean. */
-.codes-page .code-card.code-card-text{position:relative;min-height:205px;background:#171717;border:1px solid #303034;border-left:6px solid #ff003c;border-radius:14px;grid-column:span 1}
-.codes-page .code-card-text .code-content{padding:18px 18px 14px;gap:12px;min-height:205px}
-.codes-page .code-card-text .code-heading{min-height:0;display:flex;flex-direction:column;align-items:stretch;gap:12px}
-.codes-page .code-card-text .code-topline{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.codes-page .code-card-text .code-state{font:800 11px/1.4 var(--body);padding:3px 8px;border-radius:999px;background:rgba(0,132,48,.18);color:#00ca68;letter-spacing:0}
-.codes-page .code-card-text[data-status="expired"] .code-state{background:#2c2c30;color:#b7b7bf}
-.codes-page .code-card-text .code-kind{font:700 11px/1.4 var(--body);color:#bcbcc1;text-align:right}
-.codes-page .code-card-text h3{font-size:clamp(23px,2.3vw,32px);line-height:1.1}
-.codes-page .code-card-text dl{font-size:13px;line-height:1.5;min-height:0;margin:0;color:#bcbcc1}
-.codes-page .code-card-text dt{display:none}.codes-page .code-card-text dd:first-of-type{min-height:0}
-.codes-page .code-card-text .code-actions{margin-top:auto;padding-top:13px;border-top:1px solid rgba(255,255,255,.07);display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.codes-page .code-card-text .code-actions button{order:2;width:auto;min-height:44px;height:44px;border-radius:999px;padding:0 20px;font:800 12px/1.2 var(--body)}
-.codes-page .code-card-text .code-source{order:1;text-align:left;text-decoration:none;padding:0;font-size:11px;color:#bcbcc1}
-.codes-page .code-card-text .code-source:hover{text-decoration:underline;text-underline-offset:3px}
-.codes-page .code-card-text .code-expiry-inline{font-size:12px;color:#bcbcc1}
-.codes-page .codes-permanent-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-.codes-page .codes-archive .code-card-text{min-height:210px}
-.codes-page .codes-archive .code-card-text .code-content{padding:16px;min-height:210px}
+
+/* Vistas CÓDIGOS: dos grupos visuales independientes con las mismas 3 columnas.
+   El grupo de imágenes siempre empieza una nueva fila desde la izquierda. */
+.codes-page .codes-active-layout{display:flex;flex-direction:column;gap:26px}
+.codes-page .codes-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.codes-page .codes-grid > .code-card{grid-column:span 1;max-width:none;width:100%}
+.codes-page .codes-section > h2{margin-bottom:28px}
+.codes-page .codes-source-note{font-size:14px;line-height:1.5;color:#bcbcc1;margin:-12px 0 24px}
+
+/* Sin imagen: mismo ancho de columna que las tarjetas con galería. */
+.codes-page .code-card.code-card-text{
+ position:relative;min-height:235px;
+ background:#171717;border:1px solid #303034;
+ border-left:6px solid #ff003c;border-radius:14px;
+ max-width:none;align-self:stretch;
+}
+.codes-page .code-card-text .code-content{
+ padding:18px 18px 16px;gap:14px;min-height:235px
+}
+.codes-page .code-card-text .code-heading{
+ display:flex;flex-direction:column;align-items:stretch;
+ gap:12px;min-height:0
+}
+.codes-page .code-card-text .code-topline{
+ display:flex;align-items:center;justify-content:space-between;gap:8px
+}
+.codes-page .code-card-text .code-state{
+ font:800 11px/1.4 var(--body);padding:3px 8px;
+ border-radius:999px;background:rgba(0,132,48,.18);
+ color:#00ca68;letter-spacing:0;flex-shrink:0
+}
+.codes-page .code-card-text[data-status="expired"] .code-state{
+ background:#2c2c30;color:#b7b7bf
+}
+.codes-page .code-card-text .code-kind{
+ font:700 10px/1.4 var(--body);color:#bcbcc1;text-align:right
+}
+.codes-page .code-card-text h3{
+ font-size:clamp(21px,2.05vw,29px);line-height:1.15;
+ overflow-wrap:anywhere
+}
+.codes-page .code-card-text dl{
+ display:block;font-size:13px;line-height:1.5;
+ min-height:0;margin:0;color:#bcbcc1
+}
+.codes-page .code-card-text dl dt{
+ display:inline;font:600 13px/1.5 var(--body);
+ color:#bcbcc1;margin:0;letter-spacing:0
+}
+.codes-page .code-card-text dl dd{
+ display:inline;min-height:0;font-size:13px;color:#bcbcc1
+}
+.codes-page .code-card-text dl dt:not(:first-child){display:block;margin-top:8px}
+.codes-page .code-card-text .code-actions{
+ display:flex;flex-direction:row;align-items:center;
+ justify-content:space-between;gap:12px;flex-wrap:wrap;
+ margin-top:auto;padding-top:13px;
+ border-top:1px solid rgba(255,255,255,.07)
+}
+.codes-page .code-card-text .code-actions button{
+ order:2;width:auto;height:44px;min-height:44px;
+ padding:0 17px;margin-left:auto;border-radius:999px;
+ font:800 12px/1.2 var(--body)
+}
+.codes-page .code-card-text .code-source-info{
+ order:1;display:flex;flex-direction:column;
+ align-items:flex-start;gap:6px
+}
+.codes-page .code-card-text .code-missing-image{
+ font-size:11px;line-height:1.4;color:#bcbcc1
+}
+.codes-page .code-card-text .code-source{
+ font-size:11px;line-height:1.3;color:#bcbcc1;
+ text-align:left;text-decoration:underline;padding:0
+}
+.codes-page .code-source-info{display:flex;flex-direction:column;align-items:center}
+.codes-page .code-missing-image[hidden]{display:none!important}
+
+/* Evitar que el borde superpuesto deje franjas grises junto a la línea roja. */
+.codes-page .code-card.code-card-text::after{display:none}
+@media(hover:hover) and (min-width:761px){
+ .codes-page .code-card.code-card-text[data-status="active"]:hover{
+  border-color:#ff003c;
+  border-left-color:#ff003c;
+  box-shadow:0 0 8px rgba(255,0,60,.45),0 0 20px rgba(255,0,60,.22)
+ }
+}
+.codes-page .codes-archive .code-card-text{min-height:235px}
+.codes-page .codes-archive .code-card-text .code-content{
+ padding:16px;gap:14px;min-height:235px
+}
 .codes-page .codes-archive .code-card-text dl{min-height:0}
-@media(max-width:1200px){.codes-page .codes-permanent-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:760px){.codes-page .codes-permanent-grid{grid-template-columns:1fr}.codes-page .code-card-text .code-content{min-height:205px}.codes-page .code-card-text h3{font-size:27px}}
-
-.codes-page .codes-source-note{font-size:14px;line-height:1.5;color:#bcbcc1;margin:-10px 0 24px}
-
-/* Distribución horizontal de la tarjeta sin imagen según referencia aprobada. */
-.codes-page .codes-grid > .code-card-text {grid-column:span 2;max-width:760px;width:100%;align-self:start;}
-.codes-page .codes-permanent-grid {grid-template-columns:repeat(2,minmax(0,1fr));}
-.codes-page .code-card-text .code-source-info {display:flex;flex-direction:column;align-items:flex-start;gap:5px;order:1;}
-.codes-page .code-card-text .code-missing-image {font-size:11px;line-height:1.3;color:#bcbcc1;}
-.codes-page .code-card-text .code-source {font-size:11px;line-height:1.3;}
-.codes-page .code-card-text .code-expiry-inline{margin-top:8px;font-size:12px;color:#bcbcc1;}
-.codes-page .code-card-text .code-actions button{order:2;}
-.codes-page .code-card-text dl{display:block;}
-.codes-page .code-card-text dl .code-expiry-inline{font-weight:500;}
-.codes-page .code-source-info{display:flex;flex-direction:column;align-items:center;}
-.codes-page .code-missing-image[hidden]{display:none!important;}
-@media(max-width:760px){.codes-page .codes-grid>.code-card-text{grid-column:span 1;max-width:100%}.codes-page .codes-permanent-grid{grid-template-columns:1fr}.codes-page .code-card-text .code-actions{gap:12px}.codes-page .code-card-text .code-actions button{max-width:100%}}
-
-/* En permanentes, dos tarjetas compactas por fila en escritorio, una en móvil. */
-@media(min-width:761px){.codes-page .codes-permanent-grid > .code-card-text{grid-column:span 1;max-width:none}}
+@media(max-width:1200px){
+ .codes-page .codes-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:760px){
+ .codes-page .codes-grid{grid-template-columns:minmax(0,1fr)}
+ .codes-page .codes-section{margin-bottom:56px}
+ .codes-page .codes-intro{margin-bottom:38px}
+ .codes-page .codes-active-layout{gap:22px}
+ .codes-page .code-card-text .code-content{min-height:235px}
+ .codes-page .code-card-text h3{font-size:27px}
+}
+@media(max-width:360px){
+ .codes-page .code-card-text .code-content{padding:16px}
+ .codes-page .code-card-text .code-actions button{padding:0 13px;font-size:11px}
+}
