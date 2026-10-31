@@ -5,7 +5,7 @@ if(app)initialize();
 async function initialize(){
  const el=id=>app.querySelector('#hm'+id);
  const gallery=el('Gallery'),viewer=el('Viewer'),viewport=el('Viewport'),scene=el('Scene');
- let maps,current,camera={scale:1,x:0,y:0},baseScale=1,ready=false,placing=false,loadId=0,lastInfoTrigger,activeMode='community';
+ let maps,current,camera={scale:1,x:0,y:0},baseScale=1,ready=false,placing=false,loadId=0,lastInfoTrigger;
  let fittedViewport={width:0,height:0};
  let points=new Map(),gesture=null,moved=false,ignoreClickUntil=0,tapMarker=null;
  let pins={};const storageKey='sanlean.halloween.positions.v1';
@@ -27,8 +27,23 @@ async function initialize(){
  function reset(){if(!current||!ready)return;const width=viewport.clientWidth,height=viewport.clientHeight;if(!width||!height)return;camera=fit(current.width,current.height,width,height);baseScale=camera.scale;fittedViewport={width,height};paint();}
  function zoom(factor,point={x:viewport.clientWidth/2,y:viewport.clientHeight/2}){if(!ready)return;camera=zoomAt(camera,point,clamp(camera.scale*factor,baseScale,baseScale*8));constrain();paint();}
  function position(node,p){node.style.left=p.x*100+'%';node.style.top=p.y*100+'%';}
- function setPlacing(active){placing=active;el('Place').setAttribute('aria-pressed',String(active));viewport.classList.toggle('is-placing',active);announce(active?'TOCÁ EL MAPA DONDE ESTÁS · Esc para cancelar.':'');}
+ function setPlacing(active){hideTooltip();placing=active;el('Place').setAttribute('aria-pressed',String(active));viewport.classList.toggle('is-placing',active);announce(active?'TOCÁ EL MAPA DONDE ESTÁS · Esc para cancelar.':'');}
  function closeInfo(){el('Info').hidden=true;}
+ function hideTooltip(){el('Tooltip').hidden=true;}
+ function showTooltip(marker,event,trigger){
+  if(!ready||placing||event?.pointerType==='touch')return;
+  const tip=el('Tooltip');
+  const category=categories[marker.type].name;
+  tip.replaceChildren(create('strong','',category),create('span','',marker.title),create('small','',marker.description));
+  const viewRect=viewport.getBoundingClientRect();
+  const triggerRect=trigger.getBoundingClientRect();
+  const x=Number.isFinite(event?.clientX)?event.clientX-viewRect.left:triggerRect.left+triggerRect.width/2-viewRect.left;
+  const y=Number.isFinite(event?.clientY)?event.clientY-viewRect.top:triggerRect.top-viewRect.top;
+  tip.hidden=false;
+  const tipWidth=tip.offsetWidth||230,tipHeight=tip.offsetHeight||90;
+  tip.style.left=clamp(x+14,8,Math.max(8,viewport.clientWidth-tipWidth-8))+'px';
+  tip.style.top=clamp(y-tipHeight-12,8,Math.max(8,viewport.clientHeight-tipHeight-8))+'px';
+ }
  function info(type,title,description,notes='',trigger){
   lastInfoTrigger=trigger;el('InfoType').textContent=type;el('InfoTitle').textContent=title;el('InfoText').textContent=description;el('InfoNotes').textContent=notes;el('Info').hidden=false;
   el('Info').focus({preventScroll:true});el('Info').scrollIntoView({block:'nearest',behavior:'instant'});
@@ -41,12 +56,17 @@ async function initialize(){
  }
  function place(point){const p=normalized(point,camera,current.width,current.height);if(!validPoint(p)){announce('Elegí un punto dentro de la imagen del mapa.');return;}pins[current.id]=p;ignoreClickUntil=performance.now()+350;setPlacing(false);persist();renderPin();announce('MI POSICIÓN guardada solo en esta sesión.');}
  function renderMarkers(){
-  el('Markers').replaceChildren();
+  hideTooltip();el('Markers').replaceChildren();
   for(const marker of current.markers){
    if(hiddenTypes.has(marker.type))continue;
    const button=create('button','hm-marker');button.type='button';button.style.setProperty('--marker-color',categories[marker.type].color);button.append(icon(marker.type));position(button,marker);
    const title=(marker.possible?'Posible ubicación · ':'')+marker.title;button.title=title+' — '+marker.description;button.setAttribute('aria-label',title);
-   button.addEventListener('click',()=>{if(performance.now()<ignoreClickUntil||placing)return;const caution=marker.possible?'Su aparición puede variar entre partidas. ':'';const confidence=marker.confidence!=='confirmed'?'Referencia orientativa, pendiente de verificación completa. ':'';info(categories[marker.type].name,title,marker.description,caution+confidence+[marker.requirements,marker.variant,marker.notes].filter(Boolean).join(' · '),button);});el('Markers').append(button);
+   button.addEventListener('pointerenter',event=>showTooltip(marker,event,button));
+   button.addEventListener('pointermove',event=>showTooltip(marker,event,button));
+   button.addEventListener('pointerleave',hideTooltip);
+   button.addEventListener('focus',()=>showTooltip(marker,null,button));
+   button.addEventListener('blur',hideTooltip);
+   button.addEventListener('click',()=>{hideTooltip();if(performance.now()<ignoreClickUntil||placing)return;const caution=marker.possible?'Su aparición puede variar entre partidas. ':'';const confidence=marker.confidence!=='confirmed'?'Referencia orientativa, pendiente de verificación completa. ':'';info(categories[marker.type].name,title,marker.description,caution+confidence+[marker.requirements,marker.variant,marker.notes].filter(Boolean).join(' · '),button);});el('Markers').append(button);
   }
  }
  function renderFilters(){
@@ -63,41 +83,12 @@ async function initialize(){
  }
  function renderLabels(){el('LabelLayer').replaceChildren();for(const label of current.labels){const node=create('span','hm-label',label.text);position(node,label);el('LabelLayer').append(node);}el('LabelLayer').hidden=!el('Labels').checked;}
  function stopGesture(){for(const id of points.keys()){if(viewport.hasPointerCapture(id))viewport.releasePointerCapture(id);}points.clear();gesture=null;viewport.classList.remove('is-dragging');}
- function setMode(mode){
-  activeMode=mode==='sanlean'?'sanlean':'community';
-  const inCommunity=activeMode==='community';
-  el('Community').hidden=!inCommunity;
-  el('Workspace').hidden=inCommunity;
-  el('CommunityTab').setAttribute('aria-pressed',String(inCommunity));
-  el('CommunityTab').classList.toggle('is-current',inCommunity);
-  el('OwnTab').setAttribute('aria-pressed',String(!inCommunity));
-  el('OwnTab').classList.toggle('is-current',!inCommunity);
-  if(current){
-   el('Notice').textContent=inCommunity
-    ? 'MAPA DE LA COMUNIDAD · Elegí el escenario dentro del visor de p8riot. Sus mapas y marcadores se basan en el juego, pero no son publicaciones oficiales y pueden variar entre partidas.'
-    : current.placeholder
-     ? 'ESQUEMA SANLEAN · Esta ilustración no representa las calles ni posiciones reales del juego. Los filtros no tienen marcadores de escape verificados.'
-     : 'Las marcas indican ubicaciones posibles; verificá siempre las condiciones de tu partida.';
-  }
-  if(!inCommunity&&ready)requestAnimationFrame(()=>{if(activeMode==='sanlean'&&!viewer.hidden)reset();});
- }
- el('CommunityTab').addEventListener('click',()=>setMode('community'));
- el('OwnTab').addEventListener('click',()=>setMode('sanlean'));
- const externalFullscreen=el('CommunityFullscreen');
- const externalBox=el('CommunityFrameBox');
- if(!externalBox.requestFullscreen)externalFullscreen.hidden=true;
- else externalFullscreen.addEventListener('click',async()=>{
-  try{if(document.fullscreenElement===externalBox)await document.exitFullscreen();
-   else await externalBox.requestFullscreen();}
-  catch{announce('La pantalla completa no está disponible en este navegador.');}
- });
- document.addEventListener('fullscreenchange',()=>{
-  externalFullscreen.textContent=document.fullscreenElement===externalBox?'SALIR DE PANTALLA COMPLETA':'PANTALLA COMPLETA';
- });
  function loadMap(map){
-  stopGesture();current=map;ready=false;const request=++loadId;setPlacing(false);closeInfo();hiddenTypes.clear();gallery.hidden=true;el('GalleryHeading').hidden=true;viewer.hidden=false;scene.hidden=true;
+  hideTooltip();stopGesture();current=map;ready=false;const request=++loadId;setPlacing(false);closeInfo();hiddenTypes.clear();gallery.hidden=true;el('GalleryHeading').hidden=true;viewer.hidden=false;scene.hidden=true;
   el('MapTitle').textContent=map.name;el('MapTitle').focus({preventScroll:true});el('MapTitle').scrollIntoView({block:'start',behavior:'instant'});
-  setMode(activeMode);
+  el('Notice').textContent=map.placeholder
+    ? 'ESQUEMA ILUSTRATIVO · Las calles y los puntos mostrados todavía no corresponden a un plano contrastado con el juego. Podés usar el visor, el zoom, la cuadrícula y tu posición personal.'
+    : 'MAPA INTERACTIVO · Las ubicaciones indicadas son referencias para la partida; algunas salidas y objetos pueden variar.';
   el('MapSummary').textContent=map.summary||'Referencias oficiales del escenario.';
   el('Verified').replaceChildren(...(map.highlights||[]).map(name=>create('li','',name)));
 
@@ -131,7 +122,7 @@ async function initialize(){
  el('Place').addEventListener('click',()=>{closeInfo();setPlacing(!placing);if(placing)viewport.focus({preventScroll:true});});
  el('Clear').addEventListener('click',()=>{delete pins[current.id];persist();renderPin();closeInfo();setPlacing(false);announce('Posición borrada.');el('Place').focus({preventScroll:true});});
  el('InfoClose').addEventListener('click',()=>{closeInfo();if(lastInfoTrigger?.isConnected)lastInfoTrigger.focus({preventScroll:true});});
- el('Back').addEventListener('click',()=>{++loadId;stopGesture();setPlacing(false);viewer.hidden=true;gallery.hidden=false;el('GalleryHeading').hidden=false;ready=false;gallery.querySelector(`[data-map="${current.id}"]`)?.focus();});
+ el('Back').addEventListener('click',()=>{++loadId;hideTooltip();stopGesture();setPlacing(false);viewer.hidden=true;gallery.hidden=false;el('GalleryHeading').hidden=false;ready=false;gallery.querySelector(`[data-map="${current.id}"]`)?.focus();});
  const local=e=>{const rect=viewport.getBoundingClientRect();return {x:e.clientX-rect.left-viewport.clientLeft,y:e.clientY-rect.top-viewport.clientTop};};
  const snapshot=()=>{const values=[...points.values()];gesture={camera:{...camera},values};};
  viewport.addEventListener('pointerdown',event=>{
