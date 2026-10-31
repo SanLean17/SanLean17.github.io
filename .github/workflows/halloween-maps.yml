@@ -37,7 +37,7 @@ jobs:
         run: |
           npm install --no-save --no-package-lock playwright@1.56.1
           npx playwright install --with-deps chromium
-      - name: Browser: desktop and mobile
+      - name: 'Browser: desktop and mobile'
         env:
           HALLOWEEN_WIDTHS: '1440,390'
         run: node tests/halloween-maps.browser.cjs
