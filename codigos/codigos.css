@@ -106,3 +106,5 @@
 .codes-page .codes-archive .code-card-text dl{min-height:0}
 @media(max-width:1200px){.codes-page .codes-permanent-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:760px){.codes-page .codes-permanent-grid{grid-template-columns:1fr}.codes-page .code-card-text .code-content{min-height:205px}.codes-page .code-card-text h3{font-size:27px}}
+
+.codes-page .codes-source-note{font-size:14px;line-height:1.5;color:#bcbcc1;margin:-10px 0 24px}
