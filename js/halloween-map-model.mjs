@@ -27,7 +27,7 @@ export function calibrateMap(map){
   let rotation=Math.atan2(d*Math.cos(angle)+e*Math.sin(angle),a*Math.cos(angle)+b*Math.sin(angle))*180/Math.PI;
   // Street text follows the road; house numbers always remain upright.
   if(rotation>90)rotation-=180;if(rotation<=-90)rotation+=180;
-  return {...q,rotation:p.kind==='street'?rotation:0};
+  return {...q,rotation:p.kind==='street'?rotation:0,...(p.placement?{x:p.placement.x,y:p.placement.y,rotation:p.placement.rotation}: {})};
  })};
 }
 // Group close visible points without moving their geographic coordinates.
@@ -58,6 +58,11 @@ export function validateCatalog(data){
    points.add(marker.id);
   }
   for(const label of map.labels)if(!validPoint(label)||typeof label.text!=='string'||!label.source||(label.rotation!==undefined&&!Number.isFinite(label.rotation))||(label.kind!==undefined&&!['street','address','landmark'].includes(label.kind)))throw Error('Referencia sin evidencia');
+  for(const {placement:p} of map.labels)if(p){
+   if(p.space!=='image'||!validPoint(p)||!Number.isFinite(p.rotation)||!p.evidence||!p.method)throw Error('Ajuste de referencia sin evidencia');
+   const points=p.polygon||p.edges?.flat();
+   if(!Array.isArray(points)||points.length<3||points.some(v=>!Array.isArray(v)||v.length!==2||!validPoint({x:v[0],y:v[1]})))throw Error('Geometría de referencia inválida');
+  }
   if(map.placeholder&&(map.markers.length||map.labels.length))throw Error('Un placeholder no debe publicar geografía ficticia');
  }
  return data;

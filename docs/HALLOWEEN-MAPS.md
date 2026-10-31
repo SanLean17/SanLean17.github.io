@@ -152,7 +152,7 @@ exclusivamente los cinco mapas y nueve PNG del propietario. Las referencias se
 consultaron para auditoría; las comparativas locales no se publican como nuevos assets.
 
 **Fusible:** sin posiciones suficientemente documentadas en los archivos consultados.
-Filtro deshabilitado y texto visible «Sin ubicaciones documentadas». Nunca se transforma
+En la auditoría inicial se mostró una explicación; la revisión UX posterior la reemplaza por `FUSIBLES (0)`. Nunca se transforma
 una puerta que requiere fusible en una aparición del objeto.
 
 **Incertidumbre restante:** las salidas y los objetos conservan `community` y «posible».
@@ -184,3 +184,79 @@ Se conserva la lista mobile vertical de cinco mapas, los filtros por defecto y e
 
 El resultado verifica la correspondencia con las imágenes y fuentes disponibles;
 no certifica cada aparición dentro de una partida real.
+
+
+## Revisión UX, geometría de etiquetas y nitidez — 31/10/2026
+
+Esta revisión sustituye las indicaciones anteriores de presentación de filtros y
+referencias; conserva la calibración global, los 620 marcadores, imágenes e íconos.
+
+- Eliminados el aviso inferior con su divisor y todo REFERENCIAS DEL ESCENARIO.
+- Encabezados MAPAS y FILTROS; selector más contrastado con selección roja, nombres
+  completos y lista vertical mobile. No se cambia título, descripción ni galería.
+- Eliminado el párrafo de instrucciones de filtros. Grupos SALIDAS Y RUTAS DE ESCAPE
+  y OBJETOS. Los objetos sin datos muestran únicamente nombre y contador: FUSIBLES (0).
+- MOSTRAR REFERENCIAS y MOSTRAR CUADRÍCULA se encuentran debajo de MAPAS.
+- Ningún cambio de fondo, navegación global, otras páginas ni USUARIO.
+
+### Geometría y casos retenidos
+
+Se volvió a consultar `p8riot/halloween-maps`, proyecto del mismo juego y los mismos
+cinco escenarios, en `data/maps.js` y `app.js`. Contiene puntos de etiquetas y registro,
+pero no polígonos oficiales de cada vivienda ni ejes vectoriales de las calles.
+No se copiaron su aplicación, imágenes ni recursos. La numeración/nomenclatura existente
+no cambia; los contornos se midieron sobre las imágenes propias, cotejando la asignación
+existente con el atlas. No se importaron automáticamente nuevas ubicaciones.
+
+Cada etiqueta corregida incorpora `placement` en espacio de imagen normalizado:
+polígono del tejado o bordes del tramo de calle, método de cálculo y evidencia.
+Se extrajeron contornos de contraste y se inspeccionaron visualmente; los contornos
+fragmentados o mezclados con patios se corrigieron mediante trazado del borde visible.
+Las viviendas se ubican en el centro de área del polígono, con comprobación de que
+el punto esté dentro. Para una concavidad cuyo centro caiga fuera, se utiliza el punto
+interior de mayor separación al borde. Las calles usan el punto medio entre bordes
+visibles de un tramo recto, orientando el texto según ese tramo.
+
+**Límite de precisión:** son mediciones de la cartografía raster aportada, sobre un
+lienzo de análisis de 1280 px; no representan levantamientos oficiales ni precisión
+subpíxel del mundo del juego. Se conserva x/y de origen, la calibración anterior y
+el hash de cada imagen. `calibrateMap` aplica el ajuste local después de la proyección,
+una sola vez. Los pines y marcadores no reciben estos ajustes de etiquetas.
+
+| Mapa | Viviendas centradas | Calles ajustadas | Números conservados para revisión |
+| --- | ---: | ---: | --- |
+| Haddonfield Heights | 9 | 7 | 702, 705, 803, 804, 922, 864, 850 |
+| Haddonfield Town Center | 5 | 4 | 951, 901, 1007, 1005, 1003, 1001, 1008, 966, 962, 956, 954, 950 |
+| Orange Grove Estates | 12 | 4 | 1522, 1495, 1497, 1549, 1525, 1513 |
+| East Haddonfield | 8 | 5 | 832, 828, 715, 733 |
+| The Tower Farm | 6 | 1 | Ninguno |
+
+Total: **40 etiquetas de viviendas y 21 de calles ajustadas**. Ridgeline Rd. conserva
+su posición comprobada. Los 29 números restantes conservan los datos originales:
+contorno no inequívoco, asignación de unidad o varios números sobre un mismo edificio
+sin división interna verificable. No se colapsan números distintos a un centro común,
+ni se inventan particiones o asignaciones. Cada caso queda en `placementReview`.
+
+Fusibles: la fuente consultada sigue sin coordenadas de aparición documentadas.
+El contador permanece en cero. No se confunden puntos de uso con puntos de hallazgo.
+Los marcadores conservan advertencias de apariciones posibles en sus fichas y tooltips.
+
+### Renderizado y zoom
+
+El problema anterior combinaba un contenedor escalado por CSS con escalas inversas
+para textos e íconos; esa composición podía rasterizar las capas a una resolución
+intermedia. Ahora `#hmScene` transforma solamente la imagen. `#hmOverlay` es una capa
+hermana sin escala: proyecta cada ancla normalizada a píxeles de viewport usando la
+misma cámara. Textos DOM, bordes CSS e íconos propios mantienen su tamaño de pantalla.
+La cuadrícula y sus rótulos también se proyectan sin ampliar el grosor de línea.
+No se intenta aumentar artificialmente la resolución de los JPEG/WebP originales.
+
+Los grupos reutilizan sus nodos mientras sus miembros no cambien, evitando recrear
+íconos en cada paso de zoom. La colisión de etiquetas se calcula con dimensiones
+constantes; las etiquetas conservan sus anclas y se ocultan cuando no hay espacio.
+Las medidas se actualizan al cargar fuentes o cambiar el tamaño del viewport.
+Las geometrías de respaldo no se dibujan en la interfaz: son evidencia de mantenimiento.
+
+Pruebas ampliadas: anclas de marcadores contra la imagen renderizada, capa sin escala,
+tamaño fijo en zoom mínimo/intermedio/máximo, geometrías de etiquetas, controles
+reubicados, textos eliminados, contadores y conservación de identificadores.

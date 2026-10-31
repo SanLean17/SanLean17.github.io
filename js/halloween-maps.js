@@ -1,10 +1,11 @@
-import {categories,clamp,fit,normalized,zoomAt,validPoint,validateCatalog,calibrateMap,markerGroups} from './halloween-map-model.mjs?v=20261031-calibration1';
+import {categories,clamp,fit,normalized,zoomAt,validPoint,validateCatalog,calibrateMap,markerGroups} from './halloween-map-model.mjs?v=20261031-legibility2';
 
 const app=document.querySelector('#halloweenMaps');
 if(app)initialize();
 async function initialize(){
  const el=id=>app.querySelector('#hm'+id);
- const gallery=el('Gallery'),viewer=el('Viewer'),viewport=el('Viewport'),scene=el('Scene');
+ const gallery=el('Gallery'),viewer=el('Viewer'),viewport=el('Viewport'),scene=el('Scene'),overlay=el('Overlay');
+ const anchors=new WeakMap(),labelSizes=new WeakMap();let markerNodes=new Map();
  let maps,current,camera={scale:1,x:0,y:0},baseScale=1,ready=false,placing=false,loadId=0,lastInfoTrigger,navTouchHandledAt=0;
  let fittedViewport={width:0,height:0},markerScale=0;
  const infoHome=el('Info').parentNode;
@@ -36,7 +37,9 @@ async function initialize(){
  function persist(){try{sessionStorage.setItem(storageKey,JSON.stringify(pins));}catch{announce('Tu posición se conserva mientras esta página esté abierta.');}}
  function paint(){
   scene.style.transform=`translate(${camera.x}px,${camera.y}px) scale(${camera.scale})`;
-  scene.style.setProperty('--marker-scale',1/camera.scale);
+  const grid=el('Grid');grid.style.left=camera.x+'px';grid.style.top=camera.y+'px';grid.style.width=current.width*camera.scale+'px';grid.style.height=current.height*camera.scale+'px';
+  // The image scales; DOM overlays remain in viewport pixels for crisp text/icons.
+  for(const layer of [el('Markers'),el('PinLayer'),el('LabelLayer'),gridLabels])for(const node of layer.children){const point=anchors.get(node);if(point)position(node,point);}
   if(ready&&markerScale!==camera.scale)renderMarkers();
   layoutLabels();
  }
@@ -47,7 +50,7 @@ async function initialize(){
  }
  function reset(){if(!current||!ready)return;const width=viewport.clientWidth,height=viewport.clientHeight;if(!width||!height)return;camera=fit(current.width,current.height,width,height);baseScale=camera.scale;fittedViewport={width,height};paint();}
  function zoom(factor,point={x:viewport.clientWidth/2,y:viewport.clientHeight/2}){if(!ready)return;camera=zoomAt(camera,point,clamp(camera.scale*factor,baseScale,baseScale*8));constrain();paint();}
- function position(node,p){node.style.left=p.x*100+'%';node.style.top=p.y*100+'%';}
+ function position(node,p){anchors.set(node,p);node.dataset.mapX=p.x;node.dataset.mapY=p.y;node.style.left=(camera.x+p.x*current.width*camera.scale)+'px';node.style.top=(camera.y+p.y*current.height*camera.scale)+'px';}
  function setPlacing(active){hideTooltip();placing=active;el('Place').setAttribute('aria-pressed',String(active));viewport.classList.toggle('is-placing',active);announce(active?'TOCÁ EL MAPA DONDE ESTÁS · Esc para cancelar.':'');}
  function closeInfo(){el('Info').hidden=true;}
  function hideTooltip(){el('Tooltip').hidden=true;}
@@ -85,9 +88,11 @@ async function initialize(){
   info(categories[marker.type].name,title,marker.description,caution+confidence+[marker.requirements,marker.variant,marker.notes].filter(Boolean).join(' · '),trigger);
  }
  function renderMarkers(){
-  hideTooltip();el('Markers').replaceChildren();markerScale=camera.scale;
+  hideTooltip();markerScale=camera.scale;const fragment=document.createDocumentFragment(),nextNodes=new Map();
   const visible=current.markers.filter(m=>!hiddenTypes.has(m.type));
   for(const group of markerGroups(visible,current.width,current.height,camera.scale,matchMedia('(max-width:760px)').matches?50:46)){
+   const key=group.members.map(m=>m.id).join('|');
+   if(markerNodes.has(key)){const existing=markerNodes.get(key);position(existing,group);fragment.append(existing);nextNodes.set(key,existing);continue;}
    const marker=group.members[0],multiple=group.members.length>1;
    const button=create('button','hm-marker');button.type='button';button.style.setProperty('--marker-color',categories[marker.type].color);button.append(icon(marker.type));position(button,group);
    button.dataset.markerIds=JSON.stringify(group.members.map(m=>m.id));
@@ -110,18 +115,24 @@ async function initialize(){
      option.type='button';option.addEventListener('click',()=>markerInfo(member,button));list.append(option);
     }
     el('Info').append(list);
-   });el('Markers').append(button);
+   });fragment.append(button);nextNodes.set(key,button);
   }
-  layoutLabels();
+  el('Markers').replaceChildren(fragment);markerNodes=nextNodes;layoutLabels();
  }
  function layoutLabels(){
   if(!ready||el('LabelLayer').hidden)return;
-  const occupied=[...el('Markers').children].map(n=>n.getBoundingClientRect());
-  // Keep exact anchors; temporarily hide collisions instead of shifting house numbers.
+  const point=p=>({x:camera.x+p.x*current.width*camera.scale,y:camera.y+p.y*current.height*camera.scale});
+  const radius=matchMedia('(max-width:760px)').matches?25:23;
+  const occupied=[...el('Markers').children].map(n=>{const p=point(anchors.get(n));return {left:p.x-radius,right:p.x+radius,top:p.y-radius,bottom:p.y+radius};});
   for(const node of el('LabelLayer').children){
-   node.hidden=false;const box=node.getBoundingClientRect();
+   let size=labelSizes.get(node);
+   if(!size){node.hidden=false;size={w:node.offsetWidth,h:node.offsetHeight};labelSizes.set(node,size);}
+   const p=point(anchors.get(node)),angle=(Number(node.dataset.rotation)||0)*Math.PI/180;
+   const w=Math.abs(size.w*Math.cos(angle))+Math.abs(size.h*Math.sin(angle)),h=Math.abs(size.w*Math.sin(angle))+Math.abs(size.h*Math.cos(angle));
+   const box={left:p.x-w/2,right:p.x+w/2,top:p.y-h/2,bottom:p.y+h/2};
+   const outside=box.right<0||box.bottom<0||box.left>viewport.clientWidth||box.top>viewport.clientHeight;
    const overlaps=occupied.some(b=>box.left<b.right+3&&box.right>b.left-3&&box.top<b.bottom+3&&box.bottom>b.top-3);
-   node.hidden=overlaps;if(!overlaps)occupied.push(box);
+   node.hidden=outside||overlaps;if(!node.hidden)occupied.push(box);
   }
  }
  function renderFilters(){
@@ -132,7 +143,7 @@ async function initialize(){
    if(!count&&category.group!=='item')continue;
    if(category.group!==lastGroup){
     lastGroup=category.group;
-    const heading=create('p','hm-filter-group',category.group==='item'?'OBJETOS · OPCIONALES':'SALIDAS Y UBICACIONES');
+    const heading=create('p','hm-filter-group',category.group==='item'?'OBJETOS':'SALIDAS Y RUTAS DE ESCAPE');
     el('Filters').append(heading);
    }
    const button=create('button','hm-filter');
@@ -140,17 +151,17 @@ async function initialize(){
    button.dataset.group=category.group;
    button.setAttribute('aria-pressed',String(!hiddenTypes.has(type)));
    button.disabled=!count;
-   button.title=count?category.name+' · '+count+' ubicaciones posibles':'Todavía no hay ubicaciones documentadas';
-   button.setAttribute('aria-label',category.name+': '+count+' ubicaciones posibles'+(!count?', sin datos disponibles':''));
+   const filterName=type==='item_fuse'?'FUSIBLES':category.name;
+   button.title=filterName+' ('+count+')';
+   button.setAttribute('aria-label',filterName+' ('+count+')');
    const symbol=create('span','hm-icon');
    symbol.style.setProperty('--marker-color',category.color);symbol.append(icon(type));
-   button.append(symbol,create('span','hm-filter-name',category.name),create('span','hm-filter-count',String(count)));
+   button.append(symbol,create('span','hm-filter-name',filterName),create('span','hm-filter-count','('+count+')'));
    button.addEventListener('click',()=>{
     if(hiddenTypes.has(type))hiddenTypes.delete(type);else hiddenTypes.add(type);
     button.setAttribute('aria-pressed',String(!hiddenTypes.has(type)));
     closeInfo();renderMarkers();
    });
-   if(type==='item_fuse'&&!count)button.append(create('small','hm-filter-note','Sin ubicaciones documentadas'));
    el('Filters').append(button);
   }
   el('Labels').disabled=!current.labels.length;
@@ -160,20 +171,18 @@ async function initialize(){
   for(const label of current.labels){
    const kind=label.kind==='address'?'hm-address':'hm-street';
    const node=create('span','hm-label '+kind,label.text);
-   node.style.setProperty('--label-rotation',(Number(label.rotation)||0)+'deg');
+   node.style.setProperty('--label-rotation',(Number(label.rotation)||0)+'deg');node.dataset.rotation=Number(label.rotation)||0;
    position(node,label);el('LabelLayer').append(node);
   }
   el('LabelLayer').hidden=!el('Labels').checked;
  }
  function stopGesture(){for(const id of points.keys()){if(viewport.hasPointerCapture(id))viewport.releasePointerCapture(id);}points.clear();gesture=null;viewport.classList.remove('is-dragging');}
  function loadMap(map){
-  hideTooltip();stopGesture();current=map;ready=false;const request=++loadId;setPlacing(false);closeInfo();hiddenTypes.clear();for(const [type,c] of Object.entries(categories))if(!c.defaultVisible)hiddenTypes.add(type);gallery.hidden=true;el('GalleryHeading').hidden=true;viewer.hidden=false;scene.hidden=true;
+  hideTooltip();stopGesture();current=map;ready=false;const request=++loadId;setPlacing(false);closeInfo();hiddenTypes.clear();for(const [type,c] of Object.entries(categories))if(!c.defaultVisible)hiddenTypes.add(type);gallery.hidden=true;el('GalleryHeading').hidden=true;viewer.hidden=false;scene.hidden=true;overlay.hidden=true;markerNodes.clear();
   el('MapTitle').textContent=map.name;el('MapTitle').focus({preventScroll:true});el('MapTitle').scrollIntoView({block:'start',behavior:'instant'});
   el('Notice').textContent=map.placeholder
     ? 'ESQUEMA ILUSTRATIVO · Las calles y los puntos mostrados todavía no corresponden a un plano contrastado con el juego. Podés usar el visor, el zoom, la cuadrícula y tu posición personal.'
     : 'MAPA INTERACTIVO · Las ubicaciones indicadas son referencias para la partida; algunas salidas y objetos pueden variar.';
-  el('MapSummary').textContent=map.summary||'Referencias oficiales del escenario.';
-  el('Verified').replaceChildren(...(map.highlights||[]).map(name=>create('li','',name)));
 
   for(const button of el('MapList').children)button.setAttribute('aria-current',String(button.dataset.map===map.id));
   el('ImageState').textContent='CARGANDO MAPA...';el('ImageState').hidden=false;viewport.setAttribute('aria-busy','true');
@@ -190,7 +199,7 @@ async function initialize(){
     markers:usingIllustration?[]:map.markers,
     labels:usingIllustration?[]:map.labels};
    scene.style.width=w+'px';scene.style.height=h+'px';
-   el('Image').replaceWith(image);ready=true;scene.hidden=false;
+   el('Image').replaceWith(image);ready=true;scene.hidden=false;overlay.hidden=false;
    el('ImageState').hidden=true;viewport.setAttribute('aria-busy','false');
    el('Notice').textContent=usingIllustration
     ? 'ESQUEMA ILUSTRATIVO · El mapa no está disponible; no se muestran ubicaciones sobre la imagen alternativa.'
@@ -202,13 +211,14 @@ async function initialize(){
    if(request!==loadId)return;
    if(!usingIllustration){usingIllustration=true;image.src=backupMapPath(map);return;}
    el('ImageState').textContent='NO SE PUDO CARGAR EL MAPA · Podés elegir otro mapa.';
-   viewport.setAttribute('aria-busy','false');
+   overlay.hidden=true;viewport.setAttribute('aria-busy','false');
   };
   image.src=detailedMapPath(map);
  }
- for(let i=0;i<10;i++){const a=create('span','',String.fromCharCode(65+i)),n=create('span','',String(i+1));a.style.left=(i*10+5)+'%';a.style.top='0';n.style.top=(i*10+5)+'%';n.style.left='0';el('Grid').append(a,n);}
+ const gridLabels=create('div','hm-grid-labels');gridLabels.hidden=el('Grid').hidden;overlay.prepend(gridLabels);
+ for(let i=0;i<10;i++){const a=create('span','hm-grid-letter',String.fromCharCode(65+i)),n=create('span','hm-grid-letter',String(i+1));anchors.set(a,{x:(i+.5)/10,y:0});anchors.set(n,{x:0,y:(i+.5)/10});gridLabels.append(a,n);}
  const compact=matchMedia('(max-width:900px)');el('Legend').open=!compact.matches;compact.addEventListener('change',()=>{el('Legend').open=!compact.matches;});
- el('Labels').addEventListener('change',()=>{el('LabelLayer').hidden=!el('Labels').checked;layoutLabels();});el('GridToggle').addEventListener('change',()=>{el('Grid').hidden=!el('GridToggle').checked;});
+ el('Labels').addEventListener('change',()=>{el('LabelLayer').hidden=!el('Labels').checked;layoutLabels();});el('GridToggle').addEventListener('change',()=>{el('Grid').hidden=!el('GridToggle').checked;gridLabels.hidden=el('Grid').hidden;});
  el('Reset').addEventListener('click',reset);
  el('Style').addEventListener('click',()=>{
   const next=!viewport.classList.contains('hm-paper');
@@ -269,7 +279,8 @@ async function initialize(){
   if(event.key==='+'||event.key==='=')zoom(1.25);else if(event.key==='-')zoom(.8);else if(event.key==='0')reset();else if(event.key==='Enter'&&placing)place({x:viewport.clientWidth/2,y:viewport.clientHeight/2});else if(event.key==='Escape')setPlacing(false);else{const delta={ArrowUp:[0,40],ArrowDown:[0,-40],ArrowLeft:[40,0],ArrowRight:[-40,0]}[event.key];if(delta){camera.x+=delta[0];camera.y+=delta[1];constrain();paint();}}
  });
  app.addEventListener('keydown',event=>{if(event.key==='Escape'){setPlacing(false);if(!el('Info').hidden){closeInfo();lastInfoTrigger?.focus({preventScroll:true});}}});
- new ResizeObserver(()=>{if(ready&&!viewer.hidden&&(Math.abs(viewport.clientWidth-fittedViewport.width)>1||Math.abs(viewport.clientHeight-fittedViewport.height)>1)){stopGesture();reset();}}).observe(viewport);
+ new ResizeObserver(()=>{if(ready&&!viewer.hidden&&(Math.abs(viewport.clientWidth-fittedViewport.width)>1||Math.abs(viewport.clientHeight-fittedViewport.height)>1)){for(const node of el('LabelLayer').children)labelSizes.delete(node);stopGesture();reset();}}).observe(viewport);
+ document.fonts?.ready.then(()=>{for(const node of el('LabelLayer').children)labelSizes.delete(node);layoutLabels();});
  try{
   const response=await fetch('/data/halloween-maps.json');if(!response.ok)throw Error('No disponible');maps=validateCatalog(await response.json()).maps.map(calibrateMap);
   for(const map of maps){

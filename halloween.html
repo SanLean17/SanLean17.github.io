@@ -15,10 +15,10 @@
 <link rel="stylesheet" href="/css/public-mobile.css?v=20261025-mobile-menu">
 <link rel="stylesheet" href="/css/public-refinements.css?v=20261015-1">
 <link rel="stylesheet" href="/css/public-info.css?v=20261013-8">
-<link rel="stylesheet" href="/css/halloween-maps.css?v=20261031-calibration1">
+<link rel="stylesheet" href="/css/halloween-maps.css?v=20261031-legibility2">
 <script defer src="/js/public-mobile.js?v=20261025-mobile-menu"></script>
 <script defer src="/js/main.js?v=20261028-catalog1"></script>
-<script type="module" src="/js/halloween-maps.js?v=20261031-calibration1"></script>
+<script type="module" src="/js/halloween-maps.js?v=20261031-legibility2"></script>
 <script defer src="/js/public-analytics.js?v=20261026-1"></script>
 </head>
 <body class="public-site desktop-footer-space page-bg halloween-page">
@@ -49,14 +49,9 @@
 <p id="hmNotice" class="hm-notice" role="status"></p>
 <div class="hm-workspace">
 <details id="hmLegend" class="hm-legend" open>
-<summary>LEYENDA Y FILTROS</summary>
+<summary>FILTROS</summary>
 <div class="hm-legend-inner">
-<p class="hm-small">Activá los tipos de ubicaciones que querés ver. Las salidas aparecen desde el inicio; los objetos se muestran solamente cuando los seleccionás.</p>
 <div id="hmFilters" class="hm-filters" aria-label="Filtrar ubicaciones"></div>
-<div class="hm-legend-options">
-<label class="hm-toggle"><input type="checkbox" id="hmLabels" checked> MOSTRAR REFERENCIAS</label>
-<label class="hm-toggle"><input type="checkbox" id="hmGridToggle"> MOSTRAR CUADRÍCULA</label>
-</div>
 <p class="hm-small">Todos los marcadores indican posibles apariciones. No todas las salidas ni todos los objetos estarán disponibles en cada partida.</p>
 </div>
 </details>
@@ -64,6 +59,8 @@
 <div id="hmViewport" class="hm-viewport" role="region" tabindex="0" aria-label="Mapa interactivo: hacé clic o tocá el plano para pantalla completa; arrastrá para mover, usá la rueda o dos dedos para ampliar. Con teclado, flechas para mover, más y menos para zoom y 0 para centrar.">
 <div id="hmScene" class="hm-scene" hidden>
 <img id="hmImage" alt="" draggable="false">
+</div>
+<div id="hmOverlay" class="hm-overlay" hidden>
 <div id="hmGrid" class="hm-grid" hidden aria-hidden="true"></div>
 <div id="hmLabelLayer" class="hm-layer" aria-hidden="true"></div>
 <div id="hmMarkers" class="hm-layer"></div>
@@ -86,19 +83,17 @@
 <h3 id="hmInfoTitle"></h3><p id="hmInfoText"></p><p id="hmInfoNotes"></p>
 </section>
 </div>
-<aside class="hm-map-nav" aria-label="Cambiar de mapa y consultar fuentes">
-<h3>CAMBIAR MAPA</h3>
+<aside class="hm-map-nav" aria-label="Mapas y controles visuales">
+<h3>MAPAS</h3>
 <div id="hmMapList" class="hm-map-list"></div>
-<div class="hm-verified">
-<h3>REFERENCIAS DEL ESCENARIO</h3>
-<p id="hmMapSummary" class="hm-map-summary"></p>
-<ul id="hmVerified" class="hm-verified-list"></ul>
+<div class="hm-legend-options">
+<label class="hm-toggle"><input type="checkbox" id="hmLabels" checked> MOSTRAR REFERENCIAS</label>
+<label class="hm-toggle"><input type="checkbox" id="hmGridToggle"> MOSTRAR CUADRÍCULA</label>
 </div>
 </aside>
 </div>
 <p class="hm-view-help">TOCAR EL MAPA: PANTALLA COMPLETA · ZOOM: RUEDA O DOS DEDOS · MOVER: ARRASTRAR · POSICIÓN PERSONAL: NO SE COMPARTE.</p>
 </section>
-<p class="hm-site-disclaimer">Los mapas y los íconos fueron incorporados por SanLean. Las marcas representan ubicaciones posibles basadas en referencias comunitarias: las apariciones reales, los accesos y los objetos pueden variar en cada partida.</p>
 </main>
 <footer class="public-footer" aria-label="Información de SanLean"><a href="contacto.html">CONTACTO</a><a href="creditos.html">CRÉDITOS Y LICENCIAS</a><a href="aviso-legal.html">AVISO LEGAL</a></footer>
 </body></html>

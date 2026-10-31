@@ -32,6 +32,10 @@ const activate=async(locator,width)=>{
    await page.locator('.hm-card').first().waitFor();
    assert.equal(await page.locator('.hm-card').count(),5);
    assert.equal(await page.locator('iframe').count(),0);
+   assert.equal(await page.locator('.hm-site-disclaimer,.hm-verified').count(),0);
+   assert.equal(await page.locator('#hmLegend summary').textContent(),'FILTROS');
+   assert.equal(await page.locator('.hm-map-nav h3').textContent(),'MAPAS');
+   assert.equal(await page.locator('.hm-map-nav #hmLabels,.hm-map-nav #hmGridToggle').count(),2);
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
    await activate(page.locator('.hm-card').first(),width);
    await page.waitForSelector('#hmScene:not([hidden])');
@@ -60,6 +64,8 @@ const activate=async(locator,width)=>{
    assert.ok(initial>10);
    assert.equal(await page.locator('#hmFilters [data-category="item_gas"]').getAttribute('aria-pressed'),'false');
    assert.equal(await page.locator('#hmFilters [data-category="item_fuse"]').isDisabled(),true);
+   assert.match(await page.locator('#hmFilters [data-category="item_fuse"]').textContent(),/FUSIBLES\(0\)/);
+   assert.doesNotMatch(await page.locator('#hmFilters').textContent(),/Sin ubicaciones|OPCIONALES/);
    assert.ok(await page.locator('#hmLabelLayer .hm-street').count()>3);
    assert.ok(await page.locator('#hmLabelLayer .hm-address').count()>8);
    assert.equal(await page.locator('#hmGrid').isVisible(),false);
@@ -122,7 +128,7 @@ const activate=async(locator,width)=>{
     await page.waitForFunction(src=>document.querySelector('#hmImage')?.getAttribute('src')===src&&!document.querySelector('#hmScene').hidden,map.image);
     await page.locator('#hmViewport').scrollIntoViewIfNeeded();
     await page.screenshot({path:path.join(shots,width+'-'+map.id+'-overview.png')});
-    const data=await page.locator('#hmMarkers button').evaluateAll(nodes=>nodes.map(n=>({ids:JSON.parse(n.dataset.markerIds),x:parseFloat(n.style.left)/100,y:parseFloat(n.style.top)/100})));
+    const data=await page.locator('#hmMarkers button').evaluateAll(nodes=>nodes.map(n=>({ids:JSON.parse(n.dataset.markerIds),x:Number(n.dataset.mapX),y:Number(n.dataset.mapY)})));
     const wanted=map.markers.filter(m=>['gate','car','cellar','drain','landmark'].includes(m.type));
     assert.deepEqual(data.flatMap(g=>g.ids).sort(),wanted.map(m=>m.id).sort());
     for(const group of data){const source=wanted.find(m=>m.id===group.ids[0]);assert.ok(Math.abs(group.x-(1-source.y))<1e-6&&Math.abs(group.y-source.x)<1e-6,'Anchor must match actual oriented image');}
@@ -164,7 +170,34 @@ const activate=async(locator,width)=>{
     await page.locator('#hmViewport').scrollIntoViewIfNeeded();
     await page.screenshot({path:path.join(shots,width+'-'+map.id+'-zoom.png')});
     const labelOverlap=await page.locator('#hmLabelLayer .hm-label:not([hidden])').evaluateAll(nodes=>{let b=nodes.map(n=>n.getBoundingClientRect());return b.some((a,i)=>b.some((c,j)=>j>i&&a.left<c.right&&a.right>c.left&&a.top<c.bottom&&a.bottom>c.top))});assert.equal(labelOverlap,false);
+    // At minimum, intermediate and maximum zoom: overlay remains unscaled and anchored.
+    for(const level of [1,4,8]){
+     await activate(page.locator('#hmReset'),width);
+     for(let i=1;i<level;i++)await page.locator('#hmViewport').press('+');
+     if(level===8)for(let i=0;i<8;i++)await page.locator('#hmViewport').press('+');
+     await page.locator('#hmViewport').scrollIntoViewIfNeeded();
+     const geometry=await page.evaluate(()=>{
+      const image=document.querySelector('#hmImage').getBoundingClientRect(),nodes=[...document.querySelectorAll('#hmMarkers button')];
+      return nodes.map(n=>{const r=n.getBoundingClientRect(),m=new DOMMatrix(getComputedStyle(n).transform);return {w:r.width,h:r.height,a:m.a,d:m.d,error:Math.hypot(r.x+r.width/2-(image.x+Number(n.dataset.mapX)*image.width),r.y+r.height/2-(image.y+Number(n.dataset.mapY)*image.height)),scaledParent:n.closest('#hmScene')!==null};});
+     });
+     for(const p of geometry){assert.equal(p.scaledParent,false);assert.equal(p.a,1);assert.equal(p.d,1);assert.ok(p.error<1);assert.ok(p.w<46&&p.h<46);}
+     assert.equal(await page.locator('#hmOverlay').evaluate(n=>getComputedStyle(n).transform),'none');
+     await page.screenshot({path:path.join(shots,width+'-'+map.id+'-level-'+level+'.png')});
+    }
+    // Inspect actual text at maximum zoom with filters off so labels are not occluded.
+    for(const type of await page.locator('#hmFilters button[aria-pressed="true"]:not([disabled])').evaluateAll(nodes=>nodes.map(n=>n.dataset.category)))await activate(page.locator('#hmFilters button[data-category="'+type+'"]'),width);
+    await activate(page.locator('#hmReset'),width);await page.locator('#hmViewport').scrollIntoViewIfNeeded();
+    const label=page.locator('#hmLabelLayer .hm-address:not([hidden])').first();
+    const labelBox=await label.boundingBox(),labelText=await label.textContent(),fontSize=await label.evaluate(n=>getComputedStyle(n).fontSize);
+    await page.mouse.move(labelBox.x+labelBox.width/2,labelBox.y+labelBox.height/2);
+    for(let i=0;i<5;i++)await page.mouse.wheel(0,-300);
+    const sameLabel=page.locator('#hmLabelLayer .hm-address').filter({hasText:new RegExp('^'+labelText+'$')});
+    assert.equal(await sameLabel.evaluate(n=>getComputedStyle(n).fontSize),fontSize);
+    assert.equal(await sameLabel.evaluate(n=>n.closest('#hmScene')!==null),false);
+    await page.screenshot({path:path.join(shots,width+'-'+map.id+'-text-detail.png')});
     await activate(page.locator('#hmReset'),width);
+    // Restore the configured defaults for the fullscreen interaction below.
+    for(const type of ['gate','car','cellar','drain','landmark']){const button=page.locator('#hmFilters button[data-category="'+type+'"]');if(await button.count())await activate(button,width);}
     await activate(page.locator('#hmPlace'),width);await page.locator('#hmViewport').press('Enter');
     assert.equal(await page.locator('.hm-personal').count(),1);
     await activate(page.locator('#hmClear'),width);assert.equal(await page.locator('.hm-personal').count(),0);

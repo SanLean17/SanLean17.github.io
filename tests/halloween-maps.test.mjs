@@ -118,7 +118,7 @@ test('calibración por imagen: hashes, puntos fijos y giro de calles sin rotar n
   assert.ok(calibration.registration.inliers>300);
   assert.ok(calibration.registration.medianErrorPixels<.5);
   assert.equal(calibration.registration.controlPoints.length,9);
-  const result=calibrateMap(map),target=expected[map.id],label=result.labels.find(l=>l.text===target.text);
+  const result=calibrateMap(map),target=expected[map.id],label=calibrateMap({...map,labels:map.labels.map(({placement,...label})=>label)}).labels.find(l=>l.text===target.text);
   assert.ok(Math.abs(label.x-target.x)<.001&&Math.abs(label.y-target.y)<.001);
   assert.ok(result.labels.filter(l=>l.kind==='address').every(l=>l.rotation===0));
   assert.deepEqual(calibrateMap(result),result,'No aplicar la calibración dos veces');
@@ -136,4 +136,22 @@ test('agrupación no pierde candidatos, conserva anclas y separa puntos al ampli
  assert.deepEqual(small.flatMap(g=>g.members.map(m=>m.id)),markers.map(m=>m.id));
  assert.equal(small[0].x,markers[0].x);
  assert.equal(large[0].members.length,2,'Objetos en el mismo punto siguen accesibles juntos');
+});
+
+
+test('ajustes de viviendas y calles respaldados por geometría, sin cambiar numeraciones',async()=>{
+ const {calibrateMap}=await import('../js/halloween-map-model.mjs');
+ const inside=(p,polygon)=>{let yes=false;for(let i=0,j=polygon.length-1;i<polygon.length;j=i++){const a=polygon[i],b=polygon[j];if((a[1]>p.y)!==(b[1]>p.y)&&p.x<(b[0]-a[0])*(p.y-a[1])/(b[1]-a[1])+a[0])yes=!yes;}return yes;};
+ let houses=0,streets=0;
+ for(const map of catalog.maps){
+  const result=calibrateMap(map);
+  assert.deepEqual(result.labels.map(l=>l.text),map.labels.map(l=>l.text));
+  for(const label of result.labels){
+   if(!label.placement){assert.equal(label.placementReview.status,'retained');continue;}
+   const p=label.placement;
+   if(label.kind==='address'){houses++;assert.ok(inside(label,p.polygon),'Centro fuera del edificio '+map.id+' '+label.text);assert.equal(label.rotation,0);}
+   else {streets++;assert.equal(p.edges.length,2);assert.equal(p.edges[0].length,2);}
+  }
+ }
+ assert.equal(houses,40);assert.equal(streets,21);
 });

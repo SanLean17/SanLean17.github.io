@@ -595,7 +595,37 @@
           "text": "Syracuse Ave.",
           "kind": "street",
           "rotation": -90,
-          "source": "Toponimia y posiciones contrastadas en atlas comunitario"
+          "source": "Toponimia y posiciones contrastadas en atlas comunitario",
+          "placement": {
+            "x": 0.183594,
+            "y": 0.274609,
+            "rotation": 0.0,
+            "space": "image",
+            "method": "road-edge-midline",
+            "edges": [
+              [
+                [
+                  0.125,
+                  0.25625
+                ],
+                [
+                  0.242188,
+                  0.25625
+                ]
+              ],
+              [
+                [
+                  0.125,
+                  0.292969
+                ],
+                [
+                  0.242188,
+                  0.292969
+                ]
+              ]
+            ],
+            "evidence": "Eje del tramo recto entre bordes visibles de calzada en la imagen SanLean; nombre conservado del atlas. Medición raster, no coordenada oficial."
+          }
         },
         {
           "x": 0.22467,
@@ -603,7 +633,37 @@
           "text": "La Mirada Way",
           "kind": "street",
           "rotation": -90,
-          "source": "Toponimia y posiciones contrastadas en atlas comunitario"
+          "source": "Toponimia y posiciones contrastadas en atlas comunitario",
+          "placement": {
+            "x": 0.476562,
+            "y": 0.227344,
+            "rotation": 0.0,
+            "space": "image",
+            "method": "road-edge-midline",
+            "edges": [
+              [
+                [
+                  0.375,
+                  0.214844
+                ],
+                [
+                  0.578125,
+                  0.214844
+                ]
+              ],
+              [
+                [
+                  0.375,
+                  0.239844
+                ],
+                [
+                  0.578125,
+                  0.239844
+                ]
+              ]
+            ],
+            "evidence": "Eje del tramo recto entre bordes visibles de calzada en la imagen SanLean; nombre conservado del atlas. Medición raster, no coordenada oficial."
+          }
         },
         {
           "x": 0.454993,
@@ -611,7 +671,37 @@
           "text": "Lampkin Lane",
           "kind": "street",
           "rotation": 0,
-          "source": "Toponimia y posiciones contrastadas en atlas comunitario"
+          "source": "Toponimia y posiciones contrastadas en atlas comunitario",
+          "placement": {
+            "x": 0.304688,
+            "y": 0.546875,
+            "rotation": 90.0,
+            "space": "image",
+            "method": "road-edge-midline",
+            "edges": [
+              [
+                [
+                  0.286719,
+                  0.496094
+                ],
+                [
+                  0.286719,
+                  0.597656
+                ]
+              ],
+              [
+                [
+                  0.322656,
+                  0.496094
+                ],
+                [
+                  0.322656,
+                  0.597656
+                ]
+              ]
+            ],
+            "evidence": "Eje del tramo recto entre bordes visibles de calzada en la imagen SanLean; nombre conservado del atlas. Medición raster, no coordenada oficial."
+          }
         },
         {
           "x": 0.460608,
@@ -619,7 +709,37 @@
           "text": "Victoria Way",
           "kind": "street",
           "rotation": -90,
-          "source": "Toponimia y posiciones contrastadas en atlas comunitario"
+          "source": "Toponimia y posiciones contrastadas en atlas comunitario",
+          "placement": {
+            "x": 0.546875,
+            "y": 0.470313,
+            "rotation": 0.0,
+            "space": "image",
+            "method": "road-edge-midline",
+            "edges": [
+              [
+                [
+                  0.429688,
+                  0.450781
+                ],
+                [
+                  0.664062,
+                  0.450781
+                ]
+              ],
+              [
+                [
+                  0.429688,
+                  0.489844
+                ],
+                [
+                  0.664062,
+                  0.489844
+                ]
+              ]
+            ],
+            "evidence": "Eje del tramo recto entre bordes visibles de calzada en la imagen SanLean; nombre conservado del atlas. Medición raster, no coordenada oficial."
+          }
         },
         {
           "x": 0.629163,
@@ -627,7 +747,37 @@
           "text": "Edgemont St.",
           "kind": "street",
           "rotation": -90,
-          "source": "Toponimia y posiciones contrastadas en atlas comunitario"
+          "source": "Toponimia y posiciones contrastadas en atlas comunitario",
+          "placement": {
+            "x": 0.179688,
+            "y": 0.662891,
+            "rotation": 0.0,
+            "space": "image",
+            "method": "road-edge-midline",
+            "edges": [
+              [
+                [
+                  0.132812,
+                  0.640625
+                ],
+                [
+                  0.226562,
+                  0.640625
+                ]
+              ],
+              [
+                [
+                  0.132812,
+                  0.685156
+                ],
+                [
+                  0.226562,
+                  0.685156
+                ]
+              ]
+            ],
+            "evidence": "Eje del tramo recto entre bordes visibles de calzada en la imagen SanLean; nombre conservado del atlas. Medición raster, no coordenada oficial."
+          }
         },
         {
           "x": 0.325793,
@@ -635,7 +785,37 @@
           "text": "Edgemont St.",
           "kind": "street",
           "rotation": 0,
-          "source": "Toponimia y posiciones contrastadas en atlas comunitario"
+          "source": "Toponimia y posiciones contrastadas en atlas comunitario",
+          "placement": {
+            "x": 0.733984,
+            "y": 0.375,
+            "rotation": 90.0,
+            "space": "image",
+            "method": "road-edge-midline",
+            "edges": [
+              [
+                [
+                  0.713281,
+                  0.335938
+                ],
+                [
+                  0.713281,
+                  0.414062
+                ]
+              ],
+              [
+                [
+                  0.754687,
+                  0.335938
+                ],
+                [
+                  0.754687,
+                  0.414062
+                ]
+              ]
+            ],
+            "evidence": "Eje del tramo recto entre bordes visibles de calzada en la imagen SanLean; nombre conservado del atlas. Medición raster, no coordenada oficial."
+          }
         },
         {
           "x": 0.741516,
@@ -643,7 +823,37 @@
           "text": "McKinzie Lane",
           "kind": "street",
           "rotation": 0,
-          "source": "Toponimia y posiciones contrastadas en atlas comunitario"
+          "source": "Toponimia y posiciones contrastadas en atlas comunitario",
+          "placement": {
+            "x": 0.447266,
+            "y": 0.855469,
+            "rotation": 90.0,
+            "space": "image",
+            "method": "road-edge-midline",
+            "edges": [
+              [
+                [
+                  0.429688,
+                  0.796875
+                ],
+                [
+                  0.429688,
+                  0.914062
+                ]
+              ],
+              [
+                [
+                  0.464844,
+                  0.796875
+                ],
+                [
+                  0.464844,
+                  0.914062
+                ]
+              ]
+            ],
+            "evidence": "Eje del tramo recto entre bordes visibles de calzada en la imagen SanLean; nombre conservado del atlas. Medición raster, no coordenada oficial."
+          }
         },
         {
           "x": 0.331409,
@@ -651,7 +861,11 @@
           "text": "702",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.412292,
@@ -659,7 +873,11 @@
           "text": "705",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.488708,
@@ -667,7 +885,41 @@
           "text": "709",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.202358,
+            "y": 0.50586,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.172656,
+                0.482812
+              ],
+              [
+                0.211719,
+                0.482812
+              ],
+              [
+                0.211719,
+                0.4875
+              ],
+              [
+                0.233594,
+                0.4875
+              ],
+              [
+                0.233594,
+                0.527344
+              ],
+              [
+                0.172656,
+                0.527344
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.552747,
@@ -675,7 +927,53 @@
           "text": "713",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.187811,
+            "y": 0.584342,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.134375,
+                0.58125
+              ],
+              [
+                0.150781,
+                0.580469
+              ],
+              [
+                0.152344,
+                0.552344
+              ],
+              [
+                0.203906,
+                0.553125
+              ],
+              [
+                0.20625,
+                0.570312
+              ],
+              [
+                0.210156,
+                0.553125
+              ],
+              [
+                0.234375,
+                0.553125
+              ],
+              [
+                0.235156,
+                0.611719
+              ],
+              [
+                0.135156,
+                0.613281
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.329163,
@@ -683,7 +981,57 @@
           "text": "807",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.385618,
+            "y": 0.366,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.360938,
+                0.317969
+              ],
+              [
+                0.397656,
+                0.317969
+              ],
+              [
+                0.399219,
+                0.324219
+              ],
+              [
+                0.4125,
+                0.325781
+              ],
+              [
+                0.4125,
+                0.403906
+              ],
+              [
+                0.396875,
+                0.404687
+              ],
+              [
+                0.396094,
+                0.416406
+              ],
+              [
+                0.364063,
+                0.415625
+              ],
+              [
+                0.364063,
+                0.407031
+              ],
+              [
+                0.360156,
+                0.403906
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.303308,
@@ -691,7 +1039,73 @@
           "text": "805",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.46429,
+            "y": 0.34295,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.435937,
+                0.296094
+              ],
+              [
+                0.448437,
+                0.296094
+              ],
+              [
+                0.448437,
+                0.2875
+              ],
+              [
+                0.466406,
+                0.2875
+              ],
+              [
+                0.466406,
+                0.296094
+              ],
+              [
+                0.490625,
+                0.296094
+              ],
+              [
+                0.490625,
+                0.313281
+              ],
+              [
+                0.499219,
+                0.313281
+              ],
+              [
+                0.499219,
+                0.3375
+              ],
+              [
+                0.492188,
+                0.3375
+              ],
+              [
+                0.492188,
+                0.3875
+              ],
+              [
+                0.471875,
+                0.3875
+              ],
+              [
+                0.471875,
+                0.396875
+              ],
+              [
+                0.436719,
+                0.396875
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.32804,
@@ -699,7 +1113,11 @@
           "text": "803",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.347131,
@@ -707,7 +1125,57 @@
           "text": "801",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.650474,
+            "y": 0.368225,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.621875,
+                0.314844
+              ],
+              [
+                0.653906,
+                0.314844
+              ],
+              [
+                0.654687,
+                0.33125
+              ],
+              [
+                0.682813,
+                0.332031
+              ],
+              [
+                0.682031,
+                0.383594
+              ],
+              [
+                0.676562,
+                0.384375
+              ],
+              [
+                0.676562,
+                0.389062
+              ],
+              [
+                0.682031,
+                0.390625
+              ],
+              [
+                0.680469,
+                0.415625
+              ],
+              [
+                0.621875,
+                0.414844
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.356116,
@@ -715,7 +1183,69 @@
           "text": "915",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.850351,
+            "y": 0.37801,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.805469,
+                0.358594
+              ],
+              [
+                0.820312,
+                0.357812
+              ],
+              [
+                0.821875,
+                0.344531
+              ],
+              [
+                0.849219,
+                0.344531
+              ],
+              [
+                0.850781,
+                0.357812
+              ],
+              [
+                0.855469,
+                0.357812
+              ],
+              [
+                0.854688,
+                0.353125
+              ],
+              [
+                0.897656,
+                0.353125
+              ],
+              [
+                0.898438,
+                0.400781
+              ],
+              [
+                0.861719,
+                0.401562
+              ],
+              [
+                0.860156,
+                0.397656
+              ],
+              [
+                0.859375,
+                0.407031
+              ],
+              [
+                0.80625,
+                0.407813
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.538147,
@@ -723,7 +1253,61 @@
           "text": "808",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.401004,
+            "y": 0.571616,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.367969,
+                0.532813
+              ],
+              [
+                0.392188,
+                0.532813
+              ],
+              [
+                0.394531,
+                0.521094
+              ],
+              [
+                0.411719,
+                0.521875
+              ],
+              [
+                0.411719,
+                0.532031
+              ],
+              [
+                0.41875,
+                0.533594
+              ],
+              [
+                0.41875,
+                0.557031
+              ],
+              [
+                0.438281,
+                0.557813
+              ],
+              [
+                0.439063,
+                0.60625
+              ],
+              [
+                0.435937,
+                0.610156
+              ],
+              [
+                0.367969,
+                0.607812
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.532532,
@@ -731,7 +1315,11 @@
           "text": "804",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.529163,
@@ -739,7 +1327,69 @@
           "text": "800",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.630942,
+            "y": 0.574948,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.589063,
+                0.5375
+              ],
+              [
+                0.620313,
+                0.536719
+              ],
+              [
+                0.621094,
+                0.527344
+              ],
+              [
+                0.628906,
+                0.526563
+              ],
+              [
+                0.629687,
+                0.544531
+              ],
+              [
+                0.626563,
+                0.545312
+              ],
+              [
+                0.63125,
+                0.55
+              ],
+              [
+                0.630469,
+                0.526563
+              ],
+              [
+                0.638281,
+                0.527344
+              ],
+              [
+                0.639062,
+                0.536719
+              ],
+              [
+                0.671875,
+                0.535156
+              ],
+              [
+                0.672656,
+                0.614844
+              ],
+              [
+                0.589844,
+                0.615625
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.533655,
@@ -747,7 +1397,61 @@
           "text": "918",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.820767,
+            "y": 0.581248,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.814063,
+                0.529687
+              ],
+              [
+                0.84375,
+                0.530469
+              ],
+              [
+                0.846094,
+                0.594531
+              ],
+              [
+                0.842969,
+                0.634375
+              ],
+              [
+                0.814844,
+                0.634375
+              ],
+              [
+                0.813281,
+                0.625781
+              ],
+              [
+                0.807031,
+                0.624219
+              ],
+              [
+                0.807031,
+                0.61875
+              ],
+              [
+                0.79375,
+                0.617188
+              ],
+              [
+                0.79375,
+                0.539062
+              ],
+              [
+                0.8125,
+                0.538281
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.674109,
@@ -755,7 +1459,11 @@
           "text": "922",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.756116,
@@ -763,7 +1471,11 @@
           "text": "864",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.761731,
@@ -771,7 +1483,11 @@
           "text": "850",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         }
       ],
       "summary": "Zona residencial de Haddonfield. Referencias confirmadas por el equipo del juego.",
@@ -813,11 +1529,11 @@
           "fittedReferencePixelsToImage": [
             [
               1.0000472873147808,
-              0.000008016158900872323,
+              8.016158900872323e-06,
               -0.12144723321952632
             ],
             [
-              0.00001137001946150919,
+              1.137001946150919e-05,
               1.0000326778945094,
               -0.10336734716436874
             ]
@@ -1296,7 +2012,37 @@
           "text": "Flemming Ave.",
           "kind": "street",
           "rotation": -90,
-          "source": "Toponimia y posiciones contrastadas en atlas comunitario"
+          "source": "Toponimia y posiciones contrastadas en atlas comunitario",
+          "placement": {
+            "x": 0.257812,
+            "y": 0.249609,
+            "rotation": 0.0,
+            "space": "image",
+            "method": "road-edge-midline",
+            "edges": [
+              [
+                [
+                  0.195312,
+                  0.229687
+                ],
+                [
+                  0.320312,
+                  0.229687
+                ]
+              ],
+              [
+                [
+                  0.195312,
+                  0.269531
+                ],
+                [
+                  0.320312,
+                  0.269531
+                ]
+              ]
+            ],
+            "evidence": "Eje del tramo recto entre bordes visibles de calzada en la imagen SanLean; nombre conservado del atlas. Medición raster, no coordenada oficial."
+          }
         },
         {
           "x": 0.590842,
@@ -1304,7 +2050,37 @@
           "text": "Peach St.",
           "kind": "street",
           "rotation": -90,
-          "source": "Toponimia y posiciones contrastadas en atlas comunitario"
+          "source": "Toponimia y posiciones contrastadas en atlas comunitario",
+          "placement": {
+            "x": 0.605469,
+            "y": 0.586719,
+            "rotation": 0.0,
+            "space": "image",
+            "method": "road-edge-midline",
+            "edges": [
+              [
+                [
+                  0.507812,
+                  0.567187
+                ],
+                [
+                  0.703125,
+                  0.567187
+                ]
+              ],
+              [
+                [
+                  0.507812,
+                  0.60625
+                ],
+                [
+                  0.703125,
+                  0.60625
+                ]
+              ]
+            ],
+            "evidence": "Eje del tramo recto entre bordes visibles de calzada en la imagen SanLean; nombre conservado del atlas. Medición raster, no coordenada oficial."
+          }
         },
         {
           "x": 0.437498,
@@ -1312,7 +2088,37 @@
           "text": "Denny Ave.",
           "kind": "street",
           "rotation": 0,
-          "source": "Toponimia y posiciones contrastadas en atlas comunitario"
+          "source": "Toponimia y posiciones contrastadas en atlas comunitario",
+          "placement": {
+            "x": 0.825781,
+            "y": 0.421875,
+            "rotation": 90.0,
+            "space": "image",
+            "method": "road-edge-midline",
+            "edges": [
+              [
+                [
+                  0.805469,
+                  0.335938
+                ],
+                [
+                  0.805469,
+                  0.507812
+                ]
+              ],
+              [
+                [
+                  0.846094,
+                  0.335938
+                ],
+                [
+                  0.846094,
+                  0.507812
+                ]
+              ]
+            ],
+            "evidence": "Eje del tramo recto entre bordes visibles de calzada en la imagen SanLean; nombre conservado del atlas. Medición raster, no coordenada oficial."
+          }
         },
         {
           "x": 0.719358,
@@ -1320,7 +2126,37 @@
           "text": "Eleanor Ave.",
           "kind": "street",
           "rotation": 0,
-          "source": "Toponimia y posiciones contrastadas en atlas comunitario"
+          "source": "Toponimia y posiciones contrastadas en atlas comunitario",
+          "placement": {
+            "x": 0.370312,
+            "y": 0.75,
+            "rotation": 90.0,
+            "space": "image",
+            "method": "road-edge-midline",
+            "edges": [
+              [
+                [
+                  0.355469,
+                  0.6875
+                ],
+                [
+                  0.355469,
+                  0.8125
+                ]
+              ],
+              [
+                [
+                  0.385156,
+                  0.6875
+                ],
+                [
+                  0.385156,
+                  0.8125
+                ]
+              ]
+            ],
+            "evidence": "Eje del tramo recto entre bordes visibles de calzada en la imagen SanLean; nombre conservado del atlas. Medición raster, no coordenada oficial."
+          }
         },
         {
           "x": 0.340549,
@@ -1328,7 +2164,33 @@
           "text": "1086",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.290234,
+            "y": 0.367969,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.248438,
+                0.321094
+              ],
+              [
+                0.332031,
+                0.321094
+              ],
+              [
+                0.332031,
+                0.414844
+              ],
+              [
+                0.248438,
+                0.414844
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.302219,
@@ -1336,7 +2198,41 @@
           "text": "985",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.455904,
+            "y": 0.328033,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.436719,
+                0.282813
+              ],
+              [
+                0.473438,
+                0.282813
+              ],
+              [
+                0.473438,
+                0.335938
+              ],
+              [
+                0.477344,
+                0.335938
+              ],
+              [
+                0.477344,
+                0.371094
+              ],
+              [
+                0.436719,
+                0.371094
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.398044,
@@ -1344,7 +2240,57 @@
           "text": "978",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.473165,
+            "y": 0.399944,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.438281,
+                0.382812
+              ],
+              [
+                0.502344,
+                0.382031
+              ],
+              [
+                0.503906,
+                0.396094
+              ],
+              [
+                0.507812,
+                0.396875
+              ],
+              [
+                0.507812,
+                0.411719
+              ],
+              [
+                0.496875,
+                0.414062
+              ],
+              [
+                0.495312,
+                0.421875
+              ],
+              [
+                0.471875,
+                0.421875
+              ],
+              [
+                0.469531,
+                0.413281
+              ],
+              [
+                0.438281,
+                0.413281
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.504026,
@@ -1352,7 +2298,11 @@
           "text": "951",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.484861,
@@ -1360,7 +2310,11 @@
           "text": "901",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.505149,
@@ -1368,7 +2322,11 @@
           "text": "1007",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.505149,
@@ -1376,7 +2334,11 @@
           "text": "1005",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.505149,
@@ -1384,7 +2346,11 @@
           "text": "1003",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.505149,
@@ -1392,7 +2358,11 @@
           "text": "1001",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.64946,
@@ -1400,7 +2370,11 @@
           "text": "1008",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.640427,
@@ -1408,7 +2382,11 @@
           "text": "966",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.640427,
@@ -1416,7 +2394,11 @@
           "text": "962",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.640427,
@@ -1424,7 +2406,11 @@
           "text": "956",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.640427,
@@ -1432,7 +2418,11 @@
           "text": "954",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.640427,
@@ -1440,7 +2430,11 @@
           "text": "950",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.721604,
@@ -1448,7 +2442,73 @@
           "text": "902",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.463261,
+            "y": 0.733658,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.4125,
+                0.707812
+              ],
+              [
+                0.50625,
+                0.707812
+              ],
+              [
+                0.50625,
+                0.714063
+              ],
+              [
+                0.514062,
+                0.714063
+              ],
+              [
+                0.514062,
+                0.7375
+              ],
+              [
+                0.507031,
+                0.7375
+              ],
+              [
+                0.507031,
+                0.760156
+              ],
+              [
+                0.490625,
+                0.760156
+              ],
+              [
+                0.490625,
+                0.765625
+              ],
+              [
+                0.467187,
+                0.765625
+              ],
+              [
+                0.467187,
+                0.758594
+              ],
+              [
+                0.419531,
+                0.758594
+              ],
+              [
+                0.419531,
+                0.741406
+              ],
+              [
+                0.4125,
+                0.741406
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.787009,
@@ -1456,7 +2516,45 @@
           "text": "908",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.464918,
+            "y": 0.803212,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.425,
+                0.780469
+              ],
+              [
+                0.503906,
+                0.779687
+              ],
+              [
+                0.507031,
+                0.786719
+              ],
+              [
+                0.505469,
+                0.814063
+              ],
+              [
+                0.499219,
+                0.815625
+              ],
+              [
+                0.497656,
+                0.827344
+              ],
+              [
+                0.425781,
+                0.827344
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         }
       ],
       "summary": "Centro urbano con comercios y edificios comunitarios. Las ubicaciones no indican apariciones garantizadas.",
@@ -1499,11 +2597,11 @@
           "fittedReferencePixelsToImage": [
             [
               0.3124976950075029,
-              0.000003069535384189271,
+              3.069535384189271e-06,
               0.0031082655255338385
             ],
             [
-              -0.0000018318722306192775,
+              -1.8318722306192775e-06,
               0.3125186231788652,
               -0.039435832467747324
             ]
@@ -5608,7 +6706,37 @@
           "text": "Westridge Dr.",
           "kind": "street",
           "rotation": -90,
-          "source": "Toponimia y posiciones contrastadas en atlas comunitario"
+          "source": "Toponimia y posiciones contrastadas en atlas comunitario",
+          "placement": {
+            "x": 0.566406,
+            "y": 0.33125,
+            "rotation": 0.0,
+            "space": "image",
+            "method": "road-edge-midline",
+            "edges": [
+              [
+                [
+                  0.523438,
+                  0.3125
+                ],
+                [
+                  0.609375,
+                  0.3125
+                ]
+              ],
+              [
+                [
+                  0.523438,
+                  0.35
+                ],
+                [
+                  0.609375,
+                  0.35
+                ]
+              ]
+            ],
+            "evidence": "Eje del tramo recto entre bordes visibles de calzada en la imagen SanLean; nombre conservado del atlas. Medición raster, no coordenada oficial."
+          }
         },
         {
           "x": 0.531982,
@@ -5616,7 +6744,37 @@
           "text": "Stephens Ave.",
           "kind": "street",
           "rotation": -90,
-          "source": "Toponimia y posiciones contrastadas en atlas comunitario"
+          "source": "Toponimia y posiciones contrastadas en atlas comunitario",
+          "placement": {
+            "x": 0.769531,
+            "y": 0.528906,
+            "rotation": 0.0,
+            "space": "image",
+            "method": "road-edge-midline",
+            "edges": [
+              [
+                [
+                  0.679688,
+                  0.507812
+                ],
+                [
+                  0.859375,
+                  0.507812
+                ]
+              ],
+              [
+                [
+                  0.679688,
+                  0.55
+                ],
+                [
+                  0.859375,
+                  0.55
+                ]
+              ]
+            ],
+            "evidence": "Eje del tramo recto entre bordes visibles de calzada en la imagen SanLean; nombre conservado del atlas. Medición raster, no coordenada oficial."
+          }
         },
         {
           "x": 0.76333,
@@ -5624,7 +6782,37 @@
           "text": "Orange Grove Ave.",
           "kind": "street",
           "rotation": -90,
-          "source": "Toponimia y posiciones contrastadas en atlas comunitario"
+          "source": "Toponimia y posiciones contrastadas en atlas comunitario",
+          "placement": {
+            "x": 0.546875,
+            "y": 0.775391,
+            "rotation": 0.0,
+            "space": "image",
+            "method": "road-edge-midline",
+            "edges": [
+              [
+                [
+                  0.40625,
+                  0.755469
+                ],
+                [
+                  0.6875,
+                  0.755469
+                ]
+              ],
+              [
+                [
+                  0.40625,
+                  0.795312
+                ],
+                [
+                  0.6875,
+                  0.795312
+                ]
+              ]
+            ],
+            "evidence": "Eje del tramo recto entre bordes visibles de calzada en la imagen SanLean; nombre conservado del atlas. Medición raster, no coordenada oficial."
+          }
         },
         {
           "x": 0.678906,
@@ -5632,7 +6820,37 @@
           "text": "Fletcher Way",
           "kind": "street",
           "rotation": 0,
-          "source": "Toponimia y posiciones contrastadas en atlas comunitario"
+          "source": "Toponimia y posiciones contrastadas en atlas comunitario",
+          "placement": {
+            "x": 0.764062,
+            "y": 0.671875,
+            "rotation": 90.0,
+            "space": "image",
+            "method": "road-edge-midline",
+            "edges": [
+              [
+                [
+                  0.745313,
+                  0.617188
+                ],
+                [
+                  0.745313,
+                  0.726562
+                ]
+              ],
+              [
+                [
+                  0.782813,
+                  0.617188
+                ],
+                [
+                  0.782813,
+                  0.726562
+                ]
+              ]
+            ],
+            "evidence": "Eje del tramo recto entre bordes visibles de calzada en la imagen SanLean; nombre conservado del atlas. Medición raster, no coordenada oficial."
+          }
         },
         {
           "x": 0.273218,
@@ -5640,7 +6858,45 @@
           "text": "1514",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.38716,
+            "y": 0.294421,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.385156,
+                0.257031
+              ],
+              [
+                0.407031,
+                0.28125
+              ],
+              [
+                0.422656,
+                0.292969
+              ],
+              [
+                0.386719,
+                0.330469
+              ],
+              [
+                0.354687,
+                0.3
+              ],
+              [
+                0.36875,
+                0.284375
+              ],
+              [
+                0.365625,
+                0.276562
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.38833,
@@ -5648,7 +6904,53 @@
           "text": "1518",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.294483,
+            "y": 0.401931,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.304688,
+                0.360938
+              ],
+              [
+                0.3375,
+                0.396094
+              ],
+              [
+                0.288281,
+                0.44375
+              ],
+              [
+                0.272656,
+                0.428125
+              ],
+              [
+                0.282813,
+                0.415625
+              ],
+              [
+                0.270313,
+                0.425781
+              ],
+              [
+                0.25,
+                0.401562
+              ],
+              [
+                0.264062,
+                0.3875
+              ],
+              [
+                0.271094,
+                0.392188
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.243604,
@@ -5656,7 +6958,141 @@
           "text": "1510",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.572816,
+            "y": 0.24699,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.546875,
+                0.201563
+              ],
+              [
+                0.55625,
+                0.2
+              ],
+              [
+                0.550781,
+                0.207813
+              ],
+              [
+                0.559375,
+                0.207813
+              ],
+              [
+                0.560937,
+                0.202344
+              ],
+              [
+                0.570312,
+                0.201563
+              ],
+              [
+                0.569531,
+                0.210156
+              ],
+              [
+                0.572656,
+                0.204687
+              ],
+              [
+                0.574219,
+                0.214062
+              ],
+              [
+                0.610938,
+                0.215625
+              ],
+              [
+                0.610938,
+                0.247656
+              ],
+              [
+                0.599219,
+                0.248438
+              ],
+              [
+                0.605469,
+                0.248438
+              ],
+              [
+                0.605469,
+                0.251563
+              ],
+              [
+                0.610938,
+                0.249219
+              ],
+              [
+                0.609375,
+                0.283594
+              ],
+              [
+                0.583594,
+                0.283594
+              ],
+              [
+                0.582812,
+                0.290625
+              ],
+              [
+                0.575781,
+                0.292969
+              ],
+              [
+                0.574219,
+                0.271094
+              ],
+              [
+                0.574219,
+                0.291406
+              ],
+              [
+                0.567187,
+                0.292187
+              ],
+              [
+                0.567187,
+                0.28125
+              ],
+              [
+                0.536719,
+                0.282813
+              ],
+              [
+                0.5375,
+                0.248438
+              ],
+              [
+                0.546094,
+                0.248438
+              ],
+              [
+                0.548438,
+                0.252344
+              ],
+              [
+                0.550781,
+                0.248438
+              ],
+              [
+                0.575,
+                0.248438
+              ],
+              [
+                0.536719,
+                0.247656
+              ],
+              [
+                0.536719,
+                0.215625
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.237012,
@@ -5664,7 +7100,65 @@
           "text": "1482",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.748422,
+            "y": 0.229898,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.7,
+                0.207031
+              ],
+              [
+                0.71875,
+                0.20625
+              ],
+              [
+                0.720313,
+                0.200781
+              ],
+              [
+                0.739844,
+                0.200781
+              ],
+              [
+                0.742188,
+                0.20625
+              ],
+              [
+                0.758594,
+                0.20625
+              ],
+              [
+                0.760156,
+                0.210156
+              ],
+              [
+                0.771875,
+                0.210156
+              ],
+              [
+                0.773438,
+                0.204687
+              ],
+              [
+                0.797656,
+                0.204687
+              ],
+              [
+                0.798438,
+                0.253125
+              ],
+              [
+                0.700781,
+                0.25625
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.420142,
@@ -5672,7 +7166,33 @@
           "text": "1486",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.743464,
+            "y": 0.425787,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.696094,
+                0.404687
+              ],
+              [
+                0.790625,
+                0.403906
+              ],
+              [
+                0.791406,
+                0.446094
+              ],
+              [
+                0.696875,
+                0.448437
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.404785,
@@ -5680,7 +7200,57 @@
           "text": "1484",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.833039,
+            "y": 0.420223,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.803125,
+                0.360938
+              ],
+              [
+                0.835938,
+                0.360938
+              ],
+              [
+                0.835938,
+                0.38125
+              ],
+              [
+                0.866406,
+                0.38125
+              ],
+              [
+                0.866406,
+                0.467187
+              ],
+              [
+                0.84375,
+                0.467187
+              ],
+              [
+                0.84375,
+                0.475781
+              ],
+              [
+                0.81875,
+                0.475781
+              ],
+              [
+                0.81875,
+                0.467187
+              ],
+              [
+                0.803125,
+                0.467187
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.576929,
@@ -5688,7 +7258,11 @@
           "text": "1522",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.654785,
@@ -5696,7 +7270,33 @@
           "text": "1554",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.352009,
+            "y": 0.671711,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.304688,
+                0.65
+              ],
+              [
+                0.398438,
+                0.65
+              ],
+              [
+                0.4,
+                0.692969
+              ],
+              [
+                0.305469,
+                0.69375
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.620801,
@@ -5704,7 +7304,49 @@
           "text": "1542",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.456003,
+            "y": 0.651076,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.432812,
+                0.610938
+              ],
+              [
+                0.479687,
+                0.611719
+              ],
+              [
+                0.479687,
+                0.68125
+              ],
+              [
+                0.476562,
+                0.682813
+              ],
+              [
+                0.475781,
+                0.692187
+              ],
+              [
+                0.435156,
+                0.691406
+              ],
+              [
+                0.435156,
+                0.682813
+              ],
+              [
+                0.432031,
+                0.68125
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.652588,
@@ -5712,7 +7354,33 @@
           "text": "1532",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.539979,
+            "y": 0.675266,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.517188,
+                0.647656
+              ],
+              [
+                0.564063,
+                0.649219
+              ],
+              [
+                0.563281,
+                0.702344
+              ],
+              [
+                0.515625,
+                0.701562
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.576929,
@@ -5720,7 +7388,73 @@
           "text": "1521",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.660072,
+            "y": 0.590957,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.610156,
+                0.577344
+              ],
+              [
+                0.628125,
+                0.577344
+              ],
+              [
+                0.628125,
+                0.571094
+              ],
+              [
+                0.646094,
+                0.571094
+              ],
+              [
+                0.646094,
+                0.564844
+              ],
+              [
+                0.701562,
+                0.564844
+              ],
+              [
+                0.701562,
+                0.611719
+              ],
+              [
+                0.678906,
+                0.611719
+              ],
+              [
+                0.678906,
+                0.620313
+              ],
+              [
+                0.646875,
+                0.620313
+              ],
+              [
+                0.646875,
+                0.610938
+              ],
+              [
+                0.628125,
+                0.610938
+              ],
+              [
+                0.628125,
+                0.604688
+              ],
+              [
+                0.610156,
+                0.604688
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.673438,
@@ -5728,7 +7462,49 @@
           "text": "1520",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.663606,
+            "y": 0.695841,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.623437,
+                0.672656
+              ],
+              [
+                0.694531,
+                0.671875
+              ],
+              [
+                0.696094,
+                0.675
+              ],
+              [
+                0.703906,
+                0.675
+              ],
+              [
+                0.704688,
+                0.715625
+              ],
+              [
+                0.695312,
+                0.716406
+              ],
+              [
+                0.694531,
+                0.719531
+              ],
+              [
+                0.624219,
+                0.719531
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.610938,
@@ -5736,7 +7512,11 @@
           "text": "1495",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.737012,
@@ -5744,7 +7524,11 @@
           "text": "1497",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.835718,
@@ -5752,7 +7536,11 @@
           "text": "1549",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.828027,
@@ -5760,7 +7548,61 @@
           "text": "1535",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.430446,
+            "y": 0.862955,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.414844,
+                0.840625
+              ],
+              [
+                0.450781,
+                0.841406
+              ],
+              [
+                0.450781,
+                0.85
+              ],
+              [
+                0.444531,
+                0.852344
+              ],
+              [
+                0.450781,
+                0.854688
+              ],
+              [
+                0.45,
+                0.885938
+              ],
+              [
+                0.414062,
+                0.885156
+              ],
+              [
+                0.414062,
+                0.870313
+              ],
+              [
+                0.407031,
+                0.867188
+              ],
+              [
+                0.407031,
+                0.850781
+              ],
+              [
+                0.414062,
+                0.846875
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.828027,
@@ -5768,7 +7610,11 @@
           "text": "1525",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.826929,
@@ -5776,7 +7622,11 @@
           "text": "1513",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         }
       ],
       "summary": "Barrio residencial de casas de varios pisos, patios y garajes.",
@@ -5818,11 +7668,11 @@
           "fittedReferencePixelsToImage": [
             [
               0.3125132032338238,
-              -0.000005520567459919474,
+              -5.520567459919474e-06,
               -0.014569422687443007
             ],
             [
-              -0.0000025856426359543364,
+              -2.5856426359543364e-06,
               0.3125097126271252,
               -0.017244152986757307
             ]
@@ -7113,7 +8963,37 @@
           "text": "Wallard St.",
           "kind": "street",
           "rotation": -90,
-          "source": "Toponimia y posiciones contrastadas en atlas comunitario"
+          "source": "Toponimia y posiciones contrastadas en atlas comunitario",
+          "placement": {
+            "x": 0.171875,
+            "y": 0.49375,
+            "rotation": 0.0,
+            "space": "image",
+            "method": "road-edge-midline",
+            "edges": [
+              [
+                [
+                  0.125,
+                  0.475781
+                ],
+                [
+                  0.21875,
+                  0.475781
+                ]
+              ],
+              [
+                [
+                  0.125,
+                  0.511719
+                ],
+                [
+                  0.21875,
+                  0.511719
+                ]
+              ]
+            ],
+            "evidence": "Eje del tramo recto entre bordes visibles de calzada en la imagen SanLean; nombre conservado del atlas. Medición raster, no coordenada oficial."
+          }
         },
         {
           "x": 0.500034,
@@ -7121,7 +9001,37 @@
           "text": "Virginia St.",
           "kind": "street",
           "rotation": -90,
-          "source": "Toponimia y posiciones contrastadas en atlas comunitario"
+          "source": "Toponimia y posiciones contrastadas en atlas comunitario",
+          "placement": {
+            "x": 0.708594,
+            "y": 0.496094,
+            "rotation": 0.0,
+            "space": "image",
+            "method": "road-edge-midline",
+            "edges": [
+              [
+                [
+                  0.669531,
+                  0.478906
+                ],
+                [
+                  0.747656,
+                  0.478906
+                ]
+              ],
+              [
+                [
+                  0.669531,
+                  0.513281
+                ],
+                [
+                  0.747656,
+                  0.513281
+                ]
+              ]
+            ],
+            "evidence": "Eje del tramo recto entre bordes visibles de calzada en la imagen SanLean; nombre conservado del atlas. Medición raster, no coordenada oficial."
+          }
         },
         {
           "x": 0.622666,
@@ -7129,7 +9039,37 @@
           "text": "Copper Ln.",
           "kind": "street",
           "rotation": 0,
-          "source": "Toponimia y posiciones contrastadas en atlas comunitario"
+          "source": "Toponimia y posiciones contrastadas en atlas comunitario",
+          "placement": {
+            "x": 0.285547,
+            "y": 0.671875,
+            "rotation": 90.0,
+            "space": "image",
+            "method": "road-edge-midline",
+            "edges": [
+              [
+                [
+                  0.267188,
+                  0.609375
+                ],
+                [
+                  0.267188,
+                  0.734375
+                ]
+              ],
+              [
+                [
+                  0.303906,
+                  0.609375
+                ],
+                [
+                  0.303906,
+                  0.734375
+                ]
+              ]
+            ],
+            "evidence": "Eje del tramo recto entre bordes visibles de calzada en la imagen SanLean; nombre conservado del atlas. Medición raster, no coordenada oficial."
+          }
         },
         {
           "x": 0.644956,
@@ -7137,7 +9077,37 @@
           "text": "Cade Ave.",
           "kind": "street",
           "rotation": 0,
-          "source": "Toponimia y posiciones contrastadas en atlas comunitario"
+          "source": "Toponimia y posiciones contrastadas en atlas comunitario",
+          "placement": {
+            "x": 0.553906,
+            "y": 0.726562,
+            "rotation": 90.0,
+            "space": "image",
+            "method": "road-edge-midline",
+            "edges": [
+              [
+                [
+                  0.535156,
+                  0.671875
+                ],
+                [
+                  0.535156,
+                  0.78125
+                ]
+              ],
+              [
+                [
+                  0.572656,
+                  0.671875
+                ],
+                [
+                  0.572656,
+                  0.78125
+                ]
+              ]
+            ],
+            "evidence": "Eje del tramo recto entre bordes visibles de calzada en la imagen SanLean; nombre conservado del atlas. Medición raster, no coordenada oficial."
+          }
         },
         {
           "x": 0.622666,
@@ -7145,7 +9115,37 @@
           "text": "Davis Dr.",
           "kind": "street",
           "rotation": 0,
-          "source": "Toponimia y posiciones contrastadas en atlas comunitario"
+          "source": "Toponimia y posiciones contrastadas en atlas comunitario",
+          "placement": {
+            "x": 0.791406,
+            "y": 0.621094,
+            "rotation": 90.0,
+            "space": "image",
+            "method": "road-edge-midline",
+            "edges": [
+              [
+                [
+                  0.767188,
+                  0.546875
+                ],
+                [
+                  0.767188,
+                  0.695312
+                ]
+              ],
+              [
+                [
+                  0.815625,
+                  0.546875
+                ],
+                [
+                  0.815625,
+                  0.695312
+                ]
+              ]
+            ],
+            "evidence": "Eje del tramo recto entre bordes visibles de calzada en la imagen SanLean; nombre conservado del atlas. Medición raster, no coordenada oficial."
+          }
         },
         {
           "x": 0.411973,
@@ -7153,7 +9153,11 @@
           "text": "832",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.414194,
@@ -7161,7 +9165,11 @@
           "text": "828",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.406382,
@@ -7169,7 +9177,93 @@
           "text": "812",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.662602,
+            "y": 0.422944,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.610156,
+                0.407813
+              ],
+              [
+                0.613281,
+                0.404687
+              ],
+              [
+                0.620313,
+                0.40625
+              ],
+              [
+                0.620313,
+                0.39375
+              ],
+              [
+                0.630469,
+                0.392969
+              ],
+              [
+                0.63125,
+                0.386719
+              ],
+              [
+                0.700781,
+                0.386719
+              ],
+              [
+                0.702344,
+                0.40625
+              ],
+              [
+                0.704688,
+                0.402344
+              ],
+              [
+                0.7125,
+                0.403125
+              ],
+              [
+                0.7125,
+                0.450781
+              ],
+              [
+                0.690625,
+                0.452344
+              ],
+              [
+                0.692187,
+                0.457031
+              ],
+              [
+                0.689063,
+                0.460156
+              ],
+              [
+                0.638281,
+                0.460156
+              ],
+              [
+                0.6375,
+                0.453125
+              ],
+              [
+                0.632031,
+                0.452344
+              ],
+              [
+                0.630469,
+                0.447656
+              ],
+              [
+                0.610156,
+                0.446094
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.566929,
@@ -7177,7 +9271,11 @@
           "text": "715",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.612632,
@@ -7185,7 +9283,41 @@
           "text": "628",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.187065,
+            "y": 0.628343,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.159375,
+                0.603906
+              ],
+              [
+                0.217969,
+                0.602344
+              ],
+              [
+                0.21875,
+                0.640625
+              ],
+              [
+                0.2,
+                0.642188
+              ],
+              [
+                0.198437,
+                0.657813
+              ],
+              [
+                0.160156,
+                0.657813
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.701816,
@@ -7193,7 +9325,41 @@
           "text": "630",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.210532,
+            "y": 0.730991,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.175781,
+                0.699219
+              ],
+              [
+                0.235937,
+                0.698438
+              ],
+              [
+                0.236719,
+                0.701562
+              ],
+              [
+                0.245312,
+                0.702344
+              ],
+              [
+                0.245312,
+                0.7625
+              ],
+              [
+                0.176563,
+                0.763281
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.665024,
@@ -7201,7 +9367,41 @@
           "text": "731",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.389599,
+            "y": 0.676149,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.350781,
+                0.651563
+              ],
+              [
+                0.429688,
+                0.651563
+              ],
+              [
+                0.429688,
+                0.695312
+              ],
+              [
+                0.417969,
+                0.695312
+              ],
+              [
+                0.417969,
+                0.701562
+              ],
+              [
+                0.350781,
+                0.701562
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.628232,
@@ -7209,7 +9409,61 @@
           "text": "723",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.504481,
+            "y": 0.634276,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.496875,
+                0.610156
+              ],
+              [
+                0.517969,
+                0.611719
+              ],
+              [
+                0.517969,
+                0.624219
+              ],
+              [
+                0.511719,
+                0.627344
+              ],
+              [
+                0.517969,
+                0.63125
+              ],
+              [
+                0.515625,
+                0.657813
+              ],
+              [
+                0.498437,
+                0.658594
+              ],
+              [
+                0.491406,
+                0.650781
+              ],
+              [
+                0.491406,
+                0.614062
+              ],
+              [
+                0.507031,
+                0.614844
+              ],
+              [
+                0.496875,
+                0.613281
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.687314,
@@ -7217,7 +9471,81 @@
           "text": "725",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.489318,
+            "y": 0.693056,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.458594,
+                0.683594
+              ],
+              [
+                0.467969,
+                0.679688
+              ],
+              [
+                0.46875,
+                0.675
+              ],
+              [
+                0.489063,
+                0.675
+              ],
+              [
+                0.490625,
+                0.68125
+              ],
+              [
+                0.517969,
+                0.678125
+              ],
+              [
+                0.514062,
+                0.682031
+              ],
+              [
+                0.517969,
+                0.682813
+              ],
+              [
+                0.517969,
+                0.691406
+              ],
+              [
+                0.51875,
+                0.685937
+              ],
+              [
+                0.522656,
+                0.691406
+              ],
+              [
+                0.519531,
+                0.692187
+              ],
+              [
+                0.517188,
+                0.708594
+              ],
+              [
+                0.464062,
+                0.708594
+              ],
+              [
+                0.4625,
+                0.696094
+              ],
+              [
+                0.458594,
+                0.695312
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.725229,
@@ -7225,7 +9553,11 @@
           "text": "733",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Contorno o unidad de edificio no inequívocos; se conserva la posición fuente sin reasignar numeración."
+          }
         },
         {
           "x": 0.765366,
@@ -7233,7 +9565,33 @@
           "text": "729",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.487109,
+            "y": 0.774609,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.453125,
+                0.758594
+              ],
+              [
+                0.520312,
+                0.757812
+              ],
+              [
+                0.521094,
+                0.790625
+              ],
+              [
+                0.453906,
+                0.791406
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.700693,
@@ -7241,7 +9599,33 @@
           "text": "718",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.691016,
+            "y": 0.715234,
+            "rotation": 0,
+            "space": "image",
+            "method": "maximum-interior-clearance",
+            "polygon": [
+              [
+                0.667188,
+                0.692187
+              ],
+              [
+                0.714844,
+                0.692187
+              ],
+              [
+                0.714844,
+                0.738281
+              ],
+              [
+                0.667188,
+                0.738281
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         }
       ],
       "summary": "Afueras rurales e industriales con comercios y campos.",
@@ -7283,11 +9667,11 @@
           "fittedReferencePixelsToImage": [
             [
               1.0000491440317953,
-              0.000037861962205318124,
+              3.7861962205318124e-05,
               -0.18291984939438416
             ],
             [
-              0.000022842221852315336,
+              2.2842221852315336e-05,
               0.9999262170243498,
               0.10556434918259112
             ]
@@ -10034,7 +12418,11 @@
           "text": "Ridgeline Rd.",
           "kind": "street",
           "rotation": -90,
-          "source": "Toponimia y posiciones contrastadas en atlas comunitario"
+          "source": "Toponimia y posiciones contrastadas en atlas comunitario",
+          "placementReview": {
+            "status": "retained",
+            "reason": "Referencia ya dentro del tramo comprobado."
+          }
         },
         {
           "x": 0.706226,
@@ -10042,7 +12430,37 @@
           "text": "Clover Way",
           "kind": "street",
           "rotation": 0,
-          "source": "Toponimia y posiciones contrastadas en atlas comunitario"
+          "source": "Toponimia y posiciones contrastadas en atlas comunitario",
+          "placement": {
+            "x": 0.628906,
+            "y": 0.730469,
+            "rotation": 90.0,
+            "space": "image",
+            "method": "road-edge-midline",
+            "edges": [
+              [
+                [
+                  0.607812,
+                  0.671875
+                ],
+                [
+                  0.607812,
+                  0.789062
+                ]
+              ],
+              [
+                [
+                  0.65,
+                  0.671875
+                ],
+                [
+                  0.65,
+                  0.789062
+                ]
+              ]
+            ],
+            "evidence": "Eje del tramo recto entre bordes visibles de calzada en la imagen SanLean; nombre conservado del atlas. Medición raster, no coordenada oficial."
+          }
         },
         {
           "x": 0.351733,
@@ -10050,7 +12468,45 @@
           "text": "300",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.268588,
+            "y": 0.360896,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.244531,
+                0.345313
+              ],
+              [
+                0.264844,
+                0.34375
+              ],
+              [
+                0.266406,
+                0.3375
+              ],
+              [
+                0.289844,
+                0.3375
+              ],
+              [
+                0.288281,
+                0.364844
+              ],
+              [
+                0.291406,
+                0.38125
+              ],
+              [
+                0.247656,
+                0.382031
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.760913,
@@ -10058,7 +12514,41 @@
           "text": "301",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.446536,
+            "y": 0.766649,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.413281,
+                0.742969
+              ],
+              [
+                0.438281,
+                0.742969
+              ],
+              [
+                0.441406,
+                0.747656
+              ],
+              [
+                0.482031,
+                0.747656
+              ],
+              [
+                0.482031,
+                0.7875
+              ],
+              [
+                0.4125,
+                0.7875
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.377124,
@@ -10066,7 +12556,49 @@
           "text": "302",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.463372,
+            "y": 0.391361,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.429688,
+                0.370312
+              ],
+              [
+                0.489063,
+                0.370312
+              ],
+              [
+                0.489063,
+                0.373437
+              ],
+              [
+                0.498437,
+                0.373437
+              ],
+              [
+                0.498437,
+                0.408594
+              ],
+              [
+                0.489063,
+                0.408594
+              ],
+              [
+                0.489063,
+                0.4125
+              ],
+              [
+                0.429688,
+                0.4125
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.567554,
@@ -10074,7 +12606,45 @@
           "text": "303",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.53396,
+            "y": 0.578386,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.533594,
+                0.552344
+              ],
+              [
+                0.55625,
+                0.573438
+              ],
+              [
+                0.548438,
+                0.585156
+              ],
+              [
+                0.553125,
+                0.59375
+              ],
+              [
+                0.535156,
+                0.601562
+              ],
+              [
+                0.523438,
+                0.594531
+              ],
+              [
+                0.509375,
+                0.577344
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.561694,
@@ -10082,7 +12652,33 @@
           "text": "305",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.826562,
+            "y": 0.560156,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.804688,
+                0.542969
+              ],
+              [
+                0.848437,
+                0.542969
+              ],
+              [
+                0.848437,
+                0.577344
+              ],
+              [
+                0.804688,
+                0.577344
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         },
         {
           "x": 0.715015,
@@ -10090,7 +12686,41 @@
           "text": "309",
           "kind": "address",
           "rotation": 0,
-          "source": "Numeración de viviendas según atlas comunitario"
+          "source": "Numeración de viviendas según atlas comunitario",
+          "placement": {
+            "x": 0.856535,
+            "y": 0.737011,
+            "rotation": 0,
+            "space": "image",
+            "method": "polygon-area-centroid",
+            "polygon": [
+              [
+                0.832812,
+                0.705469
+              ],
+              [
+                0.854688,
+                0.705469
+              ],
+              [
+                0.854688,
+                0.722656
+              ],
+              [
+                0.885156,
+                0.722656
+              ],
+              [
+                0.885156,
+                0.760156
+              ],
+              [
+                0.832812,
+                0.760156
+              ]
+            ],
+            "evidence": "Contorno de tejado en la imagen SanLean; numeración conservada del atlas cotejado. Medición sobre lienzo de 1280 px."
+          }
         }
       ],
       "summary": "El quinto mapa, incorporado el 27 de octubre de 2026. Incluye una nueva modalidad de escape por alcantarilla.",
@@ -10133,11 +12763,11 @@
           "fittedReferencePixelsToImage": [
             [
               0.31251735761416294,
-              -0.000024485715062230202,
+              -2.4485715062230202e-05,
               0.022146948758043784
             ],
             [
-              -0.000012811325017843561,
+              -1.2811325017843561e-05,
               0.3125064530707675,
               0.029609017693714632
             ]
