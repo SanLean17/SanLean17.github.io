@@ -121,10 +121,11 @@ def main():
         scripts = soup.find_all("script")
         print("NIGHTLIGHT DEBUG: HTML length", len(html), "scripts", len(scripts))
         script_value = scripts[5].string or scripts[5].get_text() or "" if len(scripts) > 5 else ""
-        found = re.search(r'window\\.__reactRouterContext\\.streamController\\.enqueue\\(("(?:\\\\.|[^"\\\\])*")\\)', script_value)
-        if found:
+        pos = script_value.find("enqueue(")
+        if pos >= 0:
             try:
-                flattened = json.loads(json.loads(found.group(1)))
+                data, _ = json.JSONDecoder().raw_decode(script_value[pos + len("enqueue("):])
+                flattened = json.loads(data)
                 print("FLATTENED FIRST", repr(flattened[:15]))
                 codes_index = flattened.index("codes") + 1
                 print("CODES ARRAY", repr(flattened[codes_index][:12]))
