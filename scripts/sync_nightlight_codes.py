@@ -120,13 +120,14 @@ def main():
         soup = BeautifulSoup(html, "html.parser")
         scripts = soup.find_all("script")
         print("NIGHTLIGHT DEBUG: HTML length", len(html), "scripts", len(scripts))
+        print("SCRIPT FIRST 400", repr((scripts[5].string or scripts[5].get_text() or "")[:400]) if len(scripts)>5 else "none")
         for i, tag in enumerate(scripts):
             value = tag.string or tag.get_text() or ""
             if any(key in value for key in ("FINDERSCREEPERS", "BDGPRIDE", "__NEXT_DATA__", "__next_f", "WARRIORPUPPERS")):
                 for key in ("FINDERSCREEPERS", "BDGPRIDE", "WARRIORPUPPERS", "__NEXT_DATA__", "__next_f"):
                     pos = value.find(key)
                     if pos >= 0:
-                        print("SCRIPT", i, "id", tag.get("id"), "type", tag.get("type"), "length", len(value), "key", key, "excerpt", repr(value[max(0, pos-90):pos+140]))
+                        print("SCRIPT", i, "id", tag.get("id"), "type", tag.get("type"), "length", len(value), "key", key, "excerpt", repr(value[max(0, pos-350):pos+500]))
     catalog = parse(html)
     if OUTPUT.exists():
         try:
