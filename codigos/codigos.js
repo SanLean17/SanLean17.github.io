@@ -26,7 +26,7 @@ function card(c){
  else compactHeading();
  const dl=element('dl');const field=(label,value)=>dl.append(element('dt',label),element('dd',value));
  field('RECOMPENSA',c.reward||'Consultá la publicación oficial.');
- const expiry=expiryLabel(c);if(expiry)field(c.status==='expired'?'FINALIZÓ':'DISPONIBLE HASTA',expiry);
+ const expiry=expiryLabel(c);if(expiry&&hasImage)field(c.status==='expired'?'FINALIZÓ':'DISPONIBLE HASTA',expiry);
  const actions=element('div',undefined,'code-actions');const button=element('button',c.status==='active'?'COPIAR CÓDIGO':'NO DISPONIBLE','tier-tab active');button.type='button';button.disabled=c.status!=='active';button.setAttribute('aria-label',`${c.status==='active'?'Copiar':'No disponible:'} ${c.code}`);
  const feedback=element('span',undefined,'code-feedback');feedback.setAttribute('role','status');let timer;
  button.addEventListener('click',async()=>{clearTimeout(timer);try{await navigator.clipboard.writeText(c.code);window.sanleanTrack?.('code_copy',{code:c.code,status:c.status,source_type:c.sourceType});button.textContent='COPIADO';feedback.textContent=`${c.code} copiado`;}catch{button.textContent='NO SE PUDO COPIAR';feedback.textContent='Seleccioná el código y copialo manualmente.';}timer=setTimeout(()=>{button.textContent='COPIAR CÓDIGO';feedback.textContent='';},2000);});
