@@ -8,21 +8,26 @@ fixture.maps[0].labels=[{x:.5,y:.25,text:'CALLE DE PRUEBA',source:'Test fixture 
 (async()=>{
  await new Promise(r=>server.listen(0,'127.0.0.1',r));
  const base=process.env.HALLOWEEN_BASE_URL||`http://127.0.0.1:${server.address().port}/halloween.html`;
- const engine=process.env.HALLOWEEN_ENGINE||'chromium';const browser=await (engine==='webkit'?webkit:chromium).launch({...(engine==='chromium'?{channel:'chrome'}:{}),headless:true});
+ const engine=process.env.HALLOWEEN_ENGINE||'chromium';const browser=await (engine==='webkit'?webkit:chromium).launch({...(engine==='chromium'&&process.env.HALLOWEEN_BROWSER_CHANNEL?{channel:process.env.HALLOWEEN_BROWSER_CHANNEL}:{}),headless:true});
  const output=path.resolve(root,'../halloween-verification');fs.mkdirSync(output,{recursive:true});
  try{
  for(const width of (process.env.HALLOWEEN_WIDTHS?process.env.HALLOWEEN_WIDTHS.split(',').map(Number):engine==='webkit'?[430,390,375,320]:[1920,1440,1280,1024,430,390,375,320])){
   const context=await browser.newContext({viewport:{width,height:900},hasTouch:width<760,isMobile:width<760});
   const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.route(/googletagmanager|google-analytics/,r=>r.abort());
-  await page.goto(base);await page.waitForSelector('.hm-card');assert.equal(await page.locator('.hm-card').count(),5);
+  await page.goto(base);await page.waitForSelector('.hm-card');assert.equal(await page.locator('.hm-card').count(),5);assert.equal(await page.locator('#hmGalleryHeading').isVisible(),true);
   const preview=await page.locator('.hm-card img').first().boundingBox();assert.ok(Math.abs(preview.width/preview.height-4/3)<.02);
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   if([1440,390].includes(width))await page.screenshot({path:path.join(output,engine+'-gallery-'+width+'.png'),fullPage:true});
   const activate=async locator=>{await locator.evaluate(node=>node.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'}));await page.waitForTimeout(100);return width<760?locator.tap():locator.click();};
-  await activate(page.locator('.hm-card').first());await page.waitForSelector('#hmScene:not([hidden])');
+  await activate(page.locator('.hm-card').first());await page.waitForSelector('#hmScene:not([hidden])');assert.equal(await page.locator('#hmGalleryHeading').isVisible(),false);
   assert.equal(await page.locator('#hmZoom').textContent(),'100%');assert.equal(await page.locator('#hmMarkers button').count(),0);
-  assert.match(await page.locator('#hmNotice').textContent(),/placeholder/);
+  assert.equal(await page.locator('#hmVerified li').count(),4);
+  assert.match(await page.locator('#hmMapSummary').textContent(),/residencial/i);
+  assert.equal(await page.locator('#hmOfficial').getAttribute('href'),'https://halloweengame.com/news/the-locations-of-halloween-the-game/');
+  await page.locator('#hmStyle').click();assert.equal(await page.locator('#hmViewport').evaluate(e=>e.classList.contains('hm-paper')),true);
+  await activate(page.locator('#hmStyle'));assert.equal(await page.locator('#hmViewport').evaluate(e=>e.classList.contains('hm-paper')),false);
+  assert.match(await page.locator('#hmNotice').textContent(),/ESQUEMA ARTÍSTICO/);
   if(width>=1024){const left=await page.locator('#hmLegend').boundingBox(),map=await page.locator('#hmViewport').boundingBox(),right=await page.locator('.hm-map-nav').boundingBox();assert.ok(left.x<map.x&&map.x<right.x);assert.ok(map.width>left.width*3);}
   else{assert.equal(await page.locator('#hmLegend').getAttribute('open'),null);await activate(page.locator('#hmLegend summary'));assert.notEqual(await page.locator('#hmLegend').getAttribute('open'),null);await activate(page.locator('#hmLegend summary'));}
   if([1440,390].includes(width))await page.screenshot({path:path.join(output,engine+'-viewer-'+width+'.png'),fullPage:true});
