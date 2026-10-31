@@ -24,7 +24,7 @@ function card(c){
  const content=element('div',undefined,'code-content'),heading=element('div',undefined,'code-heading');
  if(hasImage)heading.append(element('h3',c.code),element('span',c.status==='active'?'ACTIVO':'FINALIZADO','code-state'));
  else compactHeading();
- const dl=element('dl');const field=(label,value)=>dl.append(element('dt',label),element('dd',value));
+ const dl=element('dl');const field=(label,value)=>{dl.append(element('dt',label));if(!hasImage)dl.append(document.createTextNode(' '));dl.append(element('dd',value));};
  const reward=c.reward||'Consultá la fuente del código.';
  field(hasImage?'RECOMPENSA':'Recompensa:',reward);
  const expiry=expiryLabel(c);if(expiry)field(hasImage?(c.status==='expired'?'FINALIZÓ':'DISPONIBLE HASTA'):(c.status==='expired'?'Finalizó:':'Vence:'),expiry);
