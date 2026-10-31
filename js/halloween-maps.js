@@ -66,9 +66,13 @@ async function initialize(){
  function renderLabels(){el('LabelLayer').replaceChildren();for(const label of current.labels){const node=create('span','hm-label',label.text);position(node,label);el('LabelLayer').append(node);}el('LabelLayer').hidden=!el('Labels').checked;}
  function stopGesture(){for(const id of points.keys()){if(viewport.hasPointerCapture(id))viewport.releasePointerCapture(id);}points.clear();gesture=null;viewport.classList.remove('is-dragging');}
  function loadMap(map){
-  stopGesture();current=map;ready=false;const request=++loadId;setPlacing(false);closeInfo();hiddenTypes.clear();gallery.hidden=true;viewer.hidden=false;scene.hidden=true;
+  stopGesture();current=map;ready=false;const request=++loadId;setPlacing(false);closeInfo();hiddenTypes.clear();gallery.hidden=true;el('GalleryHeading').hidden=true;viewer.hidden=false;scene.hidden=true;
   el('MapTitle').textContent=map.name;el('MapTitle').focus({preventScroll:true});el('MapTitle').scrollIntoView({block:'start',behavior:'instant'});
-  el('Notice').textContent=map.placeholder?'VISTA PREPARADA · La imagen y las ubicaciones verificadas de este mapa todavía no están disponibles. El fondo es un placeholder, no representa el terreno. Podés probar el visor y tu pin personal.':'Las marcas indican ubicaciones posibles; verificá siempre las condiciones de tu partida.';
+  el('Notice').textContent=map.placeholder?'ESQUEMA ARTÍSTICO · La ilustración no representa las calles ni las posiciones reales del juego. Podés explorar los controles de zoom y tu marcador personal; los puntos de escape todavía no tienen coordenadas verificadas.':'Las marcas indican ubicaciones posibles; verificá siempre las condiciones de tu partida.';
+  el('MapSummary').textContent=map.summary||'Referencias oficiales del escenario.';
+  el('Verified').replaceChildren(...(map.highlights||[]).map(name=>create('li','',name)));
+  const source=el('Official');
+  if(typeof map.officialSourceUrl==='string'&&/^https:\/\/halloweengame\.com\/news\/[a-z0-9-]+\/$/.test(map.officialSourceUrl)){source.href=map.officialSourceUrl;source.hidden=false;}else{source.removeAttribute('href');source.hidden=true;}
   for(const button of el('MapList').children)button.setAttribute('aria-current',String(button.dataset.map===map.id));
   el('ImageState').textContent='CARGANDO MAPA...';el('ImageState').hidden=false;viewport.setAttribute('aria-busy','true');
   for(const id of ['ZoomIn','ZoomOut','Reset','Place'])el(id).disabled=true;
@@ -82,10 +86,24 @@ async function initialize(){
  const compact=matchMedia('(max-width:900px)');el('Legend').open=!compact.matches;compact.addEventListener('change',()=>{el('Legend').open=!compact.matches;});
  el('Labels').addEventListener('change',()=>{el('LabelLayer').hidden=!el('Labels').checked;});el('GridToggle').addEventListener('change',()=>{el('Grid').hidden=!el('GridToggle').checked;});
  el('ZoomIn').addEventListener('click',()=>zoom(1.25));el('ZoomOut').addEventListener('click',()=>zoom(.8));el('Reset').addEventListener('click',reset);
+ el('Style').addEventListener('click',()=>{
+  const next=!viewport.classList.contains('hm-paper');
+  viewport.classList.toggle('hm-paper',next);
+  el('Style').setAttribute('aria-pressed',String(next));
+  el('Style').textContent=next?'VISTA OSCURA':'VISTA CLARA';
+ });
+ const fullscreen=el('Fullscreen');
+ if(!viewport.requestFullscreen){fullscreen.hidden=true;}else{
+  fullscreen.addEventListener('click',async()=>{
+   try{if(document.fullscreenElement===viewport)await document.exitFullscreen();else await viewport.requestFullscreen();}
+   catch{announce('Tu navegador no permite el modo de pantalla completa. Podés usar los controles de zoom.');}
+  });
+  document.addEventListener('fullscreenchange',()=>{fullscreen.textContent=document.fullscreenElement===viewport?'SALIR DE PANTALLA COMPLETA':'PANTALLA COMPLETA';});
+ }
  el('Place').addEventListener('click',()=>{closeInfo();setPlacing(!placing);if(placing)viewport.focus({preventScroll:true});});
  el('Clear').addEventListener('click',()=>{delete pins[current.id];persist();renderPin();closeInfo();setPlacing(false);announce('Posición borrada.');el('Place').focus({preventScroll:true});});
  el('InfoClose').addEventListener('click',()=>{closeInfo();if(lastInfoTrigger?.isConnected)lastInfoTrigger.focus({preventScroll:true});});
- el('Back').addEventListener('click',()=>{++loadId;stopGesture();setPlacing(false);viewer.hidden=true;gallery.hidden=false;ready=false;gallery.querySelector(`[data-map="${current.id}"]`)?.focus();});
+ el('Back').addEventListener('click',()=>{++loadId;stopGesture();setPlacing(false);viewer.hidden=true;gallery.hidden=false;el('GalleryHeading').hidden=false;ready=false;gallery.querySelector(`[data-map="${current.id}"]`)?.focus();});
  const local=e=>{const rect=viewport.getBoundingClientRect();return {x:e.clientX-rect.left-viewport.clientLeft,y:e.clientY-rect.top-viewport.clientTop};};
  const snapshot=()=>{const values=[...points.values()];gesture={camera:{...camera},values};};
  viewport.addEventListener('pointerdown',event=>{
@@ -126,7 +144,7 @@ async function initialize(){
   const response=await fetch('/data/halloween-maps.json');if(!response.ok)throw Error('No disponible');maps=validateCatalog(await response.json()).maps;
   for(const map of maps){
    const card=create('button','hm-card');card.type='button';card.dataset.map=map.id;const image=create('img');image.src=map.image;image.alt='';image.loading='lazy';image.width=map.width;image.height=map.height;image.addEventListener('error',()=>{image.hidden=true;});
-   const copy=create('span','hm-card-copy');copy.append(create('strong','',map.name),create('small','',map.placeholder?'Imagen y ubicaciones pendientes':'Ubicaciones posibles · consultá tu partida'),create('span','hm-open','ABRIR MAPA →'));card.append(image,copy);card.addEventListener('click',()=>loadMap(map));gallery.append(card);
+   const copy=create('span','hm-card-copy');copy.append(create('strong','',map.name),create('small','',map.placeholder?'ESQUEMA ILUSTRATIVO · MAPA INTERACTIVO':'POSIBLES UBICACIONES · CONSULTÁ TU PARTIDA'),create('span','hm-open','EXPLORAR MAPA →'));card.append(image,copy);card.addEventListener('click',()=>loadMap(map));gallery.append(card);
    const button=create('button','',map.name);button.type='button';button.dataset.map=map.id;
    // A horizontal touch scroller can suppress the compatibility click after a pinch.
    // Handle a deliberate stationary tap, but never a swipe, cancel or second finger.
