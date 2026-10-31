@@ -18,7 +18,7 @@ async function initialize(){
  function paint(){
   scene.style.transform=`translate(${camera.x}px,${camera.y}px) scale(${camera.scale})`;
   scene.style.setProperty('--marker-scale',1/camera.scale);
-  el('Zoom').value=Math.round(camera.scale/baseScale*100)+'%';
+  el('Zoom').textContent=Math.round(camera.scale/baseScale*100)+'%';
   el('ZoomOut').disabled=!ready||camera.scale<=baseScale+.00001;
   el('ZoomIn').disabled=!ready||camera.scale>=baseScale*8-.00001;
  }
