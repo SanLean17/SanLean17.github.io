@@ -35,7 +35,7 @@ function card(c){
 function render(data){
  if(data.schemaVersion!==1||!Array.isArray(data.codes))throw Error('Catálogo inválido');
  const codes=data.codes.filter(c=>((c.official===true&&c.confidence==='CONFIRMED'&&(c.sourceAccount==='deadbydaylight.com'||c.sourceType==='official_wiki'))||(c.sourceType==='nightlight'&&c.confidence==='COMMUNITY_VERIFIED'&&c.official===false))&&/^[A-Z0-9_-]{3,64}$/.test(c.code)&&(official.test(c.sourceUrl)||c.sourceType==='official_wiki'&&wikiOfficial(c.sourceUrl)||c.sourceType==='nightlight'&&c.sourceUrl==='https://nightlight.gg/codes')&&(Number.isFinite(Date.parse(c.publishedAt))||Number.isFinite(Date.parse(c.detectedAt)))).map(c=>({...enrichCode(c),status:c.status==='expired'||(c.expiresAt&&Date.now()>Date.parse(c.expiresAt))?'expired':'active'}));
- const unique=[...new Map(codes.map(c=>[c.code,c])).values()];
+ const unique=[...new Map(codes.sort((a,b)=>Number(a.sourceType==='nightlight')-Number(b.sourceType==='nightlight')).map(c=>[c.code,c])).values()];
  const permanent=unique.filter(c=>c.status==='active'&&c.expiryPolicy==='never').sort(compareCodes);
  const active=unique.filter(c=>c.status==='active'&&c.expiryPolicy!=='never').sort(compareCodes);
  const expired=unique.filter(c=>c.status==='expired').sort(compareCodes);
@@ -52,7 +52,7 @@ async function showDebug(data){
 }
 async function load(){
  $('codes-retry').hidden=true;$('codes-notice').hidden=true;
- try{let data;try{data=await json(production?`${raw}data/codigos.json?t=${Date.now()}`:'/data/codigos.json');render(data);}catch(error){if(!production)throw error;data=await json('/data/codigos.json');render(data);$('codes-notice').hidden=false;$('codes-notice').textContent=`No se pudo consultar la actualización más reciente. Mostrando la copia publicada del ${date(data.updatedAt)}; verificá la fuente oficial antes de canjear.`;}if(debug)await showDebug(data);}
+ try{let data;try{data=await json(production?`${raw}data/codigos.json?t=${Date.now()}`:'/data/codigos.json');}catch(error){if(!production)throw error;data=await json('/data/codigos.json');$('codes-notice').hidden=false;$('codes-notice').textContent=`No se pudo consultar la actualización más reciente. Mostrando la copia publicada del ${date(data.updatedAt)}; verificá la fuente oficial antes de canjear.`;}try{const community=await json(production?`${raw}data/codigos-nightlight.json?t=${Date.now()}`:'/data/codigos-nightlight.json');if(community.schemaVersion===1&&Array.isArray(community.codes))data={...data,codes:[...community.codes,...data.codes]};}catch(error){console.warn('NightLight no disponible, conservando códigos oficiales',error);}render(data);if(debug)await showDebug(data);}
  catch{$('codes-notice').hidden=false;$('codes-notice').textContent='No se pudieron cargar los códigos. Intentá nuevamente en unos minutos.';$('codes-retry').hidden=false;}
 }
 setupArchive($('codes-expired'));
