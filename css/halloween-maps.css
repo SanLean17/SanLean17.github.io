@@ -98,14 +98,18 @@
  min-width:0;padding:17px;background:#111114ed;
  border:1px solid #34343d;border-radius:14px
 }
-/* El panel abierto termina alineado con el visor en escritorio.
-   Si los filtros no entran, se pueden desplazar sin perder opciones. */
-#halloweenMaps .hm-legend[open],
-#halloweenMaps .hm-map-nav{
- height:clamp(400px,66dvh,760px);
- box-sizing:border-box;overflow-y:auto;
- overscroll-behavior:contain;scrollbar-width:thin;
- scrollbar-color:#55545d transparent
+/* Las columnas laterales llegan como mínimo al borde inferior del mapa.
+   Nunca encierran ni recortan su contenido en una barra interna. */
+@media(min-width:901px){
+ #halloweenMaps .hm-legend[open],
+ #halloweenMaps .hm-map-nav{
+  min-height:clamp(400px,66dvh,760px);
+  height:auto;box-sizing:border-box;overflow:visible;
+  display:flex;flex-direction:column
+ }
+ #halloweenMaps .hm-legend[open]>.hm-legend-inner{
+  display:flex;flex:1;flex-direction:column;min-width:0
+ }
 }
 #halloweenMaps :is(summary,.hm-map-nav h3){
  font-size:12px;font-weight:800;line-height:1.5;letter-spacing:.05em
@@ -515,30 +519,33 @@
 #halloweenMaps #hmGrid{right:auto;bottom:auto}
 #halloweenMaps .hm-grid-labels{z-index:1}
 
-/* HALLOWEEN / MAPAS: compactación de paneles laterales en escritorio.
-   Mantener el alto del visor y los 44px de los botones; el scroll queda
-   disponible solamente si la pantalla es demasiado baja para el contenido. */
+/* HALLOWEEN / MAPAS: distribuir el aire entre opciones sin scroll interno.
+   Si la ventana queda corta, las cajas crecen sin esconder controles. */
 @media(min-width:901px){
- #halloweenMaps :is(.hm-legend,.hm-map-nav){padding:11px 12px}
- #halloweenMaps .hm-filters{gap:2px;margin:8px 0 4px}
- #halloweenMaps .hm-filter-group{margin:7px 0 3px}
+ #halloweenMaps :is(.hm-legend,.hm-map-nav){
+  padding:clamp(12px,1.1vw,17px)
+ }
+ #halloweenMaps .hm-legend[open] .hm-filters{
+  flex:1;align-content:space-evenly;
+  gap:clamp(4px,.65vh,9px);
+  margin:10px 0 5px
+ }
+ #halloweenMaps .hm-filter-group{margin:8px 0 3px}
  #halloweenMaps .hm-filter-group:first-child{margin-top:0}
- #halloweenMaps .hm-filter{min-height:44px;padding:5px 6px}
- #halloweenMaps .hm-map-nav .hm-map-list{gap:4px;margin:8px 0 9px}
+ #halloweenMaps .hm-filter{min-height:44px;padding:6px 8px}
+ #halloweenMaps .hm-map-nav .hm-map-list{
+  flex:1;align-content:space-evenly;
+  gap:clamp(6px,1vh,13px);margin:10px 0 13px
+ }
  #halloweenMaps .hm-map-nav .hm-map-list button{
-  min-height:44px;padding:8px 9px
+  min-height:44px;padding:10px
  }
  #halloweenMaps .hm-legend-options{
-  gap:4px;margin-top:10px;padding-top:11px
+  gap:8px;margin-top:11px;padding-top:13px
  }
  #halloweenMaps .hm-notice{
-  margin:9px 0 0;padding:8px 10px;
-  border-left-width:3px;font-size:11px;line-height:1.45
+  margin:12px 0 0;padding:10px 12px;
+  border-left-width:3px;font-size:11px;line-height:1.5
  }
-}
-@media(min-width:901px) and (max-height:760px){
- #halloweenMaps .hm-filter{min-height:42px}
- #halloweenMaps .hm-filters{gap:1px}
- #halloweenMaps .hm-filter-group{margin:5px 0 2px}
 }
 
