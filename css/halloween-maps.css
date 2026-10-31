@@ -100,7 +100,8 @@
 }
 /* El panel abierto termina alineado con el visor en escritorio.
    Si los filtros no entran, se pueden desplazar sin perder opciones. */
-#halloweenMaps .hm-legend[open]{
+#halloweenMaps .hm-legend[open],
+#halloweenMaps .hm-map-nav{
  height:clamp(400px,66dvh,760px);
  box-sizing:border-box;overflow-y:auto;
  overscroll-behavior:contain;scrollbar-width:thin;
@@ -261,7 +262,8 @@
 }
 @media(max-width:900px){
  #halloweenMaps .hm-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
- #halloweenMaps .hm-legend[open]{height:auto;overflow:visible}
+ #halloweenMaps .hm-legend[open],
+ #halloweenMaps .hm-map-nav{height:auto;overflow:visible}
  #halloweenMaps .hm-view-heading{display:flex;flex-direction:column;align-items:stretch;gap:14px}
  #halloweenMaps .hm-view-heading h2{width:100%;text-align:center}
  #halloweenMaps .hm-view-heading .hm-back{align-self:flex-start}
