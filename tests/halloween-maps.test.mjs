@@ -43,9 +43,14 @@ test('public HTML keeps the canonical heading and loads only Halloween assets',(
  const html=fs.readFileSync(new URL('../halloween.html',import.meta.url),'utf8');
  assert.match(html,/<h1>HALLOWEEN<\/h1>/);
  assert.match(html,/Recorré los mapas y preparate tu próxima partida/);
- for(const id of ['hmGallery','hmGalleryHeading','hmViewer','hmViewport','hmLegend','hmMapList','hmPinLayer','hmMapSummary','hmVerified','hmOfficial','hmFullscreen','hmStyle'])
+ for(const id of ['hmGallery','hmGalleryHeading','hmViewer','hmViewport','hmLegend','hmMapList','hmPinLayer','hmMapSummary','hmVerified','hmFullscreen','hmStyle'])
   assert.match(html,new RegExp('id="'+id+'"'));
- assert.match(html,/halloween-background\.css/);
+ assert.doesNotMatch(html,/halloween-background\\.css/);
+ assert.doesNotMatch(html,/id="hmZoom(?:In|Out)?"/);
+ assert.doesNotMatch(html,/id="hmOfficial"/);
+ const css=fs.readFileSync(new URL('../css/halloween-maps.css',import.meta.url),'utf8');
+ assert.doesNotMatch(css,/body\\.halloween-page\\.page-bg/);
+ assert.match(html,/class="public-site desktop-footer-space page-bg halloween-page"/);
  assert.match(html,/halloween-maps\.css/);
  assert.match(html,/halloween-maps\.js/);
 });
