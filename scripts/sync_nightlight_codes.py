@@ -226,7 +226,8 @@ def main():
             for entry in catalog["codes"]:
                 if entry["code"] in old:
                     entry["detectedAt"] = old[entry["code"]].get("detectedAt", entry["detectedAt"])
-                    entry["publishedAt"] = old[entry["code"]].get("publishedAt", entry["publishedAt"])
+                    if catalog.get("extractionMode") != "react-router-stream":
+                        entry["publishedAt"] = old[entry["code"]].get("publishedAt", entry["publishedAt"])
             previous_codes = {entry["code"]: {k: v for k, v in entry.items() if k not in ("detectedAt", "publishedAt")} for entry in previous.get("codes", [])}
             current_codes = {entry["code"]: {k: v for k, v in entry.items() if k not in ("detectedAt", "publishedAt")} for entry in catalog["codes"]}
             if previous_codes == current_codes:
