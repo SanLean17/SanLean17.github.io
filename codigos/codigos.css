@@ -122,3 +122,6 @@
 .codes-page .code-source-info{display:flex;flex-direction:column;align-items:center;}
 .codes-page .code-missing-image[hidden]{display:none!important;}
 @media(max-width:760px){.codes-page .codes-grid>.code-card-text{grid-column:span 1;max-width:100%}.codes-page .codes-permanent-grid{grid-template-columns:1fr}.codes-page .code-card-text .code-actions{gap:12px}.codes-page .code-card-text .code-actions button{max-width:100%}}
+
+/* En permanentes, dos tarjetas compactas por fila en escritorio, una en móvil. */
+@media(min-width:761px){.codes-page .codes-permanent-grid > .code-card-text{grid-column:span 1;max-width:none}}
