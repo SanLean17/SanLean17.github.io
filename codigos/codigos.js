@@ -19,10 +19,11 @@ function card(c){
  const article=element('article',undefined,'tier-board code-card');article.dataset.status=c.status;
  const images=c.images||[];
  const hasImage=images.length>0; let failedImages=0; if(!hasImage)article.classList.add('code-card-text');
- const media=hasImage?createGallery({images:c.status==='active'?images:images.slice(0,1),code:c.code,swipe:c.status==='active',onFailure:()=>{logImageFailure(c.code);failedImages++;if(failedImages>=(c.status==='active'?images.length:1)){article.classList.add('code-card-text');media?.remove();}},...(c.status==='active'?{onOpen:(index,button)=>{lightbox.open(images,index,button,c.code);window.sanleanTrack?.('code_image_open',{code:c.code,image_index:index+1,image_count:images.length});}}:{})}).root:null;
+ const compactHeading=()=>{const top=element('div',undefined,'code-topline');top.append(element('span',c.status==='active'?'ACTIVO':'FINALIZADO','code-state'),element('span','CÓDIGO DE RECOMPENSA','code-kind'));heading.replaceChildren(top,element('h3',c.code));};
+ const media=hasImage?createGallery({images:c.status==='active'?images:images.slice(0,1),code:c.code,swipe:c.status==='active',onFailure:()=>{logImageFailure(c.code);failedImages++;if(failedImages>=(c.status==='active'?images.length:1)){article.classList.add('code-card-text');media?.remove();compactHeading();caption.hidden=false;}},...(c.status==='active'?{onOpen:(index,button)=>{lightbox.open(images,index,button,c.code);window.sanleanTrack?.('code_image_open',{code:c.code,image_index:index+1,image_count:images.length});}}:{})}).root:null;
  const content=element('div',undefined,'code-content'),heading=element('div',undefined,'code-heading');
  if(hasImage)heading.append(element('h3',c.code),element('span',c.status==='active'?'ACTIVO':'FINALIZADO','code-state'));
- else {const top=element('div',undefined,'code-topline');top.append(element('span',c.status==='active'?'ACTIVO':'FINALIZADO','code-state'),element('span','CÓDIGO DE RECOMPENSA','code-kind'));heading.append(top,element('h3',c.code));}
+ else compactHeading();
  const dl=element('dl');const field=(label,value)=>dl.append(element('dt',label),element('dd',value));
  field('RECOMPENSA',c.reward||'Consultá la publicación oficial.');
  const expiry=expiryLabel(c);if(expiry)field(c.status==='expired'?'FINALIZÓ':'DISPONIBLE HASTA',expiry);
@@ -30,12 +31,16 @@ function card(c){
  const feedback=element('span',undefined,'code-feedback');feedback.setAttribute('role','status');let timer;
  button.addEventListener('click',async()=>{clearTimeout(timer);try{await navigator.clipboard.writeText(c.code);window.sanleanTrack?.('code_copy',{code:c.code,status:c.status,source_type:c.sourceType});button.textContent='COPIADO';feedback.textContent=`${c.code} copiado`;}catch{button.textContent='NO SE PUDO COPIAR';feedback.textContent='Seleccioná el código y copialo manualmente.';}timer=setTimeout(()=>{button.textContent='COPIAR CÓDIGO';feedback.textContent='';},2000);});
  const link=element('a',c.sourceType==='nightlight'?'VER EN NIGHTLIGHT':c.sourceType==='official_wiki'?'VER EN DBD WIKI':'VER PUBLICACIÓN OFICIAL','code-source');link.href=c.sourceUrl;link.target='_blank';link.rel='noopener noreferrer';link.addEventListener('click',()=>window.sanleanTrack?.('code_source_click',{code:c.code,source_type:c.sourceType,source_host:new URL(c.sourceUrl).hostname}));
- if(c.status==='active')actions.append(button,feedback);actions.append(link);content.append(heading,dl,actions);if(media)article.append(media);article.append(content);return article;
+ const caption=element('span','Sin imagen disponible','code-missing-image');caption.hidden=hasImage;
+ const sourceInfo=element('div',undefined,'code-source-info');sourceInfo.append(caption,link);
+ if(c.status==='active')actions.append(button,feedback);actions.append(sourceInfo);
+ if(!hasImage&&expiry) {const expiryLine=element('p',`${c.status==='expired'?'Finalizó':'Disponible hasta'}: ${expiry}`,'code-expiry-inline');dl.append(expiryLine);}
+ content.append(heading,dl,actions);if(media)article.append(media);article.append(content);return article;
 }
 function render(data){
  if(data.schemaVersion!==1||!Array.isArray(data.codes))throw Error('Catálogo inválido');
  const codes=data.codes.filter(c=>((c.official===true&&c.confidence==='CONFIRMED'&&(c.sourceAccount==='deadbydaylight.com'||c.sourceType==='official_wiki'))||(c.sourceType==='nightlight'&&c.confidence==='COMMUNITY_VERIFIED'&&c.official===false))&&/^[A-Z0-9_-]{3,64}$/.test(c.code)&&(official.test(c.sourceUrl)||c.sourceType==='official_wiki'&&wikiOfficial(c.sourceUrl)||c.sourceType==='nightlight'&&c.sourceUrl==='https://nightlight.gg/codes')&&(Number.isFinite(Date.parse(c.publishedAt))||Number.isFinite(Date.parse(c.detectedAt)))).map(c=>({...enrichCode(c),status:c.status==='expired'||(c.expiresAt&&Date.now()>Date.parse(c.expiresAt))?'expired':'active'}));
- const unique=[...new Map(codes.sort((a,b)=>Number(a.sourceType==='nightlight')-Number(b.sourceType==='nightlight')).map(c=>[c.code,c])).values()];
+ const unique=[...new Map(codes.sort((a,b)=>Number(b.sourceType==='nightlight')-Number(a.sourceType==='nightlight')).map(c=>[c.code,c])).values()];
  const permanent=unique.filter(c=>c.status==='active'&&c.expiryPolicy==='never').sort(compareCodes);
  const active=unique.filter(c=>c.status==='active'&&c.expiryPolicy!=='never').sort(compareCodes);
  const expired=unique.filter(c=>c.status==='expired').sort(compareCodes);
