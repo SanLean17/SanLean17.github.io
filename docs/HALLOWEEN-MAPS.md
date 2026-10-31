@@ -1,5 +1,38 @@
 # HALLOWEEN: mapas interactivos de la WEB pública
 
+## 31 de octubre de 2026 — Ajustes y visor comunitario
+
+La **WEB pública** mantiene el fondo general de SanLean. Se retiró
+`css/halloween-background.css`, que contenía una versión demasiado comprimida
+de la imagen compartida anteriormente. No cambiar el resto de la WEB ni USUARIO.
+
+El visor ya no muestra los botones +/- ni el porcentaje: permite zoom con
+rueda del mouse, doble clic, teclado y pellizco táctil; conserva arrastre,
+pantalla completa, cuadrícula y marcador personal en la vista original.
+
+**Modo principal: «MAPA DE LA COMUNIDAD».** Se muestra un iframe con
+`https://p8riot.github.io/halloween-maps/`, una herramienta pública de
+p8riot que actualmente presenta los cinco escenarios y sus marcadores.
+No se descargan, copian ni redistribuyen imágenes, iconos ni datasets del
+repositorio. El usuario debe elegir el escenario **dentro del visor ajeno**
+porque no existe una API pública de selección entre dominios. Hay atribución
+y enlace de salida al sitio original. El funcionamiento depende del sitio
+externo y de las políticas de incrustación de su hosting.
+
+**Modo secundario: «ESQUEMA SANLEAN».** Conserva las cinco ilustraciones
+propias, los íconos/filtros sin ubicaciones inventadas y los controles de
+posición personal, pantalla completa, cuadrícula y referencias. Los esquemas
+no equivalen al terreno real. No incorporar coordenadas ni imágenes de
+otros repositorios sin permiso o licencia aplicable a cada activo.
+
+La condición de que un repositorio sea público, no comercial o sin archivo
+LICENSE no autoriza automáticamente copiar sus archivos. Por ejemplo,
+Davide-DevP/halloween-map-overlay tiene licencia Apache 2.0 para parte de
+su código, pero su NOTICE excluye explícitamente de ella los mapas de
+u/deftyconchgaming. Mantener esta distinción en futuros cambios.
+
+---
+
 ## 31 de octubre de 2026 — Restauración y publicación
 
 La WEB pública en `/halloween.html` volvió a mostrar los mapas interactivos que estaban
