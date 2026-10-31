@@ -3,6 +3,11 @@ on:
   schedule:
     - cron: '17 */2 * * *'
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/codigos-nightlight.yml'
+      - 'scripts/sync_nightlight_codes.py'
 permissions:
   contents: write
 concurrency:
