@@ -91,12 +91,12 @@
 .codes-page .codes-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 .codes-page .codes-grid > .code-card{grid-column:span 1;max-width:none;width:100%}
 .codes-page .codes-section > h2{margin-bottom:28px}
-.codes-page .codes-source-note{font-size:14px;line-height:1.5;color:#bcbcc1;margin:-12px 0 24px}
+.codes-page .codes-source-note{font-size:14px;line-height:1.5;color:#bcbcc1;margin:-12px 0 24px;max-width:520px}
 
 /* Sin imagen: mismo ancho de columna que las tarjetas con galería. */
 .codes-page .code-card.code-card-text{
  position:relative;min-height:235px;
- background:#171717;border:1px solid #303034;
+ background:#09090a;border:1px solid #303034;
  border-left:6px solid #ff003c;border-radius:14px;
  max-width:none;align-self:stretch;
 }
