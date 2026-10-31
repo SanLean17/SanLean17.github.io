@@ -26,3 +26,26 @@ test('schema supports future maps and all categories, requires evidence and reje
  validateCatalog(copy);map.markers[0].x=2;assert.throws(()=>validateCatalog(copy));map.markers[0].x=.5;map.markers[0].source='';assert.throws(()=>validateCatalog(copy));map.markers[0].source='test';map.placeholder=true;assert.throws(()=>validateCatalog(copy));
  const sixth={...structuredClone(catalog.maps[0]),id:'future-map'};validateCatalog({...catalog,maps:[...catalog.maps,sixth]});
 });
+
+test('each map includes grounded official references and its illustrative asset remains clearly identified',()=>{
+ for(const map of catalog.maps){
+  assert.equal(map.placeholder,true);
+  assert.ok(Array.isArray(map.highlights)&&map.highlights.length>=3);
+  assert.equal(typeof map.summary,'string');
+  assert.match(map.officialSourceUrl,/^https:\/\/halloweengame\.com\/news\/[a-z0-9-]+\/$/);
+  assert.match(map.asset.origin,/cartográfica conceptual/);
+  const asset=fs.readFileSync(new URL('..'+map.image,import.meta.url),'utf8');
+  assert.match(asset,/ESQUEMA ARTÍSTICO/);
+  assert.match(asset,/SIN COORDENADAS VERIFICADAS/);
+ }
+});
+test('public HTML keeps the canonical heading and loads only Halloween assets',()=>{
+ const html=fs.readFileSync(new URL('../halloween.html',import.meta.url),'utf8');
+ assert.match(html,/<h1>HALLOWEEN<\/h1>/);
+ assert.match(html,/Recorré los mapas y preparate tu próxima partida/);
+ for(const id of ['hmGallery','hmGalleryHeading','hmViewer','hmViewport','hmLegend','hmMapList','hmPinLayer','hmMapSummary','hmVerified','hmOfficial','hmFullscreen','hmStyle'])
+  assert.match(html,new RegExp('id="'+id+'"'));
+ assert.match(html,/halloween-background\.css/);
+ assert.match(html,/halloween-maps\.css/);
+ assert.match(html,/halloween-maps\.js/);
+});
