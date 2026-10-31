@@ -17,6 +17,29 @@ export function fit(width,height,viewWidth,viewHeight){const scale=Math.min(view
 export function normalized(point,camera,width,height){return {x:(point.x-camera.x)/(camera.scale*width),y:(point.y-camera.y)/(camera.scale*height)};}
 export function zoomAt(camera,point,scale){return {scale,x:point.x-(point.x-camera.x)*scale/camera.scale,y:point.y-(point.y-camera.y)*scale/camera.scale};}
 export function validPoint(p){return p&&Number.isFinite(p.x)&&Number.isFinite(p.y)&&p.x>=0&&p.x<=1&&p.y>=0&&p.y<=1;}
+// Source coordinates stay immutable. Personal pins already belong to image space.
+export function calibrateMap(map){
+ if(!map.calibration||map.coordinateSpace==='image')return map;
+ const [a,b,c,d,e,f]=map.calibration.sourceToImage;
+ const project=p=>({...p,x:a*p.x+b*p.y+c,y:d*p.x+e*p.y+f});
+ return {...map,coordinateSpace:'image',markers:map.markers.map(project),labels:map.labels.map(p=>{
+  const q=project(p),angle=(p.rotation||0)*Math.PI/180;
+  let rotation=Math.atan2(d*Math.cos(angle)+e*Math.sin(angle),a*Math.cos(angle)+b*Math.sin(angle))*180/Math.PI;
+  // Street text follows the road; house numbers always remain upright.
+  if(rotation>90)rotation-=180;if(rotation<=-90)rotation+=180;
+  return {...q,rotation:p.kind==='street'?rotation:0};
+ })};
+}
+// Group close visible points without moving their geographic coordinates.
+// The group's anchor is its first point, never a fabricated new location.
+export function markerGroups(markers,width,height,scale,distance=46){
+ const groups=[];
+ for(const marker of markers){
+  const group=groups.find(g=>Math.hypot((g.x-marker.x)*width*scale,(g.y-marker.y)*height*scale)<distance);
+  if(group)group.members.push(marker);else groups.push({x:marker.x,y:marker.y,members:[marker]});
+ }
+ return groups;
+}
 export function validateCatalog(data){
  if(data?.schemaVersion!==1||!Array.isArray(data.maps)||!data.maps.length)throw Error('Catálogo de mapas inválido');
  const ids=new Set();
@@ -24,6 +47,12 @@ export function validateCatalog(data){
   if(!/^[a-z0-9-]+$/.test(map.id)||ids.has(map.id)||typeof map.name!=='string'||!map.name.trim()||!/^\/assets\/halloween\/maps\/[a-z0-9-]+\.(svg|png|webp|jpe?g)$/.test(map.image)||!Number.isFinite(map.width)||!Number.isFinite(map.height)||!(map.width>0&&map.height>0)||typeof map.placeholder!=='boolean'||!Array.isArray(map.markers)||!Array.isArray(map.labels))throw Error('Mapa inválido');
   if(map.fallbackImage!==undefined&&!/^\/assets\/halloween\/maps\/[a-z0-9-]+\.(svg|png|webp|jpe?g)$/.test(map.fallbackImage))throw Error('Imagen alternativa inválida');
   ids.add(map.id);const points=new Set();
+  if(map.calibration){
+   const matrix=map.calibration.sourceToImage;
+   if(!Array.isArray(matrix)||matrix.length!==6||!matrix.every(Number.isFinite)||Math.abs(matrix[0]*matrix[4]-matrix[1]*matrix[3])<1e-9)throw Error('Calibración inválida');
+   const projected=calibrateMap(map);
+   if([...projected.markers,...projected.labels].some(p=>!validPoint(p)))throw Error('Calibración fuera del mapa');
+  }
   for(const marker of map.markers){
    if(!marker.id||points.has(marker.id)||!categories[marker.type]||!validPoint(marker)||typeof marker.title!=='string'||typeof marker.description!=='string'||typeof marker.possible!=='boolean'||!['confirmed','likely','community'].includes(marker.confidence)||typeof marker.source!=='string'||!marker.source.trim())throw Error('Marcador sin evidencia o coordenadas válidas');
    points.add(marker.id);

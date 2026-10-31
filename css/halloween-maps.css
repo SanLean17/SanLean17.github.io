@@ -483,3 +483,11 @@
   color:#fff;
  }
 }
+
+/* Calibration audit: shared points remain anchored; details expose every candidate. */
+#halloweenMaps .hm-marker-count{position:absolute;right:-5px;top:-7px;min-width:19px;height:19px;padding:0 3px;border-radius:999px;background:#fff;color:#101015;font:800 11px/19px var(--body);pointer-events:none}
+#halloweenMaps .hm-location-list{display:grid;gap:8px;margin-top:14px;max-height:240px;overflow-y:auto;touch-action:pan-y}
+#halloweenMaps .hm-location-list .hm-button{white-space:normal;text-align:left;min-height:44px}
+#halloweenMaps .hm-filter-note{display:block;flex-basis:100%;font-size:10px;text-align:left;line-height:1.4}
+#halloweenMaps .hm-filter:has(.hm-filter-note){flex-wrap:wrap}
+#halloweenMaps .hm-viewport:fullscreen .hm-info{position:absolute;z-index:30;left:12px;right:12px;bottom:12px;max-height:45vh;overflow:auto;background:#101015;cursor:auto}

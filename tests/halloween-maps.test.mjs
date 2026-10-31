@@ -100,3 +100,40 @@ test('JS usa los archivos propios y no integra visores de terceros',()=>{
  assert.match(css,/\.hm-label\.hm-street/);
  assert.doesNotMatch(js,/p8riot|hmCommunity|OwnTab/);
 });
+
+// Calibration is checked against independent roof/road evidence, not just bounds.
+test('calibración por imagen: hashes, puntos fijos y giro de calles sin rotar números',async()=>{
+ const {calibrateMap}=await import('../js/halloween-map-model.mjs');
+ const {createHash}=await import('node:crypto');
+ const expected={
+  'haddonfield-heights':{text:'702',x:.2412,y:.3314},
+  'haddonfield-town-center':{text:'1086',x:.3197,y:.3405},
+  'orange-grove-estates':{text:'1514',x:.4099,y:.2732},
+  'east-haddonfield':{text:'812',x:.6788,y:.4064},
+  'tower-farm':{text:'300',x:.2754,y:.3517}
+ };
+ for(const map of catalog.maps){
+  const calibration=map.calibration;
+  assert.equal(calibration.imageSha256,createHash('sha256').update(fs.readFileSync(new URL('..'+map.image,import.meta.url))).digest('hex'),'Una imagen nueva exige recalibración');
+  assert.ok(calibration.registration.inliers>300);
+  assert.ok(calibration.registration.medianErrorPixels<.5);
+  assert.equal(calibration.registration.controlPoints.length,9);
+  const result=calibrateMap(map),target=expected[map.id],label=result.labels.find(l=>l.text===target.text);
+  assert.ok(Math.abs(label.x-target.x)<.001&&Math.abs(label.y-target.y)<.001);
+  assert.ok(result.labels.filter(l=>l.kind==='address').every(l=>l.rotation===0));
+  assert.deepEqual(calibrateMap(result),result,'No aplicar la calibración dos veces');
+  assert.notDeepEqual(result.markers[0],map.markers[0]);
+  for(const p of result.markers)assert.ok(validPoint(p));
+ }
+ const bad=structuredClone(catalog);bad.maps[0].calibration.sourceToImage=[1,0,4,0,1,0];assert.throws(()=>validateCatalog(bad));
+});
+
+test('agrupación no pierde candidatos, conserva anclas y separa puntos al ampliar',async()=>{
+ const {markerGroups}=await import('../js/halloween-map-model.mjs');
+ const markers=[{id:'gas',x:.4,y:.4},{id:'key',x:.4,y:.4},{id:'repair',x:.42,y:.4},{id:'gate',x:.8,y:.8}];
+ const small=markerGroups(markers,1280,1280,.3),large=markerGroups(markers,1280,1280,4);
+ assert.equal(small.length,2);assert.equal(large.length,3);
+ assert.deepEqual(small.flatMap(g=>g.members.map(m=>m.id)),markers.map(m=>m.id));
+ assert.equal(small[0].x,markers[0].x);
+ assert.equal(large[0].members.length,2,'Objetos en el mismo punto siguen accesibles juntos');
+});

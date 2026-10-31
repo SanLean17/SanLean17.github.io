@@ -1,12 +1,14 @@
-import {categories,clamp,fit,normalized,zoomAt,validPoint,validateCatalog} from './halloween-map-model.mjs';
+import {categories,clamp,fit,normalized,zoomAt,validPoint,validateCatalog,calibrateMap,markerGroups} from './halloween-map-model.mjs?v=20261031-calibration1';
 
 const app=document.querySelector('#halloweenMaps');
 if(app)initialize();
 async function initialize(){
  const el=id=>app.querySelector('#hm'+id);
  const gallery=el('Gallery'),viewer=el('Viewer'),viewport=el('Viewport'),scene=el('Scene');
- let maps,current,camera={scale:1,x:0,y:0},baseScale=1,ready=false,placing=false,loadId=0,lastInfoTrigger;
- let fittedViewport={width:0,height:0};
+ let maps,current,camera={scale:1,x:0,y:0},baseScale=1,ready=false,placing=false,loadId=0,lastInfoTrigger,navTouchHandledAt=0;
+ let fittedViewport={width:0,height:0},markerScale=0;
+ const infoHome=el('Info').parentNode;
+ const infoNext=el('Info').nextSibling;
  let points=new Map(),gesture=null,moved=false,ignoreClickUntil=0,tapMarker=null;
  let pins={};const storageKey='sanlean.halloween.positions.v1';
  try{const value=JSON.parse(sessionStorage.getItem(storageKey));if(value&&typeof value==='object'&&!Array.isArray(value))for(const [id,p] of Object.entries(value))if(/^[a-z0-9-]+$/.test(id)&&validPoint(p))pins[id]={x:p.x,y:p.y};}catch{/* Storage is optional, never blocks the viewer. */}
@@ -35,6 +37,8 @@ async function initialize(){
  function paint(){
   scene.style.transform=`translate(${camera.x}px,${camera.y}px) scale(${camera.scale})`;
   scene.style.setProperty('--marker-scale',1/camera.scale);
+  if(ready&&markerScale!==camera.scale)renderMarkers();
+  layoutLabels();
  }
  function constrain(){
   const w=current.width*camera.scale,h=current.height*camera.scale,vw=viewport.clientWidth,vh=viewport.clientHeight;
@@ -62,6 +66,7 @@ async function initialize(){
   tip.style.top=clamp(y-tipHeight-12,8,Math.max(8,viewport.clientHeight-tipHeight-8))+'px';
  }
  function info(type,title,description,notes='',trigger){
+  el('Info').querySelector('.hm-location-list')?.remove();
   lastInfoTrigger=trigger;el('InfoType').textContent=type;el('InfoTitle').textContent=title;el('InfoText').textContent=description;el('InfoNotes').textContent=notes;el('Info').hidden=false;
   el('Info').focus({preventScroll:true});el('Info').scrollIntoView({block:'nearest',behavior:'instant'});
  }
@@ -72,18 +77,51 @@ async function initialize(){
   pin.addEventListener('click',()=>{if(performance.now()<ignoreClickUntil||placing)return;info('PIN PERSONAL','MI POSICIÓN','Esta marca es solo tuya y se conserva durante esta sesión.','Podés reubicarla con MARCAR MI POSICIÓN o borrarla.',pin);});el('PinLayer').append(pin);
  }
  function place(point){const p=normalized(point,camera,current.width,current.height);if(!validPoint(p)){announce('Elegí un punto dentro de la imagen del mapa.');return;}pins[current.id]=p;ignoreClickUntil=performance.now()+350;setPlacing(false);persist();renderPin();announce('MI POSICIÓN guardada solo en esta sesión.');}
+ function markerInfo(marker,trigger){
+  hideTooltip();
+  const title=(marker.possible?'Posible ubicación · ':'')+marker.title;
+  const caution=marker.possible?'Su aparición puede variar entre partidas. ':'';
+  const confidence=marker.confidence!=='confirmed'?'Referencia comunitaria orientativa; no confirma una aparición en esta partida. ':'';
+  info(categories[marker.type].name,title,marker.description,caution+confidence+[marker.requirements,marker.variant,marker.notes].filter(Boolean).join(' · '),trigger);
+ }
  function renderMarkers(){
-  hideTooltip();el('Markers').replaceChildren();
-  for(const marker of current.markers){
-   if(hiddenTypes.has(marker.type))continue;
-   const button=create('button','hm-marker');button.type='button';button.style.setProperty('--marker-color',categories[marker.type].color);button.append(icon(marker.type));position(button,marker);
-   const title=(marker.possible?'Posible ubicación · ':'')+marker.title;button.title=title+' — '+marker.description;button.setAttribute('aria-label',title);
-   button.addEventListener('pointerenter',event=>showTooltip(marker,event,button));
-   button.addEventListener('pointermove',event=>showTooltip(marker,event,button));
+  hideTooltip();el('Markers').replaceChildren();markerScale=camera.scale;
+  const visible=current.markers.filter(m=>!hiddenTypes.has(m.type));
+  for(const group of markerGroups(visible,current.width,current.height,camera.scale,matchMedia('(max-width:760px)').matches?50:46)){
+   const marker=group.members[0],multiple=group.members.length>1;
+   const button=create('button','hm-marker');button.type='button';button.style.setProperty('--marker-color',categories[marker.type].color);button.append(icon(marker.type));position(button,group);
+   button.dataset.markerIds=JSON.stringify(group.members.map(m=>m.id));
+   const title=multiple?group.members.length+' ubicaciones posibles cercanas':(marker.possible?'Posible ubicación · ':'')+marker.title;
+   const tooltip=multiple?{...marker,title,description:'Ampliá para separar los puntos o abrí el detalle para consultar todas las posibilidades.'}:marker;
+   button.title=title+' — '+tooltip.description;button.setAttribute('aria-label',title);
+   if(multiple)button.append(create('span','hm-marker-count',String(group.members.length)));
+   button.addEventListener('pointerenter',event=>showTooltip(tooltip,event,button));
+   button.addEventListener('pointermove',event=>showTooltip(tooltip,event,button));
    button.addEventListener('pointerleave',hideTooltip);
-   button.addEventListener('focus',()=>showTooltip(marker,null,button));
+   button.addEventListener('focus',()=>showTooltip(tooltip,null,button));
    button.addEventListener('blur',hideTooltip);
-   button.addEventListener('click',()=>{hideTooltip();if(performance.now()<ignoreClickUntil||placing)return;const caution=marker.possible?'Su aparición puede variar entre partidas. ':'';const confidence=marker.confidence!=='confirmed'?'Referencia orientativa, pendiente de verificación completa. ':'';info(categories[marker.type].name,title,marker.description,caution+confidence+[marker.requirements,marker.variant,marker.notes].filter(Boolean).join(' · '),button);});el('Markers').append(button);
+   button.addEventListener('click',()=>{
+    hideTooltip();if(performance.now()<ignoreClickUntil||placing)return;
+    if(!multiple){markerInfo(marker,button);return;}
+    info('UBICACIONES CERCANAS',title,'Estos puntos están juntos a este nivel de zoom. No indican apariciones garantizadas ni simultáneas.','Ampliá el mapa para ver su posición individual.',button);
+    const list=create('div','hm-location-list');
+    for(const member of group.members){
+     const option=create('button','hm-button',categories[member.type].name+' · '+member.title);
+     option.type='button';option.addEventListener('click',()=>markerInfo(member,button));list.append(option);
+    }
+    el('Info').append(list);
+   });el('Markers').append(button);
+  }
+  layoutLabels();
+ }
+ function layoutLabels(){
+  if(!ready||el('LabelLayer').hidden)return;
+  const occupied=[...el('Markers').children].map(n=>n.getBoundingClientRect());
+  // Keep exact anchors; temporarily hide collisions instead of shifting house numbers.
+  for(const node of el('LabelLayer').children){
+   node.hidden=false;const box=node.getBoundingClientRect();
+   const overlaps=occupied.some(b=>box.left<b.right+3&&box.right>b.left-3&&box.top<b.bottom+3&&box.bottom>b.top-3);
+   node.hidden=overlaps;if(!overlaps)occupied.push(box);
   }
  }
  function renderFilters(){
@@ -102,7 +140,7 @@ async function initialize(){
    button.dataset.group=category.group;
    button.setAttribute('aria-pressed',String(!hiddenTypes.has(type)));
    button.disabled=!count;
-   button.title=count?category.name+' · '+count+' ubicaciones posibles':'Todavía no hay ubicaciones identificadas';
+   button.title=count?category.name+' · '+count+' ubicaciones posibles':'Todavía no hay ubicaciones documentadas';
    button.setAttribute('aria-label',category.name+': '+count+' ubicaciones posibles'+(!count?', sin datos disponibles':''));
    const symbol=create('span','hm-icon');
    symbol.style.setProperty('--marker-color',category.color);symbol.append(icon(type));
@@ -112,6 +150,7 @@ async function initialize(){
     button.setAttribute('aria-pressed',String(!hiddenTypes.has(type)));
     closeInfo();renderMarkers();
    });
+   if(type==='item_fuse'&&!count)button.append(create('small','hm-filter-note','Sin ubicaciones documentadas'));
    el('Filters').append(button);
   }
   el('Labels').disabled=!current.labels.length;
@@ -169,7 +208,7 @@ async function initialize(){
  }
  for(let i=0;i<10;i++){const a=create('span','',String.fromCharCode(65+i)),n=create('span','',String(i+1));a.style.left=(i*10+5)+'%';a.style.top='0';n.style.top=(i*10+5)+'%';n.style.left='0';el('Grid').append(a,n);}
  const compact=matchMedia('(max-width:900px)');el('Legend').open=!compact.matches;compact.addEventListener('change',()=>{el('Legend').open=!compact.matches;});
- el('Labels').addEventListener('change',()=>{el('LabelLayer').hidden=!el('Labels').checked;});el('GridToggle').addEventListener('change',()=>{el('Grid').hidden=!el('GridToggle').checked;});
+ el('Labels').addEventListener('change',()=>{el('LabelLayer').hidden=!el('Labels').checked;layoutLabels();});el('GridToggle').addEventListener('change',()=>{el('Grid').hidden=!el('GridToggle').checked;});
  el('Reset').addEventListener('click',reset);
  el('Style').addEventListener('click',()=>{
   const next=!viewport.classList.contains('hm-paper');
@@ -183,7 +222,9 @@ async function initialize(){
    try{if(document.fullscreenElement===viewport)await document.exitFullscreen();else await viewport.requestFullscreen();}
    catch{announce('Tu navegador no permite el modo de pantalla completa. Podés usar los controles de zoom.');}
   });
-  document.addEventListener('fullscreenchange',()=>{fullscreen.textContent=document.fullscreenElement===viewport?'SALIR DE PANTALLA COMPLETA':'PANTALLA COMPLETA';});
+  document.addEventListener('fullscreenchange',()=>{
+   if(document.fullscreenElement===viewport)viewport.append(el('Info'));else infoHome.insertBefore(el('Info'),infoNext);
+   fullscreen.textContent=document.fullscreenElement===viewport?'SALIR DE PANTALLA COMPLETA':'PANTALLA COMPLETA';});
  }
  el('Place').addEventListener('click',()=>{closeInfo();setPlacing(!placing);if(placing)viewport.focus({preventScroll:true});});
  el('Clear').addEventListener('click',()=>{delete pins[current.id];persist();renderPin();closeInfo();setPlacing(false);announce('Posición borrada.');el('Place').focus({preventScroll:true});});
@@ -192,7 +233,7 @@ async function initialize(){
  const local=e=>{const rect=viewport.getBoundingClientRect();return {x:e.clientX-rect.left-viewport.clientLeft,y:e.clientY-rect.top-viewport.clientTop};};
  const snapshot=()=>{const values=[...points.values()];gesture={camera:{...camera},values};};
  viewport.addEventListener('pointerdown',event=>{
-  if(!ready||event.button!==0)return;
+  if(!ready||event.button!==0||event.target.closest('.hm-info'))return;
   if(points.size>=2)return;
   if(!points.size){moved=false;tapMarker=event.target.closest('.hm-marker');viewport.focus({preventScroll:true});}
   points.set(event.pointerId,local(event));viewport.setPointerCapture(event.pointerId);if(points.size>1)moved=true;snapshot();viewport.classList.add('is-dragging');event.preventDefault();
@@ -220,7 +261,7 @@ async function initialize(){
  }
  for(const event of ['pointerup','pointercancel','lostpointercapture'])viewport.addEventListener(event,endPointer);
  window.addEventListener('blur',stopGesture);
- viewport.addEventListener('wheel',event=>{if(!ready)return;event.preventDefault();zoom(Math.exp(-clamp(event.deltaY*(event.deltaMode===1?16:event.deltaMode===2?viewport.clientHeight:1),-300,300)*.002),local(event));},{passive:false});
+ viewport.addEventListener('wheel',event=>{if(!ready||event.target.closest('.hm-info'))return;event.preventDefault();zoom(Math.exp(-clamp(event.deltaY*(event.deltaMode===1?16:event.deltaMode===2?viewport.clientHeight:1),-300,300)*.002),local(event));},{passive:false});
  viewport.addEventListener('dblclick',event=>{if(!placing&&!event.target.closest('button'))zoom(1.5,local(event));});
  viewport.addEventListener('keydown',event=>{
   if(event.target!==viewport||!ready)return;
@@ -230,7 +271,7 @@ async function initialize(){
  app.addEventListener('keydown',event=>{if(event.key==='Escape'){setPlacing(false);if(!el('Info').hidden){closeInfo();lastInfoTrigger?.focus({preventScroll:true});}}});
  new ResizeObserver(()=>{if(ready&&!viewer.hidden&&(Math.abs(viewport.clientWidth-fittedViewport.width)>1||Math.abs(viewport.clientHeight-fittedViewport.height)>1)){stopGesture();reset();}}).observe(viewport);
  try{
-  const response=await fetch('/data/halloween-maps.json');if(!response.ok)throw Error('No disponible');maps=validateCatalog(await response.json()).maps;
+  const response=await fetch('/data/halloween-maps.json');if(!response.ok)throw Error('No disponible');maps=validateCatalog(await response.json()).maps.map(calibrateMap);
   for(const map of maps){
    const card=create('button','hm-card');card.type='button';card.dataset.map=map.id;
    const image=create('img');image.alt='';image.loading='lazy';
@@ -243,14 +284,16 @@ async function initialize(){
    image.src=detailedMapPath(map);
    const copy=create('span','hm-card-copy');copy.append(create('strong','',map.name),create('small','',map.placeholder?'MAPA INTERACTIVO · ZOOM Y POSICIÓN':'MAPA INTERACTIVO · ZOOM Y POSICIÓN'),create('span','hm-open','EXPLORAR MAPA →'));card.append(image,copy);card.addEventListener('click',()=>loadMap(map));gallery.append(card);
    const button=create('button','',map.name);button.type='button';button.dataset.map=map.id;
-   // A horizontal touch scroller can suppress the compatibility click after a pinch.
+   // Touch browsers can suppress the compatibility click after a pinch.
    // Handle a deliberate stationary tap, but never a swipe, cancel or second finger.
-   let tap=null,handledAt=0;
+   // Suppress the compatibility click across the whole list: loadMap scrolls the page,
+   // so that click can land on a different button than the original tap.
+   let tap=null;
    button.addEventListener('pointerdown',event=>{if(event.pointerType!=='mouse'&&event.isPrimary)tap={id:event.pointerId,x:event.clientX,y:event.clientY};});
    button.addEventListener('pointermove',event=>{if(tap&&Math.hypot(event.clientX-tap.x,event.clientY-tap.y)>6)tap=null;});
    button.addEventListener('pointercancel',()=>{tap=null;});
-   button.addEventListener('pointerup',event=>{if(tap&&tap.id===event.pointerId&&Math.hypot(event.clientX-tap.x,event.clientY-tap.y)<=6){handledAt=performance.now();event.preventDefault();loadMap(map);}tap=null;});
-   button.addEventListener('click',event=>{if(event.detail===0||handledAt===0||performance.now()-handledAt>500)loadMap(map);});el('MapList').append(button);
+   button.addEventListener('pointerup',event=>{if(tap&&tap.id===event.pointerId&&Math.hypot(event.clientX-tap.x,event.clientY-tap.y)<=6){navTouchHandledAt=performance.now();event.preventDefault();loadMap(map);}tap=null;});
+   button.addEventListener('click',event=>{if(event.detail===0||navTouchHandledAt===0||performance.now()-navTouchHandledAt>500)loadMap(map);});el('MapList').append(button);
   }
   el('Load').hidden=true;
  }catch{el('Load').textContent='NO SE PUDIERON CARGAR LOS MAPAS. Volvé a intentar recargando la página.';}

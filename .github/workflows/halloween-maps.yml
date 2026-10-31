@@ -40,5 +40,5 @@ jobs:
           npx playwright install --with-deps chromium
       - name: 'Browser: desktop and mobile'
         env:
-          HALLOWEEN_WIDTHS: '1440,390'
+          HALLOWEEN_WIDTHS: '1440,320,390,430'
         run: node tests/halloween-maps.browser.cjs

@@ -275,7 +275,7 @@
           "possible": true,
           "confidence": "community",
           "source": "Posición tomada como referencia orientativa de cartografía comunitaria basada en archivos del juego; puede variar respecto del mapa editado.",
-          "sourceId": null,
+          "sourceId": "haddonfield-heights-car-4",
           "number": 2,
           "notes": "Ubicación orientativa de aparición posible; el escenario y sus objetos pueden variar según la partida."
         },
@@ -289,7 +289,7 @@
           "possible": true,
           "confidence": "community",
           "source": "Posición tomada como referencia orientativa de cartografía comunitaria basada en archivos del juego; puede variar respecto del mapa editado.",
-          "sourceId": null,
+          "sourceId": "haddonfield-heights-car-1",
           "number": 3,
           "notes": "Ubicación orientativa de aparición posible; el escenario y sus objetos pueden variar según la partida."
         },
@@ -303,7 +303,7 @@
           "possible": true,
           "confidence": "community",
           "source": "Posición tomada como referencia orientativa de cartografía comunitaria basada en archivos del juego; puede variar respecto del mapa editado.",
-          "sourceId": null,
+          "sourceId": "haddonfield-heights-car-3",
           "number": 4,
           "notes": "Ubicación orientativa de aparición posible; el escenario y sus objetos pueden variar según la partida."
         },
@@ -317,7 +317,7 @@
           "possible": true,
           "confidence": "community",
           "source": "Posición tomada como referencia orientativa de cartografía comunitaria basada en archivos del juego; puede variar respecto del mapa editado.",
-          "sourceId": null,
+          "sourceId": "haddonfield-heights-car-2",
           "number": 1,
           "notes": "Ubicación orientativa de aparición posible; el escenario y sus objetos pueden variar según la partida."
         },
@@ -789,14 +789,149 @@
           4096,
           4096
         ]
+      },
+      "calibration": {
+        "version": 1,
+        "sourceSpace": "atlas-normalized-before-clockwise-rotation",
+        "sourceToImage": [
+          0,
+          -1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "imageSha256": "ef90b388c49c1e56a52e77633c22d6e2b06745f5c101a7c5afb1c15e3e21f336",
+        "reference": "https://github.com/p8riot/halloween-maps/blob/main/data/maps.js",
+        "orientationEvidence": "El visor de referencia aplica (1-y,x) y +90 grados a calles; la imagen ya tiene esa orientación.",
+        "registration": {
+          "method": "SIFT + affine RANSAC, independent per image; residual below one target pixel, normalized identity retained",
+          "matches": 612,
+          "inliers": 598,
+          "medianErrorPixels": 0.2949970192579481,
+          "p95ErrorPixels": 1.1450982369578826,
+          "fittedReferencePixelsToImage": [
+            [
+              1.0000472873147808,
+              0.000008016158900872323,
+              -0.12144723321952632
+            ],
+            [
+              0.00001137001946150919,
+              1.0000326778945094,
+              -0.10336734716436874
+            ]
+          ],
+          "controlPoints": [
+            {
+              "reference": [
+                1081.901611328125,
+                1013.6716918945312
+              ],
+              "target": [
+                1081.914794921875,
+                1013.7056884765625
+              ],
+              "error": 0.1188673548711329
+            },
+            {
+              "reference": [
+                2125.5966796875,
+                1116.270751953125
+              ],
+              "target": [
+                2125.815185546875,
+                1116.34423828125
+              ],
+              "error": 0.2581288663224161
+            },
+            {
+              "reference": [
+                2866.464111328125,
+                1003.080810546875
+              ],
+              "target": [
+                2866.426025390625,
+                1003.2305297851562
+              ],
+              "error": 0.19714127225162326
+            },
+            {
+              "reference": [
+                1010.9760131835938,
+                2021.405517578125
+              ],
+              "target": [
+                1010.9249877929688,
+                2021.5830078125
+              ],
+              "error": 0.20340856261718943
+            },
+            {
+              "reference": [
+                2051.0439453125,
+                2179.591064453125
+              ],
+              "target": [
+                2050.77197265625,
+                2179.358642578125
+              ],
+              "error": 0.3467190834447727
+            },
+            {
+              "reference": [
+                3109.769775390625,
+                2165.36083984375
+              ],
+              "target": [
+                3109.6943359375,
+                2165.5302734375
+              ],
+              "error": 0.20445673730060304
+            },
+            {
+              "reference": [
+                1078.820556640625,
+                3357.9853515625
+              ],
+              "target": [
+                1078.9267578125,
+                3356.531982421875
+              ],
+              "error": 1.4795940296508636
+            },
+            {
+              "reference": [
+                2000.6602783203125,
+                3095.26318359375
+              ],
+              "target": [
+                2000.57080078125,
+                3095.142578125
+              ],
+              "error": 0.16602873942515126
+            },
+            {
+              "reference": [
+                3101.64306640625,
+                3138.699462890625
+              ],
+              "target": [
+                3101.600341796875,
+                3139.405517578125
+              ],
+              "error": 0.6780133767831158
+            }
+          ]
+        }
       }
     },
     {
       "id": "haddonfield-town-center",
       "name": "Haddonfield Town Center",
       "image": "/assets/halloween/maps/haddonfield-town-center-map.jpeg",
-      "width": 4096,
-      "height": 4096,
+      "width": 1280,
+      "height": 1280,
       "placeholder": false,
       "asset": {
         "origin": "Imagen editada y subida al repositorio por el propietario de SanLean.",
@@ -981,7 +1116,7 @@
           "possible": true,
           "confidence": "community",
           "source": "Posición tomada como referencia orientativa de cartografía comunitaria basada en archivos del juego; puede variar respecto del mapa editado.",
-          "sourceId": null,
+          "sourceId": "haddonfield-town-center-car-4",
           "number": 4,
           "notes": "Ubicación orientativa de aparición posible; el escenario y sus objetos pueden variar según la partida."
         },
@@ -995,7 +1130,7 @@
           "possible": true,
           "confidence": "community",
           "source": "Posición tomada como referencia orientativa de cartografía comunitaria basada en archivos del juego; puede variar respecto del mapa editado.",
-          "sourceId": null,
+          "sourceId": "haddonfield-town-center-car-1",
           "number": 3,
           "notes": "Ubicación orientativa de aparición posible; el escenario y sus objetos pueden variar según la partida."
         },
@@ -1009,7 +1144,7 @@
           "possible": true,
           "confidence": "community",
           "source": "Posición tomada como referencia orientativa de cartografía comunitaria basada en archivos del juego; puede variar respecto del mapa editado.",
-          "sourceId": null,
+          "sourceId": "haddonfield-town-center-car-2",
           "number": 2,
           "notes": "Ubicación orientativa de aparición posible; el escenario y sus objetos pueden variar según la partida."
         },
@@ -1023,7 +1158,7 @@
           "possible": true,
           "confidence": "community",
           "source": "Posición tomada como referencia orientativa de cartografía comunitaria basada en archivos del juego; puede variar respecto del mapa editado.",
-          "sourceId": null,
+          "sourceId": "source-37b0577370d2d48a89",
           "number": 5,
           "notes": "Ubicación orientativa de aparición posible; el escenario y sus objetos pueden variar según la partida."
         },
@@ -1037,7 +1172,7 @@
           "possible": true,
           "confidence": "community",
           "source": "Posición tomada como referencia orientativa de cartografía comunitaria basada en archivos del juego; puede variar respecto del mapa editado.",
-          "sourceId": null,
+          "sourceId": "haddonfield-town-center-car-3",
           "number": 1,
           "notes": "Ubicación orientativa de aparición posible; el escenario y sus objetos pueden variar según la partida."
         },
@@ -1340,14 +1475,149 @@
           4096,
           4096
         ]
+      },
+      "calibration": {
+        "version": 1,
+        "sourceSpace": "atlas-normalized-before-clockwise-rotation",
+        "sourceToImage": [
+          0,
+          -1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "imageSha256": "17f6d682d04b2fbad0a1715f28604267c9a86b7c32cac61c270e57b09cf8befb",
+        "reference": "https://github.com/p8riot/halloween-maps/blob/main/data/maps.js",
+        "orientationEvidence": "El visor de referencia aplica (1-y,x) y +90 grados a calles; la imagen ya tiene esa orientación.",
+        "registration": {
+          "method": "SIFT + affine RANSAC, independent per image; residual below one target pixel, normalized identity retained",
+          "matches": 588,
+          "inliers": 553,
+          "medianErrorPixels": 0.154650033984615,
+          "p95ErrorPixels": 0.5752345061331617,
+          "fittedReferencePixelsToImage": [
+            [
+              0.3124976950075029,
+              0.000003069535384189271,
+              0.0031082655255338385
+            ],
+            [
+              -0.0000018318722306192775,
+              0.3125186231788652,
+              -0.039435832467747324
+            ]
+          ],
+          "controlPoints": [
+            {
+              "reference": [
+                1093.90966796875,
+                834.3712768554688
+              ],
+              "target": [
+                341.70849609375,
+                260.5447692871094
+              ],
+              "error": 0.22140653422642612
+            },
+            {
+              "reference": [
+                2095.21533203125,
+                1136.9654541015625
+              ],
+              "target": [
+                654.9581298828125,
+                355.2929992675781
+              ],
+              "error": 0.2020144353578857
+            },
+            {
+              "reference": [
+                3411.912841796875,
+                1157.68408203125
+              ],
+              "target": [
+                1066.5179443359375,
+                361.62701416015625
+              ],
+              "error": 0.3217176269415728
+            },
+            {
+              "reference": [
+                1012.3876342773438,
+                1988.2086181640625
+              ],
+              "target": [
+                315.57855224609375,
+                620.8101196289062
+              ],
+              "error": 0.9433708498165696
+            },
+            {
+              "reference": [
+                1927.1605224609375,
+                1908.5545654296875
+              ],
+              "target": [
+                602.1409301757812,
+                596.2498779296875
+              ],
+              "error": 0.19444648221381888
+            },
+            {
+              "reference": [
+                2975.241943359375,
+                2024.970458984375
+              ],
+              "target": [
+                930.0387573242188,
+                632.5609741210938
+              ],
+              "error": 0.3604312676220822
+            },
+            {
+              "reference": [
+                1086.28857421875,
+                3164.435302734375
+              ],
+              "target": [
+                339.28741455078125,
+                988.9825439453125
+              ],
+              "error": 0.20400240850449117
+            },
+            {
+              "reference": [
+                2082.31298828125,
+                3089.8759765625
+              ],
+              "target": [
+                650.7734985351562,
+                965.5889892578125
+              ],
+              "error": 0.044423443912118485
+            },
+            {
+              "reference": [
+                3104.103759765625,
+                3015.7353515625
+              ],
+              "target": [
+                970.2517700195312,
+                942.3421630859375
+              ],
+              "error": 0.23082421057236266
+            }
+          ]
+        }
       }
     },
     {
       "id": "orange-grove-estates",
       "name": "Orange Grove Estates",
       "image": "/assets/halloween/maps/orange-grove-estates-map.jpeg",
-      "width": 4096,
-      "height": 4096,
+      "width": 1280,
+      "height": 1280,
       "placeholder": false,
       "asset": {
         "origin": "Imagen editada y subida al repositorio por el propietario de SanLean.",
@@ -1518,7 +1788,7 @@
           "possible": true,
           "confidence": "community",
           "source": "Posición tomada como referencia orientativa de cartografía comunitaria basada en archivos del juego; puede variar respecto del mapa editado.",
-          "sourceId": null,
+          "sourceId": "orange-grove-estates-car-4",
           "number": 4,
           "notes": "Ubicación orientativa de aparición posible; el escenario y sus objetos pueden variar según la partida."
         },
@@ -1532,7 +1802,7 @@
           "possible": true,
           "confidence": "community",
           "source": "Posición tomada como referencia orientativa de cartografía comunitaria basada en archivos del juego; puede variar respecto del mapa editado.",
-          "sourceId": null,
+          "sourceId": "orange-grove-estates-car-2",
           "number": 3,
           "notes": "Ubicación orientativa de aparición posible; el escenario y sus objetos pueden variar según la partida."
         },
@@ -1546,7 +1816,7 @@
           "possible": true,
           "confidence": "community",
           "source": "Posición tomada como referencia orientativa de cartografía comunitaria basada en archivos del juego; puede variar respecto del mapa editado.",
-          "sourceId": null,
+          "sourceId": "orange-grove-estates-car-1",
           "number": 2,
           "notes": "Ubicación orientativa de aparición posible; el escenario y sus objetos pueden variar según la partida."
         },
@@ -1560,7 +1830,7 @@
           "possible": true,
           "confidence": "community",
           "source": "Posición tomada como referencia orientativa de cartografía comunitaria basada en archivos del juego; puede variar respecto del mapa editado.",
-          "sourceId": null,
+          "sourceId": "source-76e2c1c83a37a21d59",
           "number": 6,
           "notes": "Ubicación orientativa de aparición posible; el escenario y sus objetos pueden variar según la partida."
         },
@@ -1574,7 +1844,7 @@
           "possible": true,
           "confidence": "community",
           "source": "Posición tomada como referencia orientativa de cartografía comunitaria basada en archivos del juego; puede variar respecto del mapa editado.",
-          "sourceId": null,
+          "sourceId": "orange-grove-estates-car-3",
           "number": 1,
           "notes": "Ubicación orientativa de aparición posible; el escenario y sus objetos pueden variar según la partida."
         },
@@ -1588,7 +1858,7 @@
           "possible": true,
           "confidence": "community",
           "source": "Posición tomada como referencia orientativa de cartografía comunitaria basada en archivos del juego; puede variar respecto del mapa editado.",
-          "sourceId": null,
+          "sourceId": "orange-grove-estates-car-5",
           "number": 5,
           "notes": "Ubicación orientativa de aparición posible; el escenario y sus objetos pueden variar según la partida."
         },
@@ -5524,6 +5794,141 @@
           4096,
           4096
         ]
+      },
+      "calibration": {
+        "version": 1,
+        "sourceSpace": "atlas-normalized-before-clockwise-rotation",
+        "sourceToImage": [
+          0,
+          -1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "imageSha256": "f904f4dc2f023dd9af477fc97243a932add944431c72d151cb5a48e0c54725d0",
+        "reference": "https://github.com/p8riot/halloween-maps/blob/main/data/maps.js",
+        "orientationEvidence": "El visor de referencia aplica (1-y,x) y +90 grados a calles; la imagen ya tiene esa orientación.",
+        "registration": {
+          "method": "SIFT + affine RANSAC, independent per image; residual below one target pixel, normalized identity retained",
+          "matches": 1126,
+          "inliers": 1086,
+          "medianErrorPixels": 0.14011077876255434,
+          "p95ErrorPixels": 0.5441521332320141,
+          "fittedReferencePixelsToImage": [
+            [
+              0.3125132032338238,
+              -0.000005520567459919474,
+              -0.014569422687443007
+            ],
+            [
+              -0.0000025856426359543364,
+              0.3125097126271252,
+              -0.017244152986757307
+            ]
+          ],
+          "controlPoints": [
+            {
+              "reference": [
+                751.3154907226562,
+                1092.18017578125
+              ],
+              "target": [
+                234.8474578857422,
+                341.26116943359375
+              ],
+              "error": 0.08079004759917417
+            },
+            {
+              "reference": [
+                2241.257080078125,
+                1123.3115234375
+              ],
+              "target": [
+                700.3575439453125,
+                351.373779296875
+              ],
+              "error": 0.3538180808129857
+            },
+            {
+              "reference": [
+                3025.47998046875,
+                1060.1409912109375
+              ],
+              "target": [
+                945.4539184570312,
+                331.3996276855469
+              ],
+              "error": 0.1235752938727858
+            },
+            {
+              "reference": [
+                1027.7811279296875,
+                2075.85107421875
+              ],
+              "target": [
+                321.16064453125,
+                648.6866455078125
+              ],
+              "error": 0.019073572632767984
+            },
+            {
+              "reference": [
+                2084.28759765625,
+                2075.028076171875
+              ],
+              "target": [
+                651.309814453125,
+                648.4002685546875
+              ],
+              "error": 0.053760387490542294
+            },
+            {
+              "reference": [
+                3059.25537109375,
+                2062.8701171875
+              ],
+              "target": [
+                955.9612426757812,
+                644.6160888671875
+              ],
+              "error": 0.07503525414832567
+            },
+            {
+              "reference": [
+                970.6130981445312,
+                3016.83740234375
+              ],
+              "target": [
+                303.35296630859375,
+                942.7537841796875
+              ],
+              "error": 0.05749457466503276
+            },
+            {
+              "reference": [
+                2037.5556640625,
+                3080.7431640625
+              ],
+              "target": [
+                636.83447265625,
+                962.62548828125
+              ],
+              "error": 0.15375944939606181
+            },
+            {
+              "reference": [
+                3030.4970703125,
+                3017.33935546875
+              ],
+              "target": [
+                947.0333251953125,
+                942.8660888671875
+              ],
+              "error": 0.05698149279457221
+            }
+          ]
+        }
       }
     },
     {
@@ -5688,7 +6093,7 @@
           "possible": true,
           "confidence": "community",
           "source": "Posición tomada como referencia orientativa de cartografía comunitaria basada en archivos del juego; puede variar respecto del mapa editado.",
-          "sourceId": null,
+          "sourceId": "east-haddonfield-car-1",
           "number": 1,
           "notes": "Ubicación orientativa de aparición posible; el escenario y sus objetos pueden variar según la partida."
         },
@@ -5702,7 +6107,7 @@
           "possible": true,
           "confidence": "community",
           "source": "Posición tomada como referencia orientativa de cartografía comunitaria basada en archivos del juego; puede variar respecto del mapa editado.",
-          "sourceId": null,
+          "sourceId": "east-haddonfield-car-3",
           "number": 4,
           "notes": "Ubicación orientativa de aparición posible; el escenario y sus objetos pueden variar según la partida."
         },
@@ -5716,7 +6121,7 @@
           "possible": true,
           "confidence": "community",
           "source": "Posición tomada como referencia orientativa de cartografía comunitaria basada en archivos del juego; puede variar respecto del mapa editado.",
-          "sourceId": null,
+          "sourceId": "east-haddonfield-car-4",
           "number": 3,
           "notes": "Ubicación orientativa de aparición posible; el escenario y sus objetos pueden variar según la partida."
         },
@@ -5730,7 +6135,7 @@
           "possible": true,
           "confidence": "community",
           "source": "Posición tomada como referencia orientativa de cartografía comunitaria basada en archivos del juego; puede variar respecto del mapa editado.",
-          "sourceId": null,
+          "sourceId": "east-haddonfield-car-2",
           "number": 2,
           "notes": "Ubicación orientativa de aparición posible; el escenario y sus objetos pueden variar según la partida."
         },
@@ -6854,14 +7259,149 @@
           4096,
           4096
         ]
+      },
+      "calibration": {
+        "version": 1,
+        "sourceSpace": "atlas-normalized-before-clockwise-rotation",
+        "sourceToImage": [
+          0,
+          -1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "imageSha256": "48f4b0b182dd183189187a6b8da5d8fd3f741001d9d5d7d0a12fffb11aa1c000",
+        "reference": "https://github.com/p8riot/halloween-maps/blob/main/data/maps.js",
+        "orientationEvidence": "El visor de referencia aplica (1-y,x) y +90 grados a calles; la imagen ya tiene esa orientación.",
+        "registration": {
+          "method": "SIFT + affine RANSAC, independent per image; residual below one target pixel, normalized identity retained",
+          "matches": 439,
+          "inliers": 403,
+          "medianErrorPixels": 0.2992141939174918,
+          "p95ErrorPixels": 1.3566324590076735,
+          "fittedReferencePixelsToImage": [
+            [
+              1.0000491440317953,
+              0.000037861962205318124,
+              -0.18291984939438416
+            ],
+            [
+              0.000022842221852315336,
+              0.9999262170243498,
+              0.10556434918259112
+            ]
+          ],
+          "controlPoints": [
+            {
+              "reference": [
+                1043.400634765625,
+                957.03515625
+              ],
+              "target": [
+                1043.518310546875,
+                956.8350830078125
+              ],
+              "error": 0.33527925840124073
+            },
+            {
+              "reference": [
+                2026.41748046875,
+                1131.7520751953125
+              ],
+              "target": [
+                2026.622314453125,
+                1131.434326171875
+              ],
+              "error": 0.4574402313460829
+            },
+            {
+              "reference": [
+                3081.94287109375,
+                916.9658813476562
+              ],
+              "target": [
+                3081.948486328125,
+                916.9461669921875
+              ],
+              "error": 0.12804236757910684
+            },
+            {
+              "reference": [
+                922.8512573242188,
+                1950.2818603515625
+              ],
+              "target": [
+                922.6170043945312,
+                1950.239013671875
+              ],
+              "error": 0.17243709461163503
+            },
+            {
+              "reference": [
+                2006.224365234375,
+                1964.4644775390625
+              ],
+              "target": [
+                2006.012939453125,
+                1964.4525146484375
+              ],
+              "error": 0.2023177045161059
+            },
+            {
+              "reference": [
+                3099.535888671875,
+                2094.909423828125
+              ],
+              "target": [
+                3099.83056640625,
+                2094.7734375
+              ],
+              "error": 0.29221544113319076
+            },
+            {
+              "reference": [
+                1017.9675903320312,
+                3014.60595703125
+              ],
+              "target": [
+                1018.8876342773438,
+                3015.688720703125
+              ],
+              "error": 1.5050566519058162
+            },
+            {
+              "reference": [
+                2086.486328125,
+                3008.7666015625
+              ],
+              "target": [
+                2086.57568359375,
+                3008.6806640625
+              ],
+              "error": 0.05839908355196478
+            },
+            {
+              "reference": [
+                3111.580078125,
+                3181.71337890625
+              ],
+              "target": [
+                3111.7724609375,
+                3181.8134765625
+              ],
+              "error": 0.18820109268778215
+            }
+          ]
+        }
       }
     },
     {
       "id": "tower-farm",
       "name": "The Tower Farm",
       "image": "/assets/halloween/maps/tower-farm-map.jpeg",
-      "width": 4096,
-      "height": 4096,
+      "width": 1280,
+      "height": 1280,
       "placeholder": false,
       "asset": {
         "origin": "Imagen editada y subida al repositorio por el propietario de SanLean.",
@@ -7144,7 +7684,7 @@
           "possible": true,
           "confidence": "community",
           "source": "Posición tomada como referencia orientativa de cartografía comunitaria basada en archivos del juego; puede variar respecto del mapa editado.",
-          "sourceId": null,
+          "sourceId": "source-c04993513027b5de37",
           "number": 1,
           "notes": "Ubicación orientativa de aparición posible; el escenario y sus objetos pueden variar según la partida."
         },
@@ -7158,7 +7698,7 @@
           "possible": true,
           "confidence": "community",
           "source": "Posición tomada como referencia orientativa de cartografía comunitaria basada en archivos del juego; puede variar respecto del mapa editado.",
-          "sourceId": null,
+          "sourceId": "source-c32368b9d99c033eab",
           "number": 2,
           "notes": "Ubicación orientativa de aparición posible; el escenario y sus objetos pueden variar según la partida."
         },
@@ -7172,7 +7712,7 @@
           "possible": true,
           "confidence": "community",
           "source": "Posición tomada como referencia orientativa de cartografía comunitaria basada en archivos del juego; puede variar respecto del mapa editado.",
-          "sourceId": null,
+          "sourceId": "source-20f250a92695e35c78",
           "number": 3,
           "notes": "Ubicación orientativa de aparición posible; el escenario y sus objetos pueden variar según la partida."
         },
@@ -7186,7 +7726,7 @@
           "possible": true,
           "confidence": "community",
           "source": "Posición tomada como referencia orientativa de cartografía comunitaria basada en archivos del juego; puede variar respecto del mapa editado.",
-          "sourceId": null,
+          "sourceId": "source-aadd291a9155fefbad",
           "number": 4,
           "notes": "Ubicación orientativa de aparición posible; el escenario y sus objetos pueden variar según la partida."
         },
@@ -7200,7 +7740,7 @@
           "possible": true,
           "confidence": "community",
           "source": "Posición tomada como referencia orientativa de cartografía comunitaria basada en archivos del juego; puede variar respecto del mapa editado.",
-          "sourceId": null,
+          "sourceId": "source-2c577e658ae5dc90f1",
           "number": 5,
           "notes": "Ubicación orientativa de aparición posible; el escenario y sus objetos pueden variar según la partida."
         },
@@ -7214,7 +7754,7 @@
           "possible": true,
           "confidence": "community",
           "source": "Posición tomada como referencia orientativa de cartografía comunitaria basada en archivos del juego; puede variar respecto del mapa editado.",
-          "sourceId": null,
+          "sourceId": "source-19d705d7a346050014",
           "number": 6,
           "notes": "Ubicación orientativa de aparición posible; el escenario y sus objetos pueden variar según la partida."
         },
@@ -9569,6 +10109,141 @@
           4096,
           4096
         ]
+      },
+      "calibration": {
+        "version": 1,
+        "sourceSpace": "atlas-normalized-before-clockwise-rotation",
+        "sourceToImage": [
+          0,
+          -1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "imageSha256": "1f686e665c2b880fbbf26aaf1f1ee01e230e31278ce2bf9ff37d3541d436b3f8",
+        "reference": "https://github.com/p8riot/halloween-maps/blob/main/data/maps.js",
+        "orientationEvidence": "El visor de referencia aplica (1-y,x) y +90 grados a calles; la imagen ya tiene esa orientación.",
+        "registration": {
+          "method": "SIFT + affine RANSAC, independent per image; residual below one target pixel, normalized identity retained",
+          "matches": 346,
+          "inliers": 328,
+          "medianErrorPixels": 0.16291442998186656,
+          "p95ErrorPixels": 0.6058986455118529,
+          "fittedReferencePixelsToImage": [
+            [
+              0.31251735761416294,
+              -0.000024485715062230202,
+              0.022146948758043784
+            ],
+            [
+              -0.000012811325017843561,
+              0.3125064530707675,
+              0.029609017693714632
+            ]
+          ],
+          "controlPoints": [
+            {
+              "reference": [
+                1108.1602783203125,
+                1063.5108642578125
+              ],
+              "target": [
+                346.31689453125,
+                332.30523681640625
+              ],
+              "error": 0.06419994082950659
+            },
+            {
+              "reference": [
+                1994.8154296875,
+                1103.928466796875
+              ],
+              "target": [
+                623.3712158203125,
+                345.00714111328125
+              ],
+              "error": 0.04249845809102114
+            },
+            {
+              "reference": [
+                3225.640380859375,
+                999.251220703125
+              ],
+              "target": [
+                1008.0134887695312,
+                312.25909423828125
+              ],
+              "error": 0.05282485021371351
+            },
+            {
+              "reference": [
+                1084.987548828125,
+                2332.75732421875
+              ],
+              "target": [
+                339.203369140625,
+                729.04296875
+              ],
+              "error": 0.16291442998186656
+            },
+            {
+              "reference": [
+                1927.864013671875,
+                2005.5860595703125
+              ],
+              "target": [
+                602.2891845703125,
+                626.6812744140625
+              ],
+              "error": 0.19319167138873902
+            },
+            {
+              "reference": [
+                3005.668701171875,
+                2288.443359375
+              ],
+              "target": [
+                939.1438598632812,
+                715.293212890625
+              ],
+              "error": 0.20838487427610436
+            },
+            {
+              "reference": [
+                925.22900390625,
+                3071.323486328125
+              ],
+              "target": [
+                289.1036071777344,
+                959.7688598632812
+              ],
+              "error": 0.05767671060585541
+            },
+            {
+              "reference": [
+                1945.5067138671875,
+                3068.667236328125
+              ],
+              "target": [
+                607.915771484375,
+                959.0831909179688
+              ],
+              "error": 0.10641486016391109
+            },
+            {
+              "reference": [
+                3211.944580078125,
+                3103.5478515625
+              ],
+              "target": [
+                1003.74853515625,
+                970.04345703125
+              ],
+              "error": 0.17681723212046108
+            }
+          ]
+        }
       }
     }
   ]

@@ -85,3 +85,102 @@ corresponda con el juego. No afirmar que sea cartografía oficial.
 
 Todos los cambios deben pasar pruebas, revisar la WEB móvil y preservar
 galería, menú, footer, CÓDIGOS, USUARIO y otros módulos de SanLean.
+
+## Auditoría de calibración — 31/10/2026
+
+### Hallazgo y corrección
+
+La importación había omitido la orientación de los datos. El atlas usa coordenadas
+anteriores al giro y su visor aplica **x imagen = 1 − y fuente; y imagen = x fuente**.
+Sus imágenes raster ya tienen la orientación final. Normalizar x/y sin ese paso
+colocaba calles, casas y salidas en sectores equivocados. No era un problema del zoom.
+
+Se cotejaron **individualmente** las cinco imágenes del propietario contra la
+referencia realista con SIFT y ajuste afín RANSAC. Se revisaron las comparativas
+antes/después y la correspondencia de tejados, intersecciones y calles. No se
+justifica sumar un desplazamiento, deformación o recorte adicional: la diferencia
+residual es inferior a un píxel. No se trasladaron los offsets del estilo papel,
+ni se volvió a sumar `actorToRealisticX` (ya incorporado en los datos de origen).
+
+| Mapa | Imagen SanLean | Coincidencias aceptadas | Error mediano, px de destino | Referencias visuales revisadas |
+| --- | --- | --- | --- | --- |
+| Haddonfield Heights | 4096×4096 | 598 | 0,295 | Victoria Way, Lampkin Lane, casas 702/807/918 y sector de la torre |
+| Haddonfield Town Center | 1280×1280 | 553 | 0,155 | Peach St., Flemming Ave., edificio 1086 y locales 1001–1007 |
+| Orange Grove Estates | 1280×1280 | 1086 | 0,140 | Westridge Dr., Stephens Ave., Orange Grove Ave. y casas 1514/1518/1522 |
+| East Haddonfield | 4096×4096 | 403 | 0,299 | complejo central, Virginia St., Wallard St., viviendas 812/628/630 |
+| The Tower Farm | 1280×1280 | 328 | 0,163 | Ridgeline Rd., Clover Way, construcciones 300/302/303/305/309 |
+
+Estos errores miden **registro entre imágenes**, no la certeza de aparición de
+un objeto dentro del juego. No convertirlos en una promesa de precisión del gameplay.
+
+### Calibración mantenible
+
+Cada mapa conserva sus coordenadas fuente y declara `calibration.sourceToImage`,
+una matriz afín normalizada `[a,b,c,d,e,f]`: `(a*x+b*y+c, d*x+e*y+f)`.
+`calibrateMap` proyecta una copia una sola vez al cargar el catálogo; no transforma
+imágenes ni los pines personales, que ya están en coordenadas de imagen.
+Las calles rotan con su eje, los números de vivienda quedan siempre derechos.
+Cada registro contiene hash SHA-256 de la imagen, matriz medida, nueve puntos
+fijos distribuidos por el plano, cantidad de coincidencias y error residual.
+Las pruebas fallan si se reemplaza la imagen sin actualizar la auditoría.
+
+Para una imagen futura: cotejar puntos distribuidos, estimar el registro específico,
+componerlo con la orientación fuente, revisar visualmente y actualizar evidencia y
+hash. No ajustar x/y a ojo ni aplicar el registro de otro escenario.
+
+### Fuentes investigadas y límites
+
+- [p8riot, datos](https://github.com/p8riot/halloween-maps/blob/main/data/maps.js)
+  y [visor](https://github.com/p8riot/halloween-maps/blob/main/app.js): orientación,
+  registro, calles, numeración, actores y etiquetas de posibles objetos. Se contrastó
+  la procedencia de los 620 marcadores existentes; se completaron identificadores
+  de fuente de los autos. No se inventaron nuevas ubicaciones.
+- [Haddonfield Atlas](https://github.com/Gitjon72/Haddonfield-atlas): nomenclatura,
+  presentación de viviendas y advertencias sobre certeza. Su mención del fusible
+  describe el uso en puertas; su lista de investigación todavía solicita registrar
+  dónde se encuentran. No aporta un catálogo de coordenadas de fusibles.
+- [Halloween Map Exits](https://github.com/g-hostproxy/Halloween-Map-Exits/blob/main/exits.json):
+  contraste cualitativo de salidas. Sus mapas tienen otro encuadre y no incluyen Tower
+  Farm. El ajuste automático produjo muy pocos puntos coincidentes: no se usó como
+  evidencia para trasladar ni sustituir coordenadas en los cinco mapas.
+- [Halloween Map Overlay](https://github.com/Davide-DevP/halloween-map-overlay/blob/main/maps-src/markers.json):
+  posiciones derivadas de círculos de otra cartografía y gas; no documenta apariciones
+  de fusibles. Su NOTICE excluye las imágenes de terceros de la licencia del código.
+
+No se incorporaron recursos gráficos ni código de esas aplicaciones. Se mantienen
+exclusivamente los cinco mapas y nueve PNG del propietario. Las referencias se
+consultaron para auditoría; las comparativas locales no se publican como nuevos assets.
+
+**Fusible:** sin posiciones suficientemente documentadas en los archivos consultados.
+Filtro deshabilitado y texto visible «Sin ubicaciones documentadas». Nunca se transforma
+una puerta que requiere fusible en una aparición del objeto.
+
+**Incertidumbre restante:** las salidas y los objetos conservan `community` y «posible».
+El registro corrige la correspondencia cartográfica, pero no certifica cada actor,
+interior/planta o variante de partida. Los puntos `searchable` de contenido desconocido
+no se convierten en objetos. No se añadieron etiquetas cuya posición no esté respaldada.
+
+### Lectura e interacción
+
+Los puntos cercanos se agrupan según distancia en pantalla, con contador y lista de
+candidatos consultable. El grupo se ancla en un punto real y se separa al ampliar;
+los objetos coincidentes siguen juntos y todos se pueden consultar. No se desplazan
+coordenadas para fingir separación. Las etiquetas que colisionan se ocultan temporalmente
+y vuelven cuando hay espacio, conservando su ancla. Cuadrícula y referencias siguen
+independientes. La ficha de detalle también es accesible dentro de pantalla completa.
+Se conserva la lista mobile vertical de cinco mapas, los filtros por defecto y el pin personal.
+
+### Verificaciones realizadas
+
+- Chrome: 1440 px y mobile emulado 320/390/430 px, cinco mapas en cada tamaño.
+- WebKit: mobile emulado 390 px, cinco mapas. No equivale a probar un teléfono físico.
+- Comparativas de registro antes/después; capturas del visor normal y ampliado por mapa.
+- Coordenadas proyectadas, filtros, grupos completos, etiquetas sin colisiones,
+  cuadrícula independiente, cambio de mapas, pin personal y recuperación de imagen.
+- Arrastre con mouse, arrastre/pellizco táctil mediante CDP y pantalla completa en Chrome.
+- Se corrigió un clic de compatibilidad posterior al toque que, tras el scroll de
+  selección, podía activar otro botón de la lista mobile. La lista sigue vertical.
+- 42 pruebas de modelo/datos y regresión pública, sin errores de JavaScript en navegador.
+
+El resultado verifica la correspondencia con las imágenes y fuentes disponibles;
+no certifica cada aparición dentro de una partida real.

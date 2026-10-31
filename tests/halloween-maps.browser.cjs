@@ -1,4 +1,5 @@
-const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
+const engines=require(process.env.PLAYWRIGHT_MODULE||'playwright');
+const engine=process.env.HALLOWEEN_ENGINE||'chromium';
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const root=path.resolve(__dirname,'..');
 const catalog=JSON.parse(fs.readFileSync(path.join(root,'data/halloween-maps.json'),'utf8'));
@@ -18,10 +19,11 @@ const activate=async(locator,width)=>{
 };
 (async()=>{
  await new Promise(r=>server.listen(0,'127.0.0.1',r));
- const base='http://127.0.0.1:'+server.address().port+'/halloween.html';
- const browser=await chromium.launch({headless:true});
+ const base=process.env.HALLOWEEN_BASE_URL||'http://127.0.0.1:'+server.address().port+'/halloween.html';
+ const shots=path.resolve(root,'../halloween-audit/browser-'+engine);fs.mkdirSync(shots,{recursive:true});
+ const browser=await engines[engine].launch({headless:true,...(process.env.HALLOWEEN_CHANNEL?{channel:process.env.HALLOWEEN_CHANNEL}:{})});
  try{
-  for(const width of [1440,390]){
+  for(const width of (process.env.HALLOWEEN_WIDTHS||'1440,320,390,430').split(',').map(Number)){
    const ctx=await browser.newContext({viewport:{width,height:900},hasTouch:width<760,isMobile:width<760});
    const page=await ctx.newPage(),errors=[];
    page.on('pageerror',e=>errors.push(e.message));
@@ -51,7 +53,8 @@ const activate=async(locator,width)=>{
    assert.match(await page.locator('#hmImage').getAttribute('src'),/haddonfield-heights-map\.webp/);
    assert.ok(await page.locator('#hmImage').evaluate(e=>e.naturalWidth>0));
    assert.match(await page.locator('#hmNotice').textContent(),/UBICACIONES POSIBLES/);
-   const initial=await page.locator('#hmMarkers button').count();
+   const represented=()=>page.locator('#hmMarkers button').evaluateAll(nodes=>nodes.flatMap(n=>JSON.parse(n.dataset.markerIds)).length);
+   const initial=await represented();
    const expected=catalog.maps[0].markers.filter(m=>['gate','car','cellar','drain','landmark'].includes(m.type)).length;
    assert.equal(initial,expected);
    assert.ok(initial>10);
@@ -67,21 +70,21 @@ const activate=async(locator,width)=>{
    const gas=page.locator('#hmFilters [data-category="item_gas"]');
    await activate(gas,width);
    assert.equal(await gas.getAttribute('aria-pressed'),'true');
-   assert.equal(await page.locator('#hmMarkers button').count(),initial+catalog.maps[0].markers.filter(m=>m.type==='item_gas').length);
+   assert.equal(await represented(),initial+catalog.maps[0].markers.filter(m=>m.type==='item_gas').length);
    await activate(gas,width);
-   assert.equal(await page.locator('#hmMarkers button').count(),initial);
+   assert.equal(await represented(),initial);
    const cellar=page.locator('#hmFilters [data-category="cellar"]');
    await activate(cellar,width);
-   assert.equal(await page.locator('#hmMarkers button').count(),initial-catalog.maps[0].markers.filter(m=>m.type==='cellar').length);
+   assert.equal(await represented(),initial-catalog.maps[0].markers.filter(m=>m.type==='cellar').length);
    await activate(cellar,width);
-   assert.equal(await page.locator('#hmMarkers button').count(),initial);
+   assert.equal(await represented(),initial);
    await page.locator('#hmGridToggle').check();assert.ok(await page.locator('#hmGrid').isVisible());
    await page.locator('#hmLabels').uncheck();assert.equal(await page.locator('#hmLabelLayer').isVisible(),false);
    await page.locator('#hmLabels').check();assert.ok(await page.locator('#hmLabelLayer').isVisible());
    if(width>=760){
     await page.locator('#hmMarkers button').first().hover();
     assert.ok(await page.locator('#hmTooltip').isVisible());
-    assert.match(await page.locator('#hmTooltip').textContent(),/Posible|Sótano|Auto|Puerta/);
+    assert.match(await page.locator('#hmTooltip').textContent(),/Posible|posibles|Sótano|Auto|Puerta/);
    }
    const initialScale=await scale(page);
    await page.locator('#hmViewport').press('+');
@@ -97,7 +100,7 @@ const activate=async(locator,width)=>{
    const p=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('sanlean.halloween.positions.v1'))['haddonfield-heights']);
    assert.ok(p.x>0&&p.x<1&&p.y>0&&p.y<1);
    await activate(page.locator('#hmMapList button').nth(1),width);
-   await page.waitForFunction(()=>document.querySelector('#hmImage').getAttribute('src')?.includes('haddonfield-town-center-map.jpeg'));
+   await page.waitForFunction(()=>document.querySelector('#hmImage').getAttribute('src')?.includes('haddonfield-town-center-map.jpeg')).catch(async e=>{await page.screenshot({path:path.join(shots,width+'-failure.png')});console.log('DEBUG',errors,await page.locator('#hmMapTitle').textContent(),await page.locator('#hmImage').getAttribute('src'));throw e;});
    await page.waitForSelector('#hmScene:not([hidden])');
    assert.equal(await page.locator('.hm-personal').count(),0);
    await activate(page.locator('#hmMapList button').first(),width);
@@ -113,6 +116,67 @@ const activate=async(locator,width)=>{
      await page.evaluate(()=>document.exitFullscreen());
     }
    }
+   // Every real map: calibrated anchors, filters, collisions, zoom/pan, fullscreen and pin.
+   for(const map of catalog.maps){
+    await activate(page.locator('#hmMapList button[data-map="'+map.id+'"]'),width);
+    await page.waitForFunction(src=>document.querySelector('#hmImage')?.getAttribute('src')===src&&!document.querySelector('#hmScene').hidden,map.image);
+    await page.locator('#hmViewport').scrollIntoViewIfNeeded();
+    await page.screenshot({path:path.join(shots,width+'-'+map.id+'-overview.png')});
+    const data=await page.locator('#hmMarkers button').evaluateAll(nodes=>nodes.map(n=>({ids:JSON.parse(n.dataset.markerIds),x:parseFloat(n.style.left)/100,y:parseFloat(n.style.top)/100})));
+    const wanted=map.markers.filter(m=>['gate','car','cellar','drain','landmark'].includes(m.type));
+    assert.deepEqual(data.flatMap(g=>g.ids).sort(),wanted.map(m=>m.id).sort());
+    for(const group of data){const source=wanted.find(m=>m.id===group.ids[0]);assert.ok(Math.abs(group.x-(1-source.y))<1e-6&&Math.abs(group.y-source.x)<1e-6,'Anchor must match actual oriented image');}
+    const overlaps=await page.locator('#hmMarkers button').evaluateAll(nodes=>{let boxes=nodes.map(n=>n.getBoundingClientRect());return boxes.some((a,i)=>boxes.some((b,j)=>j>i&&Math.hypot(a.x-b.x,a.y-b.y)<44))});assert.equal(overlaps,false);
+    if(!await page.locator('#hmLegend').evaluate(n=>n.open))await page.locator('#hmLegend summary').click();
+    for(const button of await page.locator('#hmFilters button:not([disabled])').all())await activate(button,width);
+    for(const type of await page.locator('#hmFilters button[aria-pressed="false"]:not([disabled])').evaluateAll(nodes=>nodes.map(n=>n.dataset.category)))await activate(page.locator('#hmFilters button[data-category="'+type+'"]'),width);
+    assert.equal(await represented(),map.markers.length,'Grouping must never lose any candidate');
+    await page.locator('#hmViewport').scrollIntoViewIfNeeded();
+    const group=page.locator('#hmMarkers button:has(.hm-marker-count)').first();
+    if(await group.count()){
+     await activate(group,width);assert.ok(await page.locator('.hm-location-list button').count()>1);
+     await activate(page.locator('.hm-location-list button').first(),width);assert.match(await page.locator('#hmInfoNotes').textContent(),/variar|comunitaria/);
+     await activate(page.locator('#hmInfoClose'),width);
+    }
+    await page.locator('#hmLabels').check();await page.locator('#hmGridToggle').check();
+    assert.ok(await page.locator('#hmGrid').isVisible());
+    await page.locator('#hmLabels').uncheck();assert.ok(await page.locator('#hmGrid').isVisible());await page.locator('#hmLabels').check();
+    await page.locator('#hmViewport').press('+');await page.locator('#hmViewport').press('+');await page.locator('#hmViewport').press('+');
+    await page.locator('#hmViewport').press('ArrowLeft');
+    await page.locator('#hmViewport').scrollIntoViewIfNeeded();
+    const dragBox=await page.locator('#hmViewport').boundingBox();
+    const beforeDrag=await page.locator('#hmScene').evaluate(n=>n.style.transform);
+    if(width>=760){
+     await page.mouse.move(dragBox.x+dragBox.width*.5,dragBox.y+dragBox.height*.5);await page.mouse.down();
+     await page.mouse.move(dragBox.x+dragBox.width*.5+35,dragBox.y+dragBox.height*.5+25,{steps:6});await page.mouse.up();
+    }else if(engine==='chromium'){
+     const client=await ctx.newCDPSession(page),x=dragBox.x+dragBox.width*.5,y=dragBox.y+dragBox.height*.5;
+     await client.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y,id:0}]});
+     await client.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:x+35,y:y+25,id:0}]});
+     await client.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+     const beforePinch=await scale(page);
+     await client.send('Input.synthesizePinchGesture',{x,y,scaleFactor:1.4,relativeSpeed:800,gestureSourceType:'touch'});
+     await page.waitForFunction(old=>Number(document.querySelector('#hmScene').style.transform.match(/scale\(([^)]+)\)/)[1])>old,beforePinch);
+     await client.detach();
+    }
+    if(width>=760||engine==='chromium')assert.notEqual(await page.locator('#hmScene').evaluate(n=>n.style.transform),beforeDrag);
+
+    await page.locator('#hmViewport').scrollIntoViewIfNeeded();
+    await page.screenshot({path:path.join(shots,width+'-'+map.id+'-zoom.png')});
+    const labelOverlap=await page.locator('#hmLabelLayer .hm-label:not([hidden])').evaluateAll(nodes=>{let b=nodes.map(n=>n.getBoundingClientRect());return b.some((a,i)=>b.some((c,j)=>j>i&&a.left<c.right&&a.right>c.left&&a.top<c.bottom&&a.bottom>c.top))});assert.equal(labelOverlap,false);
+    await activate(page.locator('#hmReset'),width);
+    await activate(page.locator('#hmPlace'),width);await page.locator('#hmViewport').press('Enter');
+    assert.equal(await page.locator('.hm-personal').count(),1);
+    await activate(page.locator('#hmClear'),width);assert.equal(await page.locator('.hm-personal').count(),0);
+    if(engine==='chromium'){
+     await activate(page.locator('#hmFullscreen'),width);await page.waitForFunction(()=>!!document.fullscreenElement);
+     await page.locator('#hmViewport > #hmInfo').waitFor({state:'attached'});
+     await page.locator('#hmMarkers button').first().click();assert.ok(await page.locator('#hmInfo').isVisible());
+     const detailScale=await scale(page);await page.locator('#hmInfo').hover();await page.mouse.wheel(0,100);assert.equal(await scale(page),detailScale,'Rueda sobre ficha no debe ampliar el mapa');
+     await page.locator('#hmInfoClose').click();await page.evaluate(()=>document.exitFullscreen());
+    }
+    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+   }
    await activate(page.locator('#hmBack'),width);
    assert.equal(await page.locator('#hmGallery').isVisible(),true);
    assert.deepEqual(errors,[]);
@@ -126,6 +190,10 @@ const activate=async(locator,width)=>{
   await page.waitForSelector('#hmScene:not([hidden])');
   assert.match(await page.locator('#hmImage').getAttribute('src'),/haddonfield-heights\.svg/);
   assert.equal(await page.locator('#hmMarkers button').count(),0);
+  assert.equal(await page.locator('#hmLabelLayer .hm-label').count(),0);
+  await page.locator('#hmMapList button').nth(1).click();
+  await page.waitForFunction(()=>document.querySelector('#hmImage').getAttribute('src').includes('town-center-map.jpeg'));
+  assert.ok(await page.locator('#hmMarkers button').count()>0);
   await context.close();
   console.log('PASS HALLOWEEN fallback visual sin marcadores incorrectos');
  }finally{await browser.close();server.close();}
