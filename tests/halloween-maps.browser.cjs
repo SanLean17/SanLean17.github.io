@@ -31,7 +31,10 @@ fixture.maps[0].labels=[{x:.5,y:.25,text:'CALLE DE PRUEBA',source:'Test fixture 
   if(width>=1024){const left=await page.locator('#hmLegend').boundingBox(),map=await page.locator('#hmViewport').boundingBox(),right=await page.locator('.hm-map-nav').boundingBox();assert.ok(left.x<map.x&&map.x<right.x);assert.ok(map.width>left.width*3);}
   else{assert.equal(await page.locator('#hmLegend').getAttribute('open'),null);await activate(page.locator('#hmLegend summary'));assert.notEqual(await page.locator('#hmLegend').getAttribute('open'),null);await activate(page.locator('#hmLegend summary'));}
   if([1440,390].includes(width))await page.screenshot({path:path.join(output,engine+'-viewer-'+width+'.png'),fullPage:true});
-  await activate(page.locator('#hmZoomIn'));assert.equal(await page.locator('#hmZoom').textContent(),'125%');
+  console.log('ZOOM BEFORE',width,await page.locator('#hmScene').getAttribute('style'),await page.locator('#hmZoom').textContent());
+  await activate(page.locator('#hmZoomIn'));
+  console.log('ZOOM AFTER',width,await page.locator('#hmScene').getAttribute('style'),await page.locator('#hmZoom').textContent(),await page.locator('#hmZoomIn').isEnabled());
+  assert.equal(await page.locator('#hmZoom').textContent(),'125%');
   await activate(page.locator('#hmPlace'));await page.locator('#hmViewport').scrollIntoViewIfNeeded();let box=await page.locator('#hmViewport').boundingBox();
   if(width<760)await page.touchscreen.tap(box.x+box.width*.5,box.y+box.height*.5);else await page.mouse.click(box.x+box.width*.5,box.y+box.height*.5);
   assert.equal(await page.locator('.hm-personal').count(),1);
