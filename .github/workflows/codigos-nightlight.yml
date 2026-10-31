@@ -28,6 +28,7 @@ jobs:
           node --check codigos/codigos.js
           node --check codigos/model.mjs
           node --check codigos/presentation.mjs
+          node --test tests/codigos-layout.test.mjs
           python -m py_compile scripts/sync_nightlight_codes.py
       - run: python scripts/sync_nightlight_codes.py
       - name: Publicar catálogo si cambió
