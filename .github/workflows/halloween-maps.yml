@@ -1,0 +1,43 @@
+name: Halloween maps verification
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'halloween.html'
+      - 'css/halloween-maps.css'
+      - 'css/halloween-background.css'
+      - 'js/halloween-maps.js'
+      - 'js/halloween-map-model.mjs'
+      - 'data/halloween-maps.json'
+      - 'assets/halloween/maps/**'
+      - 'tests/halloween-maps.test.mjs'
+      - 'tests/halloween-maps.browser.cjs'
+      - '.github/workflows/halloween-maps.yml'
+permissions:
+  contents: read
+concurrency:
+  group: halloween-map-tests
+  cancel-in-progress: true
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate modules and catalog
+        run: |
+          node --check js/halloween-maps.js
+          node --check js/halloween-map-model.mjs
+          node --test tests/halloween-maps.test.mjs
+      - name: Set up browser checks
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Browser: desktop and mobile
+        env:
+          HALLOWEEN_WIDTHS: '1440,390'
+        run: node tests/halloween-maps.browser.cjs
