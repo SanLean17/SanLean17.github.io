@@ -19,29 +19,30 @@ fixture.maps[0].labels=[{x:.5,y:.25,text:'CALLE DE PRUEBA',source:'Test fixture 
   const preview=await page.locator('.hm-card img').first().boundingBox();assert.ok(Math.abs(preview.width/preview.height-4/3)<.02);
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   if([1440,390].includes(width))await page.screenshot({path:path.join(output,engine+'-gallery-'+width+'.png'),fullPage:true});
+  const getScale=()=>page.locator('#hmScene').evaluate(e=>Number(e.style.transform.match(/scale\(([^)]+)\)/)?.[1]||0));
   const activate=async locator=>{await locator.evaluate(node=>node.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'}));await page.waitForTimeout(100);return width<760?locator.tap():locator.click();};
   await activate(page.locator('.hm-card').first());await page.waitForSelector('#hmScene:not([hidden])');assert.equal(await page.locator('#hmGalleryHeading').isVisible(),false);
-  assert.equal(await page.locator('#hmZoom').textContent(),'100%');assert.equal(await page.locator('#hmMarkers button').count(),0);
+  const fitScale=await getScale();assert.ok(fitScale>0);assert.equal(await page.locator('#hmMarkers button').count(),0);assert.equal(await page.locator('#hmZoomIn').count(),0);assert.equal(await page.locator('#hmZoomOut').count(),0);
   assert.equal(await page.locator('#hmVerified li').count(),4);
   assert.match(await page.locator('#hmMapSummary').textContent(),/residencial/i);
-  assert.equal(await page.locator('#hmOfficial').getAttribute('href'),'https://halloweengame.com/news/the-locations-of-halloween-the-game/');
+  assert.equal(await page.locator('#hmOfficial').count(),0);
   await page.locator('#hmStyle').click();assert.equal(await page.locator('#hmViewport').evaluate(e=>e.classList.contains('hm-paper')),true);
   await activate(page.locator('#hmStyle'));assert.equal(await page.locator('#hmViewport').evaluate(e=>e.classList.contains('hm-paper')),false);
   assert.match(await page.locator('#hmNotice').textContent(),/ESQUEMA ARTÍSTICO/);
   if(width>=1024){const left=await page.locator('#hmLegend').boundingBox(),map=await page.locator('#hmViewport').boundingBox(),right=await page.locator('.hm-map-nav').boundingBox();assert.ok(left.x<map.x&&map.x<right.x);assert.ok(map.width>left.width*3);}
   else{assert.equal(await page.locator('#hmLegend').getAttribute('open'),null);await activate(page.locator('#hmLegend summary'));assert.notEqual(await page.locator('#hmLegend').getAttribute('open'),null);await activate(page.locator('#hmLegend summary'));}
   if([1440,390].includes(width))await page.screenshot({path:path.join(output,engine+'-viewer-'+width+'.png'),fullPage:true});
-  await activate(page.locator('#hmZoomIn'));assert.equal(await page.locator('#hmZoom').textContent(),'125%');
+  await page.locator('#hmViewport').press('+');assert.ok((await getScale())>fitScale*1.2);
   await activate(page.locator('#hmPlace'));await page.locator('#hmViewport').scrollIntoViewIfNeeded();let box=await page.locator('#hmViewport').boundingBox();
   if(width<760)await page.touchscreen.tap(box.x+box.width*.5,box.y+box.height*.5);else await page.mouse.click(box.x+box.width*.5,box.y+box.height*.5);
   assert.equal(await page.locator('.hm-personal').count(),1);
   const stored=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('sanlean.halloween.positions.v1')));
-  await activate(page.locator('#hmReset'));await activate(page.locator('#hmZoomIn'));await activate(page.locator('#hmZoomIn'));await activate(page.locator('#hmZoomIn'));
+  await activate(page.locator('#hmReset'));for(let j=0;j<3;j++)await page.locator('#hmViewport').press('+');
   await page.locator('#hmViewport').scrollIntoViewIfNeeded();box=await page.locator('#hmViewport').boundingBox();let before=await page.locator('#hmScene').getAttribute('style');
   if(width<760&&engine==='chromium'){
    const cdp=await context.newCDPSession(page),x=box.x+box.width*.5,y=box.y+box.height*.45;
    await cdp.send('Input.synthesizePinchGesture',{x,y,scaleFactor:1.8,relativeSpeed:600,gestureSourceType:'touch'});
-   assert.ok(parseInt(await page.locator('#hmZoom').textContent())>195);
+   assert.ok((await getScale())>fitScale*3);
    await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y}]});
    await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:x+45,y:y+30}]});await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await page.waitForTimeout(300);await cdp.detach();
   }else{
@@ -51,12 +52,12 @@ fixture.maps[0].labels=[{x:.5,y:.25,text:'CALLE DE PRUEBA',source:'Test fixture 
   assert.notEqual(await page.locator('#hmScene').getAttribute('style'),before);
   assert.deepEqual(await page.evaluate(()=>JSON.parse(sessionStorage.getItem('sanlean.halloween.positions.v1'))),stored);
   const anchored=await page.locator('.hm-personal').evaluate(pin=>{const b=pin.getBoundingClientRect(),s=document.querySelector('#hmScene').getBoundingClientRect();return {x:(b.x+b.width/2-s.x)/s.width,y:(b.y+b.height/2-s.y)/s.height};});assert.ok(Math.abs(anchored.x-stored['haddonfield-heights'].x)<.001&&Math.abs(anchored.y-stored['haddonfield-heights'].y)<.001);
-  await activate(page.locator('#hmMapList button').last());await page.waitForFunction(()=>document.querySelector('#hmImage').alt.startsWith('The Tower Farm'));assert.equal(await page.locator('#hmZoom').textContent(),'100%');assert.equal(await page.locator('.hm-personal').count(),0);
+  await activate(page.locator('#hmMapList button').last());await page.waitForFunction(()=>document.querySelector('#hmImage').alt.startsWith('The Tower Farm'));assert.ok(Math.abs((await getScale())-fitScale)<.0001);assert.equal(await page.locator('.hm-personal').count(),0);
   await activate(page.locator('#hmMapList button').first());await page.waitForFunction(()=>document.querySelector('#hmImage').alt.startsWith('Haddonfield Heights'));assert.equal(await page.locator('.hm-personal').count(),1);
   await page.reload();await page.waitForSelector('.hm-card');await activate(page.locator('.hm-card').first());await page.waitForSelector('#hmScene:not([hidden])');assert.equal(await page.locator('.hm-personal').count(),1);
   await activate(page.locator('#hmPlace'));await page.locator('#hmViewport').press('+');await page.locator('#hmViewport').press('ArrowRight');await page.locator('#hmViewport').press('Enter');assert.equal(await page.locator('.hm-personal').count(),1);
   await activate(page.locator('#hmClear'));assert.equal(await page.locator('.hm-personal').count(),0);
-  for(let index=1;index<5;index++){await activate(page.locator('#hmMapList button').nth(index));await page.waitForFunction(name=>document.querySelector('#hmImage').alt.startsWith(name),catalog.maps[index].name);assert.equal(await page.locator('#hmZoom').textContent(),'100%');}
+  for(let index=1;index<5;index++){await activate(page.locator('#hmMapList button').nth(index));await page.waitForFunction(name=>document.querySelector('#hmImage').alt.startsWith(name),catalog.maps[index].name);assert.ok(Math.abs((await getScale())-fitScale)<.0001);}
   await activate(page.locator('#hmBack'));assert.ok(await page.locator('#hmGallery').isVisible());
   if(width<760){await activate(page.locator('#menuToggle'));assert.ok(await page.locator('.public-mobile-menu').isVisible());await activate(page.locator('#menuToggle'));}
   assert.equal(await page.locator('footer.public-footer a').count(),3);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));assert.deepEqual(errors,[]);
@@ -69,7 +70,7 @@ fixture.maps[0].labels=[{x:.5,y:.25,text:'CALLE DE PRUEBA',source:'Test fixture 
   if(width<760)await page.locator('#hmMarkers button').nth(3).tap();else await page.locator('#hmMarkers button').nth(3).click();assert.match(await page.locator('#hmInfoText').textContent(),/Fixture/);assert.match(await page.locator('#hmInfoNotes').textContent(),/orientativa/);await page.locator('#hmInfoClose').click();
   if(width<760)await page.locator('#hmLegend summary').click();await page.locator('.hm-filter').nth(3).click();assert.equal(await page.locator('#hmMarkers button').count(),6);await page.locator('.hm-filter').nth(3).click();assert.equal(await page.locator('#hmMarkers button').count(),7);
   await page.locator('#hmLabels').uncheck();assert.equal(await page.locator('#hmLabelLayer').isVisible(),false);await page.locator('#hmGridToggle').check();assert.ok(await page.locator('#hmGrid').isVisible());
-  await page.locator('#hmPlace').click();await page.locator('#hmViewport').press('Enter');assert.equal(await page.locator('.hm-personal').count(),1);await page.locator('#hmViewport').press('+');await page.locator('#hmViewport').press('ArrowRight');await page.locator('#hmViewport').press('0');assert.equal(await page.locator('#hmZoom').textContent(),'100%');
+  await page.locator('#hmPlace').click();await page.locator('#hmViewport').press('Enter');assert.equal(await page.locator('.hm-personal').count(),1);await page.locator('#hmViewport').press('+');await page.locator('#hmViewport').press('ArrowRight');await page.locator('#hmViewport').press('0');assert.ok(await page.locator('#hmScene').evaluate(e=>e.style.transform.includes('scale(')));
   await page.setViewportSize({width:900,height:390});await page.waitForTimeout(150);assert.equal(await page.locator('.hm-personal').count(),1);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await context.close();console.log('PASS',engine,width,'fixture filters, marker info, labels, grid, keyboard, rotation');
  }
  const context=await browser.newContext(),page=await context.newPage();await page.route(/googletagmanager|google-analytics/,r=>r.abort());await page.route('**/assets/halloween/maps/haddonfield-heights.svg',r=>r.abort());await page.goto(base);await page.locator('.hm-card').first().click();await page.waitForFunction(()=>document.querySelector('#hmImageState').textContent.includes('NO SE PUDO'));assert.equal(await page.locator('#hmScene').isVisible(),false);await page.locator('#hmMapList button').last().click();
