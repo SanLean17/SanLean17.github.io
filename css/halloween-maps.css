@@ -1,13 +1,5 @@
 /* HALLOWEEN / WEB pública. Aislado: no modificar estilos de USUARIO o de otras páginas. */
-body.halloween-page.page-bg{
- background-color:#080b11;
- background-image:linear-gradient(180deg,rgba(5,8,15,.46) 0,rgba(5,8,15,.82) 620px,#080809 1250px),
- url('/assets/halloween/fondo-halloween.webp'),url('/fondo-negro-textura-2.png');
- background-position:center top,center top,center top;
- background-repeat:no-repeat,no-repeat,repeat-y;
- background-size:100% 1350px,cover,100% auto;
- background-attachment:scroll,scroll,scroll;
-}
+/* El fondo global se hereda de .page-bg (css/style.css). */
 #halloweenMaps{
  width:min(1280px,calc(100% - 48px));max-width:1280px;
  margin:0 auto;padding:0 0 80px;min-width:0;
@@ -209,9 +201,6 @@ body.halloween-page.page-bg{
  background:#17171c;border-color:#ff003c;color:#ff003c
 }
 #halloweenMaps .hm-clear{border-color:#4d4d58}
-#halloweenMaps .hm-zoom-value{
- min-width:54px;text-align:center;font:800 12px/1.3 var(--body);color:#ddd
-}
 #halloweenMaps .hm-pin-hint{
  font-size:12px;line-height:1.6;color:#fff;margin-top:12px
 }
@@ -240,10 +229,6 @@ body.halloween-page.page-bg{
 #halloweenMaps .hm-verified-list li{
  font-size:11px;line-height:1.45;color:#dedee3;
  padding-left:13px;border-left:2px solid #ff003c
-}
-#halloweenMaps .hm-official-link{
- display:inline-block;font:800 11px/1.5 var(--body);
- color:#ff6085;text-decoration:underline;text-underline-offset:3px
 }
 #halloweenMaps .hm-info{
  position:relative;padding:20px;margin-top:16px;
@@ -285,10 +270,6 @@ body.halloween-page.page-bg{
  #halloweenMaps .hm-filters{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:760px){
- body.halloween-page.page-bg{
-  background-size:auto 1120px,auto 800px,auto 100vh;
-  background-position:55% top,55% top,center bottom;
- }
  body.public-site.public-mobile>main#halloweenMaps{
   width:calc(100% - 32px);height:auto;min-height:0;
   overflow:visible;padding:0 0 52px!important
