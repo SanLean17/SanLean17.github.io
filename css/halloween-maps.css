@@ -514,3 +514,31 @@
 
 #halloweenMaps #hmGrid{right:auto;bottom:auto}
 #halloweenMaps .hm-grid-labels{z-index:1}
+
+/* HALLOWEEN / MAPAS: compactación de paneles laterales en escritorio.
+   Mantener el alto del visor y los 44px de los botones; el scroll queda
+   disponible solamente si la pantalla es demasiado baja para el contenido. */
+@media(min-width:901px){
+ #halloweenMaps :is(.hm-legend,.hm-map-nav){padding:11px 12px}
+ #halloweenMaps .hm-filters{gap:2px;margin:8px 0 4px}
+ #halloweenMaps .hm-filter-group{margin:7px 0 3px}
+ #halloweenMaps .hm-filter-group:first-child{margin-top:0}
+ #halloweenMaps .hm-filter{min-height:44px;padding:5px 6px}
+ #halloweenMaps .hm-map-nav .hm-map-list{gap:4px;margin:8px 0 9px}
+ #halloweenMaps .hm-map-nav .hm-map-list button{
+  min-height:44px;padding:8px 9px
+ }
+ #halloweenMaps .hm-legend-options{
+  gap:4px;margin-top:10px;padding-top:11px
+ }
+ #halloweenMaps .hm-notice{
+  margin:9px 0 0;padding:8px 10px;
+  border-left-width:3px;font-size:11px;line-height:1.45
+ }
+}
+@media(min-width:901px) and (max-height:760px){
+ #halloweenMaps .hm-filter{min-height:42px}
+ #halloweenMaps .hm-filters{gap:1px}
+ #halloweenMaps .hm-filter-group{margin:5px 0 2px}
+}
+
