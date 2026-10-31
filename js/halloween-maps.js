@@ -154,7 +154,7 @@ async function initialize(){
    button.addEventListener('pointermove',event=>{if(tap&&Math.hypot(event.clientX-tap.x,event.clientY-tap.y)>6)tap=null;});
    button.addEventListener('pointercancel',()=>{tap=null;});
    button.addEventListener('pointerup',event=>{if(tap&&tap.id===event.pointerId&&Math.hypot(event.clientX-tap.x,event.clientY-tap.y)<=6){handledAt=performance.now();event.preventDefault();loadMap(map);}tap=null;});
-   button.addEventListener('click',event=>{if(event.detail===0||performance.now()-handledAt>500)loadMap(map);});el('MapList').append(button);
+   button.addEventListener('click',event=>{if(event.detail===0||handledAt===0||performance.now()-handledAt>500)loadMap(map);});el('MapList').append(button);
   }
   el('Load').hidden=true;
  }catch{el('Load').textContent='NO SE PUDIERON CARGAR LOS MAPAS. Volvé a intentar recargando la página.';}
