@@ -70,10 +70,15 @@
 }
 #halloweenMaps .hm-viewer{padding-bottom:12px}
 #halloweenMaps .hm-view-heading{
- display:flex;flex-wrap:wrap;align-items:center;gap:22px;
- margin:12px 0 20px
+ display:grid;grid-template-columns:minmax(0,1fr);row-gap:16px;
+ margin:12px 0 24px
 }
-#halloweenMaps .hm-view-heading h2{font-size:clamp(32px,3vw,46px);line-height:1.05}
+#halloweenMaps .hm-view-heading h2{
+ width:100%;margin:0;text-align:center;
+ color:#ff003c;font-family:var(--head);font-weight:400;
+ font-size:clamp(46px,5.2vw,76px);line-height:1.04;
+ overflow-wrap:break-word
+}
 #halloweenMaps .hm-notice{
  padding:14px 18px;margin-bottom:20px;border-left:4px solid #ff003c;
  background:#111114eb;color:#d1d1d9;
@@ -193,6 +198,18 @@
 #halloweenMaps .hm-button[aria-pressed=true]{
  border-color:#ff003c;color:#ff003c
 }
+/* Regreso al listado: botón primario y flecha destacada, solo Halloween. */
+#halloweenMaps .hm-back{
+ justify-self:start;display:inline-flex;align-items:center;justify-content:center;
+ gap:10px;padding:8px 20px 8px 15px;min-height:44px;
+ border-color:#ff003c;background:#ff003c;color:#fff
+}
+#halloweenMaps .hm-back-arrow{
+ display:inline-block;font:700 30px/1 var(--body);flex:none
+}
+#halloweenMaps .hm-back:hover:not(:disabled){
+ border-color:#d90033;background:#d90033;color:#fff
+}
 #halloweenMaps .hm-pin-action{
  border-color:#ff003c;background:#ff003c;color:#fff
 }
@@ -224,7 +241,6 @@
 #halloweenMaps .hm-info>p{font-size:12px;line-height:1.65;color:#d3d3da}
 #halloweenMaps .hm-info-type{color:#ff003c!important;font-weight:800}
 #halloweenMaps #hmInfoClose{float:right}
-#halloweenMaps .hm-view-help{color:#a7a7b2;font-size:11px;line-height:1.6;margin-top:18px}
 @media(max-width:1200px){
  #halloweenMaps .hm-workspace{
   grid-template-columns:minmax(154px,1fr) minmax(0,3.3fr) minmax(168px,1fr);gap:12px
@@ -261,7 +277,8 @@
  #halloweenMaps .hm-gallery-heading p{text-align:left;font-size:10px}
  #halloweenMaps .hm-card-copy{padding:19px}
  #halloweenMaps .hm-card strong{min-height:0;font-size:28px}
- #halloweenMaps .hm-view-heading{flex-direction:column;align-items:start;gap:14px}
+ #halloweenMaps .hm-view-heading{row-gap:14px}
+ #halloweenMaps .hm-view-heading h2{font-size:clamp(36px,9vw,48px)}
  #halloweenMaps .hm-viewport{height:55svh;min-height:320px}
  #halloweenMaps .hm-button{font-size:11px;padding:10px 13px}
  #halloweenMaps .hm-controls{gap:7px}
