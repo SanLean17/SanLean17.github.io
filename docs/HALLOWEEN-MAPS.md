@@ -1,115 +1,87 @@
-# HALLOWEEN — visor propio de la WEB pública SanLean
+# Halloween — mapas interactivos de la WEB pública de SanLean
 
-**Estado actual (31/10/2026):** una sola galería y un solo visor propio en
-`https://sanlean.com.ar/halloween.html`. No hay iframes ni dependencia funcional
-de aplicaciones de terceros. No modificar USUARIO, WEB restantes ni sus fondos.
+Actualizado: 31/10/2026. Implementación exclusivamente en `/halloween.html`.
+No cambiar WEB restante ni `/usuario/`. Dominio: `sanlean.com.ar`.
 
-## Decisiones definitivas
+## Decisiones actuales del producto
 
-- Galería responsive: 3 columnas desktop, 2 tablet, 1 mobile.
-- Cinco escenarios: Haddonfield Heights, Haddonfield Town Center,
-  Orange Grove Estates, East Haddonfield y The Tower Farm.
-- Visual SanLean: tipografías, negros y acento `#FF003C`.
-- Vista central con rueda del mouse, zoom táctil, doble clic, arrastre,
-  teclado, centrar mapa, pantalla completa, vista clara,
-  mostrar cuadrícula y mostrar referencias.
-- Sin controles visibles + / − ni indicador 100 %.
-- Pin de posición personal por mapa, guardado en la sesión del navegador.
-- Siete pictogramas SVG propios del proyecto: puerta, auto, sótano,
-  alcantarilla, salida vehicular, suministros, punto de referencia.
-  Filtros e información contextual en español. Hover/foco de marcadores
-  muestra tooltip propio; clic/tap abre información más completa.
-- Las posiciones no son puntos garantizados: los elementos del juego
-  pueden aparecer de forma distinta en cada partida.
-- La descripción del escenario no enlaza a otros proyectos.
-- El fondo oscuro general es el mismo que usa el resto de la WEB.
+- Una sola galería SanLean: cinco escenarios en 3 columnas escritorio, 2 tablet, 1 móvil.
+- Una sola vista de mapa SanLean; no hay iframe, visor externo, selector duplicado ni modo comunitario.
+- Fondo habitual de la WEB, tipografías y botones propios, color `#FF003C`.
+- Zoom rueda/pellizco/teclado, arrastre, centrar, pantalla completa con botón o toque simple sobre el plano;
+  el tap sobre marcadores abre detalles y el tap en modo posición no activa pantalla completa.
+- Marcar mi posición es personal, guardado en `sessionStorage`; no afecta a otros.
+- Mostrar cuadrícula y mostrar referencias (nombres de calles y números de casa).
+- Referencias en español: fichas al pasar mouse/foco y al pulsar un marcador.
+- Leyenda con iconos aportados por el propietario, con círculo y borde del color de su categoría.
+- Por defecto: puerta, auto, sótano y alcantarilla activados. Ruta de escape vehicular,
+  fuente de objetos y todos los ítems desactivados.
+- Objetos opcionales: cortapernos, fusible, gasolina, kit de reparación y llave del sedán.
+  No se inventan coordenadas de fusible: sin posiciones identificadas, su filtro permanece deshabilitado.
+- Todos los marcadores indican **posibles ubicaciones**. Ni el objeto ni la salida
+  aparecen necesariamente en todas las partidas.
 
-## Cartografía real: qué falta
+## Imágenes subidas por el propietario y usadas por la WEB
 
-El visor está preparado para imágenes con calles, edificios y contornos
-correctos respecto al juego, pero **actualmente esos archivos no están
-autorizados ni incorporados**. Hasta entonces muestra cinco esquemas SVG
-originales de SanLean, explícitamente no geográficos. No inventar
-coordenadas ni rotular rutas ficticias como reales.
-
-Al disponer de imágenes propias o con derechos de reutilización adecuados,
-**subir directamente al repositorio principal** `SanLean17/SanLean17.github.io`
-en `assets/halloween/maps/` con estos nombres:
-
-| Escenario | Ruta del mapa listo para importar |
+| Escenario | Archivo de imagen real del repositorio |
 | --- | --- |
 | Haddonfield Heights | `assets/halloween/maps/haddonfield-heights-map.webp` |
-| Haddonfield Town Center | `assets/halloween/maps/haddonfield-town-center-map.webp` |
-| Orange Grove Estates | `assets/halloween/maps/orange-grove-estates-map.webp` |
+| Haddonfield Town Center | `assets/halloween/maps/haddonfield-town-center-map.jpeg` |
+| Orange Grove Estates | `assets/halloween/maps/orange-grove-estates-map.jpeg` |
 | East Haddonfield | `assets/halloween/maps/east-haddonfield-map.webp` |
-| The Tower Farm | `assets/halloween/maps/tower-farm-map.webp` |
+| The Tower Farm | `assets/halloween/maps/tower-farm-map.jpeg` |
 
-La vista de mapa y las cinco tarjetas buscan automáticamente esas imágenes
-y, si no se encuentran o fallan, muestran los SVG actuales. El visor mide
-las dimensiones reales de la imagen cargada para ajustar zoom/pan sin
-deformar su relación de aspecto. El archivo debe contener el plano completo
-con nombres de calles, límites y edificios, preferentemente limpio, sin
-marcadores duplicados (estos se dibujarán en la capa propia SanLean).
+Cada imagen tiene respaldo SVG propio solo cuando falla la carga; en ese
+caso NO se muestran marcadores ni calles sobre la ilustración ficticia.
 
-**IMPORTANTE:** la aparición del mapa verdadero no crea posiciones
-verificadas por sí sola. Una vez subida cada imagen, comprobar manualmente
-el sistema de coordenadas e incorporar sus marcadores al catálogo
-`data/halloween-maps.json` únicamente con evidencia. El modelo ya
-acepta `markers` y `labels` con x/y normalizados entre 0 y 1,
-tipos, título/descripción en español, posibles variaciones y fuente.
+Íconos del propietario usados desde `assets/halloween/icons/`:
+`game-puertas.png`, `game-auto.png`, `game-sotano.png`,
+`game-alcantarillas.png`, `item-cortadora-de-pernos.png`,
+`item-fusible.png`, `item-gasolina.png`,
+`item-kit-de-reparacion.png`, `item-llaves-sedan.png`.
 
-Esquema de marcador para trabajo futuro, NO PUBLICAR SIN VALIDACIÓN:
+## Información geográfica del catálogo
 
-```json
-{
-  "id": "ejemplo-comprobar-01",
-  "type": "gate",
-  "x": 0.5,
-  "y": 0.5,
-  "title": "Puerta de salida",
-  "description": "Ubicación de ejemplo, pendiente de comprobar",
-  "possible": true,
-  "confidence": "community",
-  "source": "Referencia a confirmar con la imagen autorizada"
-}
-```
+`data/halloween-maps.json` incluye dos capas de datos estructurados:
 
-## Fuentes estudiadas como REFERENCIAS, no archivos para copiar
+1. Nombres de calles y números de casas, con x/y normalizados y rotación
+   de calles, obtenidos de referencias cartográficas de la comunidad.
+2. Posibles salidas (puertas, autos, sótanos y alcantarillas), rutas vehiculares
+   y lugares candidatos a objetos. Los objetos opcionales solo se incorporan
+   cuando existe una etiqueta de objeto concreta asociada a un punto.
+   Las ubicaciones simplemente registradas como `searchable` sin contenido
+   identificado NO se convierten en fuentes confirmadas de objetos.
 
-- `https://github.com/Gitjon72/Haddonfield-atlas`: atlas que el usuario
-  compartió, con estilo de calles, nombres, edificios, cuadrícula, zoom y
-  marcadores. Actualmente agrupa su interfaz en `index.html`, sin
-  cinco archivos de mapa independientes ni licencia explícita.
-- `https://github.com/g-hostproxy/Halloween-Map-Exits`: cartografía
-  anotada bajo `maps/`, registros de salidas en `exits.json`,
-  sin licencia explícita. Cuatro mapas.
-- `https://github.com/p8riot/halloween-maps`: cinco mapas y
-  versiones paper/realistic bajo `assets/maps/`,
-  íconos en `assets/icons/`, coordenadas en `data/maps.js`.
-  No declara licencia de reutilización.
-- `https://github.com/Davide-DevP/halloween-map-overlay`:
-  licencia Apache 2.0 del código con **exclusión expresa de las
-  imágenes de terceros** según su `NOTICE`.
+**Procedencia de los hechos, solo para auditoría de mantenimiento:** datos
+de ubicaciones y nomenclatura contrastados contra los registros públicos del
+atlas `p8riot/halloween-maps` (fuente estructurada `data/maps.js`,
+coordenadas originales de 4096×4096) y revisados en conjunto con
+`g-hostproxy/Halloween-Map-Exits` (`exits.json`). No se copiaron aplicaciones,
+imágenes ni código de visualización de estos repositorios. Los datos se
+transformaron al esquema propio de SanLean con etiquetas y explicaciones
+escritas en español.
 
-Que el repositorio sea público o gratuito, o que el usuario lo descargue
-y vuelva a subir, no transfiere los derechos sobre sus imágenes, código o
-la selección creativa de datos. Se necesita material original con derechos
-apropiados o permiso de sus titulares, respetando las condiciones aplicables.
-Si existe una licencia que exige atribución, no puede omitirse ese requisito.
-Esto no impide crear nuestros propios íconos ni diseñar el visor en SanLean.
+**Precisión:** el propio atlas de referencia califica los puntos de aparición
+como posiciones proyectadas que necesitan corroboración visual o dentro del
+juego. Las imágenes del propietario pueden tener recortes o modificaciones.
+Se mantiene estado `confidence=community` y explicación «posible» en todos
+los marcadores. Antes de convertir un marcador en «confirmado», comprobar
+que su posición esté correctamente alineada con el mapa editado y se
+corresponda con el juego. No afirmar que sea cartografía oficial.
 
-## Arquitectura y regresiones
+## Arquitectura
 
-- `halloween.html`: HTML de WEB pública, un visor y cinco tarjetas.
-- `css/halloween-maps.css`: reglas acotadas a `#halloweenMaps`.
-- `js/halloween-maps.js`: interacciones y detección de assets `-map.webp`.
-- `js/halloween-map-model.mjs`: categorías y validación de coordenadas.
-- `data/halloween-maps.json`: catálogo independiente y ampliable.
-- `assets/halloween/maps/`: imágenes del proyecto.
-- `tests/halloween-maps.test.mjs`: lógica y estructura.
-- `tests/halloween-maps.browser.cjs`: desktop, mobile, zoom, tooltip, pin.
-- `.github/workflows/halloween-maps.yml`: tests automáticos por push.
+- `halloween.html` — navegación, galería y componentes del visor.
+- `css/halloween-maps.css` — estilos propios del sitio público y responsive.
+- `js/halloween-maps.js` — carga de las imágenes, marcador, labels, filtros,
+  zoom, fullscreen, tooltip, almacenamiento local temporal.
+- `js/halloween-map-model.mjs` — categorías, rutas de íconos, validaciones.
+- `data/halloween-maps.json` — información y coordenadas por mapa.
+- `assets/halloween/maps/` — imágenes editadas por el propietario + respaldos.
+- `assets/halloween/icons/` — íconos PNG aportados por el propietario.
+- `tests/halloween-maps.test.mjs` — modelo, datos, fuentes locales y geometría.
+- `tests/halloween-maps.browser.cjs` — interacción desktop/mobile.
+- `.github/workflows/halloween-maps.yml` — verificaciones automáticas al modificar Halloween.
 
-No modificar WEB pública fuera de Halloween, USUARIO, overlays ni
-arquitecturas existentes. Antes de publicar datos nuevos, probar responsive,
-fallos de carga, fuentes y marcadores sobre la base geográfica elegida.
+Todos los cambios deben pasar pruebas, revisar la WEB móvil y preservar
+galería, menú, footer, CÓDIGOS, USUARIO y otros módulos de SanLean.
