@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="/css/public-mobile.css?v=20261025-mobile-menu">
 <link rel="stylesheet" href="/css/public-refinements.css?v=20261015-1">
 <link rel="stylesheet" href="/css/public-info.css?v=20261013-8">
-<link rel="stylesheet" href="/css/halloween-maps.css?v=20261031-map-controls-centered5">
+<link rel="stylesheet" href="/css/halloween-maps.css?v=20261031-filter-alignment6">
 <script defer src="/js/public-mobile.js?v=20261025-mobile-menu"></script>
 <script defer src="/js/main.js?v=20261028-catalog1"></script>
 <script type="module" src="/js/halloween-maps.js?v=20261031-legibility2"></script>
@@ -46,13 +46,11 @@
 <button id="hmBack" class="hm-button hm-back" type="button">Volver a los mapas</button>
 <h2 id="hmMapTitle" tabindex="-1">MAPA</h2>
 </div>
-<p id="hmNotice" class="hm-notice" role="status"></p>
 <div class="hm-workspace">
 <details id="hmLegend" class="hm-legend" open>
 <summary>FILTROS</summary>
 <div class="hm-legend-inner">
 <div id="hmFilters" class="hm-filters" aria-label="Filtrar ubicaciones"></div>
-<p class="hm-small">Todos los marcadores indican posibles apariciones. No todas las salidas ni todos los objetos estarán disponibles en cada partida.</p>
 </div>
 </details>
 <div class="hm-center">
@@ -90,6 +88,7 @@
 <label class="hm-toggle"><input type="checkbox" id="hmLabels" checked> MOSTRAR REFERENCIAS</label>
 <label class="hm-toggle"><input type="checkbox" id="hmGridToggle"> MOSTRAR CUADRÍCULA</label>
 </div>
+<p id="hmNotice" class="hm-notice" role="status"></p>
 </aside>
 </div>
 </section>
