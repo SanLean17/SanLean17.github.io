@@ -48,7 +48,7 @@ const activate=async(locator,width)=>{
      assert.ok(positions[i].top>=positions[i-1].bottom-1,'Los mapas deben estar uno debajo del otro');
     assert.ok(positions.every(p=>p.width>150),'Los botones deben ser anchos y fáciles de tocar');
    }
-   assert.match(await page.locator('#hmImage').getAttribute('src'),/haddonfield-heights-map\\.webp/);
+   assert.match(await page.locator('#hmImage').getAttribute('src'),/haddonfield-heights-map\.webp/);
    assert.ok(await page.locator('#hmImage').evaluate(e=>e.naturalWidth>0));
    assert.match(await page.locator('#hmNotice').textContent(),/UBICACIONES POSIBLES/);
    const initial=await page.locator('#hmMarkers button').count();
