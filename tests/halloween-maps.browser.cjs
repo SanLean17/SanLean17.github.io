@@ -83,8 +83,11 @@ fixture.maps[0].labels=[{x:.5,y:.25,text:'CALLE DE PRUEBA',source:'Test fixture 
    await external.goto(base,{waitUntil:'domcontentloaded'});
    await external.locator('.hm-card').first().click();
    await external.frameLocator('#hmCommunityFrame').locator('.brand-title').waitFor({state:'visible',timeout:20000});
+   await external.frameLocator('#hmCommunityFrame').locator('#mapTabs button').first().waitFor({state:'visible',timeout:15000});
    const count=await external.frameLocator('#hmCommunityFrame').locator('#mapTabs button').count();
-   console.log('COMMUNITY_EMBED_OK: proyecto p8riot cargado dentro de SanLean; selector de mapas',count);
+   const image=await external.frameLocator('#hmCommunityFrame').locator('#mapImage').evaluate(e=>({src:e.currentSrc||e.src,complete:e.complete,naturalWidth:e.naturalWidth}));
+   if(!image.complete||image.naturalWidth===0)throw Error('Mapa comunitario sin imagen cargada');
+   console.log('COMMUNITY_EMBED_OK: mapa interactivo visible dentro de SanLean; pestañas',count,'imagen',image.naturalWidth);
   }catch(err){console.log('COMMUNITY_EMBED_UNAVAILABLE: '+String(err).split('\\n')[0]);}
   finally{await ext.close();}
  }finally{await browser.close();server.close();}
