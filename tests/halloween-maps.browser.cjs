@@ -31,10 +31,7 @@ fixture.maps[0].labels=[{x:.5,y:.25,text:'CALLE DE PRUEBA',source:'Test fixture 
   if(width>=1024){const left=await page.locator('#hmLegend').boundingBox(),map=await page.locator('#hmViewport').boundingBox(),right=await page.locator('.hm-map-nav').boundingBox();assert.ok(left.x<map.x&&map.x<right.x);assert.ok(map.width>left.width*3);}
   else{assert.equal(await page.locator('#hmLegend').getAttribute('open'),null);await activate(page.locator('#hmLegend summary'));assert.notEqual(await page.locator('#hmLegend').getAttribute('open'),null);await activate(page.locator('#hmLegend summary'));}
   if([1440,390].includes(width))await page.screenshot({path:path.join(output,engine+'-viewer-'+width+'.png'),fullPage:true});
-  console.log('ZOOM BEFORE',width,await page.locator('#hmScene').getAttribute('style'),await page.locator('#hmZoom').textContent());
-  await activate(page.locator('#hmZoomIn'));
-  console.log('ZOOM AFTER',width,await page.locator('#hmScene').getAttribute('style'),await page.locator('#hmZoom').textContent(),await page.locator('#hmZoomIn').isEnabled());
-  assert.equal(await page.locator('#hmZoom').textContent(),'125%');
+  await activate(page.locator('#hmZoomIn'));assert.equal(await page.locator('#hmZoom').textContent(),'125%');
   await activate(page.locator('#hmPlace'));await page.locator('#hmViewport').scrollIntoViewIfNeeded();let box=await page.locator('#hmViewport').boundingBox();
   if(width<760)await page.touchscreen.tap(box.x+box.width*.5,box.y+box.height*.5);else await page.mouse.click(box.x+box.width*.5,box.y+box.height*.5);
   assert.equal(await page.locator('.hm-personal').count(),1);
@@ -76,8 +73,6 @@ fixture.maps[0].labels=[{x:.5,y:.25,text:'CALLE DE PRUEBA',source:'Test fixture 
   await page.setViewportSize({width:900,height:390});await page.waitForTimeout(150);assert.equal(await page.locator('.hm-personal').count(),1);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await context.close();console.log('PASS',engine,width,'fixture filters, marker info, labels, grid, keyboard, rotation');
  }
  const context=await browser.newContext(),page=await context.newPage();await page.route(/googletagmanager|google-analytics/,r=>r.abort());await page.route('**/assets/halloween/maps/haddonfield-heights.svg',r=>r.abort());await page.goto(base);await page.locator('.hm-card').first().click();await page.waitForFunction(()=>document.querySelector('#hmImageState').textContent.includes('NO SE PUDO'));assert.equal(await page.locator('#hmScene').isVisible(),false);await page.locator('#hmMapList button').last().click();
- await page.waitForTimeout(450);
- console.log('RECOVERY DEBUG',await page.evaluate(()=>({mapTitle:document.querySelector('#hmMapTitle')?.textContent,sceneHidden:document.querySelector('#hmScene')?.hidden,state:document.querySelector('#hmImageState')?.textContent,image:document.querySelector('#hmImage')?.getAttribute('src'),viewerHidden:document.querySelector('#hmViewer')?.hidden,ready:document.querySelector('#hmZoomIn')?.disabled})));
- await page.waitForSelector('#hmScene:not([hidden])');await context.close();console.log('PASS image failure and navigation recovery');
+  await page.waitForSelector('#hmScene:not([hidden])');await context.close();console.log('PASS image failure and navigation recovery');
  }finally{await browser.close();server.close();}
 })().catch(e=>{console.error(e);server.close();process.exitCode=1;});
