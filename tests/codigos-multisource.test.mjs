@@ -15,7 +15,7 @@ test('Wiki fast check reuses cached unchanged revisions without content or image
 
 // Presentation metadata derives from evidence, never detection time when a better date exists.
 
-const {codeImages,releaseInfo,wikiRelease,compareCodes,enrichCode}=await import('../codigos/model.mjs');
+const {codeImages,releaseInfo,wikiRelease,compareCodes,enrichCode,reconcileCodeStatuses}=await import('../codigos/model.mjs');
 const wikiImage=n=>`https://deadbydaylight.wiki.gg/images/${n}.png`;
 test('gallery derives one, multiple and deduplicated verified reward images',()=>{
  const c={code:'MULTI',sources:[{source:'wiki',reward:'A',imageUrl:wikiImage('A')},{source:'wiki',reward:'B',imageUrl:wikiImage('B')},{source:'wiki',reward:'A',imageUrl:wikiImage('A')+'?v=2'}]};
@@ -65,6 +65,54 @@ test('registry import makes no requests; disabled discovery is absent from cycle
   assert.ok(r.catalog.codes.some(c=>c.code==='GROUNDCHUCKHBD'));
  } finally {globalThis.fetch=original;}
 });
+
+test('Códigos duplicados: NightLight vence el estado obsoleto sin reemplazar recompensas oficiales',()=>{
+ const main=JSON.parse(fs.readFileSync(new URL('../data/codigos.json',import.meta.url),'utf8'));
+ const community=JSON.parse(fs.readFileSync(new URL('../data/codigos-nightlight.json',import.meta.url),'utf8'));
+ const merged=reconcileCodeStatuses([...community.codes,...main.codes],Date.parse('2026-11-02T18:00:00Z'));
+ const find=code=>merged.find(c=>c.code===code);
+ for(const code of ['MISSBEHAVIOURGC2026','GRASPINGTHEDARKNESS','NIGHTSHIFT']){
+  const item=find(code),original=main.codes.find(c=>c.code===code);
+  assert.ok(item&&original,code);
+  assert.equal(original.status,'active','La fuente principal puede estar desactualizada');
+  assert.equal(item.status,'expired',code);
+  assert.equal(item.sourceType,original.sourceType);
+  assert.equal(item.reward,original.reward);
+  assert.equal(item.sourceUrl,original.sourceUrl);
+  assert.equal(item.expiryStatusSource,'nightlight');
+  assert.ok(codeImages(item).length>0,'Se conservan las imágenes de '+code);
+ }
+ assert.equal(find('DIABLO').status,'active');
+ assert.equal(find('ROADTRIP').status,'active');
+ assert.equal(find('GROUNDCHUCKHBD').status,'expired');
+ assert.equal(merged.filter(c=>c.code==='MISSBEHAVIOURGC2026').length,1);
+ const oldOnly=find('PLAYXENOMORPHIN2V8');
+ assert.ok(oldOnly&&oldOnly.sourceType==='nightlight');
+ assert.equal(oldOnly.trackedWhileActive,true===oldOnly.trackedWhileActive?true:undefined);
+ assert.ok(!(oldOnly.sourceType!=='nightlight'||oldOnly.trackedWhileActive===true));
+});
+test('Conciliación automática respeta fechas futuras, fechas vencidas y permanentes',()=>{
+ const now=Date.parse('2026-11-02T12:00:00Z');
+ const shared={confidence:'CONFIRMED',status:'active',sourceType:'official_direct'};
+ const community={status:'expired',sourceType:'nightlight'};
+ const codes=reconcileCodeStatuses([
+  {...community,code:'FUTURE'},{...community,code:'UNDATED'},{...community,code:'OLD'},{...community,code:'PERM'},
+  {...shared,code:'FUTURE',expiresAt:'2026-11-25T00:00:00Z'},
+  {...shared,code:'UNDATED'},
+  {...shared,code:'OLD',expiresAt:'2026-10-31T00:00:00Z'},
+  {...shared,code:'PERM',expiryPolicy:'never'}
+ ],now);
+ const find=code=>codes.find(c=>c.code===code);
+ assert.equal(find('FUTURE').status,'active');
+ assert.equal(find('UNDATED').status,'expired');
+ assert.equal(find('OLD').status,'expired');
+ assert.equal(find('PERM').status,'active');
+ assert.equal(codes.length,4);
+ const reversed=reconcileCodeStatuses([...codes].reverse(),now);
+ assert.equal(reversed.length,4);
+ assert.equal(reversed.find(c=>c.code==='UNDATED').status,'expired');
+});
+
 test('NightLight-only evidence cannot enter the published catalog',async()=>{
  const {mergeCodes}=await import('../scripts/codigos/catalog.mjs');
  const external={...posts[0],source:'nightlight',sourceType:'community_discovery',sourceAccount:'nightlight',sourceDid:null,sourceUrl:nightlight.url,text:'Use code NIGHTLIGHTONLY to unlock a reward.'};
