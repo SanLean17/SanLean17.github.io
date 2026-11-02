@@ -88,7 +88,7 @@ test('Códigos duplicados: NightLight vence el estado obsoleto sin reemplazar re
  assert.equal(merged.filter(c=>c.code==='MISSBEHAVIOURGC2026').length,1);
  const oldOnly=find('PLAYXENOMORPHIN2V8');
  assert.ok(oldOnly&&oldOnly.sourceType==='nightlight');
- assert.equal(oldOnly.trackedWhileActive,true===oldOnly.trackedWhileActive?true:undefined);
+ assert.notEqual(oldOnly.trackedWhileActive,true);
  assert.ok(!(oldOnly.sourceType!=='nightlight'||oldOnly.trackedWhileActive===true));
 });
 test('Conciliación automática respeta fechas futuras, fechas vencidas y permanentes',()=>{
