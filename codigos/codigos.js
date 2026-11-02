@@ -1,5 +1,5 @@
 import {createGallery} from './gallery.mjs';
-import {enrichCode,compareCodes,reconcileCodeStatuses} from './model.mjs';
+import {enrichCode,compareCodes,reconcileCodeStatuses} from './model.mjs?v=20261102-expiry-reconcile1';
 import {setupLightbox} from './lightbox.mjs';
 import {setupArchive} from './archive.mjs';
 import {expiryLabel} from './presentation.mjs';
@@ -76,7 +76,21 @@ async function showDebug(data){
 }
 async function load(){
  $('codes-retry').hidden=true;$('codes-notice').hidden=true;
- try{let data;try{data=await json(production?`${raw}data/codigos.json?t=${Date.now()}`:'/data/codigos.json');}catch(error){if(!production)throw error;data=await json('/data/codigos.json');$('codes-notice').hidden=false;$('codes-notice').textContent=`No se pudo consultar la actualización más reciente. Mostrando la copia publicada del ${date(data.updatedAt)}; verificá la fuente oficial antes de canjear.`;}try{const community=await json(production?`${raw}data/codigos-nightlight.json?t=${Date.now()}`:'/data/codigos-nightlight.json');if(community.schemaVersion===1&&Array.isArray(community.codes))data={...data,codes:[...community.codes,...data.codes]};}catch(error){console.warn('NightLight no disponible, conservando códigos oficiales',error);}render(data);if(debug)await showDebug(data);}
+ try{let data;try{data=await json(production?`${raw}data/codigos.json?t=${Date.now()}`:'/data/codigos.json');}catch(error){if(!production)throw error;data=await json('/data/codigos.json');$('codes-notice').hidden=false;$('codes-notice').textContent=`No se pudo consultar la actualización más reciente. Mostrando la copia publicada del ${date(data.updatedAt)}; verificá la fuente oficial antes de canjear.`;}
+  let community=null;
+  try{community=await json(production?`${raw}data/codigos-nightlight.json?t=${Date.now()}`:'/data/codigos-nightlight.json');}
+  catch(error){
+   console.warn('No se pudo consultar NightLight desde GitHub; probando la copia publicada',error);
+   if(production)try{community=await json('/data/codigos-nightlight.json');}
+   catch(fallbackError){console.warn('Copia publicada de NightLight no disponible',fallbackError);}
+  }
+  if(community?.schemaVersion===1&&Array.isArray(community.codes)){
+   data={...data,codes:[...community.codes,...data.codes]};
+  }else{
+   $('codes-notice').hidden=false;
+   $('codes-notice').textContent+=($('codes-notice').textContent?' ':'')+'No se pudo comprobar la vigencia de algunos códigos comunitarios; su estado podría estar desactualizado.';
+  }
+  render(data);if(debug)await showDebug(data);}
  catch{$('codes-notice').hidden=false;$('codes-notice').textContent='No se pudieron cargar los códigos. Intentá nuevamente en unos minutos.';$('codes-retry').hidden=false;}
 }
 setupArchive($('codes-expired'));
