@@ -1,5 +1,5 @@
 import {createGallery} from './gallery.mjs';
-import {enrichCode,compareCodes} from './model.mjs';
+import {enrichCode,compareCodes,reconcileCodeStatuses} from './model.mjs';
 import {setupLightbox} from './lightbox.mjs';
 import {setupArchive} from './archive.mjs';
 import {expiryLabel} from './presentation.mjs';
@@ -48,8 +48,10 @@ function card(c){
 }
 function render(data){
  if(data.schemaVersion!==1||!Array.isArray(data.codes))throw Error('Catálogo inválido');
- const codes=data.codes.filter(c=>((c.official===true&&c.confidence==='CONFIRMED'&&(c.sourceAccount==='deadbydaylight.com'||c.sourceType==='official_wiki'))||(c.sourceType==='nightlight'&&c.confidence==='COMMUNITY_VERIFIED'&&c.official===false))&&/^[A-Z0-9_-]{3,64}$/.test(c.code)&&(official.test(c.sourceUrl)||c.sourceType==='official_wiki'&&wikiOfficial(c.sourceUrl)||c.sourceType==='nightlight'&&c.sourceUrl==='https://nightlight.gg/codes')&&(Number.isFinite(Date.parse(c.publishedAt))||Number.isFinite(Date.parse(c.detectedAt)))).map(c=>({...enrichCode(c),status:c.status==='expired'||(c.expiresAt&&Date.now()>Date.parse(c.expiresAt))?'expired':'active'}));
- const unique=[...new Map(codes.sort((a,b)=>Number(b.sourceType==='nightlight')-Number(a.sourceType==='nightlight')).map(c=>[c.code,c])).values()];
+ const candidates=data.codes.filter(c=>((c.official===true&&c.confidence==='CONFIRMED'&&(c.sourceAccount==='deadbydaylight.com'||c.sourceType==='official_wiki'))||(c.sourceType==='nightlight'&&c.confidence==='COMMUNITY_VERIFIED'&&c.official===false))&&/^[A-Z0-9_-]{3,64}$/.test(c.code)&&(official.test(c.sourceUrl)||c.sourceType==='official_wiki'&&wikiOfficial(c.sourceUrl)||c.sourceType==='nightlight'&&c.sourceUrl==='https://nightlight.gg/codes')&&(Number.isFinite(Date.parse(c.publishedAt))||Number.isFinite(Date.parse(c.detectedAt))));
+ // Una sola tarjeta por código: prevalecen sus recompensas/imágenes existentes,
+ // mientras el estado de vencimiento se concilia con ambas fuentes.
+ const unique=reconcileCodeStatuses(candidates).map(enrichCode);
  const permanent=unique.filter(c=>c.status==='active'&&c.expiryPolicy==='never').sort(compareCodes);
  const active=unique.filter(c=>c.status==='active'&&c.expiryPolicy!=='never').sort(compareCodes);
  const expired=unique.filter(c=>c.status==='expired'&&(c.sourceType!=='nightlight'||c.trackedWhileActive===true)).sort(compareCodes);
