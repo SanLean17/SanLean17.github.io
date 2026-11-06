@@ -41,11 +41,28 @@ más abajo. Una promoción exclusiva de una red no integrada no puede
 detectarse automáticamente. La automatización tampoco inventa códigos,
 recompensas, fechas o imágenes cuando la fuente no los aporta.
 
-## Calendario único en GitHub Actions
+## Calendario de CÓDIGOS y agenda de respaldo
 
 Workflow `.github/workflows/update-dbd-codes.yml`, cron `17,47 * * * *` (UTC).
-No depende de ejecuciones manuales. workflow_dispatch es respaldo; push de archivos
-propios dispara validación. Un único motor elige el trabajo pendiente:
+No depende de ejecuciones manuales. `workflow_dispatch` es respaldo; push de
+archivos propios dispara validación. Un único motor elige el trabajo pendiente.
+
+**Agenda auxiliar `.github/workflows/codigos-agenda.yml`:** otro calendario
+nativo de GitHub, cada hora al minuto 11 (UTC). Consulta las ejecuciones
+reales del workflow de CÓDIGOS. Si la última revisión correcta terminó hace
+75 minutos o más y no hay una revisión reciente en cola/en curso, solicita
+una ejecución mediante `workflow_dispatch` con el `GITHUB_TOKEN` temporal
+(`actions:write`). No lee otras fuentes, no escribe datos y no instala nada
+fuera del repositorio. No repite el proceso si hubo un éxito reciente.
+
+Esta agenda, el cron principal y el disparador adicional tras NightLight
+son oportunidades complementarias, no garantías de puntualidad: **todos
+dependen del servicio GitHub Actions**. Si el servicio omite todos los horarios,
+no hay una ejecución garantizada cada hora o dos horas. La consulta siguiente
+recupera las novedades mediante sus ventanas de búsqueda y sincroniza estados.
+
+La agenda verifica las cinco reglas de decisión con pruebas automáticas;
+el trabajo de datos conserva pruebas separadas. Los modos de ejecución son:
 
 - FAST: cada ejecución de 30 minutos; Bluesky desde último éxito con 2h de solapamiento,
   Wiki solo IDs de revisión de cinco páginas y contenido que haya cambiado.
