@@ -7,6 +7,37 @@ en headers públicos y menú móvil. Indexación index,follow y canonical habili
 Sin enlace nuevo en el footer. USUARIO permanece separado e intacto.
 El diseño, datos y automatización aprobados no cambian por esta publicación.
 
+## Auditoría del 6 de noviembre de 2026
+
+Los logs reales indican intervalos de varias horas entre disparos `schedule`,
+aunque el cron solicita una revisión cada 30 minutos. GitHub Actions es
+best-effort y puede retrasar u omitir ejecuciones: no puede garantizarse un
+SLA de 30 minutos con este proveedor por sí solo. Se conserva el solapamiento
+de fechas para recuperar anuncios cuando finalmente se ejecuta el job.
+
+El diagnóstico reveló además que los códigos que figuran únicamente en arte
+gráfico no eran detectados desde la cuenta oficial de Bluesky. Ahora, después
+de validar exactamente el DID oficial, el detector considera el texto principal,
+el texto alternativo y, cuando hace falta, OCR **local** de gráficas recientes.
+El OCR usa Tesseract en el runner de Actions, sin API externa, y se limita a
+8 imágenes por ejecución, hasta dos por publicación, de los últimos 14 días.
+Solo procesa imágenes del CDN con el DID oficial; no explora X/Instagram ni
+imágenes arbitrarias. Se busca una instrucción inequívoca de canje, con un
+solo código. Negaciones, múltiples códigos y expresiones ambiguas pasan a
+REVIEW, no a publicación automática. Los resultados se guardan en caché para
+evitar nuevas descargas. Los errores de imagen quedan visibles en los
+diagnósticos; no bloquean los anuncios que traen el código en texto.
+
+Se corrigió asimismo la publicación del catálogo: si `main` avanzó durante
+la consulta de fuentes, el job hace `git pull --rebase` y reintenta el push
+hasta tres veces. Sin esto, un job exitoso en detección podía fallar al
+publicar, dejando el sitio desactualizado.
+
+**Límite real:** solo están conectadas las fuentes habilitadas que se enumeran
+más abajo. Una promoción exclusiva de una red no integrada no puede
+detectarse automáticamente. La automatización tampoco inventa códigos,
+recompensas, fechas o imágenes cuando la fuente no los aporta.
+
 ## Calendario único en GitHub Actions
 
 Workflow `.github/workflows/update-dbd-codes.yml`, cron `17,47 * * * *` (UTC).
@@ -35,7 +66,7 @@ cuando no hay éxito registrado en más de 6h. No aparece esa alarma en modo nor
    `https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed`.
    Identidad exacta deadbydaylight.com y DID ya permitido; sin autenticación.
    getProfile verifica identidad; getPosts reconcilia anuncios activos en DAILY.
-   No se interpreta una imagen/noticia como código sin instrucción de canje.
+   Se interpreta el texto alternativo y el OCR de una gráfica oficial solo si contienen una instrucción inequívoca de canje; nunca se inventa un código a partir de una imagen ambigua.
 2. Wiki, `official_wiki` (comunitaria apoyada oficialmente, NO official_direct):
    `https://deadbydaylight.wiki.gg/api.php`, MediaWiki action=query.
    Revisiones: prop=revisions; contenido: rvslots=main, rvprop=ids|timestamp|content;
