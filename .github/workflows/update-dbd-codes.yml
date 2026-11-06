@@ -2,6 +2,11 @@ name: Update DBD codes
 on:
   schedule:
     - cron: '17,47 * * * *'
+  # Comprobación adicional cuando termina la otra sincronización.
+  # No convierte NightLight en fuente oficial ni publica sus datos sin validar.
+  workflow_run:
+    workflows: ['Códigos NightLight']
+    types: [completed]
   workflow_dispatch:
   push:
     branches: [main]
