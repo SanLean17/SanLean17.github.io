@@ -38,6 +38,14 @@ jobs:
           path: /tmp/codigos-runtime
           key: codigos-v2-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: codigos-v2-
+      - name: Prepare local OCR for verified official images
+        shell: bash
+        run: |
+          if ! command -v tesseract >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y --no-install-recommends tesseract-ocr
+          fi
+          tesseract --version 2>&1 | head -n 1
       - name: Test conservative detection
         run: node --test tests/dbd-codes.test.mjs tests/codigos-multisource.test.mjs
       - name: Query independent public sources
