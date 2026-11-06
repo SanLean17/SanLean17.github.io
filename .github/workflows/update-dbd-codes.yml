@@ -57,9 +57,22 @@ jobs:
             echo 'No data changes; no commit.'
             exit 0
           fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -- data/codigos.json data/codigos-review.json
-          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Update official DBD codes'
-          git push origin HEAD:main
+          git commit -m 'Update official DBD codes'
+          for attempt in 1 2 3; do
+            # La rama puede avanzar mientras se detectan códigos: actualizar
+            # nuestra base sin perder el commit de catálogo recién generado.
+            git pull --rebase origin main
+            if git push origin HEAD:main; then
+              echo 'Catálogo de códigos publicado.'
+              exit 0
+            fi
+            sleep $((attempt * 2))
+          done
+          echo 'No se pudo publicar el catálogo tras tres intentos.' >&2
+          exit 1
       - name: Save cursors and health without a repository commit
         if: always()
         uses: actions/cache/save@v4
