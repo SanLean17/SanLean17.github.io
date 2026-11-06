@@ -1,7 +1,20 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-01T02:12:47.610Z",
+  "updatedAt": "2026-11-06T16:32:28.178Z",
   "items": [
+    {
+      "candidates": [
+        "NOTTODAY"
+      ],
+      "confidence": "REVIEW",
+      "reason": "Contexto de canje incompleto",
+      "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mznqvzhiko26",
+      "sourceAccount": "deadbydaylight.com",
+      "rawPostUri": "at://did:plc:rrbpnmgc4i2nn6naohkdsbhj/app.bsky.feed.post/3mznqvzhiko26",
+      "publishedAt": "2026-11-06T16:01:01.050Z",
+      "text": " Happy Stranger Things Day! \n\n🚲 We're celebrating all the heroes in Hawkins with a Spiked Bat Charm, redeemable by entering the code NOTTODAY in the in-game Store before December 6.",
+      "detectedAt": "2026-11-06T16:32:28.178Z"
+    },
     {
       "candidates": [
         "MAURICEPRIDE",
