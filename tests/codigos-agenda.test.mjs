@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {evaluateAgenda} from '../scripts/codigos/agenda.mjs';
+import {reconcileCodeStatuses} from '../codigos/model.mjs';
+import {statusAt} from '../scripts/codigos/detector.mjs';
 
 const now=Date.parse('2026-11-06T18:00:00Z');
 const at=minutes=>new Date(now-minutes*60_000).toISOString();
@@ -28,4 +30,18 @@ test('No cuenta fallos recientes como revisión exitosa',()=>{
 });
 test('Rechaza respuestas de GitHub incompletas',()=>{
  assert.throws(()=>evaluateAgenda(null,now),/Respuesta inválida/);
+});
+
+test('El vencimiento pasa automáticamente de ACTIVOS a CÓDIGOS ANTERIORES',()=>{
+ const before=Date.parse('2026-11-24T23:00:00Z'),after=Date.parse('2026-11-26T00:00:00Z');
+ const entry={code:'CADUCATEST',sourceType:'official_direct',status:'active',
+  expiryPolicy:'calendar-day-end-UTC',expiresAt:'2026-11-25T23:59:59.999Z'};
+ assert.equal(reconcileCodeStatuses([entry],before)[0].status,'active');
+ assert.equal(reconcileCodeStatuses([entry],after)[0].status,'expired');
+ assert.equal(statusAt(entry,new Date(after).toISOString()),'expired');
+});
+test('Sin fecha ni evidencia de caducidad no se inventa un vencimiento',()=>{
+ const item={code:'SINFECHATEST',status:'active',sourceType:'official_direct',expiresAt:null};
+ assert.equal(reconcileCodeStatuses([item],Date.parse('2028-01-01T00:00:00Z'))[0].status,'active');
+ assert.equal(statusAt(item,'2028-01-01T00:00:00Z'),'active');
 });
