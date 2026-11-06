@@ -14,6 +14,9 @@ aunque el cron solicita una revisión cada 30 minutos. GitHub Actions es
 best-effort y puede retrasar u omitir ejecuciones: no puede garantizarse un
 SLA de 30 minutos con este proveedor por sí solo. Se conserva el solapamiento
 de fechas para recuperar anuncios cuando finalmente se ejecuta el job.
+Como respaldo, el workflow principal también se ejecuta cuando finaliza
+`Códigos NightLight` (evento `workflow_run`). Es únicamente un disparador de
+una nueva revisión Bluesky/Wiki: no convierte NightLight en prueba oficial.
 
 El diagnóstico reveló además que los códigos que figuran únicamente en arte
 gráfico no eran detectados desde la cuenta oficial de Bluesky. Ahora, después
