@@ -31,7 +31,12 @@ const stop=new Set(['THE','CODE','CODES','STORE','NOW','GET','USE','ENTER','REDE
 function valid(code){return !stop.has(code.toUpperCase())&&/[A-Za-z]/.test(code)&&/^[A-Za-z0-9_-]{3,64}$/.test(code);}
 export function classify(post){
   if(post.source!=='bluesky'||post.sourceAccount!==ACCOUNT||post.sourceDid!==DID)return{classification:'REJECTED',candidates:[],reason:'Fuente no autorizada'};
-  const text=post.text.normalize('NFKC');const signals=/\b(code|codes|redeem|canje(?:ar|á|a)?|c[oó]digo|ingres[aá]|introduce|enter)\b/i.test(text);
+  // Las publicaciones oficiales pueden anunciar el código en la descripción
+  // de una imagen o en texto leído de la gráfica. Solo se usa esa evidencia
+  // cuando el post ya pasó la verificación de identidad de la fuente.
+  const visual=[...(post.images||[]).map(i=>i.alt),post.imageOcrText].filter(v=>typeof v==='string'&&v.trim()).map(v=>v.slice(0,2000));
+  const text=[post.text,...visual].join('\n').normalize('NFKC');
+  const signals=/\b(code|codes|redeem|canje(?:ar|á|a)?|c[oó]digo|ingres[aá]|introduce|enter)\b/i.test(text);
   const found=[];
   const patterns=[new RegExp(`\\b(?:use|using|enter|redeem|us[aá]|usando|ingres[aá]|introduce|canje[aá])\\s+(?:the\\s+|el\\s+)?(?:promo\\s+)?(?:code|c[oó]digo)\\s*[:=]?\\s*["“'\x60]?${token}\\b`,'gi'),new RegExp(`\\benter\\s+["“'\x60]?${token}["”'\x60]?\\s+in(?:to)?\\s+the\\s+in[- ]game\\s+store`,'gi')];
   for(const pattern of patterns)for(const match of text.matchAll(pattern)){if(valid(match[1]))found.push({code:match[1].toUpperCase(),end:match.index+match[0].length});}
