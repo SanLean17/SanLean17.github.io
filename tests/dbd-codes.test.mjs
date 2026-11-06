@@ -30,6 +30,38 @@ test('source spoof, repost and embedded foreign content cannot publish',()=>{
  assert.equal(classify({...post('Use code DIABLO'),sourceDid:'fake'}).classification,'REJECTED');
  const quoted=structuredClone(fixture[0]);quoted.post.record.text='Look at this';quoted.post.record.embed={record:{text:'Use code FAKECODE'}};assert.equal(classify(officialPost(quoted)).classification,'REJECTED');
 });
+test('official image alt can confirm a code absent from publication text',()=>{
+ const sample={...post('New reward in the Fog.'),images:[{url:posts[0].images[0].url,alt:'Dead by Daylight graphic reads USE CODE: AUTOTEST2026'}]};
+ const result=classify(sample);
+ assert.equal(result.classification,'CONFIRMED');
+ assert.equal(result.code,'AUTOTEST2026');
+ const negative=classify({...sample,images:[{...sample.images[0],alt:'DO NOT USE CODE: AUTOTEST2026'}]});
+ assert.equal(negative.classification,'REVIEW');
+ const ambiguous=classify({...sample,images:[{...sample.images[0],alt:'USE CODE FIRST2026 and SECOND2026'}]});
+ assert.equal(ambiguous.classification,'REVIEW');
+});
+test('official image OCR is bounded, evidence-based, cached and enters catalog automatically',async()=>{
+ const raw=structuredClone(fixture[0]),timestamp=new Date().toISOString();
+ raw.post.record.text='A gift is on the horizon.';
+ raw.post.record.createdAt=timestamp;
+ raw.post.embed.images=[{fullsize:posts[0].images[0].url,alt:''}];
+ let recognized=0;
+ const fetcher=async url=>({ok:true,json:async()=>String(url).includes('getProfile')?{did:DID,handle:ACCOUNT}:{feed:[raw]}});
+ const scan=()=>{recognized++;return 'USE CODE: AUTOTESTGRAPHIC2026';};
+ const first=await collect({fetcher,mode:'fast',since:new Date(Date.now()-86400000).toISOString(),imageReader:scan});
+ assert.equal(recognized,1);
+ assert.equal(first.imageCodesFound,1);
+ assert.equal(first.imageScanErrors,0);
+ assert.equal(classify(first.posts[0]).code,'AUTOTESTGRAPHIC2026');
+ const merged=mergeCodes(empty,review,first.posts,new Date(Date.now()+1000).toISOString());
+ const item=merged.catalog.codes.find(c=>c.code==='AUTOTESTGRAPHIC2026');
+ assert.ok(item);
+ assert.equal(item.sourceType,'official_direct');
+ assert.ok(item.imageUrl.includes('/img/feed_fullsize/'));
+ const second=await collect({fetcher,mode:'fast',since:new Date(Date.now()-86400000).toISOString(),state:first.state,imageReader:()=>{throw Error('Should not rescan cached image');}});
+ assert.equal(second.imageScanned,0);
+ assert.equal(classify(second.posts[0]).code,'AUTOTESTGRAPHIC2026');
+});
 test('only exact official timestamps automatically expire; missing and partial dates stay active',()=>{
  assert.equal(statusAt({expiresAt:null},'2030-01-01T00:00:00Z'),'active');
  const partial=expiryFrom('until October 2027','2026-09-01');assert.equal(statusAt(partial,'2028-01-01'),'active');
