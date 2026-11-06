@@ -1,9 +1,24 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-31T17:19:14.757188Z",
+  "updatedAt": "2026-11-06T21:33:19.300624Z",
   "source": "https://nightlight.gg/codes",
   "extractionMode": "react-router-stream",
   "codes": [
+    {
+      "code": "NOTTODAY",
+      "reward": "Spiked Bat Charm",
+      "status": "active",
+      "official": false,
+      "confidence": "COMMUNITY_VERIFIED",
+      "source": "nightlight",
+      "sourceType": "nightlight",
+      "sourceUrl": "https://nightlight.gg/codes",
+      "expiryPolicy": "dated",
+      "expiresAt": "2026-12-06T16:00:00Z",
+      "detectedAt": "2026-11-06T21:33:19.300624Z",
+      "publishedAt": "2026-11-06T16:34:04.433973Z",
+      "trackedWhileActive": true
+    },
     {
       "code": "DBDXHS",
       "reward": "200k Bloodpoints",
@@ -641,8 +656,8 @@
       "publishedAt": "2025-07-02T17:19:40Z"
     },
     {
-      "code": "DEADBYPRIDE",
-      "reward": "100 Iridescent Shards",
+      "code": "INTOTHERAINBOW25",
+      "reward": "100k Bloodpoints",
       "status": "expired",
       "official": false,
       "confidence": "COMMUNITY_VERIFIED",
@@ -655,8 +670,8 @@
       "publishedAt": "2025-06-27T08:09:58Z"
     },
     {
-      "code": "INTOTHERAINBOW25",
-      "reward": "100k Bloodpoints",
+      "code": "DEADBYPRIDE",
+      "reward": "100 Iridescent Shards",
       "status": "expired",
       "official": false,
       "confidence": "COMMUNITY_VERIFIED",
@@ -1019,36 +1034,8 @@
       "publishedAt": "2024-06-12T20:41:48Z"
     },
     {
-      "code": "BDGIS",
-      "reward": "Intersex Badge",
-      "status": "active",
-      "official": false,
-      "confidence": "COMMUNITY_VERIFIED",
-      "source": "nightlight",
-      "sourceType": "nightlight",
-      "sourceUrl": "https://nightlight.gg/codes",
-      "expiryPolicy": "never",
-      "expiresAt": null,
-      "detectedAt": "2026-10-31T16:47:00.000Z",
-      "publishedAt": "2024-06-12T19:22:17Z"
-    },
-    {
       "code": "BDGPRIDE",
       "reward": "Pride Badge",
-      "status": "active",
-      "official": false,
-      "confidence": "COMMUNITY_VERIFIED",
-      "source": "nightlight",
-      "sourceType": "nightlight",
-      "sourceUrl": "https://nightlight.gg/codes",
-      "expiryPolicy": "never",
-      "expiresAt": null,
-      "detectedAt": "2026-10-31T16:47:00.000Z",
-      "publishedAt": "2024-06-12T19:22:17Z"
-    },
-    {
-      "code": "BDGPRG",
-      "reward": "Progress Pride Badge",
       "status": "active",
       "official": false,
       "confidence": "COMMUNITY_VERIFIED",
@@ -1142,6 +1129,20 @@
       "expiryPolicy": "never",
       "expiresAt": null,
       "detectedAt": "2026-10-31T17:04:23.578303Z",
+      "publishedAt": "2024-06-12T19:22:17Z"
+    },
+    {
+      "code": "BDGIS",
+      "reward": "Intersex Badge",
+      "status": "active",
+      "official": false,
+      "confidence": "COMMUNITY_VERIFIED",
+      "source": "nightlight",
+      "sourceType": "nightlight",
+      "sourceUrl": "https://nightlight.gg/codes",
+      "expiryPolicy": "never",
+      "expiresAt": null,
+      "detectedAt": "2026-10-31T16:47:00.000Z",
       "publishedAt": "2024-06-12T19:22:17Z"
     },
     {
@@ -1257,6 +1258,20 @@
       "publishedAt": "2024-06-12T19:22:17Z"
     },
     {
+      "code": "BDGPRG",
+      "reward": "Progress Pride Badge",
+      "status": "active",
+      "official": false,
+      "confidence": "COMMUNITY_VERIFIED",
+      "source": "nightlight",
+      "sourceType": "nightlight",
+      "sourceUrl": "https://nightlight.gg/codes",
+      "expiryPolicy": "never",
+      "expiresAt": null,
+      "detectedAt": "2026-10-31T16:47:00.000Z",
+      "publishedAt": "2024-06-12T19:22:17Z"
+    },
+    {
       "code": "PROUDDAVID",
       "reward": "200 Iridescent Shards",
       "status": "expired",
@@ -1285,34 +1300,6 @@
       "publishedAt": "2024-06-12T19:02:54Z"
     },
     {
-      "code": "TWOSFLAG",
-      "reward": "Two-Spirit Pride Flag",
-      "status": "active",
-      "official": false,
-      "confidence": "COMMUNITY_VERIFIED",
-      "source": "nightlight",
-      "sourceType": "nightlight",
-      "sourceUrl": "https://nightlight.gg/codes",
-      "expiryPolicy": "never",
-      "expiresAt": null,
-      "detectedAt": "2026-10-31T17:04:23.578303Z",
-      "publishedAt": "2024-06-12T17:24:16Z"
-    },
-    {
-      "code": "DEMISFLAG",
-      "reward": "Demisexual Pride Flag",
-      "status": "active",
-      "official": false,
-      "confidence": "COMMUNITY_VERIFIED",
-      "source": "nightlight",
-      "sourceType": "nightlight",
-      "sourceUrl": "https://nightlight.gg/codes",
-      "expiryPolicy": "never",
-      "expiresAt": null,
-      "detectedAt": "2026-10-31T17:04:23.578303Z",
-      "publishedAt": "2024-06-12T17:24:16Z"
-    },
-    {
       "code": "POLYFLAG",
       "reward": "Polyamory Pride Flag",
       "status": "active",
@@ -1329,6 +1316,34 @@
     {
       "code": "AROMFLAG",
       "reward": "Aromantic Pride Flag",
+      "status": "active",
+      "official": false,
+      "confidence": "COMMUNITY_VERIFIED",
+      "source": "nightlight",
+      "sourceType": "nightlight",
+      "sourceUrl": "https://nightlight.gg/codes",
+      "expiryPolicy": "never",
+      "expiresAt": null,
+      "detectedAt": "2026-10-31T17:04:23.578303Z",
+      "publishedAt": "2024-06-12T17:24:16Z"
+    },
+    {
+      "code": "TWOSFLAG",
+      "reward": "Two-Spirit Pride Flag",
+      "status": "active",
+      "official": false,
+      "confidence": "COMMUNITY_VERIFIED",
+      "source": "nightlight",
+      "sourceType": "nightlight",
+      "sourceUrl": "https://nightlight.gg/codes",
+      "expiryPolicy": "never",
+      "expiresAt": null,
+      "detectedAt": "2026-10-31T17:04:23.578303Z",
+      "publishedAt": "2024-06-12T17:24:16Z"
+    },
+    {
+      "code": "DEMISFLAG",
+      "reward": "Demisexual Pride Flag",
       "status": "active",
       "official": false,
       "confidence": "COMMUNITY_VERIFIED",
@@ -1425,7 +1440,7 @@
       "publishedAt": "2024-03-13T10:10:10Z"
     },
     {
-      "code": "KONTROLFREEK",
+      "code": "STEELSERIES2024",
       "reward": "50k Bloodpoints",
       "status": "expired",
       "official": false,
@@ -1453,7 +1468,7 @@
       "publishedAt": "2024-03-12T18:42:53Z"
     },
     {
-      "code": "STEELSERIES2024",
+      "code": "KONTROLFREEK",
       "reward": "50k Bloodpoints",
       "status": "expired",
       "official": false,
@@ -1551,20 +1566,6 @@
       "publishedAt": "2024-02-09T18:51:42Z"
     },
     {
-      "code": "DROPML",
-      "reward": "Avant-Garde Leggings",
-      "status": "expired",
-      "official": false,
-      "confidence": "COMMUNITY_VERIFIED",
-      "source": "nightlight",
-      "sourceType": "nightlight",
-      "sourceUrl": "https://nightlight.gg/codes",
-      "expiryPolicy": "unknown",
-      "expiresAt": null,
-      "detectedAt": "2026-10-31T17:04:23.578303Z",
-      "publishedAt": "2024-02-05T17:09:04Z"
-    },
-    {
       "code": "DROPMJ",
       "reward": "Vogue Jacket",
       "status": "expired",
@@ -1603,6 +1604,20 @@
       "sourceUrl": "https://nightlight.gg/codes",
       "expiryPolicy": "dated",
       "expiresAt": "2024-02-08T00:00:00Z",
+      "detectedAt": "2026-10-31T17:04:23.578303Z",
+      "publishedAt": "2024-02-05T17:09:04Z"
+    },
+    {
+      "code": "DROPML",
+      "reward": "Avant-Garde Leggings",
+      "status": "expired",
+      "official": false,
+      "confidence": "COMMUNITY_VERIFIED",
+      "source": "nightlight",
+      "sourceType": "nightlight",
+      "sourceUrl": "https://nightlight.gg/codes",
+      "expiryPolicy": "unknown",
+      "expiresAt": null,
       "detectedAt": "2026-10-31T17:04:23.578303Z",
       "publishedAt": "2024-02-05T17:09:04Z"
     },
@@ -1663,7 +1678,7 @@
       "publishedAt": "2023-11-28T19:24:23Z"
     },
     {
-      "code": "ELGATO",
+      "code": "STEELSERIES",
       "reward": "50k Bloodpoints",
       "status": "expired",
       "official": false,
@@ -1677,7 +1692,7 @@
       "publishedAt": "2023-11-28T18:17:50Z"
     },
     {
-      "code": "STEELSERIES",
+      "code": "ELGATO",
       "reward": "50k Bloodpoints",
       "status": "expired",
       "official": false,
@@ -1845,8 +1860,8 @@
       "publishedAt": "2023-06-29T14:36:38Z"
     },
     {
-      "code": "FLAGL",
-      "reward": "Lesbian Pride Flag",
+      "code": "MFLAG",
+      "reward": "MLM Pride Flag",
       "status": "active",
       "official": false,
       "confidence": "COMMUNITY_VERIFIED",
@@ -1859,8 +1874,8 @@
       "publishedAt": "2023-06-16T17:15:08Z"
     },
     {
-      "code": "MFLAG",
-      "reward": "MLM Pride Flag",
+      "code": "FLAGL",
+      "reward": "Lesbian Pride Flag",
       "status": "active",
       "official": false,
       "confidence": "COMMUNITY_VERIFIED",
@@ -1901,34 +1916,6 @@
       "publishedAt": "2023-06-02T01:45:00Z"
     },
     {
-      "code": "AFLAGS",
-      "reward": "Asexual Pride Flag",
-      "status": "active",
-      "official": false,
-      "confidence": "COMMUNITY_VERIFIED",
-      "source": "nightlight",
-      "sourceType": "nightlight",
-      "sourceUrl": "https://nightlight.gg/codes",
-      "expiryPolicy": "never",
-      "expiresAt": null,
-      "detectedAt": "2026-10-31T17:04:23.578303Z",
-      "publishedAt": "2023-06-01T21:07:01Z"
-    },
-    {
-      "code": "GFLAGQ",
-      "reward": "Genderqueer Pride Flag",
-      "status": "active",
-      "official": false,
-      "confidence": "COMMUNITY_VERIFIED",
-      "source": "nightlight",
-      "sourceType": "nightlight",
-      "sourceUrl": "https://nightlight.gg/codes",
-      "expiryPolicy": "never",
-      "expiresAt": null,
-      "detectedAt": "2026-10-31T17:04:23.578303Z",
-      "publishedAt": "2023-06-01T21:07:01Z"
-    },
-    {
       "code": "GFLAGF",
       "reward": "Gender-fluid Pride Flag",
       "status": "active",
@@ -1959,6 +1946,34 @@
     {
       "code": "AFLAGG",
       "reward": "Agender Pride Flag",
+      "status": "active",
+      "official": false,
+      "confidence": "COMMUNITY_VERIFIED",
+      "source": "nightlight",
+      "sourceType": "nightlight",
+      "sourceUrl": "https://nightlight.gg/codes",
+      "expiryPolicy": "never",
+      "expiresAt": null,
+      "detectedAt": "2026-10-31T17:04:23.578303Z",
+      "publishedAt": "2023-06-01T21:07:01Z"
+    },
+    {
+      "code": "GFLAGQ",
+      "reward": "Genderqueer Pride Flag",
+      "status": "active",
+      "official": false,
+      "confidence": "COMMUNITY_VERIFIED",
+      "source": "nightlight",
+      "sourceType": "nightlight",
+      "sourceUrl": "https://nightlight.gg/codes",
+      "expiryPolicy": "never",
+      "expiresAt": null,
+      "detectedAt": "2026-10-31T17:04:23.578303Z",
+      "publishedAt": "2023-06-01T21:07:01Z"
+    },
+    {
+      "code": "AFLAGS",
+      "reward": "Asexual Pride Flag",
       "status": "active",
       "official": false,
       "confidence": "COMMUNITY_VERIFIED",
@@ -2573,6 +2588,20 @@
       "publishedAt": "2022-08-20T15:16:05Z"
     },
     {
+      "code": "TOOTHFACE",
+      "reward": "10k Bloodpoints",
+      "status": "expired",
+      "official": false,
+      "confidence": "COMMUNITY_VERIFIED",
+      "source": "nightlight",
+      "sourceType": "nightlight",
+      "sourceUrl": "https://nightlight.gg/codes",
+      "expiryPolicy": "unknown",
+      "expiresAt": null,
+      "detectedAt": "2026-10-31T17:04:23.578303Z",
+      "publishedAt": "2022-07-30T08:17:38Z"
+    },
+    {
       "code": "FINN",
       "reward": "10k Bloodpoints",
       "status": "expired",
@@ -2588,20 +2617,6 @@
     },
     {
       "code": "SHARKY",
-      "reward": "10k Bloodpoints",
-      "status": "expired",
-      "official": false,
-      "confidence": "COMMUNITY_VERIFIED",
-      "source": "nightlight",
-      "sourceType": "nightlight",
-      "sourceUrl": "https://nightlight.gg/codes",
-      "expiryPolicy": "unknown",
-      "expiresAt": null,
-      "detectedAt": "2026-10-31T17:04:23.578303Z",
-      "publishedAt": "2022-07-30T08:17:38Z"
-    },
-    {
-      "code": "TOOTHFACE",
       "reward": "10k Bloodpoints",
       "status": "expired",
       "official": false,
@@ -2797,8 +2812,8 @@
       "publishedAt": "2022-04-01T19:52:44Z"
     },
     {
-      "code": "HELLOTHERE",
-      "reward": "25k Bloodpoints",
+      "code": "DBDTHEBOARDGAME",
+      "reward": "200k Bloodpoints",
       "status": "expired",
       "official": false,
       "confidence": "COMMUNITY_VERIFIED",
@@ -2811,8 +2826,8 @@
       "publishedAt": "2022-03-29T18:30:42Z"
     },
     {
-      "code": "DBDTHEBOARDGAME",
-      "reward": "200k Bloodpoints",
+      "code": "HELLOTHERE",
+      "reward": "25k Bloodpoints",
       "status": "expired",
       "official": false,
       "confidence": "COMMUNITY_VERIFIED",
