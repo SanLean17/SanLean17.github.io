@@ -1,6 +1,6 @@
 import {classify,statusAt} from './detector.mjs';
 export function mergeCodes(previous,previousReview,posts,now=new Date().toISOString()){
- const codes=new Map((previous?.codes||[]).map(c=>[c.code.toUpperCase(),structuredClone(c)]));
+ const codes=new Map((previous?.codes||[]).map(c=>[c.code.normalize('NFKC').trim().toUpperCase(),{...structuredClone(c),code:c.code.normalize('NFKC').trim().toUpperCase()}]));
  const reviews=new Map((previousReview?.items||[]).map(c=>[c.sourceUrl,structuredClone(c)]));
  const stats={postsAnalyzed:posts.length,candidates:0,confirmed:0,review:0,rejected:0,imagesFound:0};
  for(const post of [...posts].sort((a,b)=>a.publishedAt.localeCompare(b.publishedAt))){
@@ -9,9 +9,10 @@ export function mergeCodes(previous,previousReview,posts,now=new Date().toISOStr
   stats[result.classification.toLowerCase()]++;stats.candidates+=result.candidates.length;
   if(result.classification==='REJECTED')continue;
   const old=codes.get(result.code);
-  if(old?.status==='expired'&&Date.parse(post.publishedAt)>Date.parse(old.expiresAt||old.expiryUpperBound||old.publishedAt)&&!old.sources.some(s=>s.rawPostUri===post.uri)){
+  if(old?.status==='expired'&&Date.parse(post.publishedAt)>Date.parse(old.expiresAt||old.expiryUpperBound||old.publishedAt)&&!(old.sources||[]).some(s=>s.rawPostUri===post.uri)){
    stats.confirmed--;stats.review++;result={...result,classification:'REVIEW',reason:'Reaparición de código finalizado: confirmar renovación antes de reactivar'};
   }
+  if(result.classification==='CONFIRMED'&&old?.expiresAt&&result.expiresAt&&old.expiresAt!==result.expiresAt){stats.confirmed--;stats.review++;result={...result,classification:'REVIEW',reason:'Fecha contradictoria con el catálogo; confirmar antes de cambiar'};}
   if(result.classification==='REVIEW'){
    const record={candidates:result.candidates,confidence:'REVIEW',reason:result.reason,sourceUrl:post.sourceUrl,sourceAccount:post.sourceAccount,rawPostUri:post.uri,publishedAt:post.publishedAt,text:post.text};
    const oldReview=reviews.get(post.sourceUrl);reviews.set(post.sourceUrl,{...record,detectedAt:oldReview?.detectedAt||now});continue;

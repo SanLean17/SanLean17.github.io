@@ -31,31 +31,16 @@ export function codeImages(c){
  const urls=new Set(),rewards=new Set();return all.filter(i=>{const u=new URL(i.url);u.hash='';if(u.hostname==='deadbydaylight.wiki.gg')u.search='';const key=u.href,r=i.sourceType==='official_wiki'?i.reward?.toLowerCase():null;if(urls.has(key)||(r&&rewards.has(r)))return false;urls.add(key);if(r)rewards.add(r);return true;});
 }
 export function compareCodes(a,b){return (Date.parse(b.releasedAt)||0)-(Date.parse(a.releasedAt)||0)||(Date.parse(b.expiresAt)||0)-(Date.parse(a.expiresAt)||0)||a.code.localeCompare(b.code);}
-// Presentación de fuentes independientes: conservar la ficha rica de SanLean,
-// pero no volver a mostrar como activo un código que NightLight ya marcó vencido.
-// Los códigos vencidos históricos de NightLight siguen filtrándose en la vista.
+// Deduplicate without letting unconfirmed community evidence override official data.
 export function reconcileCodeStatuses(entries,now=Date.now()){
- const byCode=new Map(),expiredOnNightLight=new Set();
- for(const entry of entries){
-  if(entry.sourceType==='nightlight'&&entry.status==='expired')expiredOnNightLight.add(entry.code);
+ const byCode=new Map();
+ for(const raw of entries){
+  const entry={...raw,code:String(raw.code||'').normalize('NFKC').trim().toUpperCase()};
   const previous=byCode.get(entry.code);
-  if(!previous||(previous.sourceType==='nightlight'&&entry.sourceType!=='nightlight'))byCode.set(entry.code,entry);
+  if(!previous||(previous.official!==true&&entry.official===true)
+   ||(previous.sourceType==='nightlight'&&entry.sourceType!=='nightlight'))byCode.set(entry.code,entry);
  }
- return [...byCode.values()].map(entry=>{
-  const deadline=typeof entry.expiresAt==='string'?Date.parse(entry.expiresAt):NaN;
-  const expiredByDate=Number.isFinite(deadline)&&now>deadline;
-  // Una fecha futura documentada prevalece sobre una clasificación externa
-  // contradictoria. Para vencimientos desconocidos se usa el estado verificado
-  // de NightLight, conservando imágenes y publicaciones del catálogo principal.
-  const expiredByNightLight=entry.sourceType!=='nightlight'
-   &&entry.expiryPolicy!=='never'
-   &&!(Number.isFinite(deadline)&&now<=deadline)
-   &&expiredOnNightLight.has(entry.code);
-  return {
-   ...entry,
-   status:entry.status==='expired'||expiredByDate||expiredByNightLight?'expired':'active',
-   ...(expiredByNightLight&&entry.status!=='expired'?{expiryStatusSource:'nightlight'}:{})
-  };
- });
+ return [...byCode.values()].map(entry=>({...entry,status:entry.status==='expired'
+  ||(Number.isFinite(Date.parse(entry.expiresAt))&&now>=Date.parse(entry.expiresAt))?'expired':'active'}));
 }
 export function enrichCode(c){return {...c,...releaseInfo(c),images:codeImages(c)};}

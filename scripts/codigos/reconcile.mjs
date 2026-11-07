@@ -14,10 +14,12 @@ export function applyCalendarExpiry(c){
 export function mergeWiki(codes,entries,now){
  const map=new Map(codes.map(c=>[c.code,structuredClone(c)]));const grouped=Map.groupBy(entries,e=>e.code);
  for(const [code,rows] of grouped){
-  if(!map.has(code)&&rows.every(r=>r.evidenceYear&&r.evidenceYear<2026&&!r.currentAvailability))continue;
+  if(!map.has(code)&&rows.every(r=>(r.expiryDate&&Date.parse(r.expiryDate+'T23:59:59.999Z')<Date.parse(now))||(r.evidenceYear&&r.evidenceYear<new Date(now).getUTCFullYear()&&!r.currentAvailability)))continue;
   let c=map.get(code);const direct=c?.source==='bluesky'||c?.sourceType==='official_direct';
   const rewards=[...new Set(rows.map(r=>r.reward))].sort();const dates=[...new Set(rows.map(r=>r.expiryDate).filter(Boolean))];
   if(dates.length>1)continue; // Conflicting dates cannot silently choose a winner.
+  if(c?.status==='expired')continue; // Reappearance requires independent manual review.
+  if(c?.expiresAt&&dates[0]&&c.expiresAt.slice(0,10)!==dates[0])continue;
   const first=rows[0],picture=rows.find(r=>r.imageUrl);
   c=c||{code,publishedAt:null,detectedAt:now,status:'active',official:true,confidence:'CONFIRMED',sources:[]};
   const evidence=rows.map(r=>({source:'wiki',sourceType:'official_wiki',sourceUrl:r.sourceUrl,revisionId:r.revisionId,revisionAt:r.revisionAt,reward:r.reward,expiryDate:r.expiryDate,imageUrl:r.imageUrl,evidence:r.evidence}));

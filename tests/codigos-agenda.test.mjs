@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {evaluateAgenda} from '../scripts/codigos/agenda.mjs';
+import {evaluateAgenda,shouldScan} from '../scripts/codigos/agenda.mjs';
 import {reconcileCodeStatuses} from '../codigos/model.mjs';
 import {statusAt} from '../scripts/codigos/detector.mjs';
 
@@ -14,16 +14,20 @@ test('La agenda solicita una primera revisión cuando no hay éxitos',()=>{
  assert.equal(evaluateAgenda([failed(8)],now).dispatch,true);
 });
 test('Una revisión reciente evita consultas duplicadas',()=>{
- assert.equal(evaluateAgenda([success(20)],now).dispatch,false);
- assert.equal(evaluateAgenda([success(74)],now).dispatch,false);
- assert.equal(evaluateAgenda([success(75)],now).dispatch,true);
- assert.equal(evaluateAgenda([success(120),success(5)],now).dispatch,false);
+ assert.equal(evaluateAgenda([],now,{lastCompleteSuccessAt:at(20)}).dispatch,false);
+ assert.equal(evaluateAgenda([],now,{lastCompleteSuccessAt:at(59)}).dispatch,false);
+ assert.equal(evaluateAgenda([],now,{lastCompleteSuccessAt:at(60)}).dispatch,true);
+ assert.equal(evaluateAgenda([success(5)],now,{}).dispatch,true,'Workflow verde sin diagnóstico no acredita análisis');
+ assert.equal(evaluateAgenda([],now,{lastAttemptAt:at(5)}).dispatch,false);
+ assert.equal(shouldScan({lastCompleteSuccessAt:at(10)},now),false);
+ assert.equal(shouldScan({lastCompleteSuccessAt:at(10)},now,'push'),true);
+ assert.equal(shouldScan({},now),true);
 });
 test('No duplica un escaneo que ya está en cola o ejecutándose',()=>{
  for(const status of ['queued','in_progress','pending','waiting','requested']){
   assert.equal(evaluateAgenda([success(180),{status,created_at:at(10)}],now).dispatch,false,status);
  }
- assert.equal(evaluateAgenda([success(180),{status:'in_progress',created_at:at(90)}],now).dispatch,true);
+ assert.equal(evaluateAgenda([success(180),{status:'in_progress',created_at:at(90)}],now).dispatch,false);
 });
 test('No cuenta fallos recientes como revisión exitosa',()=>{
  assert.equal(evaluateAgenda([success(90),failed(5)],now).dispatch,true);

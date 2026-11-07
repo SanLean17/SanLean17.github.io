@@ -13,7 +13,7 @@ export function parsePage(page){
 
    const dates=[...clause.matchAll(new RegExp(`(\\d{1,2})\\s+(${months.join('|')})\\s+(20\\d{2})`,'g'))];
    const last=dates.at(-1);let expiryDate=null;
-   if(last&&/\b(?:between|from|until|before)\b/i.test(clause)){
+   if(last&&(/\b(?:until|before)\b/i.test(clause)||/\b(?:between|from)\b/i.test(clause)&&(dates.length>1||/\d{1,2}\s*[-–]\s*\d{1,2}\s+[A-Za-z]+/.test(clause)))){
     const month=months.indexOf(last[2])+1;const d=new Date(Date.UTC(+last[3],month-1,+last[1]));if(d.getUTCMonth()===month-1)expiryDate=d.toISOString().slice(0,10);
    }
    if(!year&&!/Now redeemable/i.test(row)&&!expiryDate)continue;
@@ -29,7 +29,7 @@ export async function collect({mode='daily',state={},knownCodes=[],candidates=[]
  const watched=[...new Set([...PAGES,...Object.keys(state.pages||{})])].slice(0,25);
  const meta=await query({prop:'revisions',rvprop:'ids|timestamp',titles:watched.join('|')},fetcher);
  if(meta.pages?.length!==watched.length||meta.pages.some(p=>p.missing||!p.revisions?.[0]))throw Error('Wiki: faltan páginas o revisiones esperadas');
- const changed=meta.pages.filter(p=>mode==='daily'||state.version!==3||state.pages?.[p.title]?.revisionId!==p.revisions[0].revid);
+ const changed=meta.pages.filter(p=>mode==='daily'||state.version!==4||state.pages?.[p.title]?.revisionId!==p.revisions[0].revid);
  let pages={...(state.pages||{})};
  if(changed.length){const full=await query({prop:'revisions',rvprop:'ids|timestamp|content',rvslots:'main',titles:changed.map(p=>p.title).join('|')},fetcher);for(const page of full.pages){const entries=parsePage(page);pages[page.title]={revisionId:page.revisions[0].revid,entries};}}
  let entries=Object.values(pages).flatMap(p=>p.entries);
@@ -43,5 +43,5 @@ export async function collect({mode='daily',state={},knownCodes=[],candidates=[]
  const files=[...new Set(entries.map(e=>e.imageFile).filter(Boolean))];let images={...(state.images||{})};const missing=files.filter(f=>mode!=='fast'||!Object.hasOwn(images,f));
  for(let i=0;i<missing.length;i+=50){const result=await query({prop:'imageinfo',iiprop:'url',titles:missing.slice(i,i+50).join('|')},fetcher);for(const p of result.pages||[])images[p.title]=p.imageinfo?.[0]?.url||null;for(const n of result.normalized||[])images[n.from]=images[n.to]||null;}
  entries=entries.map(e=>({...e,imageUrl:images[e.imageFile]||null}));
- return {entries,fetched:meta.pages.length+changed.length,state:{version:3,pages,images,candidateSearch}};
+ return {entries,fetched:meta.pages.length+changed.length,state:{version:4,pages,images,candidateSearch}};
 }

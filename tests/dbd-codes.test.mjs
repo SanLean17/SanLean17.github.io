@@ -65,7 +65,7 @@ test('official image OCR is bounded, evidence-based, cached and enters catalog a
 test('only exact official timestamps automatically expire; missing and partial dates stay active',()=>{
  assert.equal(statusAt({expiresAt:null},'2030-01-01T00:00:00Z'),'active');
  const partial=expiryFrom('until October 2027','2026-09-01');assert.equal(statusAt(partial,'2028-01-01'),'active');
- const timed=expiryFrom('before October 10th, 11AM ET','2026-09-10');assert.equal(statusAt(timed,'2026-10-10T15:00:01Z'),'expired');assert.equal(statusAt(timed,'2026-10-10T15:00:00Z'),'active');
+ const timed=expiryFrom('before October 10th, 11AM ET','2026-09-10');assert.equal(statusAt(timed,'2026-10-10T15:00:01Z'),'expired');assert.equal(statusAt(timed,'2026-10-10T15:00:00Z'),'expired');
  assert.equal(expiryFrom('before February 30th, 11AM ET','2026-01-01').expiresAt,null);
  assert.equal(expiryFrom('until January 10th, 11AM ET','2026-01-01').expiresAt,'2026-01-10T16:00:00.000Z');
 });

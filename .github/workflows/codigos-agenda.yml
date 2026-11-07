@@ -2,7 +2,7 @@ name: Códigos · Agenda de respaldo
 on:
   # Agenda independiente del cron principal, separada del minuto 00.
   schedule:
-    - cron: '11 * * * *'
+    - cron: '7,37 * * * *'
   workflow_dispatch:
   push:
     branches: [main]
@@ -23,6 +23,7 @@ jobs:
     timeout-minutes: 4
     steps:
       - uses: actions/checkout@v4
+      - run: git pull --ff-only origin main
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -33,5 +34,5 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
-          gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/update-dbd-codes.yml/runs?per_page=30" > "${RUNNER_TEMP}/codigos-runs.json"
+          gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/update-dbd-codes.yml/runs?per_page=100&branch=main" > "${RUNNER_TEMP}/codigos-runs.json"
           node scripts/codigos/agenda.mjs "${RUNNER_TEMP}/codigos-runs.json"

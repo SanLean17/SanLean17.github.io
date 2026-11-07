@@ -1,5 +1,5 @@
 import {createGallery} from './gallery.mjs';
-import {enrichCode,compareCodes,reconcileCodeStatuses} from './model.mjs?v=20261102-expiry-reconcile1';
+import {enrichCode,compareCodes,reconcileCodeStatuses} from './model.mjs?v=20261107-codes-audit1';
 import {setupLightbox} from './lightbox.mjs';
 import {setupArchive} from './archive.mjs';
 import {expiryLabel} from './presentation.mjs';
@@ -48,9 +48,9 @@ function card(c){
 }
 function render(data){
  if(data.schemaVersion!==1||!Array.isArray(data.codes))throw Error('Catálogo inválido');
- const candidates=data.codes.filter(c=>((c.official===true&&c.confidence==='CONFIRMED'&&(c.sourceAccount==='deadbydaylight.com'||c.sourceType==='official_wiki'))||(c.sourceType==='nightlight'&&c.confidence==='COMMUNITY_VERIFIED'&&c.official===false))&&/^[A-Z0-9_-]{3,64}$/.test(c.code)&&(official.test(c.sourceUrl)||c.sourceType==='official_wiki'&&wikiOfficial(c.sourceUrl)||c.sourceType==='nightlight'&&c.sourceUrl==='https://nightlight.gg/codes')&&(Number.isFinite(Date.parse(c.publishedAt))||Number.isFinite(Date.parse(c.detectedAt))));
+ const candidates=data.codes.map(c=>({...c,code:String(c.code||'').normalize('NFKC').trim().toUpperCase()})).filter(c=>((c.official===true&&c.confidence==='CONFIRMED'&&(c.sourceAccount==='deadbydaylight.com'||c.sourceType==='official_wiki'))||(c.sourceType==='nightlight'&&c.confidence==='COMMUNITY_VERIFIED'&&c.official===false))&&/^[A-Z0-9_-]{3,64}$/.test(c.code)&&(official.test(c.sourceUrl)||c.sourceType==='official_wiki'&&wikiOfficial(c.sourceUrl)||c.sourceType==='nightlight'&&c.sourceUrl==='https://nightlight.gg/codes')&&(Number.isFinite(Date.parse(c.publishedAt))||Number.isFinite(Date.parse(c.detectedAt))));
  // Una sola tarjeta por código: prevalecen sus recompensas/imágenes existentes,
- // mientras el estado de vencimiento se concilia con ambas fuentes.
+ // y los vencimientos se recalculan con la evidencia del catálogo habilitado.
  const unique=reconcileCodeStatuses(candidates).map(enrichCode);
  const permanent=unique.filter(c=>c.status==='active'&&c.expiryPolicy==='never').sort(compareCodes);
  const active=unique.filter(c=>c.status==='active'&&c.expiryPolicy!=='never').sort(compareCodes);
@@ -69,27 +69,14 @@ function render(data){
 async function showDebug(data){
  $('codes-debug').hidden=false;
  const s=data.stats||{};let health=null;
- try{const r=await json('https://api.github.com/repos/SanLean17/SanLean17.github.io/commits/main/check-runs?check_name=Codigos-health&filter=latest&per_page=1');health=JSON.parse(r.check_runs?.[0]?.output?.summary||'null');}catch{}
- const stale=!health?.lastSuccessAt||Date.now()-Date.parse(health.lastSuccessAt)>6*3600000;
- $('codes-debug-content').textContent=`AUTOMATIZACIÓN\n${stale?'ACTUALIZACIÓN ATRASADA':'ACTUALIZACIÓN CORRECTA'}\nÚltima ejecución programada: ${health?.lastScheduledAt||'Sin registro disponible'}\nÚltima actualización correcta: ${health?.lastSuccessAt||'Sin registro disponible'}\nÚltimo cambio de catálogo: ${data.updatedAt}\nFuentes correctas: ${health?.sourcesHealthy??'—'}\nFuentes con error: ${health?.sourcesFailed??'—'}\nModo: ${health?.mode||'—'}\n${Object.entries(health?.sources||{}).map(([id,v])=>`${id}: ${v.lastError||'correcta'} · consulta ${v.lastAttemptAt} · última correcta ${v.lastSuccessAt||'—'} · elementos ${v.itemsFetched}`).join('\n')}\nPosts del último cambio: ${s.postsAnalyzed??'—'}\nConfirmados: ${s.confirmed??'—'} · En revisión: ${s.review??'—'} · Rechazados: ${s.rejected??'—'}`;
+ try{health=await json(production?`${raw}data/codigos-health.json?t=${Date.now()}`:'/data/codigos-health.json');}catch{}
+ const stale=!health?.lastCompleteSuccessAt||Date.now()-Date.parse(health.lastCompleteSuccessAt)>90*60000;
+ $('codes-debug-content').textContent=`AUTOMATIZACIÓN\n${stale?'ACTUALIZACIÓN ATRASADA':'ACTUALIZACIÓN CORRECTA'}\nÚltima ejecución programada: ${health?.lastScheduledAt||'Sin registro disponible'}\nÚltimo análisis completo: ${health?.lastCompleteSuccessAt||'Sin registro disponible'}\nÚltimo análisis con alguna fuente correcta: ${health?.lastSuccessAt||'Sin registro disponible'}\nÚltimo cambio de catálogo: ${data.updatedAt}\nFuentes correctas: ${health?.sourcesHealthy??'—'}\nFuentes con error: ${health?.sourcesFailed??'—'}\nModo: ${health?.mode||'—'}\n${Object.entries(health?.sources||{}).map(([id,v])=>`${id}: ${v.lastError||'correcta'} · consulta ${v.lastAttemptAt} · última correcta ${v.lastSuccessAt||'—'} · elementos ${v.itemsFetched}`).join('\n')}\nPosts del último cambio: ${s.postsAnalyzed??'—'}\nConfirmados: ${s.confirmed??'—'} · En revisión: ${s.review??'—'} · Rechazados: ${s.rejected??'—'}`;
 
 }
 async function load(){
  $('codes-retry').hidden=true;$('codes-notice').hidden=true;
  try{let data;try{data=await json(production?`${raw}data/codigos.json?t=${Date.now()}`:'/data/codigos.json');}catch(error){if(!production)throw error;data=await json('/data/codigos.json');$('codes-notice').hidden=false;$('codes-notice').textContent=`No se pudo consultar la actualización más reciente. Mostrando la copia publicada del ${date(data.updatedAt)}; verificá la fuente oficial antes de canjear.`;}
-  let community=null;
-  try{community=await json(production?`${raw}data/codigos-nightlight.json?t=${Date.now()}`:'/data/codigos-nightlight.json');}
-  catch(error){
-   console.warn('No se pudo consultar NightLight desde GitHub; probando la copia publicada',error);
-   if(production)try{community=await json('/data/codigos-nightlight.json');}
-   catch(fallbackError){console.warn('Copia publicada de NightLight no disponible',fallbackError);}
-  }
-  if(community?.schemaVersion===1&&Array.isArray(community.codes)){
-   data={...data,codes:[...community.codes,...data.codes]};
-  }else{
-   $('codes-notice').hidden=false;
-   $('codes-notice').textContent+=($('codes-notice').textContent?' ':'')+'No se pudo comprobar la vigencia de algunos códigos comunitarios; su estado podría estar desactualizado.';
-  }
   render(data);if(debug)await showDebug(data);}
  catch{$('codes-notice').hidden=false;$('codes-notice').textContent='No se pudieron cargar los códigos. Intentá nuevamente en unos minutos.';$('codes-retry').hidden=false;}
 }

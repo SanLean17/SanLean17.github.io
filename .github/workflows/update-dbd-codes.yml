@@ -1,12 +1,7 @@
 name: Update DBD codes
 on:
   schedule:
-    - cron: '17,47 * * * *'
-  # Comprobación adicional cuando termina la otra sincronización.
-  # No convierte NightLight en fuente oficial ni publica sus datos sin validar.
-  workflow_run:
-    workflows: ['Códigos NightLight']
-    types: [completed]
+    - cron: '23 * * * *'
   workflow_dispatch:
   push:
     branches: [main]
@@ -15,6 +10,10 @@ on:
       - 'scripts/codigos/**'
       - 'codigos/presentation.mjs'
       - 'codigos/model.mjs'
+      - 'tests/codigos*.mjs'
+      - 'tests/codigos*.cjs'
+      - 'codigos/codigos.js'
+      - 'codigos/index.html'
       - 'tests/dbd-codes.test.mjs'
       - 'tests/codigos-multisource.test.mjs'
       - 'tests/fixtures/codigos/**'
@@ -35,15 +34,24 @@ jobs:
       CODE_STATE_PATH: /tmp/codigos-runtime/state.json
     steps:
       - uses: actions/checkout@v4
+      - name: Refresh main after waiting for concurrency
+        run: git pull --ff-only origin main
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Test catalog, scheduling and safety policies
+        run: node --test tests/dbd-codes.test.mjs tests/codigos-*.test.mjs
+      - name: Avoid duplicate source scans
+        id: due
+        run: node scripts/codigos/due.mjs
       - uses: actions/cache/restore@v4
+        if: steps.due.outputs.scan == 'true'
         with:
           path: /tmp/codigos-runtime
           key: codigos-v2-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: codigos-v2-
       - name: Prepare optional local OCR for verified official images
+        if: steps.due.outputs.scan == 'true'
         shell: bash
         run: |
           if ! command -v tesseract >/dev/null 2>&1; then
@@ -54,20 +62,23 @@ jobs:
           if command -v tesseract >/dev/null 2>&1; then
             tesseract --version 2>&1 | head -n 1
           fi
-      - name: Test conservative detection
-        run: node --test tests/dbd-codes.test.mjs tests/codigos-multisource.test.mjs
       - name: Query independent public sources
+        id: scan
+        if: steps.due.outputs.scan == 'true'
         run: node scripts/codigos/update.mjs
-      - name: Commit only meaningful catalog changes
+      - name: Publish catalog changes and durable scan health
+        id: publication
+        if: steps.scan.outcome == 'success'
         shell: bash
         run: |
-          if git diff --quiet -- data/codigos.json data/codigos-review.json; then
+          git add -- data/codigos.json data/codigos-review.json data/codigos-health.json
+          if git diff --cached --quiet; then
             echo 'No data changes; no commit.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- data/codigos.json data/codigos-review.json
+          git add -- data/codigos.json data/codigos-review.json data/codigos-health.json
           git commit -m 'Update official DBD codes'
           for attempt in 1 2 3; do
             # La rama puede avanzar mientras se detectan códigos: actualizar
@@ -82,12 +93,14 @@ jobs:
           echo 'No se pudo publicar el catálogo tras tres intentos.' >&2
           exit 1
       - name: Save cursors and health without a repository commit
-        if: always()
+        if: always() && steps.scan.outcome == 'success'
         uses: actions/cache/save@v4
         with:
           path: /tmp/codigos-runtime
           key: codigos-v2-${{ github.run_id }}-${{ github.run_attempt }}
       - name: Publish public debug diagnostic
+        if: always() && steps.scan.outcome == 'success'
         env:
+          PUBLICATION_OUTCOME: ${{ steps.publication.outcome }}
           GITHUB_TOKEN: ${{ github.token }}
         run: node scripts/codigos/publish-health.mjs

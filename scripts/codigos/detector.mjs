@@ -52,4 +52,4 @@ export function classify(post){
   // Generic 'this Charm' is what the official text says; never infer names from art.
   return{classification:'CONFIRMED',candidates:unique,code:unique[0],reward,...expiryFrom(text,post.publishedAt),reason:'Cuenta oficial + instrucción explícita de canje + un código inequívoco'};
 }
-export function statusAt(entry,now){const end=entry.expiresAt;return entry.status==='expired'||(end&&Date.parse(now)>Date.parse(end))?'expired':'active';}
+export function statusAt(entry,now){const end=entry.expiresAt;return entry.status==='expired'||(end&&Date.parse(now)>=Date.parse(end))?'expired':'active';}

@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "status": "pending_authorization",
+  "activatedAt": null,
+  "permissionReference": null,
+  "channel": null,
+  "baselineIds": null,
+  "reason": "No crear referencia ni consultar NightLight hasta contar con consentimiento escrito y canal autorizado. Restaurar desde Git si falta el estado; nunca importar por ausencia de referencia."
+}

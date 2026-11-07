@@ -1,224 +1,152 @@
-# CÓDIGOS: arquitectura real multifuente
+# CÓDIGOS — funcionamiento auditado el 7 de noviembre de 2026
 
-Publicación oficial: 25 de octubre de 2026 (Argentina).
-URL pública: https://sanlean.com.ar/codigos/; diagnóstico no enlazado: `?debug=1`.
-CÓDIGOS aparece como enlace principal entre DEAD BY DAYLIGHT y HALLOWEEN,
-en headers públicos y menú móvil. Indexación index,follow y canonical habilitados.
-Sin enlace nuevo en el footer. USUARIO permanece separado e intacto.
-El diseño, datos y automatización aprobados no cambian por esta publicación.
-
-## Auditoría del 6 de noviembre de 2026
-
-Los logs reales indican intervalos de varias horas entre disparos `schedule`,
-aunque el cron solicita una revisión cada 30 minutos. GitHub Actions es
-best-effort y puede retrasar u omitir ejecuciones: no puede garantizarse un
-SLA de 30 minutos con este proveedor por sí solo. Se conserva el solapamiento
-de fechas para recuperar anuncios cuando finalmente se ejecuta el job.
-Como respaldo, el workflow principal también se ejecuta cuando finaliza
-`Códigos NightLight` (evento `workflow_run`). Es únicamente un disparador de
-una nueva revisión Bluesky/Wiki: no convierte NightLight en prueba oficial.
-
-El diagnóstico reveló además que los códigos que figuran únicamente en arte
-gráfico no eran detectados desde la cuenta oficial de Bluesky. Ahora, después
-de validar exactamente el DID oficial, el detector considera el texto principal,
-el texto alternativo y, cuando hace falta, OCR **local** de gráficas recientes.
-El OCR usa Tesseract en el runner de Actions, sin API externa, y se limita a
-8 imágenes por ejecución, hasta dos por publicación, de los últimos 14 días.
-Solo procesa imágenes del CDN con el DID oficial; no explora X/Instagram ni
-imágenes arbitrarias. Se busca una instrucción inequívoca de canje, con un
-solo código. Negaciones, múltiples códigos y expresiones ambiguas pasan a
-REVIEW, no a publicación automática. Los resultados se guardan en caché para
-evitar nuevas descargas. Los errores de imagen quedan visibles en los
-diagnósticos; no bloquean los anuncios que traen el código en texto.
-
-Se corrigió asimismo la publicación del catálogo: si `main` avanzó durante
-la consulta de fuentes, el job hace `git pull --rebase` y reintenta el push
-hasta tres veces. Sin esto, un job exitoso en detección podía fallar al
-publicar, dejando el sitio desactualizado.
-
-**Límite real:** solo están conectadas las fuentes habilitadas que se enumeran
-más abajo. Una promoción exclusiva de una red no integrada no puede
-detectarse automáticamente. La automatización tampoco inventa códigos,
-recompensas, fechas o imágenes cuando la fuente no los aporta.
-
-## Calendario de CÓDIGOS y agenda de respaldo
-
-Workflow `.github/workflows/update-dbd-codes.yml`, cron `17,47 * * * *` (UTC).
-No depende de ejecuciones manuales. `workflow_dispatch` es respaldo; push de
-archivos propios dispara validación. Un único motor elige el trabajo pendiente.
-
-**Agenda auxiliar `.github/workflows/codigos-agenda.yml`:** otro calendario
-nativo de GitHub, cada hora al minuto 11 (UTC). Consulta las ejecuciones
-reales del workflow de CÓDIGOS. Si la última revisión correcta terminó hace
-75 minutos o más y no hay una revisión reciente en cola/en curso, solicita
-una ejecución mediante `workflow_dispatch` con el `GITHUB_TOKEN` temporal
-(`actions:write`). No lee otras fuentes, no escribe datos y no instala nada
-fuera del repositorio. No repite el proceso si hubo un éxito reciente.
-
-Esta agenda, el cron principal y el disparador adicional tras NightLight
-son oportunidades complementarias, no garantías de puntualidad: **todos
-dependen del servicio GitHub Actions**. Si el servicio omite todos los horarios,
-no hay una ejecución garantizada cada hora o dos horas. La consulta siguiente
-recupera las novedades mediante sus ventanas de búsqueda y sincroniza estados.
-
-La agenda verifica las cinco reglas de decisión con pruebas automáticas;
-el trabajo de datos conserva pruebas separadas. Los modos de ejecución son:
-
-- FAST: cada ejecución de 30 minutos; Bluesky desde último éxito con 2h de solapamiento,
-  Wiki solo IDs de revisión de cinco páginas y contenido que haya cambiado.
-- FULL: primera ejecución tras 6h desde la última conciliación profunda correcta;
-  Bluesky 150 días, Wiki revisiones y actualización de referencias de imágenes.
-- DAILY: primera ejecución tras 24h desde la última diaria correcta; Bluesky 365 días
-  más consulta directa de posts de códigos activos existentes; Wiki vuelve a leer
-  las páginas observadas aunque su revisión no haya cambiado. Incluye FULL.
-- Primera ejecución o caché ausente: DAILY. Retrasos no pierden la ventana: se calcula
-  por timestamps persistidos, no por igualdad exacta de la hora del runner.
-- Cada ejecución evalúa expiraciones locales, incluso si fallan todas las fuentes.
-
-GitHub puede retrasar u omitir schedules bajo carga y desactivarlos tras 60 días sin
-actividad en repositorios públicos. No se ofrece SLA ni tiempo real. Se conserva el
-catálogo; la próxima consulta recupera novedades. El diagnóstico avisa ATRASADA
-cuando no hay éxito registrado en más de 6h. No aparece esa alarma en modo normal.
+Alcance: sección pública https://sanlean.com.ar/codigos/ y sus automatizaciones.
+No se modifican USUARIO, otras páginas, CSS, tarjetas, imágenes ni navegación.
 
 ## Fuentes habilitadas
 
-1. Bluesky, `official_direct`:
-   `https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed`.
-   Identidad exacta deadbydaylight.com y DID ya permitido; sin autenticación.
-   getProfile verifica identidad; getPosts reconcilia anuncios activos en DAILY.
-   Se interpreta el texto alternativo y el OCR de una gráfica oficial solo si contienen una instrucción inequívoca de canje; nunca se inventa un código a partir de una imagen ambigua.
-2. Wiki, `official_wiki` (comunitaria apoyada oficialmente, NO official_direct):
-   `https://deadbydaylight.wiki.gg/api.php`, MediaWiki action=query.
-   Revisiones: prop=revisions; contenido: rvslots=main, rvprop=ids|timestamp|content;
-   imágenes: prop=imageinfo, iiprop=url. Sin autenticación ni scraping HTML.
-   Páginas limitadas:
-   - Template:General Event Charms
-   - Template:General Event Banners
-   - Template:General Event Badges
-   - Template:Special Banners
-   - Template:Special Badges
-   En FULL/DAILY busca también candidatos REVIEW por código exacto (máximo 20,
-   hasta 3 resultados por código). Solo acepta filas con instrucción explícita;
-   las páginas relevantes descubiertas se observan por revisión (máximo 25 total).
-   Parser por filas de tabla y texto explícito Redeemable via code. Nombres/recompensas
-   múltiples se unen por código. Conserva revisión, página y cláusula como evidencia.
-   No importa referencias históricas anteriores a 2026 como novedades; sí concilia
-   códigos históricos ya presentes. Now redeemable permite disponibilidad explícita
-   sin inventar vencimiento. La cobertura es deliberadamente limitada, no toda la Wiki.
+- Bluesky: API pública, cuenta `deadbydaylight.com`, DID
+  `did:plc:rrbpnmgc4i2nn6naohkdsbhj`. Se validan identidad, tipo de publicación,
+  URI, fechas y paginación. Reposts y contenido ajeno no confirman códigos.
+- Wiki DBD: API MediaWiki de `deadbydaylight.wiki.gg/api.php`; plantillas de
+  charms, banners y badges, revisiones e imageinfo. Conserva su procedencia Wiki.
+- NightLight: DESACTIVADO, pendiente de consentimiento escrito y canal autorizado.
+  No hay scraping, endpoints internos, extracción serializada ni consultas al sitio.
+  `scripts/sync_nightlight_codes.py` termina sin red ni cambios de catálogo.
+  Su workflow ya no tiene cron ni ejecuta ese script; ejecución manual solo informa
+  del bloqueo. Se eliminó el disparador del motor asociado a ese workflow.
 
-Fuentes conocidas pero desactivadas (`sources/index.mjs`): web DBD /news/ sin contrato
-público estable verificado, Discord dbd-announcements por requerir autenticación y
-permisos, X @deadbydaylight, @DbDBHVR_ES y @DbDPulse, registradas como official_direct
-según el proyecto, pero sin API paga, scraping, intermediarios o cuentas nuevas.
-No se ha verificado contenido nuevo de esas cuentas mediante esta automatización.
-Fuentes comunitarias comunes solo aportan candidatos REVIEW, nunca publicación.
+Bluesky usa texto y alt; Tesseract local opcional puede leer gráficas oficiales
+recientes (14 días, máximo 8 imágenes por ciclo y dos por post). La caché evita
+releerlas. Una instrucción inequívoca, un solo código y la identidad validada
+permiten confirmar. Ambigüedades, negaciones, múltiples códigos o fechas futuras
+van a REVIEW. Errores de OCR quedan en diagnóstico y no bloquean el texto.
 
-## Estado y diagnóstico sin commits artificiales
+## Calendario y recuperación
 
-CODE_STATE_PATH apunta a /tmp/codigos-runtime/state.json en el runner Ubuntu.
-Caché Actions restore/save preserva cursores, revisiones, imágenes y salud por fuente:
-lastAttemptAt, lastSuccessAt, lastError, itemsFetched y candidatesFound.
-Cada run tiene clave nueva, recupera la anterior por prefijo; tamaño pequeño y sujeto
-al límite/evicción de caché estándar. La pérdida de caché dispara reconciliación DAILY.
-El estado NO está versionado y no se escribe en data solo para registrar consultas.
+- Principal `.github/workflows/update-dbd-codes.yml`: `23 * * * *` UTC, horario.
+- Respaldo `.github/workflows/codigos-agenda.yml`: `7,37 * * * *` UTC.
+- Agenda consulta hasta 100 ejecuciones de main. No despacha si hay un proceso
+  en cola/en curso, incluso atrasado. El job principal tiene timeout de 10 minutos.
+- La agenda usa `lastCompleteSuccessAt` persistido, no el color verde del workflow.
+  Si falta o tiene al menos 60 minutos solicita revisión; tras un fallo parcial
+  espera al menos 15 minutos desde el intento para evitar una ráfaga de reintentos.
+- Concurrencia serial `update-dbd-codes`, checkout actualizado desde main después
+  de esperar el turno y comprobación adicional antes de consultar fuentes: un
+  análisis completo de menos de 50 minutos evita duplicados. Un push de código
+  fuerza validación y análisis para comprobar la nueva implementación.
+- FAST recupera desde la última consulta exitosa de cada fuente con dos horas de
+  solapamiento; FULL cada 6 horas mira 150 días; DAILY cada 24 horas mira un año
+  y reconcilia publicaciones activas. El ciclo parcial no avanza FULL/DAILY.
+- La pérdida de caché vuelve a DAILY; los códigos existentes se conservan y se
+  deduplican. Una revisión fallida no elimina datos ni borra cursores válidos.
 
-`publish-health.mjs` publica un check GitHub `Codigos-health` con diagnóstico pequeño,
-sin cursores ni secretos. `?debug=1` lo lee mediante REST público. El estado completo
-sigue en caché; logs y step summary documentan cada intento. Permisos del job:
-contents:write para datos; checks:write para diagnóstico. Token efímero integrado,
-ninguna credencial nueva. Concurrencia serial. No force push ni continue-on-error.
-Si ambas fuentes fallan, el job publica salud fallida después de conservar expiraciones.
-Un fallo parcial queda visible como fuente con error; la otra continúa.
+**Frecuencia observada antes del ajuste:** entre 6/11 17:56:54Z y 7/11 09:17:46Z
+hubo cuatro disparos schedule del principal, separados por 5 h 09 min, 3 h 41 min
+ y 6 h 31 min. La agenda tuvo intervalos de 3 h 48 min y 6 h 51 min. El análisis
+real 42359125440 consultó ambas fuentes correctamente a las 09:18:07Z; no era
+un fallo de consulta, de caché o de permisos. Los disparos de respaldo se agrupaban
+cerca de NightLight y repetían análisis. Se conserva el respaldo, se desacopla de
+NightLight y se impiden las consultas duplicadas.
 
-Solo se commitean cambios semánticos de catálogo/revisión: código, fuente, recompensa,
-imagen, vencimiento, estado o evidencia. Dos runs idénticos no producen commits.
-Las actualizaciones de bots no disparan Pages; la página lee JSON de main mediante
-raw.githubusercontent.com y conserva fallback al JSON de Pages con aviso de antigüedad.
+GitHub Actions puede retrasar u omitir cron. Ninguna combinación de estos dos
+workflows garantiza una ejecución exacta por hora. La recuperación ocurre en la
+siguiente ejecución recibida. No se instaló un servicio externo ni de pago.
+La frecuencia posterior debe medirse con los registros reales; una ejecución
+manual/push correcta no demuestra por sí sola puntualidad del calendario.
 
-## Jerarquía, deduplicación y expiraciones
+## Estado, publicación y diagnóstico
 
-Clave: code.toUpperCase(). `sources[]` conserva evidencia de ambas fuentes.
-Datos directos ya informados tienen prioridad; Wiki puede completar campos ausentes,
-pero no sustituye recompensas curadas de imágenes ni gráficas directas.
-Wiki se identifica en la UI como WIKI OFICIAL DE DBD. Una revisión Wiki no se presenta
-como fecha de publicación de un anuncio; `publishedAt` queda null si no se conoce.
-Fechas contradictorias entre recompensas Wiki no se resuelven eligiendo una al azar.
-No hay eliminación automática del historial ni reactivación silenciosa de expirados.
+- `CODE_STATE_PATH`: caché operacional de cursores, revisiones, imágenes y OCR.
+  `/tmp/codigos-runtime/state.json` en Actions; nunca es la referencia NightLight.
+- `data/codigos-health.json`: registro durable de la última consulta real. Incluye
+  intento, último éxito de alguna fuente, último éxito de TODAS las fuentes,
+  errores por fuente, ID/evento de ejecución y último cambio del catálogo.
+  Se genera solamente al consultar fuentes, no al omitir un duplicado.
+- Catálogo, revisión y salud se publican en un único commit del job. Rebase y
+  push tienen hasta tres intentos; un conflicto falla y no fuerza ni sobreescribe.
+- El catálogo mantiene su `updatedAt` cuando no hubo cambios semánticos. El
+  diagnóstico sí cambia con un análisis real aunque no haya códigos nuevos.
+- `publish-health.mjs` además publica `Codigos-health`: fallo total = failure;
+  fallo parcial = neutral; ambas fuentes correctas = success. Registra también
+  el resultado de publicación. Si todo falla, se guardan salud y vencimientos
+  locales, y el workflow termina fallido después de emitir el diagnóstico.
+- `?debug=1` lee el JSON durable de main. Ya no busca un check ligado al HEAD
+  actual, que desaparecía de la consulta al avanzar la rama. Más de 90 minutos
+  sin análisis completo se informa como atrasado; también muestra cada fuente.
+- La web solicita `data/codigos.json` de main con `cache:no-store` y parámetro
+  temporal. Al volver/recargar obtiene los datos nuevos aunque un commit de bot
+  no haya disparado Pages. Si falla GitHub raw, usa copia Pages y avisa antigüedad.
+  Si también falla, muestra reintento. No consume `data/codigos-nightlight.json`.
 
-- Hora/zona explícita: expiresAt exacto (ET convertido con America/New_York).
-- Solo día: cutoff de sistema al final del día UTC; `expiryPolicy` registra esta
-  convención, que NO es una hora anunciada por Behaviour.
-- Texto «before día»: cutoff al comienzo de ese día UTC.
-- Solo mes: final del mes UTC; en pantalla sigue figurando solamente mes/año.
-- Sin fecha: no se inventa expiresAt ni se finaliza automáticamente.
-- expiresAt vencido: active → expired localmente; UI deriva ambas secciones del JSON.
+## NightLight: solo novedades después de autorización
 
-GROUNDCHUCKHBD: Ground Chuck Charm, 31/10/2026, fuente General Event Charms,
-imagen de recompensa VAN_017.png obtenida por imageinfo; no se presenta como gráfica
-original de redes. FINDERSCREEPERS combina evidencia directa y plazo Wiki 25/11/2026.
-MISSBEHAVIOURGC2026: Pixel Dwight Banner + Pixel Sable Banner desde Special Banners,
-sin fecha inventada. BPFFM2026 y PLAYXENOMORPHIN2V8 siguen en REVIEW sin confirmación
-en las fuentes habilitadas. Los candidatos resueltos guardan resolvedBy.
+Se verificaron el 7/11/2026 los términos (última modificación 6/7/2026), §4.1(i–k)
+ y §4.2: requieren consentimiento escrito para recopilación automatizada y
+extienden restricciones a bot, aplicación y API. La documentación pública
+consultada no ofrece una integración de códigos expresamente autorizada.
+No se ha solicitado ni obtenido permiso en nombre de SanLean.
 
-## Imágenes y UI
+El antiguo snapshot `data/codigos-nightlight.json` se conserva sin modificar como
+registro previo, pero no se carga en la UI ni interviene en vencimientos. Esto
+retira tarjetas sustentadas exclusivamente en esa importación no autorizada;
+no elimina ningún código legítimo de `data/codigos.json`, imagen o recompensa.
+No se presenta información comunitaria como confirmación oficial.
 
-Prioridad: gráfica directa > imagen oficial relacionada > recompensa Wiki > bloque
-oscuro con código y SIN IMAGEN OFICIAL. Solo URLs de hosts permitidos, sin descargas
-masivas ni imágenes fan/IA. Los blobs del CDN no garantizan conservación permanente;
-si falla una URL, fallback de tamaño estable y log `image unavailable`.
+`data/codigos-nightlight-state.json` está versionado y marcado
+`pending_authorization`, con `activatedAt:null`: todavía NO hay activación.
+`scripts/codigos/nightlight-baseline.mjs` implementa una política offline probada,
+no un conector activo. Cuando exista permiso y se implemente el canal autorizado:
 
-Diseño conservado: 3 columnas >1200px, 2 hasta 1200px, 1 hasta 760px; radio14px,
-contain, archivo horizontal con drag mouse y swipe nativo. Copiado sin cambio de
-geometría. Hover rojo/glow solo en activas y zoom1.03 solo desktop. Lightbox solo
-imágenes activas con cierre X/backdrop/Escape, foco contenido en dialog y retorno al
-botón. Scrollbar fina con thumb #FF003C opaco. No lightbox sobre el archivo.
+1. Recibir un snapshot completo de TODOS los códigos, incluidos vencidos y
+   permanentes. Validar autorización/canal e identificadores normalizados.
+2. Crear y guardar en Git la referencia inicial ANTES de habilitar descubrimiento.
+   `activatedAt` será la fecha real de esa operación, no la de esta auditoría.
+3. Conservar `baselineIds`, `seenIds`, permiso, canal y checksum. La activación
+   no importa nada. La comparación usa pertenencia de IDs, nunca solo fechas.
+4. Cambios de imagen, descripción, fecha, desaparición o reactivación de un ID
+   original no producen novedades. Los nuevos IDs solo generan REVIEW con
+   `official:false` y procedencia comunitaria; requieren corroboración habilitada.
+5. Persistir vistos y candidatos atómicamente. No colocar este estado en una
+   caché evictable. Estado ausente/corrupto, canal distinto o snapshot incompleto
+   bloquean toda importación. Restaurar referencia desde Git; nunca reconstruir
+   automáticamente una referencia vacía ni importar el historial por accidente.
 
-## Costos y verificación
+Permanece pendiente el permiso y el adaptador del canal que se autorice. La
+política offline no debe describirse como una integración terminada.
 
-Repositorio público + ubuntu-latest estándar: minutos de Actions sin coste adicional.
-No larger runners, pagos, nuevas cuentas, API paga, Supabase ni servidor externo.
-Caché pequeña dentro del límite estándar; no se incrementa almacenamiento contratado.
+## Precisión, imágenes y vencimientos
 
-Pruebas:
-`node --test tests/dbd-codes.test.mjs tests/codigos-multisource.test.mjs`
-Incluyen ambas fuentes funcionando, cada caída por separado, ambas caídas con expiración
-local, no-op, deduplicación, prioridad, múltiples recompensas, imágenes, REVIEW y modos.
-Fixtures Wiki provienen de la API real. La salud real debe comprobarse en Actions;
-las pruebas de fallo son simulaciones explícitas, no caídas provocadas a terceros.
+Código normalizado NFKC/trim/mayúsculas; una tarjeta por ID. Prioridad de imágenes:
+publicación oficial > recompensas Wiki > tarjeta de texto del diseño existente.
+Se conservan fuentes, recompensas y gráficos al pasar a CÓDIGOS ANTERIORES.
 
-Referencias:
-https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule
-https://docs.github.com/en/billing/concepts/product-billing/github-actions
-https://docs.discord.com/developers/resources/message#get-channel-messages
+- Hora explícita: instante exacto; ET usa America/New_York. Expira al alcanzarlo.
+- Día sin hora: convención documentada de final de día UTC, no una hora oficial.
+- `before` día: comienzo de ese día. Mes: final de mes, etiqueta conserva mes.
+- Inicio de disponibilidad no se interpreta como vencimiento.
+- Sin fecha verificable: no inventar; no expirar por un snapshot comunitario.
+- Fechas incompatibles pasan a `sourceConflicts`/REVIEW; evidencia previa intacta.
+- Códigos vencidos no se reactivan automáticamente; una posible reaparición Wiki
+  queda para revisión. Nuevos históricos Wiki ya vencidos no se importan.
+- El navegador recalcula el estado al cargar sin esperar al próximo workflow.
 
+## Pruebas y evidencia
 
-## NIGHTLIGHT
+`node --test tests/*.test.mjs`
+`node tests/codigos-gallery.browser.cjs`
+`node tests/codigos-publication.browser.cjs`
 
-Referencia manual: https://nightlight.gg/codes (NightLight Codes).
-Fuente comunitaria independiente de Behaviour Interactive, registrada como
-`community_discovery` en `scripts/codigos/sources/index.mjs`, dentro de
-`disabledSources`. `enabled`, `canConfirm` y `canPublish` son `false`.
-No existe una API pública de códigos según el contexto de esta incorporación;
-no se consulta su HTML ni se realiza scraping por respeto a sus términos.
-No se inspeccionan endpoints internos ni se copia su base de datos, imágenes,
-descripciones, logos o diseño. No se ha realizado ninguna consulta a NightLight
-para implementar este registro.
+Incluyen agenda atrasada/duplicada, deduplicación oficial, referencia histórica,
+reactivación histórica, pérdida de estado, falta de permiso, fuente caída,
+conservación del catálogo, conflictos, precisión temporal, procedencia comunitaria,
+texto sin imagen, recarga con datos nuevos, expiración en navegador y reintento.
+Los códigos sintéticos solo existen en fixtures/tests; nunca en datos publicados.
+Galerías y diseño se comprueban a 1440, 900, 390 y 320 px; recarga a 1440 y 390.
+Los resultados de Actions y producción se verifican después del commit final.
 
-El registro contiene únicamente metadata y la política `futureCandidate`:
-`sourceType: community_discovery`, `confidence: REVIEW`, `official: false`.
-No hay adaptador ejecutable, collector, fetch ni importación de candidatos.
-No aparece en la interfaz pública ni participa del cron `17,47 * * * *`;
-las únicas fuentes automáticas siguen siendo Bluesky oficial y Wiki DBD.
-El diagnóstico existente tampoco cambia; el enlace anterior permite revisión manual.
-
-Una integración futura requiere verificar al menos una condición: API oficial de
-códigos, feed/archivo estructurado expresamente destinado a integraciones externas,
-permiso escrito del responsable para consulta automática o términos que permitan
-expresamente ese uso. Ninguna condición activa automáticamente la fuente: habrá
-que implementar y revisar una integración autorizada. Endpoints privados,
-DevTools, ingeniería inversa y scraping sin autorización no habilitan su uso.
-
-Flujo futuro: descubrimiento → candidato REVIEW → confirmación independiente por
-Bluesky/Wiki/fuente oficial → posible publicación. NightLight sola nunca confirma,
-publica ni se presenta como FUENTE OFICIAL. Las imágenes procederán de una
-publicación oficial, Bluesky oficial, Wiki DBD o el fallback de SanLean.
+Referencias consultadas:
+- https://nightlight.gg/terms-and-conditions
+- https://docs.nightlight.gg/
+- https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule
+- https://github.com/SanLean17/SanLean17.github.io/actions/runs/42359125440

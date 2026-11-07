@@ -11,7 +11,7 @@ test('multiple wiki rewards, date and safe image filename',()=>{const codes=merg
 test('no-op with unchanged evidence; REVIEW preserved',async()=>{const rev={items:[],manualCandidates:[{code:'BPFFM2026',confidence:'REVIEW'}]};const first=await runCycle({catalog,review:rev,sources:[goodBlue,goodWiki],now});const again=await runCycle({catalog:first.catalog,review:first.review,state:first.state,sources:[goodBlue,goodWiki],now:'2026-10-26T00:30:00.000Z'});assert.equal(again.changed,false);assert.equal(again.review.manualCandidates[0].confidence,'REVIEW');});
 test('modes catch up after missed schedules',()=>{assert.equal(selectMode({},now),'daily');assert.equal(selectMode({lastDailyAt:now,lastFullAt:now},now),'fast');assert.equal(selectMode({lastDailyAt:'2026-10-25T04:00:00Z',lastFullAt:'2026-10-25T17:00:00Z'},now),'full');});
 test('calendar policy explicit and month precision retained',()=>{const c=applyCalendarExpiry({expiryText:'until October 2027',expiryPrecision:'month',expiryUpperBound:'2027-11-01T12:00:00Z'});assert.equal(c.expiresAt,'2027-10-31T23:59:59.999Z');assert.equal(c.expiryPrecision,'month');assert.equal(applyCalendarExpiry({}).expiresAt,undefined);});
-test('Wiki fast check reuses cached unchanged revisions without content or image downloads',async()=>{let calls=0;const state={version:3,pages:Object.fromEntries(pages.map(p=>[p.title,{revisionId:p.revisions[0].revid,entries:[]} ])),images:{}};await collect({mode:'fast',state,fetcher:async()=>{calls++;return {ok:true,json:async()=>({query:{pages:pages.map(p=>({title:p.title,revisions:[{revid:p.revisions[0].revid}]}))}})};}});assert.equal(calls,1);});
+test('Wiki fast check reuses cached unchanged revisions without content or image downloads',async()=>{let calls=0;const state={version:4,pages:Object.fromEntries(pages.map(p=>[p.title,{revisionId:p.revisions[0].revid,entries:[]} ])),images:{}};await collect({mode:'fast',state,fetcher:async()=>{calls++;return {ok:true,json:async()=>({query:{pages:pages.map(p=>({title:p.title,revisions:[{revid:p.revisions[0].revid}]}))}})};}});assert.equal(calls,1);});
 
 // Presentation metadata derives from evidence, never detection time when a better date exists.
 
@@ -66,7 +66,7 @@ test('registry import makes no requests; disabled discovery is absent from cycle
  } finally {globalThis.fetch=original;}
 });
 
-test('Códigos duplicados: NightLight vence el estado obsoleto sin reemplazar recompensas oficiales',()=>{
+test('Códigos duplicados: comunidad no reemplaza estado ni recompensas oficiales',()=>{
  const main=JSON.parse(fs.readFileSync(new URL('../data/codigos.json',import.meta.url),'utf8'));
  const community=JSON.parse(fs.readFileSync(new URL('../data/codigos-nightlight.json',import.meta.url),'utf8'));
  const merged=reconcileCodeStatuses([...community.codes,...main.codes],Date.parse('2026-11-02T18:00:00Z'));
@@ -75,11 +75,11 @@ test('Códigos duplicados: NightLight vence el estado obsoleto sin reemplazar re
   const item=find(code),original=main.codes.find(c=>c.code===code);
   assert.ok(item&&original,code);
   assert.equal(original.status,'active','La fuente principal puede estar desactualizada');
-  assert.equal(item.status,'expired',code);
+  assert.equal(item.status,original.status,code);
   assert.equal(item.sourceType,original.sourceType);
   assert.equal(item.reward,original.reward);
   assert.equal(item.sourceUrl,original.sourceUrl);
-  assert.equal(item.expiryStatusSource,'nightlight');
+  assert.equal(item.expiryStatusSource,undefined);
   assert.ok(codeImages(item).length>0,'Se conservan las imágenes de '+code);
  }
  assert.equal(find('DIABLO').status,'active');
@@ -104,13 +104,13 @@ test('Conciliación automática respeta fechas futuras, fechas vencidas y perman
  ],now);
  const find=code=>codes.find(c=>c.code===code);
  assert.equal(find('FUTURE').status,'active');
- assert.equal(find('UNDATED').status,'expired');
+ assert.equal(find('UNDATED').status,'active');
  assert.equal(find('OLD').status,'expired');
  assert.equal(find('PERM').status,'active');
  assert.equal(codes.length,4);
  const reversed=reconcileCodeStatuses([...codes].reverse(),now);
  assert.equal(reversed.length,4);
- assert.equal(reversed.find(c=>c.code==='UNDATED').status,'expired');
+ assert.equal(reversed.find(c=>c.code==='UNDATED').status,'active');
 });
 
 test('NightLight-only evidence cannot enter the published catalog',async()=>{
