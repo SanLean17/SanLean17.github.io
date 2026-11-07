@@ -74,12 +74,14 @@ test('Códigos duplicados: comunidad no reemplaza estado ni recompensas oficiale
  for(const code of ['MISSBEHAVIOURGC2026','GRASPINGTHEDARKNESS','NIGHTSHIFT']){
   const item=find(code),original=main.codes.find(c=>c.code===code);
   assert.ok(item&&original,code);
-  assert.equal(original.status,'active','La fuente principal puede estar desactualizada');
+  assert.equal(original.status,'expired','No reactivar códigos que ya estaban caducados');
   assert.equal(item.status,original.status,code);
   assert.equal(item.sourceType,original.sourceType);
   assert.equal(item.reward,original.reward);
   assert.equal(item.sourceUrl,original.sourceUrl);
-  assert.equal(item.expiryStatusSource,undefined);
+  assert.equal(original.expiryStatusSource,'previously_archived_community_status');
+  assert.equal(item.expiryStatusSource,original.expiryStatusSource);
+  assert.equal(original.expiresAt,undefined,'No inventar el día de vencimiento');
   assert.ok(codeImages(item).length>0,'Se conservan las imágenes de '+code);
  }
  assert.equal(find('DIABLO').status,'active');
@@ -91,6 +93,21 @@ test('Códigos duplicados: comunidad no reemplaza estado ni recompensas oficiale
  assert.notEqual(oldOnly.trackedWhileActive,true);
  assert.ok(!(oldOnly.sourceType!=='nightlight'||oldOnly.trackedWhileActive===true));
 });
+test('La siguiente actualización Wiki conserva archivados los tres códigos caducados',()=>{
+ const main=JSON.parse(fs.readFileSync(new URL('../data/codigos.json',import.meta.url),'utf8'));
+ const names=['MISSBEHAVIOURGC2026','NIGHTSHIFT','GRASPINGTHEDARKNESS'];
+ const before=main.codes.filter(c=>names.includes(c.code));
+ const after=mergeWiki(main.codes,entries.filter(c=>names.includes(c.code)),'2026-11-07T15:00:00Z');
+ for(const old of before){
+  const current=after.find(c=>c.code===old.code);
+  assert.equal(current.status,'expired',old.code);
+  assert.equal(current.expiryStatusSource,'previously_archived_community_status',old.code);
+  assert.equal(current.reward,old.reward);
+  assert.equal(current.images.length,old.images.length);
+  assert.equal(current.expiresAt,undefined);
+ }
+});
+
 test('Conciliación automática respeta fechas futuras, fechas vencidas y permanentes',()=>{
  const now=Date.parse('2026-11-02T12:00:00Z');
  const shared={confidence:'CONFIRMED',status:'active',sourceType:'official_direct'};
