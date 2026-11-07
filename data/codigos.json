@@ -440,7 +440,7 @@
       "code": "MISSBEHAVIOURGC2026",
       "publishedAt": null,
       "detectedAt": "2026-10-25T23:34:53.008Z",
-      "status": "active",
+      "status": "expired",
       "official": true,
       "confidence": "CONFIRMED",
       "sources": [
@@ -497,13 +497,16 @@
           "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3ASpecial_Banners",
           "sourceType": "official_wiki"
         }
-      ]
+      ],
+      "expiryStatusSource": "previously_archived_community_status",
+      "expiryStatusObservedAt": "2026-11-06T21:33:19.300624Z",
+      "expiryStatusNote": "Community status recorded as expired in SanLean's saved November 6 snapshot; exact expiration date unavailable."
     },
     {
       "code": "NIGHTSHIFT",
       "publishedAt": null,
       "detectedAt": "2026-10-25T23:34:53.008Z",
-      "status": "active",
+      "status": "expired",
       "official": true,
       "confidence": "CONFIRMED",
       "sources": [
@@ -542,7 +545,10 @@
           "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3ASpecial_Banners",
           "sourceType": "official_wiki"
         }
-      ]
+      ],
+      "expiryStatusSource": "previously_archived_community_status",
+      "expiryStatusObservedAt": "2026-11-06T21:33:19.300624Z",
+      "expiryStatusNote": "Community status recorded as expired in SanLean's saved November 6 snapshot; exact expiration date unavailable."
     },
     {
       "code": "SHINEBRIGHT",
@@ -1046,7 +1052,7 @@
       "code": "GRASPINGTHEDARKNESS",
       "publishedAt": null,
       "detectedAt": "2026-10-25T23:34:53.008Z",
-      "status": "active",
+      "status": "expired",
       "official": true,
       "confidence": "CONFIRMED",
       "sources": [
@@ -1103,7 +1109,10 @@
           "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Banners",
           "sourceType": "official_wiki"
         }
-      ]
+      ],
+      "expiryStatusSource": "previously_archived_community_status",
+      "expiryStatusObservedAt": "2026-11-06T21:33:19.300624Z",
+      "expiryStatusNote": "Community status recorded as expired in SanLean's saved November 6 snapshot; exact expiration date unavailable."
     },
     {
       "code": "THESLASHER",
