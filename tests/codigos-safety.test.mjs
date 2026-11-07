@@ -50,6 +50,12 @@ test('Wiki start date alone is not an expiration',()=>{
  const page={title:'Template:General Event Charms',revisions:[{revid:1,timestamp:'2026-11-07',slots:{main:{content:'! Test Charm\n| Redeemable via code "STARTTEST" starting from 6 November 2026.'}}}]};
  assert.equal(parsePage(page)[0].expiryDate,null);
 });
+test('Wiki ranges with a shared year preserve the final date across months',()=>{
+ for(const [clause,expected] of [['between 6 November - 6 December 2026.','2026-12-06'],['between 24 October - 25 November 2026.','2026-11-25'],['from 13-31 October 2026.','2026-10-31']]){
+  const page={title:'Template:General Event Charms',revisions:[{revid:1,timestamp:'2026-11-07',slots:{main:{content:`! Test Charm\n| Redeemable via code "RANGETEST" ${clause}`}}}]};
+  assert.equal(parsePage(page)[0].expiryDate,expected,clause);
+ }
+});
 test('Wiki historical imports, conflicting dates and reactivation remain conservative',()=>{
  const now='2026-11-07T00:00:00Z',row={code:'HISTORYTEST',reward:'Test reward',expiryDate:'2020-01-01',evidenceYear:2020};
  assert.equal(mergeWiki([],[row],now).length,0);
