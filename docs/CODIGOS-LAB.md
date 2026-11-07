@@ -133,6 +133,37 @@ no un conector activo. Cuando exista permiso y se implemente el canal autorizado
 Permanece pendiente el permiso y el adaptador del canal que se autorice. La
 política offline no debe describirse como una integración terminada.
 
+## Revisión de vencimientos del 7/11/2026
+
+Se revisaron las 28 fichas del catálogo principal y los 44 códigos sin
+imagen restaurados desde la copia histórica, contrastando los plazos conocidos
+con diversas guías de noviembre y el snapshot local del 6/11.
+
+**Corrección:** `MISSBEHAVIOURGC2026`, `NIGHTSHIFT` y
+`GRASPINGTHEDARKNESS` estaban todavía activos en `data/codigos.json`
+aunque el último snapshot comunitario que SanLean conservaba ya los marcaba
+`expired`. Quedan archivados (`status:expired`) con
+`expiryStatusSource:previously_archived_community_status` y
+`expiryStatusObservedAt` tomado de ese snapshot. Se desconoce la fecha exacta
+de caducidad, por lo que NO se inventa `expiresAt`. Se conservan sus fichas
+de Wiki, imágenes y recompensas. La revisión de la Wiki no debe reactivarlos
+automáticamente. La evidencia de vencimiento es **comunitaria**, no una
+confirmación oficial de Behaviour.
+
+Los otros cuatro códigos limitados del snapshot restaurado
+(`DBDXHS`, `DBDXHH`, `DBDDY`, `BPFFM2026`) mantienen las fechas
+futuras registradas y coincidentes con varias guías recientes.
+Los 40 códigos clasificados en la copia histórica como `expiryPolicy:never`
+se mantienen, pero **sin fecha de caducidad conocida no significa garantía de
+que siempre sean canjeables**. Algunos directorios externos difieren en
+códigos antiguos; no se marca como vencido un código solamente por figurar
+en una guía desactualizada. El error de canje del juego puede significar
+también que la cuenta ya tiene el premio (soporte Behaviour).
+
+La recopilación automática de NightLight permanece desactivada a la espera
+de permiso; este cambio utiliza exclusivamente evidencia que ya estaba
+archivada en el repositorio, no implica nuevas consultas a su servicio.
+
 ## Precisión, imágenes y vencimientos
 
 Código normalizado NFKC/trim/mayúsculas; una tarjeta por ID. Prioridad de imágenes:
