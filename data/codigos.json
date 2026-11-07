@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-07T13:43:22.407Z",
+  "updatedAt": "2026-11-07T13:45:32.096Z",
   "stats": {
     "postsAnalyzed": 0,
     "candidates": 0,
@@ -25,7 +25,7 @@
           "revisionId": 194020,
           "revisionAt": "2026-11-06T16:34:31Z",
           "reward": "Spiked Bat Charm",
-          "expiryDate": null,
+          "expiryDate": "2026-12-06",
           "imageUrl": "https://deadbydaylight.wiki.gg/images/OML_001.png?25ad8e",
           "evidence": "Redeemable via code \"NOTTODAY\" between 6 November - 6 December 2026."
         }
@@ -93,7 +93,7 @@
           "revisionId": 193388,
           "revisionAt": "2026-10-26T19:31:25Z",
           "reward": "Horadric Cube Badge",
-          "expiryDate": null,
+          "expiryDate": "2026-11-25",
           "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_VAN_BDG_20.png?10c7fa",
           "evidence": "Redeemable via code \"DIABLO\" between 24 October - 25 November 2026."
         },
@@ -104,7 +104,7 @@
           "revisionId": 193389,
           "revisionAt": "2026-10-26T19:31:37Z",
           "reward": "Tristram Ruins Banner",
-          "expiryDate": null,
+          "expiryDate": "2026-11-25",
           "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_VAN_BNR_20_icon.png?a42295",
           "evidence": "Redeemable via code \"DIABLO\" between 24 October - 25 November 2026."
         }
