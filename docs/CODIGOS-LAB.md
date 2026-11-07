@@ -74,9 +74,11 @@ manual/push correcta no demuestra por sí sola puntualidad del calendario.
 - `?debug=1` lee el JSON durable de main. Ya no busca un check ligado al HEAD
   actual, que desaparecía de la consulta al avanzar la rama. Más de 90 minutos
   sin análisis completo se informa como atrasado; también muestra cada fuente.
-- La web solicita `data/codigos.json` de main con `cache:no-store` y parámetro
-  temporal. Al volver/recargar obtiene los datos nuevos aunque un commit de bot
-  no haya disparado Pages. Si falla GitHub raw, usa copia Pages y avisa antigüedad.
+- La web resuelve la revisión actual mediante `git/ref/heads/main` de la API pública
+  (no-store y parámetro temporal) y consulta JSON con URL del SHA exacto. Se comprobó
+  que raw/main podía devolver una revisión anterior incluso con parámetro temporal.
+  La URL por SHA evita esa caché mutable. Al volver/recargar resuelve de nuevo.
+  Si falla la API (incluido rate limit) o GitHub raw, usa copia Pages y avisa antigüedad.
   Si también falla, muestra reintento. No consume `data/codigos-nightlight.json`.
 
 ## NightLight: solo novedades después de autorización

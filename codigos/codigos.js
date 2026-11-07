@@ -1,10 +1,11 @@
 import {createGallery} from './gallery.mjs';
-import {enrichCode,compareCodes,reconcileCodeStatuses} from './model.mjs?v=20261107-codes-audit1';
+import {enrichCode,compareCodes,reconcileCodeStatuses} from './model.mjs?v=20261107-codes-audit2';
 import {setupLightbox} from './lightbox.mjs';
 import {setupArchive} from './archive.mjs';
 import {expiryLabel} from './presentation.mjs';
 const $=id=>document.getElementById(id);
-const raw='https://raw.githubusercontent.com/SanLean17/SanLean17.github.io/main/';
+const raw='https://raw.githubusercontent.com/SanLean17/SanLean17.github.io/';
+let revision=null;
 const production=['sanlean.com.ar','www.sanlean.com.ar','sanlean17.github.io'].includes(location.hostname);
 const debug=new URLSearchParams(location.search).get('debug')==='1';
 const official=/^https:\/\/bsky\.app\/profile\/deadbydaylight\.com\/post\/[a-z0-9]+$/i;
@@ -69,14 +70,16 @@ function render(data){
 async function showDebug(data){
  $('codes-debug').hidden=false;
  const s=data.stats||{};let health=null;
- try{health=await json(production?`${raw}data/codigos-health.json?t=${Date.now()}`:'/data/codigos-health.json');}catch{}
+ try{health=await json(production&&revision?`${raw}${revision}/data/codigos-health.json`:'/data/codigos-health.json');}catch{}
  const stale=!health?.lastCompleteSuccessAt||Date.now()-Date.parse(health.lastCompleteSuccessAt)>90*60000;
  $('codes-debug-content').textContent=`AUTOMATIZACIÓN\n${stale?'ACTUALIZACIÓN ATRASADA':'ACTUALIZACIÓN CORRECTA'}\nÚltima ejecución programada: ${health?.lastScheduledAt||'Sin registro disponible'}\nÚltimo análisis completo: ${health?.lastCompleteSuccessAt||'Sin registro disponible'}\nÚltimo análisis con alguna fuente correcta: ${health?.lastSuccessAt||'Sin registro disponible'}\nÚltimo cambio de catálogo: ${data.updatedAt}\nFuentes correctas: ${health?.sourcesHealthy??'—'}\nFuentes con error: ${health?.sourcesFailed??'—'}\nModo: ${health?.mode||'—'}\n${Object.entries(health?.sources||{}).map(([id,v])=>`${id}: ${v.lastError||'correcta'} · consulta ${v.lastAttemptAt} · última correcta ${v.lastSuccessAt||'—'} · elementos ${v.itemsFetched}`).join('\n')}\nPosts del último cambio: ${s.postsAnalyzed??'—'}\nConfirmados: ${s.confirmed??'—'} · En revisión: ${s.review??'—'} · Rechazados: ${s.rejected??'—'}`;
 
 }
 async function load(){
  $('codes-retry').hidden=true;$('codes-notice').hidden=true;
- try{let data;try{data=await json(production?`${raw}data/codigos.json?t=${Date.now()}`:'/data/codigos.json');}catch(error){if(!production)throw error;data=await json('/data/codigos.json');$('codes-notice').hidden=false;$('codes-notice').textContent=`No se pudo consultar la actualización más reciente. Mostrando la copia publicada del ${date(data.updatedAt)}; verificá la fuente oficial antes de canjear.`;}
+ try{let data;try{
+  if(production){const ref=await json(`https://api.github.com/repos/SanLean17/SanLean17.github.io/git/ref/heads/main?t=${Date.now()}`);if(!/^[a-f0-9]{40}$/.test(ref.object?.sha||''))throw Error('Revisión de catálogo inválida');revision=ref.object.sha;}
+  data=await json(production?`${raw}${revision}/data/codigos.json`:'/data/codigos.json');}catch(error){if(!production)throw error;data=await json('/data/codigos.json');$('codes-notice').hidden=false;$('codes-notice').textContent=`No se pudo consultar la actualización más reciente. Mostrando la copia publicada del ${date(data.updatedAt)}; verificá la fuente oficial antes de canjear.`;}
   render(data);if(debug)await showDebug(data);}
  catch{$('codes-notice').hidden=false;$('codes-notice').textContent='No se pudieron cargar los códigos. Intentá nuevamente en unos minutos.';$('codes-retry').hidden=false;}
 }
