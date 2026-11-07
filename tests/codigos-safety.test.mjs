@@ -56,6 +56,14 @@ test('Wiki ranges with a shared year preserve the final date across months',()=>
   assert.equal(parsePage(page)[0].expiryDate,expected,clause);
  }
 });
+test('Wiki before-date and future availability do not publish incorrect active states',async()=>{
+ const page={title:'Template:General Event Charms',revisions:[{revid:1,timestamp:'2026-11-07',slots:{main:{content:'! Test Charm\n| Redeemable via code "BEFORETEST" before 8 November 2026.'}}}]};
+ const rows=parsePage(page);
+ assert.equal(mergeWiki([],rows,'2026-11-07T00:00:00Z')[0].expiresAt,'2026-11-08T00:00:00.000Z');
+ const future={...rows[0],code:'FUTURETEST',evidence:'Redeemable via code "FUTURETEST" starting from 20 November 2026.',expiryDate:null};
+ const result=await runCycle({catalog:{codes:[]},review:{items:[]},now:'2026-11-07T00:00:00Z',sources:[{id:'wiki',collect:async()=>({entries:[future],fetched:1})}]});
+ assert.equal(result.catalog.codes.length,0);assert.equal(result.review.sourceConflicts[0].confidence,'REVIEW');
+});
 test('Wiki historical imports, conflicting dates and reactivation remain conservative',()=>{
  const now='2026-11-07T00:00:00Z',row={code:'HISTORYTEST',reward:'Test reward',expiryDate:'2020-01-01',evidenceYear:2020};
  assert.equal(mergeWiki([],[row],now).length,0);

@@ -1,4 +1,4 @@
-import {enrichCode,compareCodes} from '../../codigos/model.mjs';
+import {enrichCode,compareCodes,wikiRelease} from '../../codigos/model.mjs';
 import {mergeCodes} from './catalog.mjs';
 import {mergeWiki} from './reconcile.mjs';
 export function selectMode(state,now){const t=Date.parse(now);if(!state.lastDailyAt||t-Date.parse(state.lastDailyAt)>=86400000)return 'daily';if(!state.lastFullAt||t-Date.parse(state.lastFullAt)>=21600000)return 'full';return 'fast';}
@@ -12,6 +12,7 @@ export async function runCycle({catalog,review,state={},sources,now=new Date().t
  for(const c of codes){const old=catalog.codes.find(x=>x.code===c.code);if(old&&JSON.stringify({...c,lastVerifiedAt:null})===JSON.stringify({...old,lastVerifiedAt:null}))c.lastVerifiedAt=old.lastVerifiedAt;}
  let updatedReview=structuredClone(merged.review||review);
  const conflicts=[];for(const [code,rows] of Map.groupBy(wiki,r=>r.code)){const dates=[...new Set(rows.map(r=>r.expiryDate).filter(Boolean))];const old=catalog.codes.find(c=>c.code===code);
+ if(!old&&rows.some(r=>Date.parse(wikiRelease(r.evidence))>Date.parse(now)))conflicts.push({code,confidence:'REVIEW',reason:'Disponibilidad futura; no publicar todavía',sources:rows.map(r=>r.sourceUrl)});
  if(dates.length>1||old?.expiresAt&&dates.some(d=>d!==old.expiresAt.slice(0,10)))conflicts.push({code,confidence:'REVIEW',reason:'Fechas contradictorias; conservar evidencia anterior',dates,sources:rows.map(r=>r.sourceUrl)});
  if(old?.status==='expired'&&rows.some(r=>r.currentAvailability||r.expiryDate&&Date.parse(r.expiryDate)>Date.parse(now)))conflicts.push({code,confidence:'REVIEW',reason:'Posible reaparición de código vencido; no reactivar',sources:rows.map(r=>r.sourceUrl)});}
  if(wiki.length||!next.sources.wiki?.lastError)updatedReview.sourceConflicts=conflicts;

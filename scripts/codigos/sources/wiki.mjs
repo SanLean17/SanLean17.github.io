@@ -19,7 +19,7 @@ export function parsePage(page){
    if(!year&&!/Now redeemable/i.test(row)&&!expiryDate)continue;
    const kind=page.title.endsWith('Charms')?'Charm':page.title.endsWith('Badges')?'Badge':'Banner';
    const file=row.match(/\[\[File:([^|\]]+)/i)?.[1];
-   entries.push({code,reward:`${name} ${kind}`,expiryDate,expiryText:expiryDate?`until ${last[2]} ${last[1]}, ${last[3]}`:null,imageFile:file&&file!=='.png'?`File:${file}`:null,evidenceYear:year?+year:null,currentAvailability:/Now redeemable/i.test(row),source:'wiki',sourceType:'official_wiki',sourceUrl:`https://deadbydaylight.wiki.gg/wiki/${encodeURIComponent(page.title.replaceAll(' ','_'))}`,revisionId:rev.revid,revisionAt:rev.timestamp,evidence:clean(m[0]),page:page.title});
+   entries.push({code,reward:`${name} ${kind}`,expiryDate,expiryText:expiryDate?`${/\bbefore\b/i.test(clause)?'before':'until'} ${last[2]} ${last[1]}, ${last[3]}`:null,imageFile:file&&file!=='.png'?`File:${file}`:null,evidenceYear:year?+year:null,currentAvailability:/Now redeemable/i.test(row),source:'wiki',sourceType:'official_wiki',sourceUrl:`https://deadbydaylight.wiki.gg/wiki/${encodeURIComponent(page.title.replaceAll(' ','_'))}`,revisionId:rev.revid,revisionAt:rev.timestamp,evidence:clean(m[0]),page:page.title});
   }
  }
  return entries;
@@ -29,7 +29,7 @@ export async function collect({mode='daily',state={},knownCodes=[],candidates=[]
  const watched=[...new Set([...PAGES,...Object.keys(state.pages||{})])].slice(0,25);
  const meta=await query({prop:'revisions',rvprop:'ids|timestamp',titles:watched.join('|')},fetcher);
  if(meta.pages?.length!==watched.length||meta.pages.some(p=>p.missing||!p.revisions?.[0]))throw Error('Wiki: faltan páginas o revisiones esperadas');
- const changed=meta.pages.filter(p=>mode==='daily'||state.version!==5||state.pages?.[p.title]?.revisionId!==p.revisions[0].revid);
+ const changed=meta.pages.filter(p=>mode==='daily'||state.version!==6||state.pages?.[p.title]?.revisionId!==p.revisions[0].revid);
  let pages={...(state.pages||{})};
  if(changed.length){const full=await query({prop:'revisions',rvprop:'ids|timestamp|content',rvslots:'main',titles:changed.map(p=>p.title).join('|')},fetcher);for(const page of full.pages){const entries=parsePage(page);pages[page.title]={revisionId:page.revisions[0].revid,entries};}}
  let entries=Object.values(pages).flatMap(p=>p.entries);
@@ -43,5 +43,5 @@ export async function collect({mode='daily',state={},knownCodes=[],candidates=[]
  const files=[...new Set(entries.map(e=>e.imageFile).filter(Boolean))];let images={...(state.images||{})};const missing=files.filter(f=>mode!=='fast'||!Object.hasOwn(images,f));
  for(let i=0;i<missing.length;i+=50){const result=await query({prop:'imageinfo',iiprop:'url',titles:missing.slice(i,i+50).join('|')},fetcher);for(const p of result.pages||[])images[p.title]=p.imageinfo?.[0]?.url||null;for(const n of result.normalized||[])images[n.from]=images[n.to]||null;}
  entries=entries.map(e=>({...e,imageUrl:images[e.imageFile]||null}));
- return {entries,fetched:meta.pages.length+changed.length,state:{version:5,pages,images,candidateSearch}};
+ return {entries,fetched:meta.pages.length+changed.length,state:{version:6,pages,images,candidateSearch}};
 }
