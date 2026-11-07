@@ -80,6 +80,25 @@ async function load(){
  try{let data;try{
   if(production){const ref=await json(`https://api.github.com/repos/SanLean17/SanLean17.github.io/git/ref/heads/main?t=${Date.now()}`);if(!/^[a-f0-9]{40}$/.test(ref.object?.sha||''))throw Error('Revisión de catálogo inválida');revision=ref.object.sha;}
   data=await json(production?`${raw}${revision}/data/codigos.json`:'/data/codigos.json');}catch(error){if(!production)throw error;data=await json('/data/codigos.json');$('codes-notice').hidden=false;$('codes-notice').textContent=`No se pudo consultar la actualización más reciente. Mostrando la copia publicada del ${date(data.updatedAt)}; verificá la fuente oficial antes de canjear.`;}
+  // Restaurar únicamente los códigos sin imagen que SanLean YA mostraba
+  // antes de la auditoría. Copia local estática: no consulta NightLight ni
+  // habilita nuevas incorporaciones del catálogo comunitario histórico.
+  let previouslyPublished=null;
+  try{
+   previouslyPublished=await json(production&&revision
+    ?`${raw}${revision}/data/codigos-legacy-community.json`
+    :'/data/codigos-legacy-community.json');
+  }catch(error){
+   if(production)try{previouslyPublished=await json('/data/codigos-legacy-community.json');}
+   catch(fallbackError){console.warn('No se pudo cargar el archivo de códigos previos',fallbackError);}
+  }
+  if(previouslyPublished?.schemaVersion===1&&Array.isArray(previouslyPublished.codes)){
+   data={...data,codes:[...previouslyPublished.codes,...data.codes]};
+  }else{
+   $('codes-notice').hidden=false;
+   $('codes-notice').textContent+=($('codes-notice').textContent?' ':'')+
+    'No se pudieron cargar algunos códigos sin imagen que SanLean mostraba anteriormente.';
+  }
   render(data);if(debug)await showDebug(data);}
  catch{$('codes-notice').hidden=false;$('codes-notice').textContent='No se pudieron cargar los códigos. Intentá nuevamente en unos minutos.';$('codes-retry').hidden=false;}
 }
