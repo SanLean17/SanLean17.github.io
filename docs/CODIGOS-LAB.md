@@ -89,11 +89,27 @@ extienden restricciones a bot, aplicación y API. La documentación pública
 consultada no ofrece una integración de códigos expresamente autorizada.
 No se ha solicitado ni obtenido permiso en nombre de SanLean.
 
-El antiguo snapshot `data/codigos-nightlight.json` se conserva sin modificar como
-registro previo, pero no se carga en la UI ni interviene en vencimientos. Esto
-retira tarjetas sustentadas exclusivamente en esa importación no autorizada;
-no elimina ningún código legítimo de `data/codigos.json`, imagen o recompensa.
-No se presenta información comunitaria como confirmación oficial.
+El antiguo snapshot completo `data/codigos-nightlight.json` se conserva
+sin modificar como registro histórico, pero no se consulta a NightLight desde
+el navegador ni se utiliza el snapshot completo para agregar nuevos códigos.
+
+**Restauración puntual de tarjetas que SanLean ya publicaba:** el 7/11/2026
+se recuperaron de la copia local preexistente 44 códigos comunitarios que
+estaban visibles como activos antes de esta auditoría: 40 clasificados como
+permanentes y 4 con una fecha de caducidad conocida. Se conservaron
+solamente en `data/codigos-legacy-community.json`, que es una selección
+estática y auditable. No se importaron los 195 códigos vencidos históricos,
+ni se habilitó nuevamente la recopilación automatizada de NightLight.
+La página carga esta copia estática en paralelo con el catálogo oficial,
+elimina duplicados por código y prioriza la ficha oficial cuando existe.
+Los temporales pasan al historial al vencer y los permanentes no tienen
+fecha inventada. El estado de los comunitarios representa la última
+información registrada por SanLean, no una verificación en vivo. No se
+presenta información comunitaria como confirmación oficial.
+
+Esta restauración de tarjetas **ya publicadas** es distinta de la incorporación
+de novedades **futuras**: esa integración sigue desactivada y exige permiso
+escrito y la referencia inicial que se detalla a continuación.
 
 `data/codigos-nightlight-state.json` está versionado y marcado
 `pending_authorization`, con `activatedAt:null`: todavía NO hay activación.
