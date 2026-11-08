@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-07T14:57:22.295Z",
+  "updatedAt": "2026-11-08T02:20:54.799Z",
   "stats": {
-    "postsAnalyzed": 0,
-    "candidates": 0,
-    "confirmed": 0,
-    "review": 0,
-    "rejected": 0,
-    "imagesFound": 0
+    "postsAnalyzed": 590,
+    "candidates": 22,
+    "confirmed": 18,
+    "review": 3,
+    "rejected": 569,
+    "imagesFound": 18
   },
   "codes": [
     {
@@ -1277,23 +1277,23 @@
         {
           "source": "wiki",
           "sourceType": "official_wiki",
-          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Charms",
-          "revisionId": 194020,
-          "revisionAt": "2026-11-06T16:34:31Z",
-          "reward": "Colossal Titan Charm",
-          "expiryDate": "2026-06-18",
-          "imageUrl": "https://deadbydaylight.wiki.gg/images/RAM_020.png?3cc45d",
-          "evidence": "Redeemable via code \"COLOSSAL\" between 19 May - 18 June 2026."
-        },
-        {
-          "source": "wiki",
-          "sourceType": "official_wiki",
           "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Banners",
           "revisionId": 193389,
           "revisionAt": "2026-10-26T19:31:37Z",
           "reward": "Colossal Titan Banner",
           "expiryDate": "2026-06-18",
           "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_RAM_BNR_02_icon.png?37529b",
+          "evidence": "Redeemable via code \"COLOSSAL\" between 19 May - 18 June 2026."
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Charms",
+          "revisionId": 194020,
+          "revisionAt": "2026-11-06T16:34:31Z",
+          "reward": "Colossal Titan Charm",
+          "expiryDate": "2026-06-18",
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/RAM_020.png?3cc45d",
           "evidence": "Redeemable via code \"COLOSSAL\" between 19 May - 18 June 2026."
         }
       ],
@@ -1310,7 +1310,7 @@
       "imageUrl": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:rrbpnmgc4i2nn6naohkdsbhj/bafkreifnbttccqlilhjg3n5tizxjjrohlhhyjvn5fv36v6o6aytrvzz5li",
       "imageAlt": "Gráfica oficial del código COLOSSAL",
       "imageSourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/3mm7nsdmhgq2v",
-      "lastVerifiedAt": "2026-10-25T23:44:35.394Z",
+      "lastVerifiedAt": "2026-11-08T02:20:54.799Z",
       "sourceType": "official_direct",
       "expiryDate": "2026-06-18",
       "expiryPolicy": "before-calendar-date-UTC",
@@ -1329,17 +1329,17 @@
           "sourceType": "official_direct"
         },
         {
-          "url": "https://deadbydaylight.wiki.gg/images/RAM_020.png?3cc45d",
-          "alt": "Colossal Titan Charm",
-          "reward": "Colossal Titan Charm",
-          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Charms",
-          "sourceType": "official_wiki"
-        },
-        {
           "url": "https://deadbydaylight.wiki.gg/images/T_UI_RAM_BNR_02_icon.png?37529b",
           "alt": "Colossal Titan Banner",
           "reward": "Colossal Titan Banner",
           "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Banners",
+          "sourceType": "official_wiki"
+        },
+        {
+          "url": "https://deadbydaylight.wiki.gg/images/RAM_020.png?3cc45d",
+          "alt": "Colossal Titan Charm",
+          "reward": "Colossal Titan Charm",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Charms",
           "sourceType": "official_wiki"
         }
       ]
