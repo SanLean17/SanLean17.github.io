@@ -50,6 +50,14 @@ test('the incremental patch preserves tickets, keyed progress and historical win
     const k42 = old.killers.find(row=>row.key==='lich');
     Object.assign(k36,{name:'Vecna',aliases:['vecna lich liche el liche']});
     Object.assign(k42,{name:'El Liche',aliases:['first lich primer liche el primer liche']});
+    const {previewKillers} = require('../maintenance/dbd-manager/preview.cjs');
+    const staged = structuredClone(old.killers);
+    staged.find(row=>row.key==='lich').enabled = false;
+    const preview = previewKillers(staged,catalogs.killers);
+    assert.equal(preview.find(row=>row.key==='lich').enabled,false);
+    assert.equal(preview.find(row=>row.key==='lich').name,'El Primero');
+    assert.deepEqual(preview.find(row=>row.key==='vecna').aliases,byKey('vecna').aliases);
+    assert.equal(staged.find(row=>row.key==='lich').name,'El Liche');
     for (const type of types) fs.writeFileSync(path.join(data,type+'.json'),JSON.stringify(old[type]));
     copy(path.join(root,'data/perk-conflicts.json'),path.join(data,'perk-conflicts.json'));
     const open = () => {
