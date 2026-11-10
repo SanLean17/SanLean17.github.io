@@ -12,9 +12,18 @@
   function render(target,data,{preview=false}={}){
     if(!target)return;
     const v=normalized(data);
+    const catalog=window.SanLeanDBDCatalog;
+    target._streakRender=data;
+    if (v.role==='killer' && v.killer?.key && catalog && !catalog.peek('killers')) {
+      target.replaceChildren();
+      catalog.loadKillers().then(()=>{
+        if (target._streakRender===data) render(target,data,{preview});
+      }).catch(()=>{});
+      return;
+    }
     if(!preview&&(!v.visible||v.status!=='active')){target.innerHTML='';return}
     const image=v.role==='killer'&&v.killer?.image?escape(v.killer.image):'../assets/usuario/desafios/metas/escapes.png';
-    const alt=v.role==='killer'?(v.killer?.name||'Killer'):'Superviviente';
+    const alt=v.role==='killer'?(catalog?.killerDisplayName(v.killer,'Killer')||v.killer?.name||'Killer'):'Superviviente';
     target.innerHTML=`<div class="sl-streak-view${preview?' is-preview':''}" data-role="${escape(v.role)}">
       <div class="sl-streak-title"><span>WIN</span><b>STREAK</b></div>
       <div class="sl-streak-main ${v.layout==='image-right'?'is-image-right':''}">

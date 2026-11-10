@@ -274,10 +274,16 @@
   },
   {
     "key": "vecna",
-    "name": "Vecna",
+    "name": "El Liche",
     "image": "assets/killers/K36_TheLich_Portrait.png",
     "aliases": [
-      "vecna lich liche el liche"
+      "Vecna",
+      "The Lich",
+      "Lich",
+      "Liche",
+      "El Liche",
+      "Dungeons & Dragons",
+      "D&D"
     ]
   },
   {
@@ -314,10 +320,18 @@
   },
   {
     "key": "lich",
-    "name": "El Liche",
+    "name": "El Primero",
     "image": "assets/killers/T_UI_K42_TheFirst_Portrait.png",
     "aliases": [
-      "first lich primer liche el primer liche"
+      "The First",
+      "El Primero",
+      "Primero",
+      "Vecna",
+      "Vecna Stranger Things",
+      "Stranger Things",
+      "Henry Creel",
+      "001",
+      "One"
     ]
   },
   {

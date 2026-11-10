@@ -25,7 +25,7 @@ Se consolidaron 98 personajes y 294 asociaciones históricas desde las fuentes i
 
 Hay 18 cards de revisión, sin una segunda lista de accesos duplicados. Cada una separa comprobación automática y revisión humana. VALIDAR no depende de casillas visuales; marcar LISTO sí exige completar la revisión. ABRIR MOBILE presenta la herramienta real a 390 px.
 
-El resumen muestra antes, altas activas, desactivaciones, reactivaciones, eliminaciones y después. Terrifier conserva el movimiento **44 + 1 − 1 = 44 Killers** porque El Liche estaba desactivado en el borrador del usuario. Para una reactivación que devuelve un objeto ya activo en la base, se explica la restitución sin cambio neto respecto de esa base. Los parches incluyen catálogos aun cuando no se agregan assets.
+El resumen muestra antes, altas activas, desactivaciones, reactivaciones, eliminaciones y después. Terrifier conserva el movimiento **44 + 1 − 1 = 44 Killers** porque El Primero (clave histórica lich) estaba desactivado en el borrador del usuario. Para una reactivación que devuelve un objeto ya activo en la base, se explica la restitución sin cambio neto respecto de esa base. Los parches incluyen catálogos aun cuando no se agregan assets.
 
 Se conservan las tres cards aprobadas: parche Streamer, exportación manual y GitHub. El modal real de GitHub muestra archivos, assets, rama determinista y base; cancelar no crea publicaciones. La prueba con GitHub real sigue pendiente de autorización posterior. No se efectuó CI remoto porque no hubo push.
 

@@ -28,7 +28,7 @@ jobs:
       - name: Test local content manager without publishing
         run: node --test tests/dbd-manager.test.cjs tests/dbd-manager-v2.test.cjs tests/dbd-manager-v3.test.cjs tests/dbd-publication-v4.test.cjs
       - name: DBD CONTENT RELEASE REGRESSION
-        run: node --test tests/dbd-content-release-regression.test.cjs tests/roulette-tickets.test.cjs
+        run: node --test tests/dbd-content-release-regression.test.cjs tests/roulette-tickets.test.cjs tests/dbd-killer-identity.test.cjs
       - name: Install test browser
         run: npx playwright install chromium
       - name: Test real public and private screens with staged and active fixtures

@@ -10,7 +10,7 @@
   const cache=new Map(),allCache=new Map(),pending=new Map();
   const base=root.document?.currentScript?.src?new URL('../',root.document.currentScript.src).href:null;
   const typeOf=type=>types[type]||String(type).match(/(?:^|\/)(killers|survivors|perks-killer|perks-survivor)\.json(?:[?#].*)?$/)?.[1];
-  function normalizeSearch(value){return String(value??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/([a-z])([A-Z])/g,'$1 $2').toLowerCase().replace(/['’‘`]/g,'').replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');}
+  function normalizeSearch(value){return String(value??'').replace(/\bd\s*&\s*d\b/gi,'dungeons dragons').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/([a-z])([A-Z])/g,'$1 $2').toLowerCase().replace(/['’‘`]/g,'').replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');}
   function normalizeAliases(value){return (Array.isArray(value)?value:typeof value==='string'?[value]:[]).filter(x=>typeof x==='string'&&x.trim()).map(x=>x.trim());}
   const filterEnabled=items=>(items||[]).filter(item=>item&&item.enabled!==false);
   function resolveItemImage(item,type){const t=typeOf(type);return item.image||(ownerTypes[t]?`${t==='perks-killer'?'killer':'survivor'}/${item.key}.png`:'');}
@@ -40,7 +40,14 @@
     if(typeof context==='string')context={type:context};
     const ownerType=ownerTypes[typeOf(context.type)],owners=context.owners||allCache.get(ownerType)||cache.get(ownerType)||[];
     const owner=item.ownerKey?(owners.find(x=>x.key===item.ownerKey)||allCache.get(ownerType)?.find(x=>x.key===item.ownerKey)):null;
-    return normalizeSearch([item.name,item.key, ...normalizeAliases(item.aliases),item.ownerKey,owner?.key,owner?.name,...normalizeAliases(owner?.aliases),context.legacy||''].filter(Boolean).join(' '));
+    // K42's published key is also K36's English name. Keep it for storage only.
+    const searchableKey = (key, type) => type === 'killers' && key === 'lich' ? '' : key;
+    const type = typeOf(context.type);
+    const legacy = type === 'killers' && item.key === 'lich' ? '' : context.legacy;
+    return normalizeSearch([
+      item.name, searchableKey(item.key, type), ...normalizeAliases(item.aliases),
+      searchableKey(item.ownerKey, ownerType), owner?.name, ...normalizeAliases(owner?.aliases), legacy
+    ].filter(Boolean).join(' '));
   }
   const matches=(item,query,context)=>normalizeSearch(query).split(' ').filter(Boolean).every(word=>buildSearchText(item,context).includes(word));
   async function load(type){
@@ -68,5 +75,10 @@
     else if(state.winner){delete state.winner;delete state.winnerEntryId;}
     return {...data,state,settings:{...data.settings,pool:project(data.settings?.pool)}};
   }
-  return {typeOf,normalizeSearch,normalizeAliases,filterEnabled,resolveItemImage,validateItem,prepare,buildSearchText,matches,load,projectOverlay,peek:type=>cache.get(typeOf(type)),count:async type=>(await load(type)).length,loadKillers:()=>load('killers'),loadSurvivors:()=>load('survivors'),loadKillerPerks:()=>load('perks-killer'),loadSurvivorPerks:()=>load('perks-survivor')};
+  function killerDisplayName(saved, fallback) {
+    if (!saved) return fallback;
+    if (!allCache.has('killers') && ['vecna','lich'].includes(saved.key)) return fallback;
+    return allCache.get('killers')?.find(item => item.key === saved.key)?.name || saved.name || fallback;
+  }
+  return {killerDisplayName,typeOf,normalizeSearch,normalizeAliases,filterEnabled,resolveItemImage,validateItem,prepare,buildSearchText,matches,load,projectOverlay,peek:type=>cache.get(typeOf(type)),count:async type=>(await load(type)).length,loadKillers:()=>load('killers'),loadSurvivors:()=>load('survivors'),loadKillerPerks:()=>load('perks-killer'),loadSurvivorPerks:()=>load('perks-survivor')};
 });

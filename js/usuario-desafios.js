@@ -415,7 +415,7 @@
       initializeStreakConfig();syncStreakSelection();renderStreakKillers();syncStreakLayoutButtons();
     }else{
       const current=$('streakCurrent');if(current&&document.activeElement!==current&&!streakBusy)current.value=String(Math.max(0,Number(state.current)||0));
-      $('streakLiveName').textContent=state.role==='killer'?(state.killer?.name||'KILLER'):'SUPERVIVIENTE';
+      $('streakLiveName').textContent=state.role==='killer'?(SanLeanDBDCatalog.killerDisplayName(state.killer,'KILLER')):'SUPERVIVIENTE';
       ['streakCurrent','streakMinus','streakPlus','streakReset','streakPause','streakObsToggle','streakFinish','streakCancel','streakLayoutLeft','streakLayoutRight'].forEach(id=>{if($(id))$(id).disabled=streakBusy});
       if($('streakMinus'))$('streakMinus').disabled=streakBusy||paused||(Number(state.current)||0)<=0;
       if($('streakPlus'))$('streakPlus').disabled=streakBusy||paused;
@@ -432,7 +432,7 @@
   function renderStreakHistory(overlay){
     const list=$('streakHistory'),empty=$('streakHistoryEmpty');if(!list||!empty)return;
     const history=Array.isArray(overlay?.settings?.history)?[...overlay.settings.history].reverse():[];empty.hidden=history.length>0;
-    list.innerHTML=history.map(x=>`<div class="challenge-history-row streak-history-row"><strong>${escape(x.role==='killer'?(x.killer?.name||'KILLER'):'SUPERVIVIENTE')}</strong><span>${x.role==='killer'?'KILLER':'ESCAPES'}</span><b>RACHA ${Number(x.current)||0}</b><time>${formatHistoryDate(x.finishedAt)}</time></div>`).join('');
+    list.innerHTML=history.map(x=>`<div class="challenge-history-row streak-history-row"><strong>${escape(x.role==='killer'?(SanLeanDBDCatalog.killerDisplayName(x.killer,'KILLER')):'SUPERVIVIENTE')}</strong><span>${x.role==='killer'?'KILLER':'ESCAPES'}</span><b>RACHA ${Number(x.current)||0}</b><time>${formatHistoryDate(x.finishedAt)}</time></div>`).join('');
   }
 
   function renderHistory(overlay){
@@ -490,6 +490,6 @@
     window.addEventListener('sanlean:overlays-updated',()=>{refresh();refreshStreak()});window.addEventListener('sanlean:challenge-goal',refresh);window.addEventListener('sanlean:challenge-streak',refreshStreak);window.addEventListener('sanlean:section',()=>{refresh();refreshStreak()});
   }
 
-  function install(){installPanel();arrangeChallengeInline();bind();syncChallengeButtons();loadStreakKillers().then(()=>{initializeStreakConfig();refreshStreak()});refresh();setTimeout(()=>{renderStreakHistory(streakOverlay());refresh();refreshStreak();if(location.hash==='#challenges')window.SanLeanUsuarioNavigation?.show?.('challenges',{updateHash:false})},250)}
+  function install(){installPanel();arrangeChallengeInline();bind();syncChallengeButtons();loadStreakKillers().then(()=>{initializeStreakConfig();refreshStreak();renderStreakHistory(streakOverlay())});refresh();setTimeout(()=>{renderStreakHistory(streakOverlay());refresh();refreshStreak();if(location.hash==='#challenges')window.SanLeanUsuarioNavigation?.show?.('challenges',{updateHash:false})},250)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(install,40),{once:true});else setTimeout(install,40);
 })();

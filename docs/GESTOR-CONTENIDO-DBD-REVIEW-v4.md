@@ -24,7 +24,7 @@ La copia Git de trabajo de esta entrega es `C:\Users\Lean\.codex\.chatgpt-projec
 
 TERRIFIER — 2026 es la única actualización en `datos/actualizaciones/`. Su documento sigue siendo exactamente el mismo, comprobado por SHA-256, con ocho imágenes verificadas, revisión 22 y estado VALIDADO. Conserva los dos grupos visuales que estaban aprobados: WEB Killers y Streamer Perks Survivor. No se aprobaron los demás por cuenta del usuario.
 
-Creada: `2026-10-29T01:28:12.981Z`. Última modificación: `2026-10-29T18:01:50.613Z`. Se conservó también su cambio local anterior sobre El Liche. No se aplicó Terrifier al MASTER ni se publicó.
+Creada: `2026-10-29T01:28:12.981Z`. Última modificación: `2026-10-29T18:01:50.613Z`. Se conservó también su cambio local anterior sobre El Primero (clave histórica lich). No se aplicó Terrifier al MASTER ni se publicó.
 
 Los cinco borradores técnicos se movieron a `datos/tests/archivados`, con verificación de sus documentos. Las pruebas nuevas requieren una carpeta bajo `datos/tests` y una identificación de fixture. Los antiguos scripts de navegador rechazan expresamente un servidor operativo. Las capturas y temporales de navegador están bajo `datos/temp`.
 

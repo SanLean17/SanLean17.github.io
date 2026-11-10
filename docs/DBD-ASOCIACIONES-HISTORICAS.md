@@ -13,7 +13,7 @@ Los 98 personajes tienen sus tres perks según las fuentes internas existentes. 
 
 Fuentes: js/usuario-roulette-tools.js (OWNER_BY_KEY y OWNER_RANGES) y js/usuario.js (survivorOwners y survivorOwnerGroups). Los rangos corregidos 97–114 prevalecen sobre grupos históricos desplazados; 96_boonDestroyer permanece sin propietario. Los alias ghost, pyramid, skull y first se traducen únicamente a claves existentes ghostface, pyramidhead, skullmerchant y lich.
 
-Decisión a conservar para revisión editorial: el proyecto identifica vecna con perks 118–120 y lich con perks 136–138. Se mantienen estos nombres y keys actuales; no se intercambian personajes por una suposición externa. Los términos Liche y Vecna siguen encontrando el contenido asociado por los alias presentes.
+El Liche (Dungeons & Dragons, K36) conserva la clave publicada vecna y las perks 118–120. El Primero (Stranger Things, K42) conserva la clave histórica lich y las perks 136–138. Ambos admiten la búsqueda «Vecna». El progreso y las entradas se identifican por clave.
 
 Entradas sin asociación explícita: 13 perks Killer, 14 Survivor y los slots vacíos registrados. No se inventaron propietarios. La lista permite revisar cualquier asociación dudosa antes de publicarla.
 
