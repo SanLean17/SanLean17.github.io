@@ -18,5 +18,7 @@ const groups=extract(usuario,'survivorOwnerGroups');assert.equal(groups.length,s
 groups.forEach(([aliases,start],index)=>{for(const item of catalogs['perks-survivor'].filter(i=>{const n=Number(i.key.split('_')[0]);return n>=start&&n<=start+2;}))assign('perks-survivor',item.key,survivorKeys[index],aliases);});
 for(const type of ['perks-killer','perks-survivor'])result.unassigned[type]=catalogs[type].filter(i=>!result.perks[type][i.key]).map(i=>({key:i.key,name:i.name,reason:i.emptySlot?'Empty slot':'No character association in project sources; retained without owner, pending review.'}));
 for(const type of ['killers','survivors'])for(const i of catalogs[type])assert(result.owners[type][i.key],i.key);
+// K36 and K42 have separate catalog aliases despite sharing the name Vecna.
+for (const key of ['vecna', 'lich']) result.owners.killers[key] = catalogs.killers.find(item => item.key === key).aliases;
 fs.writeFileSync(path.join(__dirname,'catalog-associations.json'),JSON.stringify(result,null,2)+'\n');
 console.log(JSON.stringify({owners:Object.fromEntries(Object.entries(result.owners).map(([t,x])=>[t,Object.keys(x).length])),perks:Object.fromEntries(Object.entries(result.perks).map(([t,x])=>[t,Object.keys(x).length])),unassigned:result.unassigned},null,2));

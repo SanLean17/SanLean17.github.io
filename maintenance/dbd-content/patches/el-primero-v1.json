@@ -1,0 +1,102 @@
+{
+  "format": "sanlean-dbd-delta-v1",
+  "id": "el-primero-v1",
+  "createdAt": "2026-11-10T00:00:00.000Z",
+  "changes": [
+    {
+      "type": "killers",
+      "key": "lich",
+      "action": "fill",
+      "aliases": [
+        "The First",
+        "El Primero",
+        "Primero",
+        "Vecna",
+        "Vecna Stranger Things",
+        "Stranger Things",
+        "Henry Creel",
+        "001",
+        "One"
+      ]
+    },
+    {
+      "type": "killers",
+      "key": "lich",
+      "action": "metadata",
+      "before": {
+        "name": "El Liche",
+        "aliases": [
+          "first lich primer liche el primer liche",
+          "The First",
+          "El Primero",
+          "Primero",
+          "Vecna",
+          "Vecna Stranger Things",
+          "Stranger Things",
+          "Henry Creel",
+          "001",
+          "One"
+        ]
+      },
+      "fields": {
+        "name": "El Primero",
+        "aliases": [
+          "The First",
+          "El Primero",
+          "Primero",
+          "Vecna",
+          "Vecna Stranger Things",
+          "Stranger Things",
+          "Henry Creel",
+          "001",
+          "One"
+        ]
+      }
+    },
+    {
+      "type": "killers",
+      "key": "vecna",
+      "action": "fill",
+      "aliases": [
+        "Vecna",
+        "The Lich",
+        "Lich",
+        "Liche",
+        "El Liche",
+        "Dungeons & Dragons",
+        "D&D"
+      ]
+    },
+    {
+      "type": "killers",
+      "key": "vecna",
+      "action": "metadata",
+      "before": {
+        "name": "Vecna",
+        "aliases": [
+          "vecna lich liche el liche",
+          "Vecna",
+          "The Lich",
+          "Lich",
+          "Liche",
+          "El Liche",
+          "Dungeons & Dragons",
+          "D&D"
+        ]
+      },
+      "fields": {
+        "name": "El Liche",
+        "aliases": [
+          "Vecna",
+          "The Lich",
+          "Lich",
+          "Liche",
+          "El Liche",
+          "Dungeons & Dragons",
+          "D&D"
+        ]
+      }
+    }
+  ],
+  "assets": []
+}

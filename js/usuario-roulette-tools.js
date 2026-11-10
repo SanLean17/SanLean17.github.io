@@ -78,7 +78,7 @@
     [127,129,'ghoul kaneki el ghoul'],
     [130,132,'animatronic springtrap animatronico el animatronico'],
     [133,135,'krasue la krasue'],
-    [136,138,'first lich primer liche el primer liche'],
+    [136,138,'first the first el primero vecna stranger things henry creel 001 one'],
     [139,141,'jason slasher el slasher'],
     [142,144,'judgment sentencia la sentencia']
   ];
