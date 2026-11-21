@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-08T02:20:54.799Z",
+  "updatedAt": "2026-11-21T19:34:09.431Z",
   "items": [
     {
       "candidates": [
@@ -120,15 +120,6 @@
     }
   ],
   "sourceConflicts": [
-    {
-      "code": "MISSBEHAVIOURGC2026",
-      "confidence": "REVIEW",
-      "reason": "Posible reaparición de código vencido; no reactivar",
-      "sources": [
-        "https://deadbydaylight.wiki.gg/wiki/Template%3ASpecial_Banners",
-        "https://deadbydaylight.wiki.gg/wiki/Template%3ASpecial_Banners"
-      ]
-    },
     {
       "code": "NIGHTSHIFT",
       "confidence": "REVIEW",

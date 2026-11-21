@@ -1,15 +1,78 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-08T02:20:54.799Z",
+  "updatedAt": "2026-11-21T19:34:09.431Z",
   "stats": {
-    "postsAnalyzed": 590,
-    "candidates": 22,
-    "confirmed": 18,
-    "review": 3,
-    "rejected": 569,
-    "imagesFound": 18
+    "postsAnalyzed": 215,
+    "candidates": 14,
+    "confirmed": 11,
+    "review": 2,
+    "rejected": 202,
+    "imagesFound": 11
   },
   "codes": [
+    {
+      "code": "MISSBEHAVIOURWEPLAY2026",
+      "publishedAt": null,
+      "detectedAt": "2026-11-21T19:34:09.431Z",
+      "status": "active",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "sources": [
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Banners",
+          "revisionId": 195326,
+          "revisionAt": "2026-11-21T17:57:13Z",
+          "reward": "Pixel MiNA Banner",
+          "expiryDate": null,
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_QUI_BNR_12_icon.png?7ecc99",
+          "evidence": "Redeemable via code \"MISSBEHAVIOURWEPLAY2026\" starting 21 November 2026."
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Banners",
+          "revisionId": 195326,
+          "revisionAt": "2026-11-21T17:57:13Z",
+          "reward": "Pixel Trickster Banner",
+          "expiryDate": null,
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_QUI_BNR_11_icon.png?240f0a",
+          "evidence": "Redeemable via code \"MISSBEHAVIOURWEPLAY2026\" starting 21 November 2026."
+        }
+      ],
+      "reward": "Pixel MiNA Banner + Pixel Trickster Banner",
+      "source": "wiki",
+      "sourceType": "official_wiki",
+      "sourceAccount": "deadbydaylight.wiki.gg",
+      "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Banners",
+      "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_QUI_BNR_12_icon.png?7ecc99",
+      "imageAlt": "Recompensa de MISSBEHAVIOURWEPLAY2026 en la Wiki oficial de DBD",
+      "imageSourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Banners",
+      "imageSourceType": "official_wiki",
+      "releasedAt": "2026-11-21T00:00:00.000Z",
+      "releaseEvidence": {
+        "type": "wiki_explicit",
+        "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Banners",
+        "estimated": false
+      },
+      "images": [
+        {
+          "url": "https://deadbydaylight.wiki.gg/images/T_UI_QUI_BNR_12_icon.png?7ecc99",
+          "alt": "Pixel MiNA Banner",
+          "reward": "Pixel MiNA Banner",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Banners",
+          "sourceType": "official_wiki"
+        },
+        {
+          "url": "https://deadbydaylight.wiki.gg/images/T_UI_QUI_BNR_11_icon.png?240f0a",
+          "alt": "Pixel Trickster Banner",
+          "reward": "Pixel Trickster Banner",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Banners",
+          "sourceType": "official_wiki"
+        }
+      ]
+    },
     {
       "code": "NOTTODAY",
       "publishedAt": null,
@@ -101,8 +164,8 @@
           "source": "wiki",
           "sourceType": "official_wiki",
           "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Banners",
-          "revisionId": 193389,
-          "revisionAt": "2026-10-26T19:31:37Z",
+          "revisionId": 195326,
+          "revisionAt": "2026-11-21T17:57:13Z",
           "reward": "Tristram Ruins Banner",
           "expiryDate": "2026-11-25",
           "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_VAN_BNR_20_icon.png?a42295",
@@ -1820,8 +1883,8 @@
           "source": "wiki",
           "sourceType": "official_wiki",
           "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Banners",
-          "revisionId": 193389,
-          "revisionAt": "2026-10-26T19:31:37Z",
+          "revisionId": 195326,
+          "revisionAt": "2026-11-21T17:57:13Z",
           "reward": "Élodie in the Catacombs Banner",
           "expiryDate": "2026-11-25",
           "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_OM_BNR_09_icon.png?b00c50",
