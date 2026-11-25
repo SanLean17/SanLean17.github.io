@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-21T19:34:09.431Z",
+  "updatedAt": "2026-11-25T03:00:22.132Z",
   "stats": {
-    "postsAnalyzed": 215,
-    "candidates": 14,
-    "confirmed": 11,
-    "review": 2,
-    "rejected": 202,
-    "imagesFound": 11
+    "postsAnalyzed": 0,
+    "candidates": 0,
+    "confirmed": 0,
+    "review": 0,
+    "rejected": 0,
+    "imagesFound": 0
   },
   "codes": [
     {
@@ -127,7 +127,7 @@
       "code": "DIABLO",
       "reward": "Tristram Ruins Banner + Horadric Cube Badge",
       "publishedAt": "2026-10-24T17:00:14.538Z",
-      "status": "active",
+      "status": "expired",
       "official": true,
       "confidence": "CONFIRMED",
       "detectedAt": "2026-10-25T21:39:57.885Z",
