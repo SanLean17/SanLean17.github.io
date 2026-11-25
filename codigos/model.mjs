@@ -41,6 +41,6 @@ export function reconcileCodeStatuses(entries,now=Date.now()){
    ||(previous.sourceType==='nightlight'&&entry.sourceType!=='nightlight'))byCode.set(entry.code,entry);
  }
  return [...byCode.values()].map(entry=>({...entry,status:entry.status==='expired'
-  ||(Number.isFinite(Date.parse(entry.expiresAt))&&now>=Date.parse(entry.expiresAt))?'expired':'active'}));
+  ||(Number.isFinite(Date.parse(entry.expiresAt))&&now>=Date.parse(entry.expiresAt))?'expired':entry.status==='review'||entry.confidence==='REVIEW'?'review':'active'}));
 }
 export function enrichCode(c){return {...c,...releaseInfo(c),images:codeImages(c)};}

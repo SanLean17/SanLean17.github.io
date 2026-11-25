@@ -10,9 +10,13 @@ try{for(const width of [1440,390]){
  const requested=[];p.on('request',r=>requested.push(r.url()));
  await p.route('https://api.github.com/repos/SanLean17/SanLean17.github.io/git/ref/heads/main*',r=>refFail?r.abort():r.fulfill({contentType:'application/json',body:JSON.stringify({object:{sha:String(revision).repeat(40)}})}));
  const entry={code:'BROWSERTESTONLY',reward:'Synthetic test reward',official:true,confidence:'CONFIRMED',source:'bluesky',sourceType:'official_direct',sourceAccount:'deadbydaylight.com',sourceUrl:'https://bsky.app/profile/deadbydaylight.com/post/testonly',publishedAt:'2026-11-01T00:00:00Z',status:'active'};
- await p.route('**/data/codigos.json*',r=>{requests++;return fail?r.abort():r.fulfill({contentType:'application/json',body:JSON.stringify({schemaVersion:1,updatedAt:new Date().toISOString(),codes:revision?[entry,{...entry,code:'RELOADTESTONLY',expiresAt:'2020-01-01T00:00:00Z'}]:[entry]})});});
+ const held={...entry,code:'REVIEWTESTONLY',status:'review',confidence:'REVIEW'};
+ const legacy={schemaVersion:1,codes:[{...held,status:'active',confidence:'COMMUNITY_VERIFIED',official:false,sourceType:'nightlight',sourceUrl:'https://nightlight.gg/codes'}]};
+ await p.route('**/data/codigos-legacy-community.json*',r=>r.fulfill({contentType:'application/json',body:JSON.stringify(legacy)}));
+ await p.route('**/data/codigos.json*',r=>{requests++;return fail?r.abort():r.fulfill({contentType:'application/json',body:JSON.stringify({schemaVersion:1,updatedAt:'2026-11-25T12:00:00Z',codes:revision?[entry,held,{...entry,code:'RELOADTESTONLY',expiresAt:'2020-01-01T00:00:00Z'}]:[entry,held]})});});
  const url=`http://127.0.0.1:${server.address().port}/codigos/`;
  await p.goto(url);await p.locator('#codes-active-text h3').waitFor();assert.equal(await p.locator('.code-card-text').count(),1);
+ assert.equal(await p.getByRole('heading',{name:'REVIEWTESTONLY',exact:true}).count(),0);
  revision++;await p.reload();await p.locator('#codes-expired h3').waitFor();
  assert.deepEqual(await p.locator('#codes-expired h3').allTextContents(),['RELOADTESTONLY']);
  assert.equal(await p.locator('#codes-active-text h3').textContent(),'BROWSERTESTONLY');assert.ok(requests>=2);
@@ -23,7 +27,8 @@ try{for(const width of [1440,390]){
  // Simulate the production hostname, serving our current files, not the deployed app.
  await p.route('https://sanlean.com.ar/**',async r=>{
   const u=new URL(r.request().url());
-  if(u.pathname==='/data/codigos.json')return r.fulfill({contentType:'application/json',body:JSON.stringify({schemaVersion:1,updatedAt:new Date().toISOString(),codes:[entry]})});
+  if(u.pathname==='/data/codigos-legacy-community.json')return r.fulfill({contentType:'application/json',body:JSON.stringify(legacy)});
+  if(u.pathname==='/data/codigos.json')return r.fulfill({contentType:'application/json',body:JSON.stringify({schemaVersion:1,updatedAt:'2026-11-25T12:00:00Z',codes:[entry,held]})});
   const response=await p.request.get(`http://127.0.0.1:${server.address().port}${u.pathname}${u.search}`);
   return r.fulfill({response});
  });
@@ -34,5 +39,6 @@ try{for(const width of [1440,390]){
  assert.ok(!requested.some(u=>u.includes('raw.githubusercontent.com')&&u.includes('/main/')));
  refFail=true;await p.reload();await p.locator('.code-card').first().waitFor();
  assert.match(await p.locator('#codes-notice').textContent(),/copia publicada/);
+ assert.equal(await p.getByRole('heading',{name:'REVIEWTESTONLY',exact:true}).count(),0);
  console.log('PASS refresh, text-only card, client expiry, retry',width);await p.close();
 }}finally{await browser.close();server.close();}})().catch(e=>{console.error(e);server.close();process.exitCode=1;});

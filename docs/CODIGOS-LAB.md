@@ -182,6 +182,38 @@ Se conservan fuentes, recompensas y gráficos al pasar a CÓDIGOS ANTERIORES.
 
 ## Pruebas y evidencia
 
+### Corrección del 25/11/2026: pruebas estables y vigencia en revisión
+
+La ejecución 45685472379 fallaba antes de consultar fuentes: el test de
+deduplicación leía `data/codigos.json` y exigía DIABLO activo después de su
+vencimiento correcto (`2026-11-25T00:00:00.000Z`). Las pruebas de estados,
+prioridad e imágenes verificadas ahora usan ejemplos fijos y relojes explícitos,
+incluido el instante exacto de caducidad y una fecha futura. Los tests que leen
+datos publicados solo comprueban estructura y conservación del histórico.
+
+`MISSBEHAVIOURWEPLAY2026` queda conservado con `status:review` y
+`confidence:REVIEW`, sin inventar `expiresAt`. La Wiki documenta su lanzamiento
+el 21/11/2026 y cuatro banners, pero no un plazo ni una confirmación actual de
+canje. Las referencias públicas consultadas difieren en su grado de certeza;
+no se comprobó el canje dentro del juego ni se confirmó que haya caducado.
+Su ficha, imágenes y fuentes siguen en el catálogo; no se muestra como activo,
+permanente ni vencido mientras siga pendiente. Evidencia de lanzamiento:
+https://deadbydaylight.wiki.gg/wiki/Template:Special_Banners
+https://deadbydaylight.wiki.gg/wiki/Template:General_Event_Banners
+
+Para nuevos descubrimientos exclusivos de Wiki, una fecha de lanzamiento sin
+plazo ni disponibilidad actual explícita genera REVIEW. Se mantienen las
+reglas de históricos, las fichas previamente aceptadas y la prioridad de
+anuncios oficiales directos. La falta de vencimiento por sí sola no convierte
+un código en permanente ni en vencido. NightLight sigue desactivado.
+
+Los bloqueos de revisión persisten ante nuevas consultas, fallos de fuentes,
+duplicados comunitarios y anuncios posteriores. `availabilityReviews` expone
+los casos pendientes. Una decisión documentada debe cambiar explícitamente
+el estado y la confianza después de comprobar nueva evidencia; el escaneo
+automático no libera el bloqueo. Una fecha de vencimiento ya demostrada sigue
+aplicándose, pero una ficha REVIEW no se presenta como confirmada en la web.
+
 `node --test tests/*.test.mjs`
 `node tests/codigos-gallery.browser.cjs`
 `node tests/codigos-publication.browser.cjs`

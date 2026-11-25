@@ -66,46 +66,33 @@ test('registry import makes no requests; disabled discovery is absent from cycle
  } finally {globalThis.fetch=original;}
 });
 
+// Fixed examples: these policy tests never read the changing production catalog.
+const archivedFixture=()=>enrichCode({code:'ARCHIVEDTEST',official:true,confidence:'CONFIRMED',status:'expired',source:'wiki',sourceType:'official_wiki',sourceUrl:'https://deadbydaylight.wiki.gg/wiki/Template:Special_Banners',reward:'Preserved Banner',expiryStatusSource:'previously_archived_community_status',sources:[{source:'wiki',reward:'Preserved Banner',imageUrl:wikiImage('Preserved'),sourceUrl:'https://deadbydaylight.wiki.gg/wiki/Template:Special_Banners'}]});
 test('Códigos duplicados: comunidad no reemplaza estado ni recompensas oficiales',()=>{
- const main=JSON.parse(fs.readFileSync(new URL('../data/codigos.json',import.meta.url),'utf8'));
- const community=JSON.parse(fs.readFileSync(new URL('../data/codigos-nightlight.json',import.meta.url),'utf8'));
- const merged=reconcileCodeStatuses([...community.codes,...main.codes],Date.parse('2026-11-02T18:00:00Z'));
- const find=code=>merged.find(c=>c.code===code);
- for(const code of ['MISSBEHAVIOURGC2026','GRASPINGTHEDARKNESS','NIGHTSHIFT']){
-  const item=find(code),original=main.codes.find(c=>c.code===code);
-  assert.ok(item&&original,code);
-  assert.equal(original.status,'expired','No reactivar códigos que ya estaban caducados');
-  assert.equal(item.status,original.status,code);
-  assert.equal(item.sourceType,original.sourceType);
-  assert.equal(item.reward,original.reward);
-  assert.equal(item.sourceUrl,original.sourceUrl);
-  assert.equal(original.expiryStatusSource,'previously_archived_community_status');
-  assert.equal(item.expiryStatusSource,original.expiryStatusSource);
-  assert.equal(original.expiresAt,undefined,'No inventar el día de vencimiento');
-  assert.ok(codeImages(item).length>0,'Se conservan las imágenes de '+code);
+ const archived=archivedFixture();
+ const main=[archived,{...archived,code:'DATEDTEST',status:'active',expiresAt:'2026-11-25T00:00:00Z'},{...archived,code:'UNDATEDTEST',status:'active'}];
+ const community=main.map(c=>({...c,official:false,sourceType:'nightlight',reward:'Community reward',status:c.status==='active'?'expired':'active'}));
+ community.push({code:'HISTORYONLYTEST',sourceType:'nightlight',status:'expired'});
+ for(const time of ['2026-11-24T23:59:59Z','2026-11-25T00:00:00Z','2030-01-01T00:00:00Z']){
+  for(const rows of [[...community,...main],[...main,...community]]){
+   const merged=reconcileCodeStatuses(rows,Date.parse(time));
+   assert.equal(merged.length,4);
+   for(const original of main){
+    const item=merged.find(c=>c.code===original.code);
+    for(const key of ['sourceType','reward','sourceUrl','expiryStatusSource'])assert.equal(item[key],original[key]);
+    assert.ok(codeImages(item).length>0);
+   }
+   assert.equal(merged.find(c=>c.code==='ARCHIVEDTEST').status,'expired');
+   assert.equal(merged.find(c=>c.code==='DATEDTEST').status,time<'2026-11-25T00:00:00Z'?'active':'expired');
+   assert.equal(merged.find(c=>c.code==='UNDATEDTEST').status,'active');
+   assert.notEqual(merged.find(c=>c.code==='HISTORYONLYTEST').trackedWhileActive,true);
+  }
  }
- assert.equal(find('DIABLO').status,'active');
- assert.equal(find('ROADTRIP').status,'active');
- assert.equal(find('GROUNDCHUCKHBD').status,'expired');
- assert.equal(merged.filter(c=>c.code==='MISSBEHAVIOURGC2026').length,1);
- const oldOnly=find('PLAYXENOMORPHIN2V8');
- assert.ok(oldOnly&&oldOnly.sourceType==='nightlight');
- assert.notEqual(oldOnly.trackedWhileActive,true);
- assert.ok(!(oldOnly.sourceType!=='nightlight'||oldOnly.trackedWhileActive===true));
 });
-test('La siguiente actualización Wiki conserva archivados los tres códigos caducados',()=>{
- const main=JSON.parse(fs.readFileSync(new URL('../data/codigos.json',import.meta.url),'utf8'));
- const names=['MISSBEHAVIOURGC2026','NIGHTSHIFT','GRASPINGTHEDARKNESS'];
- const before=main.codes.filter(c=>names.includes(c.code));
- const after=mergeWiki(main.codes,entries.filter(c=>names.includes(c.code)),'2026-11-07T15:00:00Z');
- for(const old of before){
-  const current=after.find(c=>c.code===old.code);
-  assert.equal(current.status,'expired',old.code);
-  assert.equal(current.expiryStatusSource,'previously_archived_community_status',old.code);
-  assert.equal(current.reward,old.reward);
-  assert.equal(current.images.length,old.images.length);
-  assert.equal(current.expiresAt,undefined);
- }
+test('La siguiente actualización Wiki conserva archivados los códigos caducados',()=>{
+ const old=archivedFixture();
+ const fresh={code:old.code,reward:'Changed reward',currentAvailability:true,expiryDate:'2031-01-01'};
+ for(const time of ['2026-11-07T15:00:00Z','2030-01-01T00:00:00Z'])assert.deepEqual(mergeWiki([old],[fresh],time),[old]);
 });
 
 test('Conciliación automática respeta fechas futuras, fechas vencidas y permanentes',()=>{

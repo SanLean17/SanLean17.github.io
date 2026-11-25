@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-11-01T00:00:00Z",
+  "codes": [
+    {
+      "code": "GALLERYTEST",
+      "publishedAt": null,
+      "detectedAt": "2026-11-01T00:00:00Z",
+      "status": "active",
+      "official": true,
+      "confidence": "CONFIRMED",
+      "sources": [
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3ASpecial_Banners",
+          "revisionId": 194011,
+          "revisionAt": "2026-11-06T14:37:25Z",
+          "reward": "Pixel Dwight Banner",
+          "expiryDate": null,
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_LS_BNR_13_icon.png?df064b",
+          "evidence": "redeemable via code \"MISSBEHAVIOURGC2026\"."
+        },
+        {
+          "source": "wiki",
+          "sourceType": "official_wiki",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3ASpecial_Banners",
+          "revisionId": 194011,
+          "revisionAt": "2026-11-06T14:37:25Z",
+          "reward": "Pixel Sable Banner",
+          "expiryDate": null,
+          "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_LS_BNR_14_icon.png?a74cff",
+          "evidence": "redeemable via code \"MISSBEHAVIOURGC2026\"."
+        }
+      ],
+      "reward": "Pixel Dwight Banner + Pixel Sable Banner",
+      "source": "wiki",
+      "sourceType": "official_wiki",
+      "sourceAccount": "deadbydaylight.wiki.gg",
+      "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3ASpecial_Banners",
+      "imageUrl": "https://deadbydaylight.wiki.gg/images/T_UI_LS_BNR_13_icon.png?df064b",
+      "imageAlt": "Recompensa de MISSBEHAVIOURGC2026 en la Wiki oficial de DBD",
+      "imageSourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3ASpecial_Banners",
+      "imageSourceType": "official_wiki",
+      "releasedAt": "2026-08-28T23:07:34Z",
+      "releaseEvidence": {
+        "type": "source_revision",
+        "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3ASpecial_Banners",
+        "estimated": true
+      },
+      "images": [
+        {
+          "url": "https://deadbydaylight.wiki.gg/images/T_UI_LS_BNR_13_icon.png?df064b",
+          "alt": "Pixel Dwight Banner",
+          "reward": "Pixel Dwight Banner",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3ASpecial_Banners",
+          "sourceType": "official_wiki"
+        },
+        {
+          "url": "https://deadbydaylight.wiki.gg/images/T_UI_LS_BNR_14_icon.png?a74cff",
+          "alt": "Pixel Sable Banner",
+          "reward": "Pixel Sable Banner",
+          "sourceUrl": "https://deadbydaylight.wiki.gg/wiki/Template%3ASpecial_Banners",
+          "sourceType": "official_wiki"
+        }
+      ],
+      "expiryStatusNote": "Community status recorded as expired in SanLean's saved November 6 snapshot; exact expiration date unavailable."
+    },
+    {
+      "official": true,
+      "confidence": "CONFIRMED",
+      "source": "bluesky",
+      "sourceType": "official_direct",
+      "sourceAccount": "deadbydaylight.com",
+      "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/testonly",
+      "publishedAt": "2026-11-01T00:00:00Z",
+      "status": "active",
+      "reward": "Test reward",
+      "code": "TEXTTEST"
+    },
+    {
+      "official": true,
+      "confidence": "CONFIRMED",
+      "source": "bluesky",
+      "sourceType": "official_direct",
+      "sourceAccount": "deadbydaylight.com",
+      "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/testonly",
+      "publishedAt": "2026-11-01T00:00:00Z",
+      "status": "expired",
+      "reward": "Test reward",
+      "code": "ARCHIVEDTEST"
+    },
+    {
+      "official": true,
+      "confidence": "CONFIRMED",
+      "source": "bluesky",
+      "sourceType": "official_direct",
+      "sourceAccount": "deadbydaylight.com",
+      "sourceUrl": "https://bsky.app/profile/deadbydaylight.com/post/testonly",
+      "publishedAt": "2026-11-01T00:00:00Z",
+      "status": "active",
+      "reward": "Test reward",
+      "code": "PERMANENTTEST",
+      "expiryPolicy": "never"
+    }
+  ]
+}

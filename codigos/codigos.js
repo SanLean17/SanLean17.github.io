@@ -1,5 +1,5 @@
 import {createGallery} from './gallery.mjs';
-import {enrichCode,compareCodes,reconcileCodeStatuses} from './model.mjs?v=20261107-codes-audit2';
+import {enrichCode,compareCodes,reconcileCodeStatuses} from './model.mjs?v=20261125-availability-review';
 import {setupLightbox} from './lightbox.mjs';
 import {setupArchive} from './archive.mjs';
 import {expiryLabel} from './presentation.mjs';
@@ -49,13 +49,13 @@ function card(c){
 }
 function render(data){
  if(data.schemaVersion!==1||!Array.isArray(data.codes))throw Error('Catálogo inválido');
- const candidates=data.codes.map(c=>({...c,code:String(c.code||'').normalize('NFKC').trim().toUpperCase()})).filter(c=>((c.official===true&&c.confidence==='CONFIRMED'&&(c.sourceAccount==='deadbydaylight.com'||c.sourceType==='official_wiki'))||(c.sourceType==='nightlight'&&c.confidence==='COMMUNITY_VERIFIED'&&c.official===false))&&/^[A-Z0-9_-]{3,64}$/.test(c.code)&&(official.test(c.sourceUrl)||c.sourceType==='official_wiki'&&wikiOfficial(c.sourceUrl)||c.sourceType==='nightlight'&&c.sourceUrl==='https://nightlight.gg/codes')&&(Number.isFinite(Date.parse(c.publishedAt))||Number.isFinite(Date.parse(c.detectedAt))));
+ const candidates=data.codes.map(c=>({...c,code:String(c.code||'').normalize('NFKC').trim().toUpperCase()})).filter(c=>((c.official===true&&['CONFIRMED','REVIEW'].includes(c.confidence)&&(c.sourceAccount==='deadbydaylight.com'||c.sourceType==='official_wiki'))||(c.sourceType==='nightlight'&&c.confidence==='COMMUNITY_VERIFIED'&&c.official===false))&&/^[A-Z0-9_-]{3,64}$/.test(c.code)&&(official.test(c.sourceUrl)||c.sourceType==='official_wiki'&&wikiOfficial(c.sourceUrl)||c.sourceType==='nightlight'&&c.sourceUrl==='https://nightlight.gg/codes')&&(Number.isFinite(Date.parse(c.publishedAt))||Number.isFinite(Date.parse(c.detectedAt))));
  // Una sola tarjeta por código: prevalecen sus recompensas/imágenes existentes,
  // y los vencimientos se recalculan con la evidencia del catálogo habilitado.
  const unique=reconcileCodeStatuses(candidates).map(enrichCode);
  const permanent=unique.filter(c=>c.status==='active'&&c.expiryPolicy==='never').sort(compareCodes);
  const active=unique.filter(c=>c.status==='active'&&c.expiryPolicy!=='never').sort(compareCodes);
- const expired=unique.filter(c=>c.status==='expired'&&(c.sourceType!=='nightlight'||c.trackedWhileActive===true)).sort(compareCodes);
+ const expired=unique.filter(c=>c.confidence!=='REVIEW'&&c.status==='expired'&&(c.sourceType!=='nightlight'||c.trackedWhileActive===true)).sort(compareCodes);
  const activeText=active.filter(c=>c.images.length===0).sort(compareCodes);
  const activeImages=active.filter(c=>c.images.length>0).sort(compareCodes);
  // Cada grupo tiene su propia grilla: las tarjetas con imagen siempre empiezan en la columna 1.

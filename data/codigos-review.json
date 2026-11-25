@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-25T03:00:22.132Z",
+  "updatedAt": "2026-11-25T21:24:34.655Z",
   "items": [
     {
       "candidates": [
@@ -126,6 +126,16 @@
       "reason": "Posible reaparición de código vencido; no reactivar",
       "sources": [
         "https://deadbydaylight.wiki.gg/wiki/Template%3ASpecial_Banners"
+      ]
+    }
+  ],
+  "availabilityReviews": [
+    {
+      "code": "MISSBEHAVIOURWEPLAY2026",
+      "confidence": "REVIEW",
+      "reason": "Vigencia cuestionada: la Wiki documenta lanzamiento el 21/11/2026, sin vencimiento ni confirmación actual de canje. Requiere revisión; no se afirma que esté vencido.",
+      "sources": [
+        "https://deadbydaylight.wiki.gg/wiki/Template%3AGeneral_Event_Banners"
       ]
     }
   ]

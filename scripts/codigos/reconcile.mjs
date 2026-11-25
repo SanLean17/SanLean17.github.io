@@ -20,13 +20,18 @@ export function mergeWiki(codes,entries,now){
   const rewards=[...new Set(rows.map(r=>r.reward))].sort();const dates=[...new Set(rows.map(r=>r.expiryDate).filter(Boolean))];
   if(dates.length>1)continue; // Conflicting dates cannot silently choose a winner.
   if(!c&&rows.some(r=>Date.parse(wikiRelease(r.evidence))>Date.parse(now)))continue;
-  if(c?.status==='expired')continue; // Reappearance requires independent manual review.
+  if(c?.status==='expired'||c?.status==='review'||c?.confidence==='REVIEW')continue; // Review holds and history require an explicit decision.
   if(c?.expiresAt&&dates[0]&&c.expiresAt.slice(0,10)!==dates[0])continue;
   const first=rows.find(r=>r.expiryDate)||rows[0],picture=rows.find(r=>r.imageUrl);
   const before=/^before\b/i.test(first.expiryText||'');
   const deadline=dates[0]+(before?'T00:00:00.000Z':'T23:59:59.999Z');
   const policy=before?'before-calendar-date-UTC':'calendar-day-end-UTC';
   c=c||{code,publishedAt:null,detectedAt:now,status:'active',official:true,confidence:'CONFIRMED',sources:[]};
+  // A launch date is not evidence that an undated code is still redeemable.
+  // Preserve previously accepted entries; hold new Wiki-only discoveries for review.
+  if(!map.has(code)&&!dates.length&&!rows.some(r=>r.currentAvailability)){
+   Object.assign(c,{status:'review',confidence:'REVIEW',reviewReason:'Wiki registra lanzamiento sin plazo ni disponibilidad actual explícita; verificar vigencia antes de publicar'});
+  }
   const evidence=rows.map(r=>({source:'wiki',sourceType:'official_wiki',sourceUrl:r.sourceUrl,revisionId:r.revisionId,revisionAt:r.revisionAt,reward:r.reward,expiryDate:r.expiryDate,imageUrl:r.imageUrl,evidence:r.evidence}));
   c.sources=[...(c.sources||[]).filter(s=>s.source!=='wiki'),...evidence];
   if(!direct){Object.assign(c,{reward:rewards.join(' + '),source:'wiki',sourceType:'official_wiki',sourceAccount:'deadbydaylight.wiki.gg',sourceUrl:first.sourceUrl});if(dates[0])Object.assign(c,{expiryDate:dates[0],expiryText:first.expiryText,expiryPrecision:'day',expiresAt:deadline,expiryPolicy:policy});}

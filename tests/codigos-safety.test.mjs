@@ -5,6 +5,9 @@ import {activateNightlight,discoverNightlight} from '../scripts/codigos/nightlig
 import {runCycle} from '../scripts/codigos/engine.mjs';
 import {mergeWiki} from '../scripts/codigos/reconcile.mjs';
 import {parsePage} from '../scripts/codigos/sources/wiki.mjs';
+import {reconcileCodeStatuses} from '../codigos/model.mjs';
+import {mergeCodes} from '../scripts/codigos/catalog.mjs';
+import {officialPost} from '../scripts/codigos/sources/bluesky.mjs';
 const permission={enabled:true,permissionReference:'TEST-ONLY written permission',channel:'TEST-ONLY authorized snapshot'};
 const snapshot=codes=>({complete:true,codes:codes.map(code=>({code}))});
 const initial=snapshot(['OLDTEST','PERMANENTTEST','EXPIREDTEST']);
@@ -71,4 +74,47 @@ test('Wiki historical imports, conflicting dates and reactivation remain conserv
  assert.deepEqual(mergeWiki([old],[{...row,code:old.code,expiryDate:'2027-01-01',currentAvailability:true}],now),[old]);
  const active={...old,status:'active',expiresAt:'2027-01-01T00:00:00Z'};
  assert.equal(mergeWiki([active],[{...row,code:old.code,expiryDate:'2027-02-01'}],now)[0].expiresAt,active.expiresAt);
+});
+
+const launchOnly={code:'LAUNCHONLYTEST',reward:'Test Banner',evidenceYear:2026,expiryDate:null,currentAvailability:false,evidence:'Redeemable via code "LAUNCHONLYTEST" starting 21 November 2026.',sourceUrl:'https://deadbydaylight.wiki.gg/wiki/Template:Special_Banners',imageUrl:'https://deadbydaylight.wiki.gg/images/Test.png'};
+const reviewTime='2026-11-25T12:00:00Z';
+test('New Wiki launch without current availability enters persistent review, not active or expired',async()=>{
+ const sources=[{id:'wiki',collect:async()=>({entries:[launchOnly],fetched:1})}];
+ const first=await runCycle({catalog:{codes:[]},review:{items:[],manualCandidates:[{code:launchOnly.code,confidence:'REVIEW'}]},sources,now:reviewTime});
+ const held=first.catalog.codes[0];
+ assert.equal(held.status,'review');assert.equal(held.confidence,'REVIEW');assert.equal(held.expiresAt,undefined);
+ assert.equal(held.images.length,1);assert.equal(first.review.availabilityReviews[0].code,held.code);
+ assert.equal(first.review.manualCandidates[0].confidence,'REVIEW');
+ const repeated=await runCycle({catalog:first.catalog,review:first.review,state:first.state,sources,now:'2026-11-25T13:00:00Z'});
+ assert.equal(repeated.changed,false);
+ const outage=await runCycle({catalog:first.catalog,review:first.review,sources:[{id:'wiki',collect:async()=>{throw Error('offline');}}],now:'2030-01-01T00:00:00Z'});
+ assert.equal(outage.catalog.codes[0].status,'review');assert.deepEqual(outage.review.availabilityReviews,first.review.availabilityReviews);
+});
+test('Wiki deadlines and explicit current availability can confirm new discoveries; older accepted entries stay intact',()=>{
+ for(const row of [{...launchOnly,expiryDate:'2026-12-01',expiryText:'until December 1, 2026'},{...launchOnly,currentAvailability:true}]){
+  const item=mergeWiki([],[row],reviewTime)[0];assert.equal(item.status,'active');assert.equal(item.confidence,'CONFIRMED');
+ }
+ const accepted={code:launchOnly.code,status:'active',confidence:'CONFIRMED',sources:[]};
+ assert.equal(mergeWiki([accepted],[launchOnly],reviewTime)[0].status,'active');
+});
+test('Wiki updates cannot silently clear a hold, even if a new deadline appears',()=>{
+ const held=mergeWiki([],[launchOnly],reviewTime)[0];
+ assert.deepEqual(mergeWiki([held],[{...launchOnly,currentAvailability:true,expiryDate:'2027-01-01'}],reviewTime),[held]);
+});
+test('Official announcements still publish without an expiry, but cannot silently clear an existing hold',()=>{
+ const raw=JSON.parse(fs.readFileSync(new URL('./fixtures/codigos/official-feed.json',import.meta.url),'utf8'))[0];
+ const post={...officialPost(raw),text:'Use code LAUNCHONLYTEST to unlock a Banner.',images:[],publishedAt:'2026-11-24T12:00:00Z'};
+ const fresh=mergeCodes({codes:[]},{items:[]},[post],reviewTime).catalog.codes[0];
+ assert.equal(fresh.status,'active');assert.equal(fresh.sourceType,'official_direct');
+ const held=mergeWiki([],[launchOnly],reviewTime)[0];
+ const next=mergeCodes({codes:[held]},{items:[]},[post],reviewTime).catalog.codes[0];
+ assert.equal(next.status,'review');assert.equal(next.confidence,'REVIEW');
+});
+test('Browser reconciliation preserves review and does not resurrect a community duplicate',()=>{
+ const held=mergeWiki([],[launchOnly],reviewTime)[0];
+ const community={...held,official:false,sourceType:'nightlight',status:'active',confidence:'COMMUNITY_VERIFIED'};
+ for(const rows of [[community,held],[held,community]]){
+  const items=reconcileCodeStatuses(rows,Date.parse('2030-01-01'));
+  assert.equal(items.length,1);assert.equal(items[0].status,'review');assert.equal(items[0].official,true);
+ }
 });

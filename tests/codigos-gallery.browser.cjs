@@ -1,14 +1,21 @@
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const root=path.resolve(__dirname,'..');
+const data=JSON.parse(fs.readFileSync(path.join(root,'tests/fixtures/codigos/gallery-catalog.json'))),images=data.codes.find(c=>c.code==='GALLERYTEST').images;
+async function fixtureRoutes(p){
+ await p.route('**/data/codigos.json*',r=>r.fulfill({json:data}));
+ await p.route('**/data/codigos-legacy-community.json*',r=>r.fulfill({json:{schemaVersion:1,codes:[]}}));
+ // Deterministic image responses: gallery behavior does not depend on the Wiki CDN.
+ await p.route('https://deadbydaylight.wiki.gg/images/**',r=>r.fulfill({contentType:'image/svg+xml',body:'<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="512"><rect width="1024" height="512" fill="#222"/></svg>'}));
+}
 const server=http.createServer((req,res)=>{let file=path.join(root,decodeURIComponent(req.url.split('?')[0]));try{if(fs.statSync(file).isDirectory())file=path.join(file,'index.html');res.setHeader('Content-Type',({'.html':'text/html; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css','.json':'application/json','.png':'image/png'})[path.extname(file)]||'application/octet-stream');res.end(fs.readFileSync(file));}catch{res.writeHead(404).end();}});
 (async()=>{await new Promise(r=>server.listen(0,'127.0.0.1',r));const base=process.env.CODE_BASE_URL||`http://127.0.0.1:${server.address().port}/codigos/`;const browser=await chromium.launch({channel:process.env.BROWSER_CHANNEL||'chrome',headless:true});try{
 for(const width of [1440,900,390,320]){
- const context=await browser.newContext({viewport:{width,height:900},hasTouch:width<760});const p=await context.newPage();const errors=[];const forbidden=[];p.on('request',r=>{if(/nightlight/i.test(r.url()))forbidden.push(r.url());});await p.route(/googletagmanager|google-analytics/,r=>r.abort());p.on('pageerror',e=>errors.push(e.message));await p.goto(base);await p.waitForSelector('.code-card');
+ const context=await browser.newContext({viewport:{width,height:900},hasTouch:width<760});const p=await context.newPage();const errors=[];const forbidden=[];p.on('request',r=>{if(/nightlight/i.test(r.url()))forbidden.push(r.url());});await p.route(/googletagmanager|google-analytics/,r=>r.abort());p.on('pageerror',e=>errors.push(e.message));await fixtureRoutes(p);await p.goto(base);await p.waitForSelector('.code-card');
  const textCodes=await p.locator('#codes-active-text h3').allTextContents();
  assert.ok(!textCodes.includes('DBDXHS'),'NightLight no autorizado no se consume');
- assert.ok((await p.locator('#codes-active-images h3').allTextContents()).includes('DIABLO'));
- assert.ok((await p.locator('#codes-expired h3').allTextContents()).includes('STARSGUIDE'));
+ assert.ok((await p.locator('#codes-active-images h3').allTextContents()).includes('GALLERYTEST'));
+ assert.ok((await p.locator('#codes-expired h3').allTextContents()).includes('ARCHIVEDTEST'));
  assert.ok(!(await p.locator('#codes-expired h3').allTextContents()).includes('WORLDPRIDE2026'));
  assert.deepEqual(forbidden,[],'Ninguna consulta a NightLight ni a su snapshot');
  const cols=width>1200?3:width>760?2:1;
@@ -17,7 +24,7 @@ for(const width of [1440,900,390,320]){
   assert.equal(await p.locator(section).evaluate(e=>getComputedStyle(e).gridTemplateColumns.split(' ').length),cols);
  }
 
- const card=p.locator('#codes-active .code-card').filter({has:p.locator('h3',{hasText:'MISSBEHAVIOURGC2026'})}),media=card.locator('.code-media');await media.scrollIntoViewIfNeeded();await p.waitForFunction(()=>[...document.querySelectorAll('#codes-active article')].find(e=>e.textContent.includes('MISSBEHAVIOURGC2026')).querySelector('img').naturalWidth>0);
+ const card=p.locator('#codes-active .code-card').filter({has:p.locator('h3',{hasText:'GALLERYTEST'})}),media=card.locator('.code-media');await media.scrollIntoViewIfNeeded();await p.waitForFunction(()=>[...document.querySelectorAll('#codes-active article')].find(e=>e.textContent.includes('GALLERYTEST')).querySelector('img').naturalWidth>0);
  assert.equal(await media.locator('img').getAttribute('alt'),'Pixel Dwight Banner');const geom=()=>card.evaluate(e=>({x:e.offsetLeft,y:e.offsetTop,w:e.offsetWidth,h:e.offsetHeight}));const before=await geom();await media.locator('.code-image-next').click();assert.equal(await media.locator('img').getAttribute('alt'),'Pixel Sable Banner');await p.waitForTimeout(300);assert.deepEqual(await geom(),before);
  await media.locator('.code-zoom').click();assert.equal(await p.locator('dialog img').getAttribute('alt'),'Pixel Sable Banner');await p.keyboard.press('ArrowLeft');assert.equal(await p.locator('dialog img').getAttribute('alt'),'Pixel Dwight Banner');await p.locator('dialog .code-image-next').click();assert.equal(await p.locator('dialog img').getAttribute('alt'),'Pixel Sable Banner');assert.equal(await p.locator('dialog').evaluate(e=>getComputedStyle(e).borderTopWidth),'2px');await p.keyboard.press('Escape');assert.equal(await p.locator('dialog').isVisible(),false);assert.deepEqual(await geom(),before);
  if(width>760){await card.hover();await p.waitForTimeout(250);assert.equal(await card.evaluate(e=>getComputedStyle(e,'::after').borderTopWidth),'2px');assert.deepEqual(await geom(),before);}else{
@@ -26,6 +33,5 @@ for(const width of [1440,900,390,320]){
  }
  assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);assert.deepEqual(errors,[]);fs.mkdirSync(path.resolve(root,'../codigos-audit/screenshots'),{recursive:true});await p.evaluate(()=>scrollTo(0,0));await p.screenshot({path:path.resolve(root,`../codigos-audit/screenshots/codigos-${width}.png`)});console.log('PASS gallery/order/lightbox/geometry',width);await context.close();
 }
-const data=JSON.parse(fs.readFileSync(path.join(root,'data/codigos.json'))),images=data.codes.find(c=>c.code==='MISSBEHAVIOURGC2026').images;
-for(const all of [false,true]){const p=await browser.newPage();await p.route('https://deadbydaylight.wiki.gg/images/**',r=>images.slice(0,all?2:1).some(i=>i.url===r.request().url())?r.abort():r.continue());await p.goto(base);const card=p.locator('#codes-active article').filter({has:p.locator('h3',{hasText:'MISSBEHAVIOURGC2026'})});await card.scrollIntoViewIfNeeded();if(all){await card.locator('.code-media').waitFor({state:'detached'});assert.equal(await card.locator('.code-media').count(),0);assert.ok(await card.evaluate(e=>e.classList.contains('code-card-text')));}else{await p.waitForFunction(()=>[...document.querySelectorAll('#codes-active article')].find(e=>e.textContent.includes('MISSBEHAVIOURGC2026')).querySelector('img').alt==='Pixel Sable Banner');assert.equal(await card.locator('.code-image-next').isVisible(),false);}console.log('PASS failed images',all?'all':'one of two');await p.close();}
+for(const all of [false,true]){const p=await browser.newPage();await fixtureRoutes(p);await p.route('https://deadbydaylight.wiki.gg/images/**',r=>images.slice(0,all?2:1).some(i=>i.url===r.request().url())?r.abort():r.fallback());await p.goto(base);const card=p.locator('#codes-active article').filter({has:p.locator('h3',{hasText:'GALLERYTEST'})});await card.scrollIntoViewIfNeeded();if(all){await card.locator('.code-media').waitFor({state:'detached'});assert.equal(await card.locator('.code-media').count(),0);assert.ok(await card.evaluate(e=>e.classList.contains('code-card-text')));}else{await p.waitForFunction(()=>[...document.querySelectorAll('#codes-active article')].find(e=>e.textContent.includes('GALLERYTEST')).querySelector('img').alt==='Pixel Sable Banner');assert.equal(await card.locator('.code-image-next').isVisible(),false);}console.log('PASS failed images',all?'all':'one of two');await p.close();}
 }finally{await browser.close();server.close();}})().catch(e=>{console.error(e);server.close();process.exitCode=1;});
