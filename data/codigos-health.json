@@ -1,24 +1,24 @@
 {
   "schemaVersion": 1,
-  "runId": "45837942377",
-  "event": "workflow_dispatch",
+  "runId": "45904948175",
+  "event": "schedule",
   "sources": {
     "bluesky": {
-      "lastAttemptAt": "2026-11-26T14:20:24.238Z",
-      "lastSuccessAt": "2026-11-26T14:20:24.238Z",
+      "lastAttemptAt": "2026-11-26T22:28:14.141Z",
+      "lastSuccessAt": "2026-11-26T22:28:14.141Z",
       "lastError": null,
-      "itemsFetched": 100,
-      "candidatesFound": 0,
-      "imageScanned": 0,
+      "itemsFetched": 801,
+      "candidatesFound": 22,
+      "imageScanned": 1,
       "imageScanErrors": 0,
       "imageCodesFound": 0,
       "lastImageError": null
     },
     "wiki": {
-      "lastAttemptAt": "2026-11-26T14:20:24.238Z",
-      "lastSuccessAt": "2026-11-26T14:20:24.238Z",
+      "lastAttemptAt": "2026-11-26T22:28:14.141Z",
+      "lastSuccessAt": "2026-11-26T22:28:14.141Z",
       "lastError": null,
-      "itemsFetched": 5,
+      "itemsFetched": 10,
       "candidatesFound": 71,
       "imageScanned": 0,
       "imageScanErrors": 0,
@@ -26,15 +26,15 @@
       "lastImageError": null
     }
   },
-  "lastAttemptAt": "2026-11-26T14:20:24.238Z",
-  "lastSuccessAt": "2026-11-26T14:20:24.238Z",
-  "lastDailyAt": "2026-11-25T21:29:05.369Z",
-  "lastFullAt": "2026-11-26T12:56:14.023Z",
-  "mode": "fast",
+  "lastAttemptAt": "2026-11-26T22:28:14.141Z",
+  "lastSuccessAt": "2026-11-26T22:28:14.141Z",
+  "lastDailyAt": "2026-11-26T22:28:14.141Z",
+  "lastFullAt": "2026-11-26T22:28:14.141Z",
+  "mode": "daily",
   "catalogChanged": false,
   "lastCatalogChange": "2026-11-26T02:56:21.946Z",
   "sourcesHealthy": 2,
   "sourcesFailed": 0,
-  "lastScheduledAt": "2026-11-26T12:56:14.023Z",
-  "lastCompleteSuccessAt": "2026-11-26T14:20:24.238Z"
+  "lastScheduledAt": "2026-11-26T22:28:14.141Z",
+  "lastCompleteSuccessAt": "2026-11-26T22:28:14.141Z"
 }
